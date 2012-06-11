@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2007, 2010 SpringSource.  All rights reserved.
+ *******************************************************************************/-->
+<plugin>
+	
+    <extension
+         point="org.codehaus.groovy.eclipse.ui.syntaxHighlightingExtension">
+      <highlightingExtender
+            extender="org.grails.ide.eclipse.editor.groovy.GrailsSyntaxHighlighting"
+            natureID="org.grails.ide.eclipse.core.nature">
+      </highlightingExtender>
+   </extension>
+   <extension
+          point="org.eclipse.jdt.groovy.core.typeLookup">
+       <lookup
+             lookup="org.grails.ide.eclipse.editor.groovy.types.GrailsTypeLookup">
+          <appliesTo
+                projectNature="org.grails.ide.eclipse.core.nature">
+          </appliesTo>
+       </lookup>
+    </extension>
+    
+    <extension
+         point="org.codehaus.groovy.eclipse.codeassist.completion.completionProposalProvider">
+      <proposalProvider
+            proposalProvider="org.grails.ide.eclipse.editor.groovy.contentassist.GrailsProposalProvider">
+         <appliesTo
+               projectNature="org.grails.ide.eclipse.core.nature">
+         </appliesTo>
+      </proposalProvider>
+   </extension>
+    <extension
+          point="org.eclipse.ui.editorActions">
+       <editorContribution
+             id="org.grails.ide.eclipse.editor.editorAction.navigation"
+             targetID="org.codehaus.groovy.eclipse.editor.GroovyEditor">
+          <action
+                class="org.grails.ide.eclipse.editor.actions.GoToControllerClass"
+                definitionId="org.grails.ide.eclipse.editor.groovy.controllerCommand"
+                icon="icons/full/obj16/controller_obj.png"
+                id="org.grails.ide.eclipse.editor.navigateToControllerAction"
+                label="To Controller"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Open the corresponding Controller class if one exists">
+          </action>
+          <action
+                class="org.grails.ide.eclipse.editor.actions.GoToDomainClass"
+                definitionId="org.grails.ide.eclipse.editor.groovy.domainCommand"
+                icon="icons/full/obj16/domain_obj.png"
+                id="org.grails.ide.eclipse.editor.navigateToDomainAction"
+                label="To Domain"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Open the corresponding Domain class if one exists">
+          </action>
+          <action
+                class="org.grails.ide.eclipse.editor.actions.GoToServiceClass"
+                definitionId="org.grails.ide.eclipse.editor.groovy.serviceCommand"
+                icon="icons/full/obj16/service_obj.png"
+                id="org.grails.ide.eclipse.editor.navigateToServiceAction"
+                label="To Service Class"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Open the corresponding Service class if one exists">
+          </action>
+          <action
+                class="org.grails.ide.eclipse.editor.actions.GoToTagLibClass"
+                definitionId="org.grails.ide.eclipse.editor.groovy.tagLibCommand"
+                icon="icons/full/obj16/tagLib_obj.png"
+                id="org.grails.ide.eclipse.editor.navigateToTagLibAction"
+                label="To TagLib"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Open the corresponding TagLib class if one exists">
+          </action>
+       </editorContribution>
+    </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.grails.ide.eclipse.editor.groovy.controllerCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G C"/>
+      <key
+            commandId="org.grails.ide.eclipse.editor.groovy.domainCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G D"/>
+      <key
+            commandId="org.grails.ide.eclipse.editor.groovy.serviceCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G S"/>
+      <key
+            commandId="org.grails.ide.eclipse.editor.groovy.tagLibCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G T"/>
+      <!-- Now disable all of the M3+G commands for Swiss German since that conflicts with '@' -->      
+      <key
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            locale="de_CH"
+            sequence="M3+G C"/>
+      <key
+            locale="de_CH"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G D"/>
+      <key
+            locale="de_CH"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G S"/>
+      <key
+            locale="de_CH"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G T"/>
+      <!-- Reenable commands using M1+M3+G for Swiss German -->      
+      <key
+            locale="de_CH"
+            commandId="org.grails.ide.eclipse.editor.groovy.controllerCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+G C"/>
+      <key
+            locale="de_CH"
+            commandId="org.grails.ide.eclipse.editor.groovy.domainCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+G D"/>
+      <key
+            locale="de_CH"
+            commandId="org.grails.ide.eclipse.editor.groovy.serviceCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+G S"/>
+      <key
+            locale="de_CH"
+            commandId="org.grails.ide.eclipse.editor.groovy.tagLibCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+G T"/>
+   </extension>
+    <extension
+          point="org.eclipse.ui.commands">
+       <command
+             categoryId="com.springsource.ide.grails.ui.commands"
+             description="Open the corresponding Controller class if one exists"
+             id="org.grails.ide.eclipse.editor.groovy.controllerCommand"
+             name="Go to Controller Class">
+       </command>
+       <command
+             categoryId="com.springsource.ide.grails.ui.commands"
+             description="Open the corresponding Domain class if one exists"
+             id="org.grails.ide.eclipse.editor.groovy.domainCommand"
+             name="Go to Domain Class">
+       </command>
+       <command
+             categoryId="com.springsource.ide.grails.ui.commands"
+             description="Open the corresponding Service class if one exists"
+             id="org.grails.ide.eclipse.editor.groovy.serviceCommand"
+             name="Go to Service Class">
+       </command>
+       <command
+             categoryId="com.springsource.ide.grails.ui.commands"
+             description="Open the corresponding TagLib class if one exists"
+             id="org.grails.ide.eclipse.editor.groovy.tagLibCommand"
+             name="Go to TagLib Class">
+       </command>
+    </extension>
+    <extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+       <hyperlinkDetector
+             activate="true"
+             class="org.grails.ide.eclipse.editor.actions.UrlMappingHyperlinkDetector"
+             description="Detects hyperlinks for URL mapping entries"
+             id="org.grails.ide.eclipse.editor.groovy.urlmappingDetector"
+             name="Detect hyperlinks in URL mapping files"
+             targetId="org.codehaus.groovy.eclipse.groovyCode">
+       </hyperlinkDetector>
+    </extension>
+    <!-- This should move to the org.codehaus.groovy.eclipse.ui plugin -->
+    <extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+       <target
+             description="Hyperlink target for URL Mappings"
+             id="org.codehaus.groovy.eclipse.groovyCode"
+             name="Hyperlink target for URL Mappings">
+          <context
+                type="org.codehaus.groovy.eclipse.editor.GroovyEditor">
+          </context>
+       </target>
+    </extension>
+    <extension
+          point="org.codehaus.groovy.eclipse.codeassist.completion.completionProposalFilter">
+       <proposalFilter
+             description="Filters some confusing content assist proposals when in Grails projects"
+             name="Grails Domain Class filter"
+             proposalFilter="org.grails.ide.eclipse.editor.groovy.contentassist.GrailsProposalFilter">
+          <appliesTo
+                projectNature="org.grails.ide.eclipse.editor.groovy.appliesTo1">
+          </appliesTo>
+       </proposalFilter>
+    </extension>
+</plugin>

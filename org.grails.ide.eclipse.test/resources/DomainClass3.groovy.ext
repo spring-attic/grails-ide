@@ -1,0 +1,263 @@
+class DomainClass3 {
+	
+	int first
+	Integer second
+	String third
+	Date fourth
+	
+	static mapping = {
+		
+		table
+		groups
+		tablePerHierarchy
+//		tablePerSubclass
+		cache
+		version
+		sort
+		column
+		
+		// not referencing the fields, so should be void
+		/*!V:!*/first/*!*/
+		/*!V:!*/second/*!*/
+		/*!V:!*/third/*!*/
+		/*!V:!*/fourth/*!*/
+		/*!V:!*/id/*!*/
+	}
+
+	static embedded = {
+		
+	}
+	
+	static transients = {
+		
+	}
+	
+	static namedQueries = {
+		recentPublications {
+			def now = new Date()
+			gt 'datePublished', now - 365
+		}
+ 
+		oldPublicationsLargerThan { pageCount ->
+			def now = new Date()
+			lt 'datePublished', now - 365
+			gt 'numberOfPages', pageCount
+		}
+ 
+		publicationsWithBookInTitle {
+			like 'title', '%Book%'
+		}
+ 
+		recentPublicationsWithBookInTitle {
+			recentPublications()
+			publicationsWithBookInTitle()
+	   }
+	}
+	
+	// from http://grails.org/doc/latest/ref/Domain%20Classes/namedQueries.html
+	def namedQueryTest() {
+		// get all recent publications
+		def recentPubs = DomainClass3.recentPublications.list()
+		/* !java.util.List<DomainClass3> : ! */recentPubs/* ! */  // the list method returns Object, so not much we can do here
+
+		// get up to 10 recent publications, skip the first 5
+		recentPubs = DomainClass3.recentPublications.list(max: 10, offset: 5)
+		/* !java.util.List<DomainClass3> : ! */recentPubs/* ! */  // the list method returns Object, so not much we can do here
+		
+		// get the number of recent publications
+		def numberOfRecentPubs = DomainClass3.recentPublications.count()
+		/* !I : ! */numberOfRecentPubs/* ! */  // the list method returns Object, so not much we can do here
+		
+		// get a recent publication with a specific id
+		def pub = DomainClass3.recentPublications.get(42)
+		/* !DomainClass3 : ! */pub/* ! */  // the list method returns Object, so not much we can do here
+		
+		// get all recent publications where title = 'Some Title'
+		def pubs = DomainClass3.recentPublications.findAllWhere(title: 'Some Title')
+		/* !java.util.List<DomainClass3> : ! */pubs/* ! */  // the list method returns Object, so not much we can do here
+		
+		// get a recent publication where title = 'Some Title'
+		pub = DomainClass3.recentPublications.findWhere(title: 'Some Title')
+		/* !DomainClass3 : ! */pub/* ! */  // the list method returns Object, so not much we can do here
+		
+		// dynamic finders are supported
+		pubs = DomainClass3.recentPublications.findAllByFirst('Some Title')
+		/*!java.util.List<DomainClass3>:!*/pubs/*!*/
+		
+		// get all old publications with more than 350 pages
+		pubs = DomainClass3.oldPublicationsLargerThan(350).list()
+		/*!java.util.List<DomainClass3>:!*/pubs/*!*/
+		
+		// get all old publications with more than 350 pages
+		// and the word 'Grails' in the title
+		pubs = DomainClass3.oldPublicationsLargerThan(350).findAllBySecondLike('%Grails%')
+		/*!java.util.List<DomainClass3>:!*/pubs/*!*/
+		
+		// get all recent publications with 'Book' in their title
+		pubs = DomainClass3.recentPublicationsWithBookInTitle().list()
+		/*!java.util.List<DomainClass3>:!*/pubs/*!*/
+	}
+	
+	static constraints = {
+		// these all should be object types since they do not refer to
+		// the field, but rather to a constraint method on that field
+		/*!V:!*/first/*!*/
+		/*!V:!*/second/*!*/
+		/*!V:!*/third/*!*/
+		/*!V:!*/fourth/*!*/
+		/*!V:!*/id/*!*/
+	}
+
+	// from http://grails.org/doc/latest/ref/Domain%20Classes/withCriteria.html
+	def withCriteriaTest() {
+		DomainClass3./*!java.util.List<DomainClass3>:grails.orm.HibernateCriteriaBuilder!*/withCriteria/*!*/
+		
+		def results = DomainClass3.withCriteria {
+			delegate
+			def now = new Date() 
+			between('releaseDate', now-7, now) 
+			like('title', '%Groovy%') 
+			like("holderFirstName", "Fred%")
+			and {
+				between("balance", 500, 1000)
+				eq("branch", "London")
+			}
+			order("holderLastName", "desc")
+			between("balance", 500, 1000)
+		    eq("branch", "London")
+		    or {
+		        like("holderFirstName", "Fred%")
+		        like("holderFirstName", "Barney%")
+		    }
+		    not {
+				and {
+			        like("holderFirstName", "Fred%")
+			        like("holderFirstName", "Barney%")
+			    }
+			}
+			projections {
+			    countDistinct('branch')
+			}
+		    maxResults(10)
+		    order("holderLastName", "desc")
+			sqlRestriction "char_length(first _name) <= 4"
+		}
+		/*!java.util.List<DomainClass3>:!*/results/*!*/
+	}
+	 
+	def createCriteriaTest() {
+		DomainClass3./*!grails.orm.HibernateCriteriaBuilder:grails.orm.HibernateCriteriaBuilder!*/createCriteria/*!*/
+		def c = DomainClass3.createCriteria()
+		/*!grails.orm.HibernateCriteriaBuilder:!*/c/*!*/
+		def results = c.list { 
+			like("holderFirstName", "Fred%")
+			and {  
+				between("balance", 500, 1000)
+				eq("branch", "London")
+			}
+			order("holderLastName", "desc")
+			between("balance", 500, 1000)
+		    eq("branch", "London")
+		    or {
+		        like("holderFirstName", "Fred%")
+		        like("holderFirstName", "Barney%")
+		    }
+		    not {
+				and {
+			        like("holderFirstName", "Fred%")
+			        like("holderFirstName", "Barney%")
+			    }
+			}
+			projections {
+			    countDistinct('branch')
+			}
+		    maxResults(10)
+		    order("holderLastName", "desc")
+			sqlRestriction "char_length(first_name) <= 4"
+		}
+		/*!java.util.List<java.lang.Object<E>>:!*/results/*!*/
+		
+		def results2 = c.scroll {
+			// not sure if you get full query support here, but definitely maxResults is applicable
+			like("holderFirstName", "Fred%")
+			and {  
+				between("balance", 500, 1000)
+				eq("branch", "London")
+			}
+			order("holderLastName", "desc")
+			between("balance", 500, 1000)
+		    eq("branch", "London")
+		    or {
+		        like("holderFirstName", "Fred%")
+		        like("holderFirstName", "Barney%")
+		    }
+		    not {
+				and {
+			        like("holderFirstName", "Fred%")
+			        like("holderFirstName", "Barney%")
+			    }
+			}
+			projections {
+			    countDistinct('branch')
+			}
+		    maxResults(10)
+		    order("holderLastName", "desc")
+			sqlRestriction "char_length(first_name) <= 4"
+		}
+		def f = results2.first()
+		/*!Z:!*/f/*!*/
+		f = results2.last()
+		/*!Z:!*/f/*!*/
+		f = results2.next() 
+		/*!Z:!*/f/*!*/
+		f = results2.previous()
+		/*!Z:!*/f/*!*/
+		f = results2.scroll(10)
+		/*!Z:!*/f/*!*/
+		f = results2.getLong('number')
+		/*!L:!*/f/*!*/
+	}
+	
+	// From http://grails.org/doc/latest/ref/Domain%20Classes/where.html
+	def whereQueryTest() {
+		def query = DomainClass3.where {
+		   first == "Bart"
+		}
+		/*!grails.gorm.DetachedCriteria<DomainClass3>:!*/query/*!*/
+		
+		def bart = query.find()
+		/*!DomainClass3:!*/bart/*!*/
+		
+		query = DomainClass3.where {
+		    (second != "Simpson" && first != "Fred") || (first == "Bart" && third > 9)
+		}
+		def results = query.list(sort:"firstName")
+		/*!java.util.List<DomainClass3>:!*/results/*!*/
+		
+		query = DomainClass3.where {
+		  first > avg(first)
+		}
+		def query2 = DomainClass3.where { }
+		def query3 = query2.where { }
+		/*!grails.gorm.DetachedCriteria<DomainClass3>:!*/query3/*!*/
+		def p = query3.find()
+		/*!DomainClass3:!*/p/*!*/
+		
+		def query4 = DomainClass3.where {
+			first > avg(first).of { first == "Simpson" } && third == "Homer"
+			/*!I:!*/second/*!*/(first)
+			/*!I:!*/minute/*!*/(first)
+			/*!I:!*/hour/*!*/(first)
+			/*!I:!*/day/*!*/(first)
+			/*!I:!*/year/*!*/(first)
+			/*!I:!*/month/*!*/(first)
+			/*!STR:!*/lower/*!*/(first)
+			/*!STR:!*/upper/*!*/(first)
+			/*!I:!*/length/*!*/(first)
+			/*!STR:!*/trim/*!*/(first)
+		}
+		
+		def	val = query4.deleteAll()
+		/*I:!*/val/*!*/
+	}
+}

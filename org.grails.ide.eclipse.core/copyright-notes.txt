@@ -1,0 +1,12 @@
+---- Notes about potential issues copyright issues 
+Copyright tool run on all of the grails plugins/
+=================================================== 
+
+- The tool does a blanket replace of all copyright headers. Is this really ok?
+    Tool did catch some copyright headers 'not at start of file'.
+      => turns out they have //copied from comments.
+       Inspected: all copied from springframework. So looks ok.
+- The tool does not seem to work on .groovy files. 
+   Manually checked: 
+    Only .groovy files I found where in test programs for unit tests.
+    These never had copyright notices. Seems ok.

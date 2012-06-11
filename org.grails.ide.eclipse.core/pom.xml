@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.grails.ide.eclipse</groupId>
+    <artifactId>org.grails.ide.eclipse.parent</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
+	<artifactId>org.grails.ide.eclipse.core</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>org.grails.ide.eclipse.core</name>
+
+	<properties>
+		<grails-version>1.3.6</grails-version>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<configuration>
+					<extraClasspathElements>
+						<extraClasspathElement>
+							<groupId>org.codehaus.gant</groupId>
+							<artifactId>gant_groovy1.7</artifactId>
+							<version>1.9.3</version>
+						</extraClasspathElement>
+						<extraClasspathElement>
+							<groupId>org.grails</groupId>
+							<artifactId>grails-core</artifactId>
+							<version>${grails-version}</version>
+						</extraClasspathElement>
+						<extraClasspathElement>
+							<groupId>org.grails</groupId>
+							<artifactId>grails-bootstrap</artifactId>
+							<version>${grails-version}</version>
+						</extraClasspathElement>
+					</extraClasspathElements>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>second-generate-p2-metadata</id>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+						<phase>verify</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

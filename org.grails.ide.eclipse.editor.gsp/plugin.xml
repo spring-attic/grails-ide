@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2007, 2009 SpringSource.  All rights reserved.
+ *******************************************************************************/
+-->
+<plugin>
+    <extension
+          point="org.eclipse.core.contenttype.contentTypes">
+       <content-type
+             base-type="org.eclipse.jst.jsp.core.jspsource"
+             default-charset="UTF-8"
+             file-extensions="gsp"
+             id="org.grails.ide.eclipse.editor.gsp.gspsource"
+             name="Groovy Server Pages (GSP)"
+             priority="normal">
+       </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="org.grails.ide.eclipse.wizards"
+            class="org.grails.ide.eclipse.editor.gsp.wizard.NewGSPWizard"
+            finalPerspective="org.grails.ide.eclipse.perspective"
+            hasPages="true"
+            icon="icons/full/obj16/new_grails_file_obj.png"
+            id="org.grails.ide.eclipse.editor.gsp.wizard.newGSPWizard"
+            name="Groovy Server Page (GSP)"
+            project="false">
+      </wizard>
+   </extension>
+   
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension 
+				targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+		    <newWizardShortcut id="org.grails.ide.eclipse.editor.gsp.wizard.newGSPWizard" />
+	    </perspectiveExtension>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.wst.sse.ui.StructuredTextEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="gsp"
+            icon="icons/full/obj16/grails_file_obj.png"
+            id="org.grails.ide.eclipse.editor.gsp.editor"
+						symbolicFontName="org.eclipse.wst.sse.ui.textfont"
+            name="GSP Editor">
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.wst.sse.ui.editorConfiguration">
+      <sourceViewerConfiguration
+            class="org.grails.ide.eclipse.editor.gsp.configuration.GSPViewerConfiguration"
+            target="org.grails.ide.eclipse.editor.gsp.editor">
+      </sourceViewerConfiguration>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.codehaus.jdt.groovy.model.GroovyCompilationUnit"
+            class="org.grails.ide.eclipse.editor.gsp.adapter.CodeCompleteAdapterFactory">
+         <adapter
+               type="org.codehaus.jdt.groovy.model.ICodeCompletionDelegate">
+         </adapter>
+      </factory>
+   </extension>	
+   
+   <extension
+          point="org.eclipse.wst.sse.core.modelHandler">
+       <modelHandler
+             associatedContentTypeId="org.grails.ide.eclipse.editor.gsp.gspsource"
+             class="org.grails.ide.eclipse.editor.gsp.model.GSPModelHandler"
+             id="org.grails.ide.eclipse.editor.gsp.modelHandler">
+       </modelHandler>
+    </extension>
+    
+    <extension
+          point="org.eclipse.core.filebuffers.documentCreation">
+       <factory
+             class="org.eclipse.wst.sse.core.internal.filebuffers.BasicStructuredDocumentFactory"
+             contentTypeId="org.grails.ide.eclipse.editor.gsp.gspsource">
+       </factory>
+    </extension>
+    <extension
+          point="org.eclipse.wst.sse.ui.breakpoint">
+			<breakpointContribution id="org.grails.ide.eclipse.editor.gsp.providers">
+				<provider
+					contentTypes="org.grails.ide.eclipse.editor.gsp.gspsource"
+					id="org.grails.ide.eclipse.editor.gsp.GSPBreakpointProvider">
+					<class class="org.grails.ide.eclipse.editor.gsp.GSPBreakpointProvider">
+						<parameter name="org.grails.ide.eclipse.editor.gsp" value="grails_app_views_*gsp"/>
+					</class>
+				</provider>
+			</breakpointContribution>
+    </extension>
+    <extension
+          point="org.eclipse.core.runtime.adapters">
+       <factory
+             adaptableType="org.grails.ide.eclipse.core.launch.GrailsSourceLookupParticipantAdapter"
+             class="org.grails.ide.eclipse.editor.gsp.adapter.SourceLookupParticipantAdapterFactory">
+          <adapter
+                type="org.eclipse.debug.core.sourcelookup.ISourceLookupParticipant">
+          </adapter>
+       </factory>
+    </extension>
+    <extension
+          point="org.eclipse.ui.popupMenus">
+       <viewerContribution
+             id="org.eclipse.ui.texteditor.ruler.context.actions"
+             targetID="org.grails.ide.eclipse.editor.gsp.source.RulerContext">
+          <action
+                class="org.eclipse.ui.texteditor.TaskRulerAction"
+                helpContextId="org.eclipse.ui.AddTask_action_context"
+                id="org.eclipse.ui.texteditor.TaskRulerAction"
+                label="Add Task..."
+                menubarPath="additions">
+          </action>
+          <action
+                class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+                helpContextId="org.eclipse.ui.bookmark_action_context"
+                id="org.eclipse.ui.texteditor.BookmarkRulerAction"
+                label="Add Bookmark..."
+                menubarPath="additions">
+          </action>
+       </viewerContribution>
+    </extension>
+	  <!--======================================================================================-->
+		<!-- Templates                                                                            -->
+		<!--======================================================================================-->
+		<extension point="org.eclipse.ui.editors.templates">
+			<contextType
+				name="New GSP"
+				class="org.eclipse.jst.jsp.ui.internal.templates.TemplateContextTypeJSP"
+				id="new_gsp" />
+				
+			<include
+				file="templates/gspdefault-templates.xml"
+				translations="$nl$/templates/gspdefault-templates.properties" />
+		</extension>
+		
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			name="GSP Templates"
+			category="org.grails.ide.eclipse.ui.preferencePage"
+			class="org.grails.ide.eclipse.editor.gsp.wizard.GSPTemplatePreferencePage"
+			id="com.springsource.sts.gsp.editor.templates">
+     <keywordReference
+           id="org.grails.ide.eclipse.editor.gsp.keyword.templates">
+     </keywordReference>
+		</page>
+	</extension>
+ <extension
+       point="org.eclipse.ui.keywords">
+    <keyword
+          id="org.grails.ide.eclipse.editor.gsp.keyword.templates"
+          label="editor gsp templates snippet macros">
+    </keyword>
+ </extension>
+ <extension
+       point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+    <hyperlinkDetector
+          class="org.grails.ide.eclipse.editor.gsp.actions.ControllerGSPHyperlinkDetector"
+          id="org.grails.ide.eclipse.editor.gsp.hyperlinkDetector"
+          name="Controller GSP detector"
+          targetId="org.eclipse.jdt.ui.javaCode">
+    </hyperlinkDetector>
+ </extension>
+ <extension
+       point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+    <target
+          id="org.grails.ide.eclipse.editor.gsp.hyperlinkTarget"
+          name="GSP editors">
+       <context
+             type="org.codehaus.groovy.eclipse.editor.GroovyEditor">
+       </context>
+    </target>
+ </extension>		
+     <extension
+          point="org.eclipse.ui.editorActions">
+       <editorContribution
+             id="org.grails.ide.eclipse.editor.editorAction.navigation"
+             targetID="org.codehaus.groovy.eclipse.editor.GroovyEditor">
+          <action
+                class="org.grails.ide.eclipse.editor.gsp.actions.GoToGSP"
+                definitionId="org.grails.ide.eclipse.editor.gsp.gspCommand"
+                icon="icons/full/obj16/nav_grails_file_obj.png"
+                id="com.springsource.sts.gsp.editor.navigateToGSPAction"
+                label="To Controller"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Navigate to a GSP">
+          </action>
+        </editorContribution>
+    </extension>
+    <extension
+          point="org.eclipse.ui.commands">
+       <command
+             categoryId="com.springsource.ide.grails.ui.commands"
+             description="Open a GSP corresponding to the current Grails artifact"
+             id="org.grails.ide.eclipse.editor.gsp.gspCommand"
+             name="Go to GSP">
+       </command>
+    </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.grails.ide.eclipse.editor.gsp.gspCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G G"/>
+      <!-- Now disable all of the M3+G commands for Swiss German since that conflicts with '@' -->      
+      <key
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            locale="de_CH"
+            sequence="M3+G G"/>
+      <!-- Reenable commands using M1+M3+G for Swiss German -->      
+      <key
+            locale="de_CH"
+            commandId="org.grails.ide.eclipse.editor.gsp.gspCommand"
+            contextId="org.codehaus.groovy.eclipse.editor.groovyEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+G G"/>
+    </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            id="org.grails.ide.eclipse.editor.gsp.editorContribution"
+            targetID="org.grails.ide.eclipse.editor.gsp.editor">
+				<action
+					id="ToggleComment"
+					label="%ToggleComment_label"
+					definitionId="org.eclipse.wst.sse.ui.toggle.comment"
+					tooltip="%ToggleComment_tooltip"
+					class="org.grails.ide.eclipse.editor.gsp.actions.ToggleCommentActionXMLDelegate"
+					actionID="ToggleComment">
+				</action>
+				<action
+					id="AddBlockComment"
+					label="%AddBlockComment_label"
+					definitionId="org.eclipse.wst.sse.ui.add.block.comment"
+					tooltip="%AddBlockComment_tooltip"
+					class="org.grails.ide.eclipse.editor.gsp.actions.AddBlockCommentActionXMLDelegate"
+					actionID="AddBlockComment">
+				</action>
+				<action
+					id="RemoveBlockComment"
+					label="%RemoveBlockComment_label"
+					definitionId="org.eclipse.wst.sse.ui.remove.block.comment"
+					tooltip="%RemoveBlockComment_tooltip"
+					class="org.grails.ide.eclipse.editor.gsp.actions.RemoveBlockCommentActionXMLDelegate"
+					actionID="RemoveBlockComment">
+				</action>
+      </editorContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+      <target
+            id="org.grails.ide.eclipse.editor.gsp.gspsource"
+            name="GSP editors">
+      </target>
+   </extension>
+   
+   	<extension
+			point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+				<hyperlinkDetector
+						class="org.grails.ide.eclipse.editor.gsp.actions.GSPHyperlinkDetector"
+						id="org.grails.ide.eclipse.editor.gsp.hyperlink.tag"
+						name="Navigate to GSP tag definition"
+						targetId="org.grails.ide.eclipse.editor.gsp.gspsource">
+			</hyperlinkDetector>
+   </extension>
+   
+   <!-- Validators Copied from JSPs -->
+   <extension id="GSPContentValidator" name="GSP Content Validator" point="org.eclipse.wst.validation.validatorV2">
+      <validator
+            build="true"
+            class="org.eclipse.jst.jsp.core.internal.validation.JSPContentValidator"
+            manual="true"
+            version="1"
+            markerId="org.eclipse.jst.jsp.core.validationMarker"
+            sourceid="org.eclipse.jst.jsp.ui.internal.validation.markupvalidator, org.eclipse.jst.jsp.ui.internal.validation.htmlsyntaxvalidator">
+         <include>
+            <rules>
+							<projectNature id="org.grails.ide.eclipse.core.nature" />
+						</rules>
+ 				 </include>
+         <include>
+            <rules>
+               <fileext
+                     caseSensitive="false"
+                     ext="gsp">
+               </fileext>
+            </rules>
+         </include>
+         <group id="org.eclipse.wst.sse.core.structuredModelGroup"/>
+      </validator>
+   </extension>
+   
+   <extension id="GSPBatchValidator" name="GSP Syntax Validator" point="org.eclipse.wst.validation.validatorV2">
+      <validator
+            build="true"
+            class="org.eclipse.jst.jsp.core.internal.validation.JSPBatchValidator"
+            manual="true"
+            version="1"
+            markerId="org.eclipse.jst.jsp.core.validationMarker"
+            sourceid="org.eclipse.jst.jsp.jspelsourcevalidator, org.eclipse.jst.jsp.ui.internal.validation.jspactionvalidator, org.eclipse.jst.jsp.tldsourcevalidator, org.eclipse.jst.jsp.jspsourcevalidator">
+         <include>
+            <rules>
+							<projectNature id="org.grails.ide.eclipse.core.nature" />
+            </rules>
+         </include>
+         <include>
+            <rules>
+               <fileext
+                     caseSensitive="false"
+                     ext="gsp">
+               </fileext>
+            </rules>
+         </include>
+         <group id="org.eclipse.wst.sse.core.structuredModelGroup"/>
+      </validator>
+   </extension>   
+	<extension
+		id="GSPJsBatchValidator"
+		name="GSP JavaScript validator"
+		point="org.eclipse.wst.validation.validatorV2">
+      <validator
+            build="false"
+			class="org.eclipse.wst.jsdt.web.core.internal.validation.JsValidator"
+            manual="false"
+            sourceid="org.eclipse.wst.jsdt.web.jssourcevalidator"
+            version="1"
+            markerId="org.eclipse.wst.jsdt.core.problem">
+         <include>
+            <rules>
+				<projectNature id="org.grails.ide.eclipse.core.nature" />
+			</rules>
+         </include>
+         <include>
+            <rules>
+				<fileext caseSensitive="false" ext="gsp"/>
+			</rules>
+         </include>
+         <group id="org.eclipse.wst.sse.core.structuredModelGroup"/>
+      </validator>
+	</extension>
+	
+	<!--======================================================================================-->
+	<!-- source validation for JSP															  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.jst.jsp.core.internal.validation.JSPJavaValidator"
+			id="org.grails.ide.eclipse.editor.gsp.jspsourcevalidator">
+			<contentTypeIdentifier
+				id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.jst.jsp.DEFAULT_JSP"/>
+				<partitionType id="org.eclipse.jst.jsp.SCRIPT.JAVA"/>
+				<partitionType id="org.eclipse.jst.jsp.JSP_DIRECTIVE"/>
+				<!-- GRAILS change: this last one is not in JSP-->
+				<partitionType id="org.eclipse.wst.html.HTML_DEFAULT"/>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+	<!--======================================================================================-->
+	<!-- source (as you type) validation for JSP EL					   						  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.jst.jsp.core.internal.validation.JSPELValidator"
+			id="org.grails.ide.eclipse.editor.gsp.jspelsourcevalidator">
+			<contentTypeIdentifier
+				id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.jst.jsp.SCRIPT.JSP_EL">
+				</partitionType>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+	<!--======================================================================================-->
+	<!-- source (as you type) validation for JSP directive			   						  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.jst.jsp.core.internal.validation.JSPDirectiveValidator"
+			id="org.grails.ide.eclipse.editor.gsp.tldsourcevalidator">
+			<contentTypeIdentifier
+				id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.jst.jsp.DEFAULT_JSP">
+				</partitionType>
+				<partitionType id="org.eclipse.jst.jsp.JSP_DIRECTIVE">
+				</partitionType>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+	<!--======================================================================================-->
+	<!-- source (as you type) validation for JSP action tags			   					  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.jst.jsp.ui.internal.validation.JSPActionSourceValidator"
+			id="org.grails.ide.eclipse.editor.gsp.jspactionvalidator">
+			<contentTypeIdentifier
+				id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.jst.jsp.DEFAULT_JSP">
+				</partitionType>
+				<partitionType id="org.eclipse.jst.jsp.JSP_DIRECTIVE">
+				</partitionType>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+
+	<!--======================================================================================-->
+	<!-- HTML (as you type) validation					   						  			  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.jst.jsp.ui.internal.validation.JSPContentSourceValidator"
+			id="org.grails.ide.eclipse.editor.gsp.htmlsyntaxvalidator">
+			<contentTypeIdentifier
+				id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.jst.jsp.JSP_DIRECTIVE"/>
+				<partitionType id="org.eclipse.jst.jsp.JSP_COMMENT"/>
+				<partitionType id="org.eclipse.wst.html.HTML_DEFAULT"/>
+				<partitionType id="org.eclipse.wst.html.HTML_DECLARATION"/>
+				<partitionType id="org.eclipse.wst.html.HTML_COMMENT"/>
+				<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+				<partitionType id="org.eclipse.wst.sse.ST_DEFAULT"/>
+				<!-- GRAILS change: this last one is not in JSP-->
+				<partitionType id="org.eclipse.jst.jsp.SCRIPT.DELIMITER"/>
+			</contentTypeIdentifier>
+		</validator>
+	</extension>
+	
+	<!-- ====================================================================================== -->
+	<!-- source validation for JSP and JS (STS-2168)															  -->
+	<!--======================================================================================-->
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+		<validator
+			scope="total"
+			class="org.eclipse.wst.jsdt.web.core.internal.validation.JsValidator"
+			id="org.grails.ide.eclipse.editor.gsp.jssourcevalidator">
+			<contentTypeIdentifier id="org.grails.ide.eclipse.editor.gsp.gspsource">
+				<partitionType id="org.eclipse.wst.html.SCRIPT"/>
+				<partitionType id="org.eclipse.wst.html.SCRIPT.EVENTHANDLER"/>
+			</contentTypeIdentifier>
+		</validator> 
+	</extension>
+
+ <extension
+       point="org.eclipse.jdt.ui.queryParticipants">
+    <queryParticipant
+          class="org.grails.ide.eclipse.editor.gsp.search.GSPQueryParticipant"
+          id="org.grails.ide.eclipse.editor.gsp.queryParticipant1"
+          name="GSP Groovy search participant"
+          nature="org.grails.ide.eclipse.core.nature">
+    </queryParticipant>
+ </extension>
+ <extension
+       point="org.eclipse.wst.sse.ui.completionProposal">
+    <proposalCategory
+          icon="icons/full/obj16/grails_file_obj.png"
+          id="org.grails.ide.eclipse.editor.gsp.proposalCategory"
+          name="GSP Completion Proposals">
+    </proposalCategory>
+    <proposalComputer
+          activate="true"
+          categoryId="org.grails.ide.eclipse.editor.gsp.proposalCategory"
+          class="org.grails.ide.eclipse.editor.gsp.controllers.GSPLinkCompletionProposalComputer"
+          icon="icons/full/obj16/grails_file_obj.png"
+          id="org.grails.ide.eclipse.editor.gsp.proposalComputer"
+          name="Computes proposals in GSP link tags">
+       <contentType
+             id="org.grails.ide.eclipse.editor.gsp.gspsource">
+       </contentType>
+    </proposalComputer>
+    <proposalComputerExtendedActivation
+          id="org.grails.ide.eclipse.editor.gsp.proposalComputer">
+       <contentType
+             id="org.grails.ide.eclipse.editor.gsp.gspsource">
+       </contentType>
+    </proposalComputerExtendedActivation>
+ </extension>
+</plugin>

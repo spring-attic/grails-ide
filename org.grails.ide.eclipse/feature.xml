@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.grails.ide.eclipse"
+      label="%featureName"
+      version="3.0.0.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseUrl">
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.codehaus.groovy.eclipse.feature" version="2.0.0" match="greaterOrEqual"/>
+      <import feature="org.codehaus.groovy.jdt.patch"/>
+      <import feature="org.codehaus.groovy18.feature"/>
+      <import feature="org.eclipse.jdt"/>
+      <import feature="org.springsource.ide.eclipse.commons" version="3.0.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="org.grails.ide.eclipse.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.editor.groovy"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.editor.gsp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.explorer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.runonserver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.groovy.debug.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.groovy.debug.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.refactoring"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.search"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.resources"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="true"/>
+   <!-- note: tycho probably ignores the 'unpack' flag. It also makes unpack="false" the default.
+     See https://issues.sonatype.org/browse/TYCHO-555
+     So to get the bundle to be unpacked this has to be specified in the plugin manifest by adding a
+     line like this 'Eclipse-BundleShape: dir' -->
+
+</feature>

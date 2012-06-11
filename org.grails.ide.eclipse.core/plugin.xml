@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2007, 2009 SpringSource.  All rights reserved.
+ *******************************************************************************/-->
+<plugin>
+	
+    <extension
+         point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+            class="org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerInitializer"
+            id="org.grails.ide.eclipse.core.CLASSPATH_CONTAINER"/>
+    </extension>
+    
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+	        delegate="org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate"
+	        delegateDescription="Grails"
+	        delegateName="Grails"
+	        id="org.grails.ide.eclipse.core.launchconfig"
+	        modes="run,debug"
+	        name="Grails"
+	        public="true"
+	        sourceLocatorId="org.grails.ide.eclipse.core.launch.grailsSourceLocator"
+	        sourcePathComputerId="org.grails.ide.eclipse.core.launch.grailsSourcePathComputer">
+		</launchConfigurationType>
+  		<launchConfigurationType
+		    delegate="org.grails.ide.eclipse.core.internal.classpath.GrailsDependencyLaunchConfigurationDelegate"
+		    id="org.grails.ide.eclipse.core.launchconfig.dependencies"
+		    modes="run"
+		    name="Grails Dependencies"
+		    public="false">
+  		</launchConfigurationType>
+		<launchConfigurationType
+	        delegate="org.grails.ide.eclipse.core.launch.GrailsCommandLaunchConfigurationDelegate"
+	        delegateDescription="Grails Command"
+	        delegateName="Grails Command"
+	        id="org.grails.ide.eclipse.core.launchCommandConfig"
+	        modes="run"
+	        name="Grails Command"
+	        public="false">
+		</launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            id="org.grails.ide.eclipse.core.launch.grailsSourceLocator"
+            class="org.grails.ide.eclipse.core.launch.GrailsSourceLocator"
+            name="Grails Source Locator"/>
+    </extension>
+   
+    <extension point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            id="org.grails.ide.eclipse.core.launch.grailsSourcePathComputer"
+            class="org.grails.ide.eclipse.core.launch.GrailsSourcePathComputer"/>
+    </extension>
+	
+	<extension
+         id="nature"
+         name="%grailsNatureLabel"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.grails.ide.eclipse.core.internal.GrailsNature">
+         </run>
+      </runtime>
+      <requires-nature
+            id="org.eclipse.jdt.groovy.core.groovyNature">
+      </requires-nature>
+    </extension>
+    
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			class="org.grails.ide.eclipse.core.internal.GrailsPropertyTester"
+			id="org.grails.ide.eclipse.core.propertytester"
+			namespace="org.grails.ide.eclipse.core.propertytester"
+			properties="isClasspathEnabled, canlaunch, cantest" 
+			type="java.lang.Object" />
+  <propertyTester
+        class="org.grails.ide.eclipse.core.ProjectPropertyTester"
+        id="org.grails.ide.eclipse.core.ProjectPropertyTester"
+        namespace="org.grails.ide.eclipse.core.project"
+        properties="isGrailsApp"
+        type="org.eclipse.core.resources.IProject">
+  </propertyTester>
+	</extension>
+
+    <extension
+          point="com.springsource.sts.ide.configurator.participant">
+       <participant
+             class="org.grails.ide.eclipse.core.internal.model.GrailsInstallWorkspaceConfigurator"
+             id="com.springsource.sts.configurator.grails"
+             label="Grails">
+       </participant>
+    </extension>
+    <extension
+          id="install"
+          name="Configure Grails Installation"
+          point="org.eclipse.core.runtime.applications">
+       <application
+             cardinality="singleton-global"
+             thread="main"
+             visible="true">
+          <run
+                class="org.grails.ide.eclipse.core.GrailsInstallerApplication">
+          </run>
+       </application>
+    </extension>
+    <extension
+          point="org.eclipse.debug.core.processFactories">
+       <processFactory
+             class="org.grails.ide.eclipse.core.launch.GrailsRuntimeProcessFactory"
+             id="org.grails.ide.eclipse.core.processFactory">
+       </processFactory>
+    </extension>
+
+</plugin>

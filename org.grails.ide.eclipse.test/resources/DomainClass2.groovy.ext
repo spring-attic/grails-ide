@@ -1,0 +1,20 @@
+class DomainClass2 {
+	
+	int first
+	Integer second
+	String third
+	Date fourth
+
+	static belongsTo = [oneFirst:DomainClass1]
+
+
+	static constraints = {
+		// these all should be object types since they do not refer to
+		// the field, but rather to a constraint method on that field
+		/*!V:!*/first/*!*/
+		/*!V:!*/second/*!*/
+		/*!V:!*/third/*!*/
+		/*!V:!*/fourth/*!*/
+	//	/* !V:! */oneFirst/* ! */  // disabled...not working yet
+	}	
+}

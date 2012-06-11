@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2012 VMware, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     VMware, Inc. - initial API and implementation
+ *******************************************************************************/
+-->
+<site>
+	
+	<category-def name="Core / Eclipse Integration Commons" label="Core / Eclipse Integration Commons"/>
+	<category-def name="Core / Grails IDE for Eclipse" label="Core / Grails IDE for Eclipse"/>
+	<category-def name="Resources / Grails IDE for Eclipse" label="Resources / Grails IDE for Eclipse"/>
+
+	<!-- UAA -->
+	<feature
+		url="org.springframework.ide.eclipse.uaa.feature_3.0.0.qualifier.jar"
+		id="org.springframework.ide.eclipse.uaa.feature" version="3.0.0.qualifier">
+		<category name="Core / Eclipse Integration Commons" />
+	</feature>
+	
+	<!-- Grails IDE features -->
+	<feature
+		url="org.grails.ide.eclipse_3.0.0.qualifier.jar"
+		id="org.grails.ide.eclipse" version="3.0.0.qualifier">
+		<category name="Core / Grails IDE for Eclipse" />
+	</feature>
+
+</site>

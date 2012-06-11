@@ -1,0 +1,140 @@
+class DomainClass1 {
+	
+	int first
+	Integer second
+	String third
+	Date fourth
+	
+	static hasMany = [manySeconds:DomainClass2]
+	static hasOne = [oneThird:DomainClass3]
+	
+
+    static constraints = {
+		// these all should be object types since they do not refer to
+		// the field, but rather to a constraint method on that field
+		/*!V:!*/first/*!*/
+		/*!V:!*/second/*!*/
+		/*!V:!*/third/*!*/
+		/*!V:!*/fourth/*!*/
+		
+	//	/* !V:! */manySeconds/* ! */  // disabled...not working yet
+	//	/* !V:! */oneThird/* ! */  // disabled...not working yet
+    }
+	
+	def implicitFieldTesting() {
+		/*!java.util.Set<DomainClass2>:DomainClass1!*/manySeconds/*!*/
+		/*!DomainClass3:DomainClass1!*/oneThird/*!*/
+	}
+	
+	def gormValidationAPITesting() {
+		def domainClass1 = new DomainClass1()
+		def res
+		res = domainClass1.clearErrors()
+		/*!O:!*/res/*!*/
+		res = domainClass1.validate(false)
+		/*!Z:!*/res/*!*/ //TYPE:java.lang.Boolean
+		res = domainClass1.hasErrors()
+		/*!Z:!*/res/*!*/ //TYPE:java.lang.Boolean 
+		res = domainClass1.getErrors()
+		/*!org.springframework.validation.Errors:!*/res/*!*/
+	}
+	
+	def gormInstanceAPITesting() {
+		def domainClass1 = new DomainClass1()
+		def res
+		res = domainClass1.lock()
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.mutex(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.refresh()
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.merge()
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.merge([:])
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.save()
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.save([:])
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.ident()
+		/*!java.io.Serializable:!*/res/*!*/
+		res = domainClass1.attach()
+		/*!DomainClass1:!*/res/*!*/
+		res = domainClass1.isAttached()
+		/*!Z:!*/res/*!*/
+		res = domainClass1.discard()
+		/*!Z:!*/res/*!*/
+		res = domainClass1.delete()
+		/*!Z:!*/res/*!*/
+		res = domainClass1.delete([:])
+		/*!Z:!*/res/*!*/
+	}
+	
+	def gormStaticAPITesting() {
+		def res
+		res = DomainClass1.load(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.getGormDynamicFinders()
+		/*!java.util.List<org.grails.datastore.gorm.finders.FinderMethod>:!*/res/*!*/
+		res = DomainClass1.findAll()
+		/*!java.util.List<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.findAllWhere()
+		/*!java.util.List<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.executeQuery(null)
+		/*!java.util.List<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.executeUpdate(null)
+		/*!I:!*/res/*!*/
+		res = DomainClass1.findWhere()
+		/*!DomainClass1:!*/res/*!*/ 
+		res = DomainClass1.findOrCreateWhere()
+		/*!DomainClass1:!*/res/*!*/ 
+		res = DomainClass1.findOrSaveWhere()
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.list()
+		/*!java.util.List<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.find()
+		/*!DomainClass1:!*/res/*!*/ 
+		res = DomainClass1.create()
+		/*!DomainClass1:!*/res/*!*/ 
+		res = DomainClass1.where()
+		/*!grails.gorm.DetachedCriteria<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.saveAll()
+		/*!java.util.List<java.io.Serializable>:!*/res/*!*/
+		res = DomainClass1.deleteAll()
+		res // should be void, but can't check for that
+		res = DomainClass1.get(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.proxy(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.read(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.load(null)
+		/*!DomainClass1:!*/res/*!*/
+		res = DomainClass1.getAll(null)
+		/*!java.util.List<DomainClass1>:!*/res/*!*/
+		res = DomainClass1.exists(null)
+		/*!Z:!*/res/*!*/ //TYPE:java.lang.Boolean
+		res = DomainClass1.getValidationErrorsMap()
+		/*!java.util.Map<DomainClass1,org.springframework.validation.Errors>:!*/res/*!*/
+		res = DomainClass1.getValidationSkipMap()
+		/*!java.util.Map<DomainClass1,java.lang.Boolean>:!*/res/*!*/
+		
+		// returns object...can we do better?
+		DomainClass1.withCriteria null
+		DomainClass1.withSession null
+		DomainClass1.withNewSession null
+		DomainClass1.withDatastoreSession null
+		DomainClass1.withTransaction null
+		DomainClass1.withNewTransaction null
+	}
+	
+	// this is already fairly well tested in the STS tests, so don't need to do too much here.
+	def dynamicFinders() {
+		DomainClass1.findByFirst(null)
+		DomainClass1.findByFirstAndSecond(null, null)
+		DomainClass1.findByFirstAndSecondBetween(null, null, null)
+		DomainClass1.findByFirstBetweenAndSecond(null, null, null)
+		DomainClass1.findByFirstBetweenAndSecondBetween(null, null, null, null)
+	}
+	
+}

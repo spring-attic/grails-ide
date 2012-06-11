@@ -1,0 +1,55 @@
+class Other {
+	def testMe1() {
+		OtherController c
+		
+		// GRECLIPSE-1341 must assign first to int to avoid OptimizingStatementWriter
+		def val = 9  
+
+		val = c.action1().arg1
+		/*!I:!*/val/*!*/
+		
+		val = c.action1().arg2
+		/*!STR:!*/val/*!*/
+		
+		val = c.action1().arg3
+		/*!DomainClass3:!*/val/*!*/
+		
+		val = c.action2().arg1
+		/*!java.util.List<java.lang.Integer>:!*/val/*!*/
+		
+		val = c.action2().arg2
+		/*!java.util.Map<java.lang.String,java.lang.Integer>:!*/val/*!*/
+		
+		val = c.action2().arg3
+		/*!java.util.List<DomainClass3>:!*/val/*!*/
+		
+		val = c.action3().arg1
+		/*!java.util.List<java.lang.Integer>:!*/val/*!*/
+		
+		val = c.action3().arg2
+		/*!java.util.Map<java.lang.String,java.lang.Integer>:!*/val/*!*/
+		
+		val = c.action3().arg3
+		/*!java.util.List<DomainClass3>:!*/val/*!*/		
+	}
+	def testMe2() {
+		OtherController c
+		// GRECLIPSE-1341 must assign first to int to avoid OptimizingStatementWriter
+		def val = 9  
+		
+		val = c.action1()   
+		val./*!I:!*/arg1/*!*/
+		val./*!STR:!*/arg2/*!*/ 
+		val./*!DomainClass3:!*/arg3/*!*/
+		
+		val = c.action2()
+		val./*!java.util.List<java.lang.Integer>:!*/arg1/*!*/
+		val./*!java.util.Map<java.lang.String,java.lang.Integer>:!*/arg2/*!*/
+		val./*!java.util.List<DomainClass3>:!*/arg3/*!*/
+		
+		val = c.action3()
+		val./*!java.util.List<java.lang.Integer>:!*/arg1/*!*/
+		val./*!java.util.Map<java.lang.String,java.lang.Integer>:!*/arg2/*!*/
+		val./*!java.util.List<DomainClass3>:!*/arg3/*!*/		
+	}
+}

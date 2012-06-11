@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            name="Grails Type Rename Participant"
+            class="org.grails.ide.eclipse.refactoring.rename.type.GrailsTypeRenameParticipant"
+            id="org.grails.ide.eclipse.refactoring.renameTypeParticipant">
+         <enablement>
+           <with variable="affectedNatures">
+             <iterate operator="or">
+               <equals value="org.grails.ide.eclipse.core.nature"/>
+             </iterate>
+           </with>
+           <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IType"/>
+           </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            name="Grails Controller Action Rename Participant"
+            class="org.grails.ide.eclipse.refactoring.rename.action.ControllerActionRenameParticipant"
+            id="org.grails.ide.eclipse.refactoring.renameControllerAction">
+         <enablement>
+           <with variable="affectedNatures">
+             <iterate operator="or">
+               <equals value="org.grails.ide.eclipse.core.nature"/>
+             </iterate>
+           </with>
+           <with variable="element">
+               <or>
+                  <instanceof value="org.eclipse.jdt.core.IMethod"/>
+                  <instanceof value="org.eclipse.jdt.core.IField"/>
+               </or>
+           </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            name="GSP Rename Participant"
+            class="org.grails.ide.eclipse.refactoring.rename.action.GSPRenameParticipant"
+            id="org.grails.ide.eclipse.refactoring.renameGSPParticipant">
+         <enablement>
+           <with variable="affectedNatures">
+             <iterate operator="or">
+               <equals value="org.grails.ide.eclipse.core.nature"/>
+             </iterate>
+           </with>
+           <with variable="element">
+               <instanceof value="org.eclipse.core.resources.IFile"/>
+           </with>
+         </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.jdt.core.IType"
+            class="org.grails.ide.eclipse.refactoring.rename.ui.GrailsTypeRenameTargetAdapterFactory">
+         <adapter
+               type="org.codehaus.groovy.eclipse.refactoring.actions.IRenameTarget">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.codehaus.jdt.groovy.model.GroovyCompilationUnit"
+            class="org.grails.ide.eclipse.refactoring.rename.ui.GrailsTypeRenameTargetAdapterFactory">
+         <adapter
+               type="org.codehaus.groovy.eclipse.refactoring.actions.IRenameTarget">
+         </adapter>
+      </factory>
+   </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+ 	<page     id="org.grails.ide.eclipse.ui.refactoring.preferencePage"
+        category="org.grails.ide.eclipse.ui.preferencePage"
+ 		name="Refactoring"
+     	class="org.grails.ide.eclipse.refactoring.preferences.GrailsRefactoringPreferencesPage">
+   	</page>
+ </extension>
+</plugin>
