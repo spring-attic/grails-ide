@@ -1,0 +1,47 @@
+class OtherController {
+	def action1() {
+		[ arg1: 1, arg2: '', arg3: DomainClass3 ]
+	}
+	
+	def action2 = {
+		[ arg1: [1], arg2: ['':9], arg3: [DomainClass3] ]
+	}
+	
+	def action3 = {
+		def a = [1]
+		def b = ['':9]
+		def c = [DomainClass3]
+		[ arg1: a, arg2: b, arg3: c ]
+	}
+ 
+	def testMe() {
+		// GRECLIPSE-1341 must assign first to int to avoid OptimizingStatementWriter
+		def val = 9  
+		val = action1().arg1
+		/*!I:!*/val/*!*/
+		 
+		val = action1.arg2
+		/*!STR:!*/val/*!*/
+		
+		val = action1.arg3
+		/*!DomainClass3:!*/val/*!*/
+		
+		val = action2.arg1
+		/*!java.util.List<java.lang.Integer>:!*/val/*!*/
+		
+		val = action2.arg2
+		/*!java.util.Map<java.lang.String,java.lang.Integer>:!*/val/*!*/
+		
+		val = action2.arg3
+		/*!java.util.List<DomainClass3>:!*/val/*!*/
+		
+		val = action3.arg1
+		/*!java.util.List<java.lang.Integer>:!*/val/*!*/
+		
+		val = action3.arg2
+		/*!java.util.Map<java.lang.String,java.lang.Integer>:!*/val/*!*/
+		
+		val = action3.arg3
+		/*!java.util.List<DomainClass3>:!*/val/*!*/		
+	}
+}

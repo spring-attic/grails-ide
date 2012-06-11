@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.grails.ide.eclipse.tests"
+      label="%featureName"
+      version="3.0.0.qualifier"
+      provider-name="%providerName"
+      plugin="com.springsource.sts">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseUrl">
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.grails.ide.eclipse" version="3.0.0" match="equivalent"/>
+   </requires>
+
+   <plugin
+         id="com.springsource.sts.server.tc.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.test.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.test.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.groovy.debug.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springsource.ide.eclipse.commons.tests.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springsource.ide.eclipse.commons.frameworks.test.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

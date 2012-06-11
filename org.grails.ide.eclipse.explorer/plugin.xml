@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 SpringSource.  All rights reserved.
+ *******************************************************************************/
+ -->
+<plugin>
+   
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+         
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="org.grails.ide.eclipse.explorer.providers.GrailsNavigatorContentProvider"
+            id="org.grails.ide.eclipse.explorer.grailsNavigatorContent"
+            labelProvider="org.grails.ide.eclipse.explorer.providers.GrailsNavigatorLabelProvider"
+            name="Grails Content Provider"
+            priority="highest">
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="org.grails.ide.eclipse.explorer.elements.ILogicalFolder">
+               </instanceof>
+               <instanceof value="org.eclipse.core.resources.IProject"/>
+			   <instanceof value="org.eclipse.core.resources.IFolder" /> 
+			   <instanceof value="org.eclipse.core.resources.IFile" /> 
+			   <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot" />
+<!--			   <instanceof value="org.eclipse.jdt.internal.ui.packageview.ClassPathContainer"/> -->
+			   <instanceof value="org.grails.ide.eclipse.explorer.elements.GrailsClasspathContainersFolder"/>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+          <or>
+            <instanceof
+                  value="org.grails.ide.eclipse.explorer.elements.ILogicalFolder">
+            </instanceof>
+            <instanceof
+                  value="org.eclipse.jdt.internal.ui.packageview.ClassPathContainer">
+            </instanceof>
+          </or>
+         </possibleChildren>
+		<actionProvider
+					class="org.grails.ide.eclipse.actions.GrailsRefactorActionProvider"
+					id="org.grails.ide.eclipse.explorer.actions.RefactorActions"
+					overrides="org.eclipse.jdt.ui.navigator.actions.RefactorActions"> 
+				<enablement>
+					<or>
+<!--						<and>
+							<instanceof value="org.eclipse.core.resources.IProject" />
+          					<test property="org.eclipse.core.resources.projectNature" value="org.eclipse.jdt.core.javanature" />
+						</and> -->
+						<instanceof value="org.eclipse.jdt.core.IJavaElement" />
+<!--						<instanceof value="org.eclipse.jdt.core.IJarEntryResource" /> 
+						<instanceof value="org.eclipse.jdt.internal.ui.packageview.PackageFragmentRootContainer" /> 
+						<adapt type="java.util.Collection"> 
+							<count value="0" />
+						</adapt>				-->
+					</or>
+				</enablement>
+			</actionProvider>
+         
+
+        <commonSorter 
+					id="org.grails.ide.eclipse.explorer.providers.GrailsCommonNavigatorViewerSorter"
+			 		class="org.grails.ide.eclipse.explorer.providers.GrailsCommonNavigatorViewerSorter">
+			 	<parentExpression>
+			 		<or>
+			 		<instanceof value="org.eclipse.core.resources.IProject"/>
+					<instanceof value="org.eclipse.core.resources.IFolder" /> 
+					<instanceof value="org.grails.ide.eclipse.explorer.elements.ILogicalFolder" />
+					<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot" />
+					</or>	 		
+			 	</parentExpression>
+	  </commonSorter>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.1"
+               type="new"
+               wizardId="org.codehaus.groovy.eclipse.ui.groovyProjectWizard">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.1"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.1"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizard.newGrailsPluginProjectWizard">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.domainclass">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.controller">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.taglib">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.editor.gsp.wizard.newGSPWizard">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>      
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.service">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.filters">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.unittest">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.2"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.integrationtest">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.3"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.generate.controller">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.3"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.generate.views">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.3"
+               type="new"
+               wizardId="org.grails.ide.eclipse.ui.wizards.new.generate.all">
+            <enablement>
+	          <adapt
+                        type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.4"
+               type="new"
+               wizardId="org.codehaus.groovy.eclipse.ui.groovyClassWizard">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.grails.ide.eclipse.4"
+               type="new"
+               wizardId="org.codehaus.groovy.eclipse.ui.groovyJUnitWizard">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      <commonWizard
+               menuGroupId="org.eclipse.jdt.ui.java"
+               type="new"
+               wizardId="org.eclipse.jdt.junit.wizards.NewTestCaseCreationWizard">
+            <enablement>
+	          <adapt type="org.eclipse.core.resources.IResource">
+                 <test
+                     forcePluginActivation="false"
+                     property="org.grails.ide.eclipse.explorer.inGrailsProject">
+                 </test>
+              </adapt>
+            </enablement>
+       </commonWizard>
+      </navigatorContent>
+      <commonFilter 
+			id="org.grails.ide.eclipse.explorer.grailsNavigatorFilter"
+			name="Grails Project Filter" 
+			class="org.grails.ide.eclipse.explorer.providers.GrailsNavigatorFilter" 
+			description="Filters Grails content" 			
+			activeByDefault="true">                   			
+  	</commonFilter>
+      
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="org.grails.ide.eclipse.explorer.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="org.grails.ide.eclipse.explorer.navigate"
+            objectClass="org.grails.ide.eclipse.explorer.elements.GrailsDependencyPluginFolder">
+         <action
+               class="org.grails.ide.eclipse.explorer.internal.actions.ShowInProjectExplorerDelegate"
+               enablesFor="1"
+               id="org.grails.ide.eclipse.explorer.navigate.toWorkspacePlugin"
+               label="Navigate to workspace plugin">
+         </action>
+        <visibility>
+           <objectState
+                 name="isWorkspacePlugin"
+                 value="true">
+           </objectState>
+        </visibility>
+      </objectContribution>
+       <objectContribution
+            adaptable="false"
+            id="org.grails.ide.eclipse.explorer.plugin.uninstall"
+            objectClass="org.grails.ide.eclipse.explorer.elements.GrailsDependencyPluginFolder">
+         <action
+               class="org.grails.ide.eclipse.explorer.internal.actions.UninstallPluginAction"
+               enablesFor="+"
+               id="org.grails.ide.eclipse.explorer.actions.plugin.uninstall"
+               label="Uninstall"
+               menubarPath="additions"
+               tooltip="Uninstall">
+         </action>
+      </objectContribution>
+       <objectContribution
+            adaptable="false"
+            id="org.grails.ide.eclipse.explorer.plugin.manager"
+            objectClass="org.grails.ide.eclipse.explorer.elements.GrailsPluginFolder">
+         <action
+               class="org.grails.ide.eclipse.explorer.internal.actions.ExplorerOpenGrailsPluginsManagerActionDelegate"
+               enablesFor="+"
+               id="org.grails.ide.eclipse.explorer.actions.plugin.manager"
+               label="Open Grails Plugin Manager"
+               menubarPath="additions"
+               tooltip="Open the Grails Plugin Manager to install and/or uninstall plugins">
+         </action>
+      </objectContribution>
+   </extension>
+	
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.grails.ide.eclipse.explorer.elements.GrailsDependencyPluginFolder"
+            class="org.grails.ide.eclipse.explorer.internal.actions.ExplorerActionFilterAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.grails.ide.eclipse.explorer.internal.ExplorerPropertyTester"
+            id="org.grails.ide.eclipse.explorer.propertytester"
+            namespace="org.grails.ide.eclipse.explorer"
+            properties="inGrailsProject"
+            type="org.eclipse.core.runtime.IAdaptable">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.grails.ide.eclipse.ui.preferencePage"
+            class="org.grails.ide.eclipse.explorer.preferences.GrailsExplorerPreferencesPage"
+            id="org.grails.ide.eclipse.explorer.preferences"
+            name="Project Explorer">
+      </page>
+   </extension>
+
+
+</plugin>

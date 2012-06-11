@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.contribution.weaving.jdt.weavablenature">
+      <nature
+            natureid="org.eclipse.jdt.groovy.core.groovyNature"
+            requiresReindexing="false">
+      </nature>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.contribution.jdt.debug.DebugAdapter"
+            class="org.grails.ide.eclipse.groovy.debug.core.DebugProviderAdapterFactory">
+         <adapter
+               type="org.eclipse.contribution.jdt.debug.IDebugProvider">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.grails.ide.eclipse.groovy.debug.core.preferences.ExtendedDebugPreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>

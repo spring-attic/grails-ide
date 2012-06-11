@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.codehaus.groovy.eclipse.preferences.debugger"
+            class="org.grails.ide.eclipse.groovy.debug.ui.preferences.ExtendedDebugPreferencePage"
+            id="org.grails.ide.eclipse.groovy.debug.ui.preferences.extendedDebug"
+            name="Extended Debug Support">
+      </page>
+   </extension>
+</plugin>

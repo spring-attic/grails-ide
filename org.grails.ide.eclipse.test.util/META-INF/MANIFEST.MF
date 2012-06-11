@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: STS Grails Test Related code to be shared between ui and core test plugins
+Bundle-SymbolicName: org.grails.ide.eclipse.test.util;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-Vendor: SpringSource
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.springsource.ide.eclipse.commons.core,
+ org.grails.ide.eclipse.core,
+ org.springsource.ide.eclipse.commons.tests.util,
+ org.codehaus.groovy,
+ org.codehaus.groovy.eclipse.core,
+ org.apache.commons.io,
+ org.eclipse.jdt.junit.core,
+ org.eclipse.debug.core,
+ org.eclipse.jdt.launching,
+ org.springsource.ide.eclipse.commons.frameworks.test.util,
+ org.grails.ide.eclipse.ui
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.grails.ide.eclipse.test.util
+Bundle-Activator: org.grails.ide.eclipse.test.util.GrailsTestUtilActivator
+Bundle-ActivationPolicy: lazy

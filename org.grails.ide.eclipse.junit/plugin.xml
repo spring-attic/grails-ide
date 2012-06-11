@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Grails Tests"
+            icon="icons/full/obj16/grails_obj.png"
+            helpContextId="org.eclipse.jdt.junit.launch_shortcut"
+            class="org.grails.ide.eclipse.junit.launcher.GrailsJUnitLaunchShortcut"
+            modes="run, debug"
+            id="org.grails.ide.eclipse.junit.junitShortcut">
+         <contextualLaunch>
+            <enablement>
+               <with variable="selection">
+                  <count value="1"/>
+               	  <iterate>
+                     <adapt type="org.eclipse.jdt.core.IJavaElement">
+		                <test property="org.eclipse.jdt.core.isInJavaProject"/>
+		                <test property="org.eclipse.jdt.core.hasTypeOnClasspath" value="grails.test.GrailsUnitTestCase"/>
+		                <test property="org.eclipse.jdt.junit.canLaunchAsJUnit" forcePluginActivation="true"/>
+		             </adapt>
+		          </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+         <configurationType
+               id="org.grails.ide.eclipse.junit.launchconfig">
+         </configurationType>
+         <description
+               description="Debug tests with the Grails 'test-app' command"
+               mode="debug">
+         </description>
+         <description
+               description="Runs tests with Grails 'test-app' command"
+               mode="run">
+         </description>
+      </shortcut>
+   </extension>
+   
+   <extension
+         point="org.eclipse.jdt.junit.junitLaunchConfigs">
+      <launchConfigType
+            configTypeID="org.grails.ide.eclipse.junit.launchconfig">
+      </launchConfigType>
+   </extension>
+
+    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.grails.ide.eclipse.junit.launchconfig"
+            helpContextId="org.eclipse.jdt.junit.junit_tab_group"
+            class="org.grails.ide.eclipse.junit.GrailsJUnitTabGroup"
+            id="org.grails.ide.eclipse.junit.launchConfigurationTabGroup.junit">
+         <launchMode
+               perspective="org.eclipse.debug.ui.DebugPerspective"
+               description="Debug Grails Tests"
+               mode="debug">
+         </launchMode>
+         <launchMode
+               description="Run Grails Tests"
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/full/obj16/grails_obj.png"
+            configTypeID="org.grails.ide.eclipse.junit.launchconfig"
+            id="org.grails.ide.eclipse.junit.launchimage">
+      </launchConfigurationTypeImage>
+   </extension>
+   
+   <!-- CORE -->
+   
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            name="JUnit Grails"
+            delegateDescription="Launch JUnit test via Grails 'test-app' command"
+            delegateName="Grails JUnit Launcher"
+            delegate="org.grails.ide.eclipse.junit.launcher.GrailsJUnitLaunchConfigurationDelegate"
+            modes="run, debug"
+            id="org.grails.ide.eclipse.junit.launchconfig"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   
+</plugin>

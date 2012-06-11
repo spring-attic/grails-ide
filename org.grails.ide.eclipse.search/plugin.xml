@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+       point="org.eclipse.jdt.ui.queryParticipants">
+    <queryParticipant
+          class="org.grails.ide.eclipse.search.controller.ControllerTypeQueryParticipant"
+          id="org.grails.ide.eclipse.search.controller.type"
+          name="Grails Controller Type Query Participant"
+          nature="org.grails.ide.eclipse.core.nature">
+    </queryParticipant>
+    <queryParticipant
+          class="org.grails.ide.eclipse.search.action.ControllerActionQueryParticipant"
+          id="org.grails.ide.eclipse.search.controller.action"
+          name="Grails Controller Action Search Participant"
+          nature="org.grails.ide.eclipse.core.nature">
+    </queryParticipant>
+  </extension>
+</plugin>

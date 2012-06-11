@@ -1,0 +1,22 @@
+The files in this directory are used to create the gsp parser, which is a variant of the jsp parser from the WST project on eclispe.org.
+The repository for WST is here:
+:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools
+
+The parser generator is JFlex and a version is available on the internal SpringSource wiki:
+https://wiki.springsource.com/download/attachments/29852742/jflex-1.2.2.zip
+Note that the 1.2.2 version is not easy to find on the web
+JFlex is a sourceforge project, but only has versions 1.3-1.4.3 in its downloads area.  So, we must keep this version around.
+
+The skeleton.sed file contains the modified JFlex 1.2.2 skeleton file with
+changes for use with the tokenizers within the org.eclipse.wst.sse.core.xml and
+org.eclipse.wst.sse.core.jsp plugins.
+
+The JSPTokenizer.jflex file is the original JSP grammar and GSPTokenizer.jflex is the modified GSP grammar.  The changes include
+removing all references to EL and adding the ${...} as JSP content tags.  GSP comments are not supported yet.  
+
+To recreate GSPTokenizer.java:
+1. Download and unzip jflex from the wiki https://wiki.springsource.com/download/attachments/29852742/jflex-1.2.2.zip
+2. Edit the Build GSP parser.launch delegate to point to your unzipped jflex 
+3. Run the Build GSP parser.launch delegate (you might need to modify this to run on Windows).
+4. Refresh the GSPTokenizer.java file
+5. Replace the existing GSPTokenizer file in the source folder with the new one

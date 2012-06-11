@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 SpringSource.  All rights reserved.
+ *******************************************************************************/
+ -->
+<templates>
+<template name="%Templates.gsp.name" description="%Templates.gsp.desc" 
+id="org.grails.ide.eclipse.editor.gsp.newgsp" context="new_gsp" 
+enabled="true">%Templates.gsp.content</template>
+</templates>

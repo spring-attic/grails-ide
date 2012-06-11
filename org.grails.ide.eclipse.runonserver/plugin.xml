@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+	<extension point="org.eclipse.wst.common.project.facet.core.facets">
+
+	  <project-facet id="grails.app"> 
+	    <label>Grails Application</label>
+	    <description>Grails application that can be deployed to a tc Server instance.</description>
+	  </project-facet>
+	
+	  <project-facet-version facet="grails.app" version="1.0">
+	    <action type="INSTALL">
+	      <delegate class="org.grails.ide.eclipse.runonserver.GrailsAppFacet$InstallDelegate"/>
+	    </action>
+	  </project-facet-version>   
+   </extension>
+   
+   <extension point="org.eclipse.wst.common.project.facet.ui.images">
+		<image 
+			facet="grails.app" 
+			path="icons/full/obj16/grails_obj.png" />
+   </extension>
+
+   <extension point="org.eclipse.wst.server.ui.serverImages">
+		<image 
+			id="grails.app" 
+			icon="icons/full/obj16/grails_module_obj.png"
+			typeIds="grails.app" />
+   </extension>
+   
+   <extension
+         point="org.eclipse.wst.server.core.moduleTypes">
+      <moduleType
+            id="grails.app"
+            name="Grails Application">
+      </moduleType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.wst.server.core.moduleFactories">
+      <moduleFactory
+            class="org.grails.ide.eclipse.runonserver.GrailsAppModuleFactoryDelegate"
+            id="org.grails.ide.eclipse.runonserver.GrailsAppModuleFactory"
+            order="1"
+            projects="true">
+         <moduleType
+         	types="grails.app"
+         	versions="1.0"/>
+      </moduleFactory>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.grails.ide.eclipse.runonserver.GrailsProjectPropertyTester"
+            id="org.grails.ide.eclipse.runonserver.grailsProjectPropertyTester"
+            namespace="org.grails.ide.eclipse.project"
+            properties="isGrailsApp"
+            type="org.eclipse.core.runtime.IAdaptable">
+      </propertyTester>
+   </extension>
+   
+   <extension
+         point="org.eclipse.wst.server.core.moduleArtifactAdapters">
+      <moduleArtifactAdapter
+            class="org.grails.ide.eclipse.runonserver.GrailsAppArtifactAdapter"
+            id="org.grails.ide.eclipse.runonserver.GrailsAppArtifactAdapter"
+            priority="1">
+         <enablement>
+            <with variable="selection">
+               <adapt type="org.eclipse.core.resources.IProject">
+                   <test
+                         forcePluginActivation="true"
+                         property="org.grails.ide.eclipse.project.isGrailsApp"
+                         value="true">
+                   </test>
+               </adapt>
+            </with>
+         </enablement>
+      </moduleArtifactAdapter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            category="com.springsource.ide.grails.ui.projectPropertyPage"
+            class="org.grails.ide.eclipse.runonserver.ui.RunOnServerPropertyPage"
+            id="org.grails.ide.eclipse.runonserver.propertyPage"
+            name="Run On Server">
+         <enabledWhen>
+            <adapt
+                  type="org.eclipse.core.resources.IProject">
+               <test
+                    property="org.grails.ide.eclipse.core.project.isGrailsApp"
+                    value="true">
+              </test>
+            </adapt>
+         </enabledWhen>
+      </page>
+   </extension>
+
+<!--   <extension
+         point="org.eclipse.wst.common.modulecore.componentimpl">
+      <componentimpl
+            typeID="sts.grails.app"
+            class="org.grails.ide.eclipse.runonserver.GrailsAppVirtualComponent">
+      </componentimpl>
+   </extension> -->
+   
+</plugin>
