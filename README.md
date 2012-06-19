@@ -49,18 +49,16 @@ Also, using EGit is recommended but not required to provide integration between 
 
 To get the source code into your workspace and (mostly) compiling, do the following:
 
-1. Start with the latest milestone of GGTS.
+1. Start with the latest version of the Groovy/Grails Tool Suite (GGTS).  Starting from an eclipse base is possible but extra software (like Groovy/Eclipse) would need to be installed.
 2. Open with a clean workspace.
 3. Clone the grails-ide git repo `git@github.com:SpringSource/grails-ide.git` (optional- use egit to do the cloning)
 4. import all projects into the workspace (optional- use egit to do the importing)
-5. There will be errors in the following non-test project:
-  * `org.grails.ide.eclipse.junit.runtime` project --- this project issues events from a launched grails application back to the running Eclipse instance.  Unless you are working in this area, this project can be closed.
-6. There will be errors in the following test projects. The errors come from dependencies on test projects located in other git repositories.  If you want to compile and run the tests inside of Eclipse, you will need to clone the `eclipse-integration-commons` and the `groovy-eclipse` projects into your workspace. More information on this below.  Otherwise, you can close these projects.
+5. There will be errors in the following test projects. The errors come from dependencies on test projects located in other git repositories.  If you want to compile and run the tests inside of Eclipse, you will need to clone the `eclipse-integration-commons` and the `groovy-eclipse` projects into your workspace. More information on this below.  Otherwise, you can close these projects.
   * `org.grails.ide.eclipse.test`
   * `org.grails.ide.eclipse.test.ui`
   * `org.grails.ide.eclipse.test.util`
-7. Launch a runtime workbench (in debug mode if you want to be able to use the debugger) to verify that your workspace is correctly configured.
-8. Rejoice!
+6. Launch a runtime workbench (in debug mode if you want to be able to use the debugger) to verify that your workspace is correctly configured.
+7. Rejoice!
 
 
 ### Getting the remaining Grails-IDE related source code into Eclipse
