@@ -333,7 +333,7 @@ public class GrailsLaunchArgumentUtils {
 
 	public static List<String> addSpringLoadedArgs(ILaunchConfiguration conf, List<String> vmArgs) throws CoreException {
 		String command = GrailsLaunchConfigurationDelegate.getScript(conf);
-		if (command!=null && command.contains("run-app") && !command.contains("-noreloading")) {
+		if (command!=null && (command.equals("") || (command.contains("run-app") && !command.contains("-noreloading")))) {
 			IGrailsInstall install = GrailsLaunchArgumentUtils.getGrailsInstall(conf);
 			File loadedJar = install.getSpringLoadedJar();
 			if (install != null && install.getVersion().compareTo(GrailsVersion.V_2_0_0) >=0) {
