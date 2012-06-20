@@ -43,7 +43,10 @@ and choose the GRAILS component when filing new issues.
 
 The remainder of this documents expects a familiarity with Eclipse architecture and how plugin development works.  If you are not already familiar with Eclipse development, then you may want to read some tutorials about the Eclipse plugin architecture and how to develop with it.  A good start is here: <http://www.ibm.com/developerworks/library/os-eclipse-plugindev1/>.
 
+
 Also, using EGit is recommended but not required to provide integration between your workspace and git. EGit is installed into GGTS by default.  EGit docs are found here: <http://wiki.eclipse.org/EGit/User_Guide>.
+
+These next steps will give you an environment where you can work on grails-ide, groovy-eclipse and eclipse-integration-commons (the dependencies of grails-ide).  We are working on a more streamlined set of steps for developers who simply want to work on grails-ide.
 
 ### Getting the Grails-ide source code into Eclipse
 
