@@ -62,29 +62,29 @@ public class JDIMetaClass implements
     
     @SuppressWarnings("rawtypes")
     public List respondsTo(Object obj, String name, Object[] argTypes) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     @SuppressWarnings("rawtypes")
     public List respondsTo(Object obj, String name) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
 
     }
 
     public MetaProperty hasProperty(Object obj, String name) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public MetaProperty getMetaProperty(String name) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public MetaMethod getStaticMetaMethod(String name, Object[] args) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public MetaMethod getMetaMethod(String name, Object[] args) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public Class<? extends MetaClass> getTheClass() {
@@ -292,37 +292,37 @@ public class JDIMetaClass implements
     public Object invokeMethod(@SuppressWarnings("rawtypes") Class sender, Object receiver,
             String methodName, Object[] arguments, boolean isCallToSuper,
             boolean fromInsideClass) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public Object getProperty(@SuppressWarnings("rawtypes") Class sender, Object receiver, String property,
             boolean isCallToSuper, boolean fromInsideClass) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public void setProperty(@SuppressWarnings("rawtypes") Class sender, Object receiver, String property,
             Object value, boolean isCallToSuper, boolean fromInsideClass) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public Object invokeMissingMethod(Object instance, String methodName,
             Object[] arguments) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public Object invokeMissingProperty(Object instance, String propertyName,
             Object optionalValue, boolean isGetter) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public Object getAttribute(@SuppressWarnings("rawtypes") Class sender, Object receiver,
             String messageName, boolean useSuper) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public void setAttribute(@SuppressWarnings("rawtypes") Class sender, Object receiver, String messageName,
             Object messageValue, boolean useSuper, boolean fromInsideClass) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public void initialize() {
@@ -331,29 +331,29 @@ public class JDIMetaClass implements
 
     @SuppressWarnings("rawtypes")
     public List getProperties() {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     @SuppressWarnings("rawtypes")
     public List getMethods() {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public ClassNode getClassNode() {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     @SuppressWarnings("rawtypes")
     public List getMetaMethods() {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public int selectConstructorAndTransformArguments(int numberOfConstructors,
             Object[] arguments) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 
     public MetaMethod pickMethod(String methodName, @SuppressWarnings("rawtypes") Class[] arguments) {
-        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented (Groovy-Eclipse)");
     }
 }

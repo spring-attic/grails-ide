@@ -1,13 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+	<extension
+	      point="org.eclipse.ui.preferencePages">
+	   <page
+	         category="org.codehaus.groovy.eclipse.preferences.debugger"
+	         class="org.grails.ide.eclipse.groovy.debug.ui.preferences.ExtendedDebugPreferencePage"
+	         id="org.grails.ide.eclipse.groovy.debug.ui.preferences.extendedDebug"
+	         name="Extended Debug Support">
+	   </page>
+	</extension>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="org.codehaus.groovy.eclipse.preferences.debugger"
-            class="org.grails.ide.eclipse.groovy.debug.ui.preferences.ExtendedDebugPreferencePage"
-            id="org.grails.ide.eclipse.groovy.debug.ui.preferences.extendedDebug"
-            name="Extended Debug Support">
-      </page>
+         point="org.eclipse.ui.popupMenus">
+	      <viewerContribution
+            targetID="#GroovyCompilationUnitEditorContext"
+            id="org.eclipse.jdt.debug.ui.CUPopupActions">
+         <visibility>
+            <and>
+               <systemProperty
+                     name="org.eclipse.jdt.debug.ui.debuggerActive"
+                     value="true">
+               </systemProperty>
+               <objectClass
+                     name="org.eclipse.jface.text.ITextSelection">
+               </objectClass>
+            </and>
+         </visibility>
+         <action
+               label="&amp;Execute (Groovy)"
+               icon="$nl$/icons/full/etool16/run_sbook.gif"
+               helpContextId="execute_action_context"
+               definitionId="org.eclipse.jdt.debug.ui.commands.Execute"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ExecuteAction"
+               menubarPath="additions"
+               id="org.eclipse.jdt.debug.ui.cuPopup.Execute">
+         </action>
+         <action
+               label="&amp;Display (Groovy)"
+               icon="$nl$/icons/full/etool16/disp_sbook.gif"
+               helpContextId="display_action_context"
+               definitionId="org.eclipse.jdt.debug.ui.commands.Display"
+               class="org.eclipse.jdt.internal.debug.ui.actions.PopupDisplayAction"
+               menubarPath="additions"
+               id="org.eclipse.jdt.debug.ui.cuPopup.Display">
+         </action>
+         <action
+               label="Insp&amp;ect (Groovy)"
+               icon="$nl$/icons/full/etool16/insp_sbook.gif"
+               helpContextId="inspect_action_context"
+               definitionId="org.eclipse.jdt.debug.ui.commands.Inspect"
+               class="org.eclipse.jdt.internal.debug.ui.actions.PopupInspectAction"
+               menubarPath="additions"
+               id="org.eclipse.jdt.debug.ui.cuPopup.Inspect">
+         </action>
+         <action
+               label="Wa&amp;tch (Groovy)"
+               icon="$nl$/icons/full/etool16/watch_exp.gif"
+               helpContextId="watch_action_context"
+               class="org.eclipse.jdt.internal.debug.ui.actions.WatchAction"
+               menubarPath="additions"
+               id="org.eclipse.jdt.debug.ui.cuPopup.Watch">
+         </action>
+      </viewerContribution>
    </extension>
 </plugin>

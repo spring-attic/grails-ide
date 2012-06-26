@@ -80,13 +80,15 @@ public class GroovyJDIEvaluator {
     	private final DebugException exception;
     	private final String snippet;
     	private final IJavaThread thread;
+        private String completeSnippet;
     	
     	GroovyEvaluationResult(IJavaValue value,
-    			DebugException exception, String snippet, IJavaThread thread) {
+    			DebugException exception, String snippet, String completeSnippet, IJavaThread thread) {
     		super();
     		this.value = value;
     		this.exception = exception;
     		this.snippet = snippet;
+            this.completeSnippet = completeSnippet;
     		this.thread = thread;
     	}
     
@@ -99,7 +101,7 @@ public class GroovyJDIEvaluator {
     	}
     
     	public Message[] getErrors() {
-    		return exception != null ? new Message[] { new Message(exception.getLocalizedMessage(), -1) } : new Message[0];
+    		return exception != null ? new Message[] { new Message("(Groovy) " + exception.getLocalizedMessage(), -1), new Message("Evaluation snippet:\n" + completeSnippet, -1) } : new Message[0];
     	}
     
     	public String[] getErrorMessages() {
@@ -108,9 +110,9 @@ public class GroovyJDIEvaluator {
     	    }
     	    
     	    if (exception.getStatus().getException() instanceof InvocationException) {
-    	        return new String[] { ((InvocationException) exception.getStatus().getException()).exception().toString() };
+    	        return new String[] { "(Groovy) " + ((InvocationException) exception.getStatus().getException()).exception().toString(), "Evaluation snippet:\n" + completeSnippet  };
     	    }
-    		return new String[] { exception.getLocalizedMessage() };
+    		return new String[] { "(Groovy) " + exception.getLocalizedMessage(), "Evaluation snippet:\n" + completeSnippet };
     	}
     
     	public String getSnippet() {
@@ -174,8 +176,9 @@ public class GroovyJDIEvaluator {
             JDITargetDelegate delegate, int evaluationDetail, boolean hitBreakpoints) {
         Object result = null;
         Throwable thrownException = null;
+        String completeSource = null;
         try {
-    		String completeSource = createEvaluationSourceFromSnippet(snippet, frame);
+            completeSource = createEvaluationSourceFromSnippet(snippet, frame);
             JDIGroovyClassLoader loader = createClassLoader();
             final Script script = convertSnippetToScript(completeSource, loader);
     		script.setMetaClass(new JDIMetaClass(delegate.getThis(), delegate));
@@ -184,7 +187,6 @@ public class GroovyJDIEvaluator {
     	    delegate.initialize(loader, packageName + SCRIPT_CLASS_NAME);
     	    
     	    result = script.run();
-//    	    result = Boolean.FALSE;
     	} catch (Exception e) {
     	    // only print to sysout when this is an explicit evaluation
     	    if (DebugEvent.EVALUATION == evaluationDetail) {
@@ -196,10 +198,14 @@ public class GroovyJDIEvaluator {
     	    } else {
     	        thrownException = e;
     	    }
+    	    
+    	    thrownException = new Exception("(Groovy) Complete snippet:\n" + completeSource, e);
         } finally {
     	    try {
-        	    IEvaluationResult evalResult = createEvalResult(snippet, result, delegate, thrownException, evaluationDetail);
-        	    listener.evaluationComplete(evalResult);
+        	    IEvaluationResult evalResult = createEvalResult(snippet, completeSource, result, delegate, thrownException, evaluationDetail);
+        	    if (JDIDebugPlugin.getDefault() != null) {
+        	        listener.evaluationComplete(evalResult);
+        	    }
     	    } finally {
         	    // replace original metaclass
         	    delegate.cleanup();
@@ -209,7 +215,7 @@ public class GroovyJDIEvaluator {
 
     private String createEvaluationSourceFromSnippet(String snippet, IJavaStackFrame frame) throws CoreException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("// Code snippet evaluated by Groovy in the context of the application being debugged.\n");
+		sb.append("/////start\n");
 		
 		IJavaReferenceType jdiType = frame.getReferenceType();
 		IType iType = JavaDebugUtils.resolveType(jdiType);
@@ -228,7 +234,7 @@ public class GroovyJDIEvaluator {
                 // package statement
                 IPackageDeclaration[] pDecls = unit.getPackageDeclarations();
                 if (pDecls.length > 0) {
-                    sb.append("package " + pDecls[0].getElementName() + ";\n\n");
+                    sb.append("package " + pDecls[0].getElementName() + ";\n");
                     packageName = pDecls[0].getElementName() + ".";
                 } else {
                     packageName = "";
@@ -277,12 +283,12 @@ public class GroovyJDIEvaluator {
             }
         }
 		
-        sb.append("\n");
 		sb.append(snippet);
+		sb.append("\n/////end");
 		return sb.toString();
 	}
 	
-	private IEvaluationResult createEvalResult(String snippet, Object result, JDITargetDelegate delegate, Throwable thrownException, int evaluationDetail) {
+	private IEvaluationResult createEvalResult(String snippet, String completeSource, Object result, JDITargetDelegate delegate, Throwable thrownException, int evaluationDetail) {
 	    if (thrownException == null) {
 	        try {
     	        IJavaValue jdiResult;
@@ -296,7 +302,7 @@ public class GroovyJDIEvaluator {
                     // might be a constant expression
                     jdiResult = delegate.toJDIObject(result);
                 }
-                return new GroovyEvaluationResult(jdiResult, null, snippet, delegate.getThread());
+                return new GroovyEvaluationResult(jdiResult, null, snippet, completeSource, delegate.getThread());
             } catch (DebugException de) {
                 thrownException = de;
             }
@@ -315,7 +321,7 @@ public class GroovyJDIEvaluator {
 	        // only log events from explicitly invoked evaluations
 	        GroovyDebugCoreActivator.log(debugException);
 	    }
-	    return new GroovyEvaluationResult(delegate.getTarget().newValue("See error log: " + thrownException.getLocalizedMessage()), debugException, snippet, delegate.getThread());
+	    return new GroovyEvaluationResult(delegate.getTarget().newValue("See error log: " + thrownException.getLocalizedMessage()), debugException, snippet, completeSource, delegate.getThread());
 	}
 
 	private Binding createBinding(IJavaStackFrame frame, JDITargetDelegate delegate) throws DebugException {
