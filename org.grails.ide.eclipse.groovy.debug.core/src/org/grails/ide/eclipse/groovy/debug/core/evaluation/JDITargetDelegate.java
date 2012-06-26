@@ -530,7 +530,7 @@ public class JDITargetDelegate {
         } else {
             // shouldn't get here
             primitiveValue = null;
-            throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "Cannot convert object " + o + " into a primitive"));
+            throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "(Groovy) Cannot convert object " + o + " into a primitive"));
         }
         
         // now find the signature of the valueOf method to use
@@ -593,17 +593,12 @@ public class JDITargetDelegate {
         } else {
             methodNameToInvoke = null;
             methodSignatureToInvoke = null;
-            throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "Cannot convert object " + value + " into a primitive"));
+            throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "(Groovy) Cannot convert object " + value + " into a primitive"));
         }
         
         return (IJavaPrimitiveValue) ((IJavaObject) value).sendMessage(methodNameToInvoke, methodSignatureToInvoke, new IJavaValue[0], thread, false);
     }
 
-    /**
-     * @param primitiveSignature
-     * @return
-     * @throws DebugException
-     */
     protected IJavaClassType getBoxedClassTypeForPrimitive(
             String primitiveSignature) throws DebugException {
         IJavaClassType type;
@@ -670,7 +665,7 @@ public class JDITargetDelegate {
     private IJavaObject throwInvalidObjectException(Object o) throws DebugException {
         throw new DebugException(
         new Status(IStatus.ERROR, JDIDebugModel.getPluginIdentifier(),
-                DebugException.REQUEST_FAILED, "Invalid object " + o, null)  //$NON-NLS-1$
+                DebugException.REQUEST_FAILED, "(Groovy) Invalid object " + o, null)  //$NON-NLS-1$
         );
     }
 
@@ -718,7 +713,7 @@ public class JDITargetDelegate {
             }
         } catch (Exception e) {
             if (!(e instanceof DebugException)) {
-                throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "Should have had a Boolean result", e));
+                throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "(Groovy) Should have had a Boolean result", e));
             } else {
                 throw (DebugException) e;
             }
@@ -734,7 +729,7 @@ public class JDITargetDelegate {
             }
         } catch (Exception e) {
             if (!(e instanceof DebugException)) {
-                throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "Should have had a Boolean result", e));
+                throw new DebugException(new Status(IStatus.ERROR, GroovyDebugCoreActivator.PLUGIN_ID, "(Groovy) Should have had a Boolean result", e));
             } else {
                 throw (DebugException) e;
             }
