@@ -163,7 +163,11 @@ public class GroovyClassFileWorkingCopy extends GroovyCompilationUnit {
         if (elementInfo == null) {
             try {
                 elementInfo = (CompilationUnitElementInfo) createElementInfo();
+                // FIXADE in E4.2, this method takes 3 args
+                // when no longer supporting E3.7, then remove this
+                // and uncomment the line below
                 openWhenClosed(elementInfo, new NullProgressMonitor());
+//                openWhenClosed(elementInfo, true, new NullProgressMonitor());
             } catch (JavaModelException e) {
                 elementInfo = null;
                 GrailsCoreActivator.log(e.getJavaModelStatus());
