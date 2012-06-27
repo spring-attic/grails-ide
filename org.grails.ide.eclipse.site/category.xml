@@ -13,15 +13,13 @@
 -->
 <site>
 	
-	<category-def name="Core / Eclipse Integration Commons" label="Core / Eclipse Integration Commons"/>
 	<category-def name="Core / Grails IDE for Eclipse" label="Core / Grails IDE for Eclipse"/>
-	<category-def name="Resources / Grails IDE for Eclipse" label="Resources / Grails IDE for Eclipse"/>
 
 	<!-- UAA -->
 	<feature
 		url="org.springframework.ide.eclipse.uaa.feature_3.0.0.qualifier.jar"
 		id="org.springframework.ide.eclipse.uaa.feature" version="3.0.0.qualifier">
-		<category name="Core / Eclipse Integration Commons" />
+		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
 	
 	<!-- Grails IDE features -->
@@ -30,5 +28,12 @@
 		id="org.grails.ide.eclipse" version="3.0.0.qualifier">
 		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
+	
+	<!-- Test Feature(s) (uncategorised) -->
+    <feature 
+    	url="features/org.grails.ide.eclipse.tests_3.0.0.qualifier.jar" 
+    	id="org.grails.ide.eclipse.tests" 
+    	version="3.0.0.qualifier">
+    </feature>
 
 </site>

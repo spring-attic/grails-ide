@@ -22,12 +22,12 @@
       <import feature="org.grails.ide.eclipse" version="3.0.0" match="equivalent"/>
    </requires>
 
-   <plugin
+<!--   <plugin
          id="com.springsource.sts.server.tc.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
+         unpack="false"/> -->
 
    <plugin
          id="org.grails.ide.eclipse.test"

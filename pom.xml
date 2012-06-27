@@ -33,7 +33,7 @@
 	<module>org.grails.ide.eclipse.test</module>
 	<module>org.grails.ide.eclipse.test.ui</module>
 	<module>org.grails.ide.eclipse.test.util</module>
-<!--	<module>org.grails.ide.eclipse.tests</module> -->
+	<module>org.grails.ide.eclipse.tests</module>
 	<module>org.grails.ide.eclipse.ui</module>
 	<module>org.grails.ide.eclipse.groovy.debug.core</module>
 	<module>org.grails.ide.eclipse.groovy.debug.tests</module>
