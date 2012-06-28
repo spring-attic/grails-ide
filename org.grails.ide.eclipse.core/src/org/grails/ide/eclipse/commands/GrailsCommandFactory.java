@@ -626,13 +626,23 @@ public abstract class GrailsCommandFactory {
 	 * @param downloadSources 
 	 */
 	public static GrailsCommand refreshDependencyFile(IProject project) {
-		GrailsCommand cmd = new GrailsCommand(project, "compile").addArgument(nonInteractiveOption(project));
+		GrailsCommand cmd = new GrailsCommand(project, "compile")
+			.addArgument(nonInteractiveOption(project))
+			.addArgument(refreshDependenciesOption(project));
 			//TODO: KDV: (depend) Do we really need to do a full compile of all the code 
 			//   to force the plugin dependencies to be brought up-to-date with application.properties file?
 		cmd.enableRefreshDependencyFile(); //For now we always use the old mechanism for everything, except the source jars.
 		return cmd;
 	}
 	
+	private static String refreshDependenciesOption(IProject project) {
+		if (GrailsVersion.V_2_0_0.compareTo(GrailsVersion.getEclipseGrailsVersion(project))<=0) {
+			return "--refresh-dependencies";
+		} else {
+			return null;
+		}
+	}
+
 	/**
 	 * A command to download sourc jars for Grails dependencies in the classpath container.
 	 */
@@ -684,7 +694,7 @@ public abstract class GrailsCommandFactory {
 	}
 	
 	private static String nonInteractiveOption(IProject project) {
-		GrailsVersion projectsVersion = GrailsVersion.getEclipseGrailsVersion(project);
+//		GrailsVersion projectsVersion = GrailsVersion.getEclipseGrailsVersion(project);
 //Code below is temporary, option will go back to normal before release of 1.4
 //		if (GrailsVersion.V_1_4.compareTo(projectsVersion) <=0) {
 //			return " --nonInteractive";

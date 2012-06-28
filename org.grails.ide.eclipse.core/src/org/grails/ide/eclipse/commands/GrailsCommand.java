@@ -336,10 +336,12 @@ public class GrailsCommand {
 	 * @return The receiver object to allow easy chaining of 'addArgument' calls.
 	 */
 	public GrailsCommand addArgument(String arg) {
-		if (!command.equals("")) {
-			command = command + " ";
+		if (arg!=null) {
+			if (!command.equals("")) {
+				command = command + " ";
+			}
+			command = command+escapeArgument(arg);
 		}
-		command = command+escapeArgument(arg);
 		return this;
 	}
 
