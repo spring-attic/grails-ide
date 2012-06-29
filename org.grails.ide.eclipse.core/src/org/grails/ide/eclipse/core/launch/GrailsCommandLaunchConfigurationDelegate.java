@@ -153,7 +153,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 			grailsCommand.append("-Dgrails.build.listeners="+buildListener+" ");
 		}
 		grailsCommand.append(script+" ");
-		programArguments.add(grailsCommand.toString().trim());
+		programArguments.add(windowsEscape(grailsCommand.toString().trim()));
 		
 		List<String> vmArgs = new ArrayList<String>();
 		
@@ -243,6 +243,21 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		 * --conf /home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT/conf/groovy-starter.conf --classpath   
 		 * create-app bork
 		 */
+	}
+
+	private String windowsEscape(String argument) {
+		// There appears to be a bug(?) in Windows ProcessBuilder implementation that incorrectly 
+		// escapes program arguments that contain both spaces and quotes. 
+		if (System.getProperty("os.name").toLowerCase().indexOf("win")>=0) {
+			if (argument.contains(" ") || argument.contains("\t")) {
+				//process builder will wrap quotes around this argument but it doesn't do
+				//anything about quotes in the string.  So it is up to us to escape those.
+				//Otherwise the internal quotes will end up terminating the escape sequence
+				//inadvertently.
+				argument = argument.replace("\"", "\\\"");
+			}
+		}
+		return argument;
 	}
 
 	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(IGrailsInstall install, IProject project, String script, String baseDirectory) throws CoreException {
