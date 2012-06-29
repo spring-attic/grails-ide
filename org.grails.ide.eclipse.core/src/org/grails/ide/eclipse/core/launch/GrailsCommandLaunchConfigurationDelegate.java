@@ -245,21 +245,37 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		 */
 	}
 
-	private String windowsEscape(String argument) {
-		// There appears to be a bug(?) in Windows ProcessBuilder implementation that incorrectly 
+	private static String windowsEscape(String argument) {
+		// There appears to be a bug(?) http://bugs.sun.com/view_bug.do?bug_id=6468220
+		// in Windows ProcessBuilder implementation that incorrectly 
 		// escapes program arguments that contain both spaces and quotes. 
 		if (System.getProperty("os.name").toLowerCase().indexOf("win")>=0) {
-			if (argument.contains(" ") || argument.contains("\t")) {
-				//process builder will wrap quotes around this argument but it doesn't do
-				//anything about quotes in the string.  So it is up to us to escape those.
-				//Otherwise the internal quotes will end up terminating the escape sequence
-				//inadvertently.
-				argument = argument.replace("\"", "\\\"");
-			}
+			return winQuote(argument);
 		}
 		return argument;
 	}
+	
+	static boolean needsQuoting(String s) {
+		int len = s.length();
+		if (len == 0) // empty string have to be quoted
+			return true;
+		for (int i = 0; i < len; i++) {
+			switch (s.charAt(i)) {
+			case ' ': case '\t': case '\\': case '"':
+				return true;
+			}
+		}
+		return false;
+	}
 
+	static String winQuote(String s) {
+		if (! needsQuoting(s))
+			return s;
+		s = s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"");
+		s = s.replaceAll("([\\\\]*)\\z", "$1$1");
+		return "\"" + s + "\"";
+	}
+	
 	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(IGrailsInstall install, IProject project, String script, String baseDirectory) throws CoreException {
 		ILaunchConfigurationType configType = DebugPlugin.getDefault()
 				.getLaunchManager()
