@@ -59,7 +59,11 @@ public class GrailsCommandFactoryTest extends AbstractCommandTest {
 	public void testRefreshDependencyFile() throws Exception {
 		project = ensureProject("bork");
 		GrailsCommand cmd = GrailsCommandFactory.refreshDependencyFile(project);
-		assertEquals("compile --non-interactive", cmd.getCommand());
+		String expect = "compile --non-interactive";
+		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_0) >= 0) {
+			expect = expect + " --refresh-dependencies";
+		}
+		assertEquals(expect, cmd.getCommand());
 	}
 	
 	public void testDownloadSourceJars() throws Exception {
