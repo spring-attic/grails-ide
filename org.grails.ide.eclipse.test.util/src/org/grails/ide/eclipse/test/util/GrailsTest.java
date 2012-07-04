@@ -367,7 +367,7 @@ public class GrailsTest extends TestCase {
 			} else {
 				//Default plugins for regular projects
 				return new String[] {
-						"tomcat", "hibernate", "jquery", "resources" //, "webxml" 
+						"tomcat", "hibernate", "jquery", "resources", "webxml" 
 				};
 			}
 		}
