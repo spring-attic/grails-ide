@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -84,7 +85,7 @@ public class GrailsAppModuleDelegate extends ProjectModule implements IWebModule
 		boolean isMatch(IModuleResource child);
 	}
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder"); //false;
 	private void debug(String string) {
 		if (DEBUG)
 			System.out.println("GrailsAppModuleDelegate: " + this.getProject().getName()+": " + string);

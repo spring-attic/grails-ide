@@ -106,13 +106,13 @@ public class GrailsTestUtilActivator implements BundleActivator {
 		if (useGrails200) {
 			//Treats 2.0. as most recent Grails, runs majority of tests with 2.0:
 			GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_1_3_7;
-			GrailsVersion.PREVIOUS = GrailsVersion.V_2_0_1; 
+			GrailsVersion.PREVIOUS = GrailsVersion.V_2_0_4; 
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
-			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_4;
+			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
 		} else {
 			//Treats 1.3.7. as most recent Grails, runs majority of tests with 1.3.8:
 			GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_1_3_6;

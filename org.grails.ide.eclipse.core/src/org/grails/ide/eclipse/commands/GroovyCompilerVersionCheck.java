@@ -74,8 +74,9 @@ public class GroovyCompilerVersionCheck {
 	}
 	
 	public static void testMode() {
-		boolean ignore = GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_0_4_revisit) //Revisit decision to turn this check of on next release (i.e. when both previous and current release use Groovy 1.8
-				|| GrailsVersion.MOST_RECENT.equals(GrailsVersion.BUILDSNAPHOT_2_0_2);
+//		boolean ignore = GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_0_4_revisit) //Revisit decision to turn this check of on next release (i.e. when both previous and current release use Groovy 1.8
+//				|| GrailsVersion.MOST_RECENT.equals(GrailsVersion.BUILDSNAPHOT_2_0_2);
+		boolean ignore = true;
 		testMode(ignore);
 	}
 	

@@ -87,7 +87,7 @@ public class PluginInstallerTests extends AbstractPluginInstallerTest {
 	public void testInstallPluginwithDependentPlugin() throws Exception {
     	//TODO: This test fails in Grails 2.0 because multi-tenant core plugin isn't compatible (yet?) with 2.0.
     	// See http://jira.grails.org/browse/GRAILS-8198
-    	if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_0_4_revisit)) {
+    	if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_1_0_revisit)) {
     		return;
     	}
     	

@@ -50,9 +50,10 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_0_2 = new GrailsVersion("2.0.2");
 	public static final GrailsVersion V_2_0_3 = new GrailsVersion("2.0.3");
 	public static final GrailsVersion V_2_0_4 = new GrailsVersion("2.0.4");
-	public static final GrailsVersion V_2_0_4_revisit = V_2_0_4; // references to this constant should be reviewed when new version of Grails comes out.
 
 	public static final GrailsVersion V_2_1_ = new GrailsVersion("2.1"); //Any '2.1' version *including* milestones is 'greater' than this one
+	public static final GrailsVersion V_2_1_0 = new GrailsVersion("2.1.0");
+	public static final GrailsVersion V_2_1_0_revisit = V_2_1_0; // references to this constant should be reviewed when new version of Grails comes out.
 
 	
 //	public static final GrailsVersion V_2_0_0_M1 = new GrailsVersion("2.0.0.M1");
@@ -76,9 +77,9 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	// Note: These 'constants' are now initialised in GrailsTestUtilActivator to run tests with different
 	// GrailsVersions
 	
-	public static GrailsVersion PREVIOUS_PREVIOUS = V_1_3_6;
-	public static GrailsVersion PREVIOUS = V_1_3_7; 
-	public static GrailsVersion MOST_RECENT = V_2_0_1;
+	public static GrailsVersion PREVIOUS_PREVIOUS = V_1_3_7;
+	public static GrailsVersion PREVIOUS = V_2_0_4; 
+	public static GrailsVersion MOST_RECENT = V_2_1_0;
 
 	private int[] numbers;
 	private String qualifier;

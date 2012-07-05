@@ -112,11 +112,11 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	}
 	
 	public void testGrails20SourceAttachements() throws Exception {
-		if (GrailsVersion.V_2_0_4_revisit.equals(GrailsVersion.MOST_RECENT)) {
-			//This is known to be broken in Grails 2.0.3, 2.0.4:
-			//See http://jira.grails.org/browse/GRAILS-8955
-			return; 
-		}
+//		if (GrailsVersion.V_2_0_4_revisit.equals(GrailsVersion.MOST_RECENT)) {
+//			//This is known to be broken in Grails 2.0.3, 2.0.4:
+//			//See http://jira.grails.org/browse/GRAILS-8955
+//			return; 
+//		}
 
 		//clearGrailsState(); 
 		//Workaround for http://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
