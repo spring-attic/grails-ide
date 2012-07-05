@@ -59,7 +59,7 @@ public class Grails20AwareTestFinder implements ITestFinder {
 	
 	public static final String TEST_FOR_ANNOT_NAME = "grails.test.mixin.TestFor";
 	
-	private static boolean DEBUG = Platform.getLocation().toString().contains("kdvolder");
+	private static boolean DEBUG = false; //Platform.getLocation().toString().contains("kdvolder");
 	
 	private static void debug(Object msg) {
 		if (DEBUG) {
