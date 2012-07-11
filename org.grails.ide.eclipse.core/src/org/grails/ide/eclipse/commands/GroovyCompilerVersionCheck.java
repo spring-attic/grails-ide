@@ -137,10 +137,10 @@ public class GroovyCompilerVersionCheck {
 			if (GrailsVersion.V_2_1_.compareTo(gv)<=0) {
 				return VERSION_RANGE_2_0;
 			} else if (GrailsVersion.V_2_0_.compareTo(gv) <= 0) {
-				//Grails 1.4 or higher requires a 1.8 Greclipse compiler
+				//Grails 2.0 or higher requires a 1.8 Greclipse compiler
 				return VERSION_RANGE_1_8;
 			} else {
-				//Pre Grails 1.4
+				//Pre Grails 2.0
 				return VERSION_RANGE_V_1_7;
 			}
 		}
