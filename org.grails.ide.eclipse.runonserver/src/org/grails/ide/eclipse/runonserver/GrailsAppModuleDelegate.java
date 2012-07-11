@@ -400,19 +400,19 @@ public class GrailsAppModuleDelegate extends ProjectModule implements IWebModule
 			IModuleResource l = ls[i];
 			ls[i] = r;
 			if (l instanceof ModuleFolder && r instanceof ModuleFolder) {
-//				debug("Merging: "+l+" & "+r);
+				//debug("Merging: "+l+" & "+r);
 				// Merge the two if both are folders (otherwise replace)
 				ModuleFolder l_folder = (ModuleFolder) l;
 				ModuleFolder r_folder = (ModuleFolder) r;
 				r_folder.setMembers(merge(l_folder.members(), r_folder.members()));
 			} else {
-//				debug("Replacing: "+l+" by "+r);
+				//debug("Replacing: "+l+" by "+r);
 			}
 			ls[i] = r;
 		} else {
 			//Add new left entry
 			ls = RunOnServerPlugin.copyOf(ls, ls.length+1);
-//			debug("Adding: "+r);
+			//debug("Adding: "+r);
 			ls[ls.length-1] = r;
 		}
 		return ls;
