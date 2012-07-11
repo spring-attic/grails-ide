@@ -40,7 +40,8 @@ public class GroovyCompilerVersionCheck {
 	}
 
 	private static final VersionRange VERSION_RANGE_V_1_7 = new VersionRange("[1.7,1.8)");
-	private static final VersionRange VERSION_RANGE_1_8 = new VersionRange("1.8");
+	private static final VersionRange VERSION_RANGE_1_8 = new VersionRange("[1.8,2.0)");
+	private static final VersionRange VERSION_RANGE_2_0 = new VersionRange("2.0");
 	
 	private static boolean testMode = false;
 	private static IGroovyCompilerVersionCheckDialog dialogProvider;
@@ -133,7 +134,9 @@ public class GroovyCompilerVersionCheck {
 	private static VersionRange getRequiredGroovyVersion(IProject project) {
 		GrailsVersion gv = GrailsVersion.getEclipseGrailsVersion(project);
 		if (gv != null) {
-			if (GrailsVersion.V_2_0_.compareTo(gv) <= 0) {
+			if (GrailsVersion.V_2_1_.compareTo(gv)<=0) {
+				return VERSION_RANGE_2_0;
+			} else if (GrailsVersion.V_2_0_.compareTo(gv) <= 0) {
 				//Grails 1.4 or higher requires a 1.8 Greclipse compiler
 				return VERSION_RANGE_1_8;
 			} else {
