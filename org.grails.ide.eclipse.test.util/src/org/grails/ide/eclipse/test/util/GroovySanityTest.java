@@ -38,8 +38,7 @@ public class GroovySanityTest extends GrailsTest {
 		int expectMinor = 7;
 		if (GrailsVersion.V_2_1_0.compareTo(GrailsVersion.MOST_RECENT)<=0) {
 			expectMinor = 0;
-		}
-		if (GrailsVersion.V_2_0_0.compareTo(GrailsVersion.MOST_RECENT)<=0) {
+		} else if (GrailsVersion.V_2_0_0.compareTo(GrailsVersion.MOST_RECENT)<=0) {
 			expectMinor = 8;
 		}
 		assertEquals("Wrong version for groovy bundle: " + bundle.getVersion(), expectMinor, bundle.getVersion().getMinor());
