@@ -126,7 +126,7 @@
 	  <properties>
 		<p2.repository.name>SpringSource Tool Suite for Eclipse 3.7</p2.repository.name>
 		<groovy.compiler.feature>org.codehaus.groovy18.feature.feature.group</groovy.compiler.feature>
-		<groovy.compiler.switch>-Dgroovy.compiler.level=18</groovy.compiler.switch>
+		<groovy.compiler.switch>-Dgroovy.compiler.level=20</groovy.compiler.switch>
 		<dist.target>e3.7</dist.target>
 		<dist.platform.name>Indigo</dist.platform.name>
 		<dist.platform.id>indigo</dist.platform.id>		
