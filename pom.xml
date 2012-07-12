@@ -169,6 +169,48 @@
     </profile>
 
     <profile>
+      <id>e42</id>
+	  <properties>
+		<p2.repository.name>SpringSource Tool Suite for Eclipse 3.7</p2.repository.name>
+		<groovy.compiler.feature>org.codehaus.groovy20.feature.feature.group</groovy.compiler.feature>
+		<groovy.compiler.switch>-Dgroovy.compiler.level=20</groovy.compiler.switch>
+		<dist.target>e4.2</dist.target>
+		<dist.platform.name>Juno</dist.platform.name>
+		<dist.platform.id>juno</dist.platform.id>		
+		<dist.platform.version>4.2</dist.platform.version>		
+		<package.qualifierPrefix>e42</package.qualifierPrefix>
+		<version.weaving>1.0.200.I20120427-0800</version.weaving>
+	  </properties>
+	  <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.2/</url>
+		</repository>
+		<repository>
+		  <id>indigo</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/juno/</url>
+		</repository>
+		<repository>
+		  <id>ajdt</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/tools/ajdt/42/dev/update/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
+		</repository>
+		<repository>
+		  <id>groovy</id>
+		  <layout>p2</layout>
+		  <url>http://dist.codehaus.org/groovy/distributions/greclipse/snapshot/e4.2/</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
       <id>build.springsource.com</id>
       <activation>
         <property>
@@ -517,7 +559,7 @@
             <testSuite>${project.artifactId}</testSuite>
             <testClass>${test.class}</testClass>
             <argLine>
-              -Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
+              -Xmx1024m -XX:MaxPermSize=256m ${groovy.compiler.switch} -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
             </argLine>
             <appArgLine>
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
