@@ -259,7 +259,7 @@ public class GrailsTest extends TestCase {
 			try {
 				StsTestUtil.assertNoErrors(project);
 			} catch (Throwable e) {
-				//Try to fix it... initial refresh is unreliable.
+				//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
 				GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
 				StsTestUtil.assertNoErrors(project);
 			}
