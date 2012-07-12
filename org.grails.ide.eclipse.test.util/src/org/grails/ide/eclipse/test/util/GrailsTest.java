@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
@@ -255,7 +256,13 @@ public class GrailsTest extends TestCase {
 			GrailsCommandUtils.eclipsifyProject(null, true, project);
 
 			assertTrue(project.exists());
-			StsTestUtil.assertNoErrors(project);
+			try {
+				StsTestUtil.assertNoErrors(project);
+			} catch (Throwable e) {
+				//Try to fix it... initial refresh is unreliable.
+				GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
+				StsTestUtil.assertNoErrors(project);
+			}
 			assertTrue(project.hasNature(GrailsNature.NATURE_ID));
 
 			if (!isPluginProject) {
