@@ -140,6 +140,11 @@
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/eclipse/updates/3.7/</url>
 		</repository>
+<!-- 	<repository> 
+		  <id>platform201106131736</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/3.7/R-3.7-201106131736</url>
+		</repository> -->
 		<repository>
 		  <id>indigo</id>
 		  <layout>p2</layout>
@@ -166,7 +171,8 @@
 		  <url>http://dist.springsource.com/release/TOOLS/patches/bug367669</url>
 		</repository>
 	  </repositories>
-	  <build>
+<!--	not working: seems it can't find 'required: org.eclipse.platform.feature.group
+    <build>
 	    <plugins>
 	      <plugin>
 	          <groupId>org.eclipse.tycho</groupId>
@@ -183,7 +189,7 @@
 	          </configuration>
 	      </plugin>
 	    </plugins>
-	  </build>
+	  </build> -->
     </profile>
 
     <profile>
