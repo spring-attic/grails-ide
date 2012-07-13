@@ -211,8 +211,13 @@
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/eclipse/updates/4.2/</url>
 		</repository>
+		<repository> <!-- this does not make sense, but without this site tycho can't find the 'SWT fragment bundles' -->
+			<id>indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo/</url>
+		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>juno</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/juno/</url>
 		</repository>
