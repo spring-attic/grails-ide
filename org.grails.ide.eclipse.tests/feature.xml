@@ -18,9 +18,9 @@
       %license
    </license>
 
-   <requires>
+<!--   <requires>
       <import feature="org.grails.ide.eclipse" version="3.0.0" match="equivalent"/>
-   </requires>
+   </requires> -->
 
 <!--   <plugin
          id="com.springsource.sts.server.tc.tests"
