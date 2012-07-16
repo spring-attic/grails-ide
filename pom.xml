@@ -171,8 +171,7 @@
 		  <url>http://dist.springsource.com/release/TOOLS/patches/bug367669</url>
 		</repository>
 	  </repositories>
-<!--	not working: seems it can't find 'required: org.eclipse.platform.feature.group
-    <build>
+      <build>
 	    <plugins>
 	      <plugin>
 	          <groupId>org.eclipse.tycho</groupId>
@@ -189,7 +188,7 @@
 	          </configuration>
 	      </plugin>
 	    </plugins>
-	  </build> -->
+	  </build>
     </profile>
 
     <profile>
@@ -595,12 +594,12 @@
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
             <dependencies>
-              <dependency>
+<!--               <dependency>
 			    <type>p2-installable-unit</type>
 			    <artifactId>org.grails.ide.eclipse.feature.group</artifactId>
 			    <version>0.0.0</version>
 			  </dependency>
-              <dependency>
+			  <dependency>
                 <type>p2-installable-unit</type>
                 <artifactId>org.eclipse.wst.server_ui.feature.feature.group</artifactId>
                 <version>0.0.0</version>
@@ -614,7 +613,7 @@
                 <type>p2-installable-unit</type>
                 <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
                 <version>0.0.0</version>
-              </dependency>
+              </dependency> -->
               <dependency>
                 <type>p2-installable-unit</type>
                 <artifactId>${groovy.compiler.feature}</artifactId>
