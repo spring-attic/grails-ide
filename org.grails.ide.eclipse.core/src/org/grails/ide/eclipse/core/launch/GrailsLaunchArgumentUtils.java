@@ -338,7 +338,7 @@ public class GrailsLaunchArgumentUtils {
 		if (command == null || command.contains("-noreloading")) {
 		    return vmArgs;
 		}
-		if (command.isEmpty() || command.startsWith("run-app") || command.startsWith("interactive")) {
+		if (command.length() == 0 || command.contains("run-app") || command.contains("interactive")) {
 			IGrailsInstall install = GrailsLaunchArgumentUtils.getGrailsInstall(conf);
 			File loadedJar = install.getSpringLoadedJar();
 			if (install != null && install.getVersion().compareTo(GrailsVersion.V_2_0_0) >=0) {
