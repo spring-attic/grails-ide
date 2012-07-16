@@ -333,7 +333,12 @@ public class GrailsLaunchArgumentUtils {
 
 	public static List<String> addSpringLoadedArgs(ILaunchConfiguration conf, List<String> vmArgs) throws CoreException {
 		String command = GrailsLaunchConfigurationDelegate.getScript(conf);
-		if (command!=null && command.contains("run-app") && !command.contains("-noreloading")) {
+		// STS-2638 include reloading agent when launching in interactive mode
+		// only way to launch in interactive mode is to run with an empty command
+		if (command == null || command.contains("-noreloading")) {
+		    return vmArgs;
+		}
+		if (command.isEmpty() || command.startsWith("run-app") || command.startsWith("interactive")) {
 			IGrailsInstall install = GrailsLaunchArgumentUtils.getGrailsInstall(conf);
 			File loadedJar = install.getSpringLoadedJar();
 			if (install != null && install.getVersion().compareTo(GrailsVersion.V_2_0_0) >=0) {
