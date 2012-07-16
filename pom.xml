@@ -171,7 +171,7 @@
 		  <url>http://dist.springsource.com/release/TOOLS/patches/bug367669</url>
 		</repository>
 	  </repositories>
-      <build>
+<!--       <build>
 	    <plugins>
 	      <plugin>
 	          <groupId>org.eclipse.tycho</groupId>
@@ -188,7 +188,7 @@
 	          </configuration>
 	      </plugin>
 	    </plugins>
-	  </build>
+	  </build> -->
     </profile>
 
     <profile>
