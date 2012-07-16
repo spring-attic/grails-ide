@@ -107,7 +107,7 @@
     <test.useUIThread>true</test.useUIThread>
     <test.skip>${maven.test.skip}</test.skip>
 
-    <tycho-version>0.14.0</tycho-version>
+    <tycho-version>0.15.0</tycho-version>
 
     <maven.test.error.ignore>true</maven.test.error.ignore>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -211,11 +211,12 @@
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/eclipse/updates/4.2/</url>
 		</repository>
-		<repository> <!-- this does not make sense, but without this site tycho can't find the 'SWT fragment bundles' -->
+		<!-- this does not make sense, but without this site tycho can't find the 'SWT fragment bundles' -->
+		<!-- <repository>
 			<id>indigo</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/indigo/</url>
-		</repository>
+		</repository> -->
 		<repository>
 		  <id>juno</id>
 		  <layout>p2</layout>
