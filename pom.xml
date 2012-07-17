@@ -594,12 +594,12 @@
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
             <dependencies>
-<!--               <dependency>
+               <dependency>
 			    <type>p2-installable-unit</type>
 			    <artifactId>org.grails.ide.eclipse.feature.group</artifactId>
 			    <version>0.0.0</version>
 			  </dependency>
-			  <dependency>
+<!-- 			  <dependency>
                 <type>p2-installable-unit</type>
                 <artifactId>org.eclipse.wst.server_ui.feature.feature.group</artifactId>
                 <version>0.0.0</version>
