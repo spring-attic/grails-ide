@@ -134,7 +134,7 @@ public class GroovyCompilerVersionCheck {
 	private static VersionRange getRequiredGroovyVersion(IProject project) {
 		GrailsVersion gv = GrailsVersion.getEclipseGrailsVersion(project);
 		if (gv != null) {
-			if (GrailsVersion.V_2_1_.compareTo(gv)<=0) {
+			if (GrailsVersion.V_2_2_.compareTo(gv)<=0) {
 				return VERSION_RANGE_2_0;
 			} else if (GrailsVersion.V_2_0_.compareTo(gv) <= 0) {
 				//Grails 2.0 or higher requires a 1.8 Greclipse compiler
