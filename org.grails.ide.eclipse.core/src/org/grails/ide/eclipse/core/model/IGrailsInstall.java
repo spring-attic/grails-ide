@@ -79,4 +79,9 @@ public interface IGrailsInstall {
 	 * Checks whether a given Java install is acceptable to run this Grails install with.
 	 */
 	void verifyJavaInstall(IVMInstall javaInstall) throws CoreException;
+
+	/**
+	 * A safe place where springloaded in grails can keep cache data.
+	 */
+	File getSpringLoadedCacheDir();
 }

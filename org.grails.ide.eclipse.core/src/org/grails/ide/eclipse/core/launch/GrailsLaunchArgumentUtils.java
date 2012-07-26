@@ -318,10 +318,10 @@ public class GrailsLaunchArgumentUtils {
 
 		List<String> newArgs = new ArrayList<String>(args);
 		if (!permSizeFound) {
-			newArgs.add(0, "-XX:MaxPermSize=192m");
+			newArgs.add(0, "-XX:MaxPermSize=256m");
 		}
 		if (!mxFound) {
-			newArgs.add(0, "-Xmx512M");
+			newArgs.add(0, "-Xmx768M");
 		}
 
 		// Add in -server
@@ -340,12 +340,13 @@ public class GrailsLaunchArgumentUtils {
 		}
 		if (command.length() == 0 || command.contains("run-app") || command.contains("interactive")) {
 			IGrailsInstall install = GrailsLaunchArgumentUtils.getGrailsInstall(conf);
-			File loadedJar = install.getSpringLoadedJar();
 			if (install != null && install.getVersion().compareTo(GrailsVersion.V_2_0_0) >=0) {
+				File loadedJar = install.getSpringLoadedJar();
+				File cacheDir = install.getSpringLoadedCacheDir();
 				ArrayList<String> newArgs = new ArrayList<String>(vmArgs);
 				newArgs.add("-javaagent:"+loadedJar); 
 				newArgs.add("-noverify");
-				newArgs.add("-Dspringloaded=profile=grails");
+				newArgs.add("-Dspringloaded=profile=grails;cacheDir="+cacheDir);
 				return newArgs;
 			}
 		}

@@ -331,4 +331,11 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 		}
 	}
 
+	public File getSpringLoadedCacheDir() {
+		File wsMetadata = GrailsCoreActivator.getDefault().getStateLocation().toFile();
+		File cacheDir = new File(wsMetadata, getVersionString());
+		cacheDir.mkdirs();
+		return cacheDir;
+	}
+
 }
