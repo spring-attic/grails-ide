@@ -599,6 +599,11 @@
 			    <artifactId>org.grails.ide.eclipse.feature.group</artifactId>
 			    <version>0.0.0</version>
 			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.eclipse.equinox.weaving.sdk.feature.group</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
 <!-- 			  <dependency>
                 <type>p2-installable-unit</type>
                 <artifactId>org.eclipse.wst.server_ui.feature.feature.group</artifactId>
