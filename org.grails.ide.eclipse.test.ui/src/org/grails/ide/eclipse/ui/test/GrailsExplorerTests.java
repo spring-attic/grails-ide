@@ -20,16 +20,12 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotConditions;
-import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
-
 import org.grails.ide.eclipse.explorer.elements.GrailsClasspathContainersFolder;
 import org.grails.ide.eclipse.explorer.elements.GrailsPluginFolder;
 import org.grails.ide.eclipse.explorer.types.GrailsContainerType;
 import org.grails.ide.eclipse.explorer.types.GrailsContainerTypeManager;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotConditions;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 
 /**
  * @author Nieraj Singh
@@ -73,7 +69,7 @@ public class GrailsExplorerTests extends GrailsProjectHarness {
 			getGrailsElementMatcher(GrailsContainerType.CLASSPATH_CONTAINERS, true, GrailsClasspathContainersFolder.class),
 			getGrailsElementMatcher("application.properties", true, IFile.class),
 			
-			// getGrailsElementMatcher("grails-app", true, IFolder.class),
+			getGrailsElementMatcher("grails-app", true, IFolder.class),
 			getGrailsElementMatcher("lib", true, IFolder.class),
 			getGrailsElementMatcher("target", true, IFolder.class),
 			getGrailsElementMatcher("web-app", true, IFolder.class),
