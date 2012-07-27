@@ -36,7 +36,7 @@ public class GroovySanityTest extends GrailsTest {
 		Bundle bundle = CompilerUtils.getActiveGroovyBundle();
 		assertNotNull("No active Groovy bundle found", bundle);
 		int expectMinor = 7;
-		if (GrailsVersion.V_2_1_0.compareTo(GrailsVersion.MOST_RECENT)<=0) {
+		if (GrailsVersion.V_2_2_.compareTo(GrailsVersion.MOST_RECENT)<=0) {
 			expectMinor = 0;
 		} else if (GrailsVersion.V_2_0_0.compareTo(GrailsVersion.MOST_RECENT)<=0) {
 			expectMinor = 8;
