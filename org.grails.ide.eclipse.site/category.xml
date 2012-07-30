@@ -22,6 +22,18 @@
 		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
 	
+	<!-- Dashboard -->
+	<feature 
+		url="features/org.springsource.ide.eclipse.dashboard_3.0.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.dashboard" version="3.0.0.qualifier">
+		<category name="Core / Grails IDE for Eclipse"/>
+	</feature>
+
+	<feature 
+		url="features/org.springsource.ide.eclipse.commons_3.0.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.commons" version="3.0.0.qualifier">
+	</feature>
+
 	<!-- Grails IDE features -->
 	<feature
 		url="org.grails.ide.eclipse_3.0.0.qualifier.jar"
