@@ -58,13 +58,7 @@ public class GrailsTestsActivator implements BundleActivator {
         }
         
         allJars.addAll(findJars(install.getHome() + "dist/", true));
-        if (isGrails200OrLater()) {
-            // also need the datastore jars
-            allJars.addAll(findJars(install.getHome() + "lib/org.springframework/spring-tx/", true));
-            allJars.addAll(findJars(install.getHome() + "lib/org.grails/grails-datastore-core/", true));
-            allJars.addAll(findJars(install.getHome() + "lib/org.grails/grails-datastore-gorm/", true));
-        }
-        
+        allJars.addAll(findJars(install.getHome() + "lib/", true));
         return allJars.toArray(new String[0]);
     }
     
