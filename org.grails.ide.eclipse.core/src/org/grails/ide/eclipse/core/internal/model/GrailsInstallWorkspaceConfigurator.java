@@ -34,6 +34,13 @@ import org.springsource.ide.eclipse.commons.configurator.WorkspaceLocationConfig
  */
 public class GrailsInstallWorkspaceConfigurator extends WorkspaceLocationConfiguratorParticipant {
 
+	private static boolean isBusy = false; // Used to avoid STS-2819: 'double
+	// migration dialog'.
+
+	public static boolean isBusy() {
+		return isBusy;
+	}
+
 	private class GrailsExtension extends ConfigurableExtension {
 
 		private final File location;
@@ -69,31 +76,36 @@ public class GrailsInstallWorkspaceConfigurator extends WorkspaceLocationConfigu
 
 		@Override
 		public IStatus configure(IProgressMonitor monitor) {
-			GrailsInstallManager installManager = GrailsCoreActivator.getDefault().getInstallManager();
+			isBusy = true;
 			try {
-				String path = location.getCanonicalPath();
+				GrailsInstallManager installManager = GrailsCoreActivator.getDefault().getInstallManager();
+				try {
+					String path = location.getCanonicalPath();
 
-				if (getGrailsInstall() != null) { 
-					return new Status(IStatus.INFO, GrailsCoreActivator.PLUGIN_ID, NLS.bind("Grails runtime already configured at {0}", path));
+					if (getGrailsInstall() != null) { 
+						return new Status(IStatus.INFO, GrailsCoreActivator.PLUGIN_ID, NLS.bind("Grails runtime already configured at {0}", path));
+					}
+
+					int ix = location.getName().lastIndexOf('-');
+					String name = generateName("Grails " + location.getName().substring(ix + 1));
+
+					IGrailsInstall install = new DefaultGrailsInstall(path, name,
+							installManager.getDefaultGrailsInstall() == null);
+
+					// Set installs
+					Set<IGrailsInstall> installs = new HashSet<IGrailsInstall>(installManager.getAllInstalls());
+					installs.add(install);
+					installManager.setGrailsInstalls(installs);
+
+					setConfigured(true);
+					return new Status(IStatus.OK, GrailsCoreActivator.PLUGIN_ID, NLS.bind("Grails runtime successfully configured at {0}", location));
 				}
-					
-				int ix = location.getName().lastIndexOf('-');
-				String name = generateName("Grails " + location.getName().substring(ix + 1));
-
-				IGrailsInstall install = new DefaultGrailsInstall(path, name,
-						installManager.getDefaultGrailsInstall() == null);
-
-				// Set installs
-				Set<IGrailsInstall> installs = new HashSet<IGrailsInstall>(installManager.getAllInstalls());
-				installs.add(install);
-				installManager.setGrailsInstalls(installs);
-				
-				setConfigured(true);
-				return new Status(IStatus.OK, GrailsCoreActivator.PLUGIN_ID, NLS.bind("Grails runtime successfully configured at {0}", location));
-			}
-			catch (IOException e) {
-				GrailsCoreActivator.log(e);
-				return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Unexpected error during Grails runtime configuration", e);
+				catch (IOException e) {
+					GrailsCoreActivator.log(e);
+					return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Unexpected error during Grails runtime configuration", e);
+				}
+			} finally {
+				isBusy = false;
 			}
 		}
 

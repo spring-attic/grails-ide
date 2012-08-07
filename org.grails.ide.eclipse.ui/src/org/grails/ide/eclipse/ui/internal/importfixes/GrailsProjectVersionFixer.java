@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -41,6 +40,7 @@ import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerUpdateJob;
+import org.grails.ide.eclipse.core.internal.model.GrailsInstallWorkspaceConfigurator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.core.model.IGrailsInstallListener;
@@ -158,7 +158,11 @@ public class GrailsProjectVersionFixer {
 	 */
 	private IGrailsInstallListener installListener = new IGrailsInstallListener() {
 		public void installChanged(Set<IGrailsInstall> installs) {
-			if (installListenerEnabled) {
+			if (installListenerEnabled
+				&& !GrailsInstallWorkspaceConfigurator.isBusy()) {
+				// GIWC.isBusy: avoids bug STS-1819: double migration dialog.
+				//  It is 'safe' to ignore chnages to grails installs caused by the workspace configurator because
+				//  it only adds new install but this shouldn't affect existing projects (unless they are already broken).
 				new ProjectChangeHandler().defaultGrailsVersionChanged();
 			}
 		}
