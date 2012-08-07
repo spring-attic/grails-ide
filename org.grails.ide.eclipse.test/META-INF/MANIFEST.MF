@@ -66,7 +66,8 @@ Require-Bundle:
  org.eclipse.equinox.frameworkadmin;bundle-version="[2.0.0,3.0.0)",
  org.junit;bundle-version="4.7.0",
  org.codehaus.groovy.eclipse.dsl.tests;bundle-version="2.6.1",
- org.junit4
+ org.junit4,
+ org.eclipse.ui
 Export-Package: org.grails.ide.eclipse.commands.test;x-internal:=true,
  org.grails.ide.eclipse.longrunning.test;x-internal:=true,
  org.grails.ide.eclipse.test;x-internal:=true,
