@@ -66,6 +66,7 @@ public class DomainClass extends AbstractGrailsElement implements INavigableGrai
         "mapping",  // closure
         "constraints", // closure
         "namedQueries", // closure
+        "hasOne" // class
     };
     
     public class NamedQueryClassNode extends ClassNode {

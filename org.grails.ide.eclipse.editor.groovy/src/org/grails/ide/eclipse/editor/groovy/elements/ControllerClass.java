@@ -338,11 +338,14 @@ public class ControllerClass extends AbstractGrailsElement implements INavigable
 	 * @return {@link AnnotatedNode} corresponding to the action declaration, or null if not an action
 	 */
 	public AnnotatedNode getControllerAction(String name) {
-	    MethodNode method = getGroovyClass().getMethod(name, Parameter.EMPTY_ARRAY);
-	    if (method != null && !method.isStatic() && method.getReturnType().equals(VariableScope.OBJECT_CLASS_NODE)) {
-	        return method;
+	    List<MethodNode> methods = getGroovyClass().getMethods(name);
+	    if (methods != null && methods.size() > 0) {
+	        // arbitrarily choose first method.  I don't think it is possible to have overloaded controller actions
+	        MethodNode method = methods.get(0);
+    	    if (method != null && !method.isStatic() && method.getReturnType().equals(VariableScope.OBJECT_CLASS_NODE)) {
+    	        return method;
+    	    }
 	    }
-
 	    PropertyNode property = getGroovyClass().getProperty(name);
 	    if (property != null && !property.isStatic() && !isServiceReference(property)) {
 	        return property;

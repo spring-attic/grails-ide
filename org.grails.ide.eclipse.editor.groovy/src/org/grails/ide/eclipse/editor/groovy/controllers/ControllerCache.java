@@ -25,11 +25,14 @@ import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.groovy.search.ITypeRequestor;
 import org.eclipse.jdt.groovy.search.TypeInferencingVisitorFactory;
 import org.eclipse.jdt.groovy.search.TypeInferencingVisitorWithRequestor;
 import org.eclipse.jdt.groovy.search.TypeLookupResult;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 
 /**
  * Keeps track of a single controller class, all of its actions, and the names/inferred types of the return values
@@ -165,10 +168,22 @@ public class ControllerCache {
      * @return
      */
     private IMember findMember(String actionName) {
-        // first go for method
-        IMember member = controllerType.getMethod(actionName, NO_PARAMETERS);
-        if (member.exists()) {
-            return member;
+        // first go for method...can have arbitrary number of parameters
+        IMember member;
+        try {
+            IMethod[] allMethods = controllerType.getMethods();
+            member = null;
+            for (IMethod maybeMethod : allMethods) {
+                if (maybeMethod.getElementName().equals(actionName)) {
+                    member = maybeMethod;
+                    break;
+                }
+            }
+            if (member != null) {
+                return member;
+            }
+        } catch (JavaModelException e) {
+            GrailsCoreActivator.log(e);
         }
         member = controllerType.getField(actionName);
         if (member.exists()) {

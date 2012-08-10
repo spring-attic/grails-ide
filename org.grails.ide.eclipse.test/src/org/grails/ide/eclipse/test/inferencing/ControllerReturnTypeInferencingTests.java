@@ -84,4 +84,26 @@ public class ControllerReturnTypeInferencingTests extends AbstractGrailsInferenc
         end = start + "x".length();
         assertTypeInDomainClass(contents, start, end, "java.util.Map");
     }
+    
+    // STS-2780
+    public void testReturnType4() throws Exception {
+        createControllerClass("FlarController", 
+                "class FlarController {\n" +
+                        "  def list(int a) { [first : [9:''], second : ['':9] ] }\n" +
+                "}");
+        
+        String contents = "def x = new FlarController().list()\n" +
+                "x.first\n" +
+                "x.second";
+        int start = contents.indexOf("first");
+        int end = start + "first".length();
+        assertTypeInDomainClass(contents, start, end, "java.util.Map<java.lang.Integer,java.lang.String>");
+        start = contents.indexOf("second");
+        end = start + "second".length();
+        assertTypeInDomainClass(contents, start, end, "java.util.Map<java.lang.String,java.lang.Integer>");
+        start = contents.lastIndexOf("x");
+        end = start + "x".length();
+        assertTypeInDomainClass(contents, start, end, "java.util.Map");
+    }
+    
 }
