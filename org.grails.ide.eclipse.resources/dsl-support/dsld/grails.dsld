@@ -146,12 +146,12 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
 // -----------------------------------------------------
 // constraints
 // The constraints DSL is only applicable inside of the static "constraints" field declaration
-(domainClass &
+contribute(domainClass &
    inClosure() &
    enclosingField(name("constraints") & isStatic()) &
    isThisType() &
    bind(props : properties(~isStatic())) // 'bind' props to the collection of properties in the domain class
-   ).accept {
+   ) {
 
    provider = "Grails Constraints DSL"  // this value will appear in content assist
 
@@ -190,7 +190,7 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
 // GormValidationAPI
 //
 // with a little bit of Criteria builder mixed in
-(domainClass & bind(props : properties(~isStatic()))).accept {
+contribute(domainClass & bind(props : properties(~isStatic()))) {
    def currentTypeName = currentType.name
    provider = "GORM Instance API"
    delegatesTo type:"org.grails.datastore.gorm.GormInstanceApi<${currentTypeName}>", asCategory:true
@@ -222,7 +222,7 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
 // hasMany, hasOne, belongsTo
 
 // hasMany
-(domainClass & currentType(props : properties(isStatic() & name("hasMany")))).accept {
+contribute(domainClass & currentType(props : properties(isStatic() & name("hasMany")))) {
    provider = "Grails hasMany"
    props.each { PropertyNode hasMany ->
        if (hasMany.initialExpression instanceof MapExpression) {
@@ -239,7 +239,7 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
 }
 
 // hasOne
-(domainClass & currentType(props : properties(isStatic() & name("hasOne")))).accept {
+contribute(domainClass & currentType(props : properties(isStatic() & name("hasOne")))) {
    provider = "Grails hasOne"
    props.each { PropertyNode hasOne ->
        if (hasOne.initialExpression instanceof MapExpression) {
@@ -253,7 +253,7 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
    }
 }
 // belongsTo
-(domainClass & currentType(props : properties(isStatic() & name("belongsTo")))).accept {
+contribute(domainClass & currentType(props : properties(isStatic() & name("belongsTo")))) {
    provider = "Grails belongsTo"
    props.each { PropertyNode belongsTo ->
            if (belongsTo.initialExpression instanceof MapExpression) {
@@ -279,7 +279,7 @@ void addSyntheticFieldToWormhole(String name, String type, Map wormhole) {
 // the currentType("grails.gorm.DetachedCriteria") is not really correct...see below
 def whereQuery = ((domainClass | currentType("grails.gorm.DetachedCriteria")) & inClosure() & (enclosingCallName("where") | enclosingCallName("find") | enclosingCallName("findAll")))
 
-whereQuery.accept {
+contribute(whereQuery) {
    def currentTypeName = currentType.name
    // detachedName will be incorrect when currentType is DetachedCriteria.
    def detachedName = "grails.gorm.DetachedCriteria<${currentTypeName}>"
@@ -309,7 +309,7 @@ whereQuery.accept {
 }
 
 // here are nested queries
-(whereQuery & enclosingCallName(names : name())).accept {
+contribute(whereQuery & enclosingCallName(names : name())) {
    // grab each enclosing name and see if it is a property of the current domain class
    // it may be a synthetic property
    names.each {
@@ -335,14 +335,14 @@ whereQuery.accept {
 }
 
 // the 'of' method for DetachedCriteria
-currentType("grails.gorm.DetachedCriteria").accept {
+contribute(currentType("grails.gorm.DetachedCriteria")) {
    provider = "Where query DSL"
    method name:"of", params:[subquery:Closure], declaringType:extractGeneric(currentType), doc:"You can apply additional criteria to any subquery by using the of method and passing in a closure containing the criteria."
 }
 
 
 // Criteria builder ---
-currentType("grails.orm.HibernateCriteriaBuilder").accept {
+contribute(currentType("grails.orm.HibernateCriteriaBuilder")) {
    provider = "Criteria builder DSL"
    method name : "and", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
    method name : "or", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
@@ -372,9 +372,9 @@ contribute(enclosingField("namedQueries") & domainClass) {
 
 // -----------------------------------------------------
 // mapping --- orm DSL
-(domainClass & currentType(properties(isStatic() & name("mapping")) &
+contribute(domainClass & currentType(properties(isStatic() & name("mapping")) &
    bind(props : properties(~isStatic())) // 'bind' props to the collection of properties in the domain class
-   )).accept {
+   )) {
    provider = "Grails ORM DSL"
 
    method name:"table", type:Void, namedParams: [tableName: String], isStatic:true
@@ -409,9 +409,10 @@ contribute(enclosingField("namedQueries") & domainClass) {
 
 
 
-(unitTest &
+contribute(unitTest &
+       isThisType() &
        enclosingClass(annotatedBy(name("grails.test.mixin.TestFor") &
-       hasAttribute(types : value())))).accept {
+       hasAttribute(types : value())))) {
    types.each { String className ->
         if (className.contains("Controller")) {
             provider = "Controller unit test DSL"
