@@ -85,7 +85,9 @@ public class GrailsTestsActivator implements BundleActivator {
         final List<String> files = new ArrayList<String>();
         file.listFiles(new FileFilter() {
             public boolean accept(File file) {
-                if (file.getName().endsWith(".jar")) {
+                // ignore the xalan and itext jars since they contain chained libraries in the MANIFEST.MF that don't exist
+                // JDT wants to add these non-existant dependencies to the classpath and this causes errors later.
+                if (file.getName().endsWith(".jar") && !file.getPath().contains("xalan") && !file.getPath().contains("itext")) {
                     files.add(file.getAbsolutePath());
                 }
                 if (recursive && file.isDirectory()) {
