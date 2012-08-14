@@ -334,7 +334,10 @@ public class GrailsCoreActivator extends Plugin {
 				GrailsCoreActivator.log(e);
 			}
 		}
-		if (isWindows()) {
+		//if (isWindows()) {//STS-2552: jline UnixTerminal causes grails and STS to be 'suspended' on Linux systems.
+							// This is because Unix job control will suspend background jobs that try to access the terminal.
+							// So to avoid this problem we now do this for any OS not just Windows.
+		
 			//If we don't set this property on windows then Jline will
 			//instantiate "WindowsConsole" based on "os.name" property, 
 			//but the "WindowsConsole doesn't work well when inside 
@@ -342,7 +345,7 @@ public class GrailsCoreActivator extends Plugin {
 			if (!props.containsKey("jline.terminal")) { // don't overwrite if user defined it.
 				props.put("jline.terminal", "jline.UnsupportedTerminal");
 			}
-		}
+		//}
 		return props;
 	}
 	
