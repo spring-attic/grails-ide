@@ -8,19 +8,22 @@ It also comes with the SpringSource Dashboard is an optional component, which br
 
 ## Installation (Release)
 
-There is no release published yet. Once we have a release out, you will be able to install it either from the Eclipse Marketplace or from a release update site.
+  You can install the latest release of the Grails IDE from the Eclipse Marketplace by looking for "grails". You can also install it manually
+  from this update site:
+
+  http://dist.springsource.com/release/TOOLS/grails-ide/
 
 ## Installation (Milestone)
 
 You can install the latest milestone build of the Grails IDE manually from this udpate site:
 
-    <http://dist.springsource.com/milestone/TOOLS/grails-ide/>
+    http://dist.springsource.com/milestone/TOOLS/grails-ide/
 
 ## Installation (CI builds)
 
 If you want to live on the leading egde, you can also install always up-to-date continuous integration buids from this update site:
 
-    <http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly>
+  http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly
 
   But take care, those builds could be broken from time to time and might contain non-ship-ready
   features that might never appear in the milestone or release builds.
