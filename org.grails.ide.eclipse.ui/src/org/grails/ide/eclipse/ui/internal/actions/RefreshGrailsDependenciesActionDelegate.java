@@ -10,17 +10,25 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.ui.internal.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerUpdateJob;
+import org.grails.ide.eclipse.ui.GrailsUiActivator;
 import org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils.ProjectFilter;
 import org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils.SelectionUtils;
 
@@ -33,7 +41,7 @@ import org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils.Selecti
  */
 public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
 
-	private static final boolean DEBUG = false;
+    private static final boolean DEBUG = false;
 	private static void debug(String msg) {
 		if (DEBUG) {
 			System.out.println(msg);
@@ -41,9 +49,18 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
 	}
 	
 	private List<IProject> selected = null;
+    private Shell shell;
 	
 	public void run(IAction action) {
 		debug(">>> running action 'refresh dependencies'");
+		
+		List<IProject> mavenProjects = getMavenProjects(selected);
+		if (mavenProjects.size() > 0) {
+		    String errorLabel = createLabel(mavenProjects);
+		    MessageDialog.openInformation(shell, "Maven project", errorLabel);
+		    return;
+		}
+		
 		for (IProject project : selected) {
 			debug("project: "+project);
 			GrailsClasspathContainerUpdateJob
@@ -52,7 +69,50 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
 		debug("<<< running action 'refresh dependencies'");
 	}
 
-	public void selectionChanged(IAction action, ISelection selection) {
+	/**
+     * @param mavenProjects
+     * @return
+     */
+    private String createLabel(List<IProject> mavenProjects) {
+        if (mavenProjects.size() == 1) {
+            return "The project '" + mavenProjects.get(0).getName() + "' is a maven project.  Must run Maven -> Update project... instead of Refresh dependencies.";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (Iterator<IProject> iterator = mavenProjects.iterator(); iterator
+                    .hasNext();) {
+                IProject project = iterator.next();
+                if (!iterator.hasNext()) {
+                    sb.append("and ");
+                }
+                sb.append(project.getName());
+                if (iterator.hasNext()) {
+                    sb.append(", ");
+                }
+                
+            }
+            return "The projects " + sb + " are a maven projects.  Must run Maven -> Update project... instead of Refresh dependencies.";
+        }
+    }
+
+    /**
+     * @param projects
+     * @return
+     */
+    private List<IProject> getMavenProjects(List<IProject> projects) {
+        List<IProject> mavenProjects = new ArrayList<IProject>(projects.size());
+        for (IProject project : projects) {
+            try {
+                if (project.isAccessible() && project.hasNature(GrailsUiActivator.M2ECLIPSE_NATURE)) {
+                    mavenProjects.add(project);
+                }
+            } catch (CoreException e) {
+                GrailsCoreActivator.log(e);
+            }
+        }
+        return mavenProjects;
+    }
+
+    public void selectionChanged(IAction action, ISelection selection) {
 		debug("selectionChanged: "+this);
 		debug("      selection = "+selection);
 		selected = SelectionUtils.getProjects(selection, new ProjectFilter() {
@@ -63,6 +123,7 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
 		});
 		boolean enabled = !selected.isEmpty();
 		action.setEnabled(enabled);
+		
 		debug("        enabled = "+enabled);
 		debug("       selected = "+selected);
 	}
@@ -71,11 +132,11 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
 	}
 
 	public void dispose() {
-		// Nothing
+	    shell = null;
 	}
 
 	public void init(IWorkbenchWindow window) {
-		// Nothing
+	    shell = window.getShell();
 	}
 
 }

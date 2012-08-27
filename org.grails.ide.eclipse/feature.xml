@@ -99,11 +99,13 @@
          id="org.grails.ide.eclipse.resources"
          download-size="0"
          install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.grails.ide.eclipse.maven"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
-         unpack="true"/>
-   <!-- note: tycho probably ignores the 'unpack' flag. It also makes unpack="false" the default.
-     See https://issues.sonatype.org/browse/TYCHO-555
-     So to get the bundle to be unpacked this has to be specified in the plugin manifest by adding a
-     line like this 'Eclipse-BundleShape: dir' -->
+         unpack="false"/>
 
 </feature>

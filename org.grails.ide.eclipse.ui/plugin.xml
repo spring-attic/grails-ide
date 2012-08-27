@@ -69,6 +69,13 @@
               id="com.springsource.ide.grails.ui.refreshClasspath"
               label="Refresh Dependencies"
               menubarPath="com.springsource.ide.grails.ui.tools/group1">
+           <enablement>
+              <not>
+	              <test forcePluginActivation="true"
+		   		   			property="org.eclipse.core.resources.projectNature" 
+		   		   			value="org.eclipse.m2e.core.maven2Nature" />
+              </not>
+           </enablement>
          </action>
         <action
               class="org.grails.ide.eclipse.ui.internal.actions.DownloadSourcesActionDelegate"

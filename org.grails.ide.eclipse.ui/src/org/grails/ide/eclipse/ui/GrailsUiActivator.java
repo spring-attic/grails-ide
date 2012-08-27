@@ -47,6 +47,8 @@ public class GrailsUiActivator extends AbstractUIPlugin {
 	 */
 	private GrailsOutputFolderFixer outputFolderFixer;
 
+    public static final String M2ECLIPSE_NATURE = "org.eclipse.m2e.core.maven2Nature";
+
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;

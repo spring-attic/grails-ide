@@ -78,6 +78,12 @@ public class SourceFolderJob {
 
 	private Set<IProject> handledInPlaceProjects = new HashSet<IProject>();
 	
+    // TODO FIXADE delete!!!
+    public SourceFolderJob(IProject project) {
+        this(JavaCore.create(project));
+    }
+	
+	
 	public SourceFolderJob(IJavaProject javaProject) {
 		this.javaProject = javaProject;
 	}
@@ -102,12 +108,6 @@ public class SourceFolderJob {
 			// add new ones
 			current.addAll(newEntries);
 
-//			if (DEBUG) {
-//				debug("setting classpath for "+javaProject.getElementName());
-//				for (IClasspathEntry entry : current) {
-//					debug("  "+entry);
-//				}
-//			}
 			grailsProject.setClassPath(current, monitor);
 			if (DEBUG) {
 				debug("classpath is now");
@@ -119,8 +119,6 @@ public class SourceFolderJob {
 			cleanupLegacyLinkedSourceFolders(oldEntries);
 			
 		} catch (JavaModelException e) {
-			GrailsCoreActivator.log(e);
-		} catch (CoreException e) {
 			GrailsCoreActivator.log(e);
 		}
 	}
@@ -177,21 +175,52 @@ public class SourceFolderJob {
 
 
 	public IStatus refreshSourceFolders(IProgressMonitor monitor) {
+        List<IClasspathEntry> oldEntries = getGrailsSourceClasspathEntries(javaProject);
+
+        try {
+            List<IClasspathEntry> newEntries = findSourceEntries(monitor);
+    
+    		if (newEntries.size() > 0 || oldEntries.size() > 0) {
+    			addToClasspath(javaProject, oldEntries, newEntries, monitor);
+    		}
+    			
+            fixCharSets(monitor);
+        } catch (CoreException e) {
+            return e.getStatus();
+        }
+		return Status.OK_STATUS;
+	}
+
+    /**
+     * ensure that the i18n folders have correct charsets
+     * @param monitor
+     */
+    public void fixCharSets(IProgressMonitor monitor) throws CoreException {
+            new CharsetFixer(javaProject.getProject()).fixEncodings(new SubProgressMonitor(monitor, 2));
+    }
+
+    /**
+     * Finds all of the 
+     * @param monitor
+     * @param project
+     * @param pluginsDirectory
+     * @param pluginSources
+     * @return
+     */
+    public List<IClasspathEntry> findSourceEntries(IProgressMonitor monitor) throws CoreException {
         IProject project = javaProject.getProject();
         DependencyData data = GrailsCore.get().connect(project, PerProjectDependencyDataCache.class).getData();
         if (data == null) {
-            return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Invalid plugin descriptor for " + project.getName()); //$NON-NLS-1$
+            throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Invalid plugin descriptor for " + project.getName())); //$NON-NLS-1$
         }
         IPath pluginsDirectory = toPath(data.getPluginsDirectory());
         Set<String> pluginSources = data.getSources();
-
+        List<IClasspathEntry> newEntries = new ArrayList<IClasspathEntry>();
 		try {
 			IFolder linkToPluginsFolder = project.getFolder(PLUGINS_FOLDER_LINK);
 			ensureLink(linkToPluginsFolder, pluginsDirectory);
 
-			List<IClasspathEntry> oldEntries = getGrailsSourceClasspathEntries(javaProject);
 			
-			List<IClasspathEntry> newEntries = new ArrayList<IClasspathEntry>();
 			List<IClasspathEntry> newInplaceEntries = new ArrayList<IClasspathEntry>();
 			
 			for (String fileDescriptor : pluginSources) {
@@ -234,18 +263,11 @@ public class SourceFolderJob {
 				}
 			}
 			newEntries.addAll(newInplaceEntries);
-			if (newEntries.size() > 0 || oldEntries.size() > 0) {
-				addToClasspath(javaProject, oldEntries, newEntries, monitor);
-			}
-			
-			// ensure that the i18n folders have correct charsets
-			new CharsetFixer(javaProject.getProject()).fixEncodings(new SubProgressMonitor(monitor, 2));
-		} catch (Exception e) {
-			GrailsCoreActivator.log(e);
-		}
-
-		return Status.OK_STATUS;
-	}
+        } catch (Exception e) {
+            GrailsCoreActivator.log(e);
+        }
+        return newEntries;
+    }
 
 	/**
 	 * Ensure that a given folder is a link to a given target location.
@@ -269,14 +291,16 @@ public class SourceFolderJob {
 		// We should only get here if folder doesn't yet exist, or has been deleted because it was pointing to incorrect location.
 		folder.createLink(target, IFolder.ALLOW_MISSING_LOCAL, new NullProgressMonitor());
 	}
-
-	private Set<IPath> toPath(Set<String> pathStrings) {
-		LinkedHashSet<IPath> paths = new LinkedHashSet<IPath>();
-		for (String s : pathStrings) {
-			paths.add(new Path(s));
-		}
-		return paths;
-	}
+	
+	
+	// Not used...DELETE?
+//	private Set<IPath> toPath(Set<String> pathStrings) {
+//		LinkedHashSet<IPath> paths = new LinkedHashSet<IPath>();
+//		for (String s : pathStrings) {
+//			paths.add(new Path(s));
+//		}
+//		return paths;
+//	}
 
 	private IPath toPath(String filePathName) {
 		return new Path(filePathName);

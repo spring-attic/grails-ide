@@ -14,10 +14,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsResourceUtil;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginsListManager;
+import org.grails.ide.eclipse.ui.GrailsUiActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.Plugin;
 import org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins.PluginManagerDialog;
 
@@ -82,8 +88,31 @@ public class GrailsPluginManagerDialogue extends PluginManagerDialog {
 			List<IProject> projects) {
 		super(parentShell, projects);
 	}
-
+	
 	@Override
+	protected Control createButtonBar(Composite parent) {
+	    Control c = super.createButtonBar(parent);
+        if (isM2EProject(getProjects())) {
+            setErrorMessage("Project uses maven. Use the pom.xml file to install/uninstall plugins.");
+            this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+        }
+        return c;
+	}
+
+	private boolean isM2EProject(List<IProject> projects) {
+        for (IProject project : projects) {
+            try {
+                if (project.isAccessible() && project.hasNature(GrailsUiActivator.M2ECLIPSE_NATURE)) {
+                    return true;
+                }
+            } catch (CoreException e) {
+                GrailsCoreActivator.log(e);
+            }
+        }
+        return false;
+    }
+
+    @Override
 	protected Collection<IProject> updateProjects() {
 		return GrailsResourceUtil.getAllGrailsProjects();
 	}
