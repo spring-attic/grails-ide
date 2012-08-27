@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.grails.ide.eclipse.commands.GrailsCommand;
@@ -36,12 +40,15 @@ import org.grails.ide.eclipse.core.internal.classpath.DependencyFileFormat;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginUtil;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
+import org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate;
 import org.grails.ide.eclipse.core.launch.SharedLaunchConstants;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 
 import org.grails.ide.eclipse.editor.gsp.tags.PerProjectTagProvider;
 import org.grails.ide.eclipse.test.util.GrailsTest;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * Tests for the GrailsCommand class.
@@ -61,7 +68,59 @@ public class GrailsCommandTest extends AbstractCommandTest {
 //		GrailsCoreActivator.getDefault().setKeepGrailsRunning(true);
 	}
 	
-	public void testInPlacePluginDependency() throws Exception {
+    /**
+     * Relates to https://issuetracker.springsource.com/browse/STS-1874. Example code from
+     * https://issuetracker.springsource.com/browse/STS-1880.
+     */
+    public void testAgentBasedReloading() throws Exception {
+        GrailsVersion version = GrailsVersion.MOST_RECENT;
+        if (version.compareTo(GrailsVersion.V_2_0_0)>=0) {
+            ensureDefaultGrailsVersion(version);
+            final String projectName = TEST_PROJECT_NAME;
+            project = ensureProject(projectName);
+            createResource(project, "grails-app/controllers/ReloadableController.groovy", 
+                    "class ReloadableController\n" + 
+                            "{\n" + 
+                            "   def index = { render \"hello world\" }\n" + 
+                    "}");
+            StsTestUtil.assertNoErrors(project); // Forces build and checks for compile errors in project.
+
+            final int port = StsTestUtil.findFreeSocketPort();
+            ILaunchConfigurationWorkingCopy launchConf = (ILaunchConfigurationWorkingCopy) GrailsLaunchConfigurationDelegate.getLaunchConfiguration(project, "-Dserver.port="+port+" run-app", false);
+            
+            ILaunch launch = launchConf.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+            dumpOutput(launch);
+            final URL url = new URL("http://localhost:"+port+"/"+projectName+"/reloadable/index");
+            try {
+                new ACondition("hello world") {
+                    public boolean test() throws Exception {
+                        String page = getPageContent(url);
+                        assertEquals("hello world\n", page);
+                        return true;
+                    }
+                }.waitFor(120000);
+
+                createResource(project, "grails-app/controllers/ReloadableController.groovy", 
+                        "class ReloadableController\n" + 
+                                "{\n" + 
+                                "   def index = { render \"goodbye world\" }\n" + 
+                        "}");
+
+                new ACondition("goodbye world") {
+                    public boolean test() throws Exception {
+                        String page = getPageContent(url);
+                        assertEquals("goodbye world\n", page);
+                        return true;
+                    }
+                }.waitFor(30000); // updating contents with SpringLoaded should be faster?
+            } finally {
+                launch.terminate();
+            }
+        } else {
+            System.out.println("Skipping this test");
+        }
+    }
+    public void testInPlacePluginDependency() throws Exception {
 		IProject plugin = ensureProject(this.getClass().getSimpleName()+"-"+"plug-in", true);
 		IProject nonPlugin = ensureProject(this.getClass().getSimpleName()+"-"+"NonPlugin");
 		IJavaProject jNonPlugin = JavaCore.create(nonPlugin);

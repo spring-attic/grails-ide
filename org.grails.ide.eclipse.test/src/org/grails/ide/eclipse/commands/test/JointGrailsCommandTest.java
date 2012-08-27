@@ -140,59 +140,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
             assertTrue(jar.getName().startsWith("springloaded-core-"));
         }
     }
-    /**
-     * Relates to https://issuetracker.springsource.com/browse/STS-1874. Example code from
-     * https://issuetracker.springsource.com/browse/STS-1880.
-     */
-    public void testAgentBasedReloading() throws Exception {
-        GrailsVersion version = GrailsVersion.MOST_RECENT;
-        if (version.compareTo(GrailsVersion.V_2_0_0)>=0) {
-            ensureDefaultGrailsVersion(version);
-            final String projectName = TEST_PROJECT_NAME;
-            project = ensureProject(projectName);
-            createResource(project, "grails-app/controllers/ReloadableController.groovy", 
-                    "class ReloadableController\n" + 
-                            "{\n" + 
-                            "   def index = { render \"hello world\" }\n" + 
-                    "}");
-            StsTestUtil.assertNoErrors(project); // Forces build and checks for compile errors in project.
 
-            final int port = StsTestUtil.findFreeSocketPort();
-            ILaunchConfigurationWorkingCopy launchConf = (ILaunchConfigurationWorkingCopy) GrailsLaunchConfigurationDelegate.getLaunchConfiguration(project, "-Dserver.port="+port+" run-app", false);
-            
-            ILaunch launch = launchConf.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
-            dumpOutput(launch);
-            final URL url = new URL("http://localhost:"+port+"/"+projectName+"/reloadable/index");
-            try {
-                new ACondition("hello world") {
-                    public boolean test() throws Exception {
-                        String page = getPageContent(url);
-                        assertEquals("hello world\n", page);
-                        return true;
-                    }
-                }.waitFor(120000);
-
-                createResource(project, "grails-app/controllers/ReloadableController.groovy", 
-                        "class ReloadableController\n" + 
-                                "{\n" + 
-                                "   def index = { render \"goodbye world\" }\n" + 
-                        "}");
-
-                new ACondition("goodbye world") {
-                    public boolean test() throws Exception {
-                        String page = getPageContent(url);
-                        assertEquals("goodbye world\n", page);
-                        return true;
-                    }
-                }.waitFor(30000); // updating contents with SpringLoaded should be faster?
-            } finally {
-                launch.terminate();
-            }
-        } else {
-            System.out.println("Skipping this test");
-        }
-    }
-    
     /**
      * Execute a command that is not associated with any project (yet).
      */
