@@ -38,6 +38,7 @@ import org.grails.ide.eclipse.test.util.GrailsTest;
 public class GrailsTestsActivator implements BundleActivator {
     
     public static final String PLUGIN_ID = "org.grails.ide.eclipse.test"; //$NON-NLS-1$
+    private static boolean isJointGrailsTest;
     
     public static String[] getURLDependencies() throws Exception {
         List<String> allJars = findJars(".", false);
@@ -126,15 +127,17 @@ public class GrailsTestsActivator implements BundleActivator {
     
     
     public void start(BundleContext context) throws Exception {
-        findDefaultGrailsVersion();
     }
 
 
     public void stop(BundleContext context) throws Exception {
     }
+
+    public static boolean isJointGrailsTest() {
+        return isJointGrailsTest;
+    }
     
-    
-    private void findDefaultGrailsVersion() {
-        
+    public static void setJointGrailsTest(boolean isJointGrailsTest) {
+        GrailsTestsActivator.isJointGrailsTest = isJointGrailsTest;
     }
 }

@@ -48,6 +48,7 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
+import org.grails.ide.eclipse.test.GrailsTestsActivator;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 
 /**
@@ -109,22 +110,25 @@ public abstract class AbstractCommandTest extends GrailsTest {
     protected void tearDown() throws Exception {
     	super.tearDown();
     	StsTestUtil.setAutoBuilding(wasAutoBuilding);
-    	new ACondition() {
-    		@Override
-    		public boolean test() throws Exception {
-    			assertFalse("Launch listeners not cleaned up!", LaunchListenerManager.isMemoryLeaked());
-    			
-    			Thread[] threads = StsTestUtil.getAllThreads();
-    			for (Thread thread : threads) {
-    				if (thread.getName().contains("Stream Monitor")) {
-    					fail("A debug UI 'Stream Monitor' thread was left running\n"
-    							+StsTestUtil.getStackDumps());
-    				}
-    			}
-    			return true;
-    		}
-    	}.waitFor(180000);
     	
+    	// avoid running this condition on the joint grails-sts build because it is leading to no class def errors.
+    	if (!GrailsTestsActivator.isJointGrailsTest()) {
+        	new ACondition() {
+        		@Override
+        		public boolean test() throws Exception {
+        			assertFalse("Launch listeners not cleaned up!", LaunchListenerManager.isMemoryLeaked());
+        			
+        			Thread[] threads = StsTestUtil.getAllThreads();
+        			for (Thread thread : threads) {
+        				if (thread.getName().contains("Stream Monitor")) {
+        					fail("A debug UI 'Stream Monitor' thread was left running\n"
+        							+StsTestUtil.getStackDumps());
+        				}
+        			}
+        			return true;
+        		}
+        	}.waitFor(180000);
+    	}    	
     }
 	
 	
