@@ -282,9 +282,15 @@
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
 	</repository>
+<!-- 	<repository>
+	  <id>orbit</id>
+	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url>
+	</repository> -->
     <repository>
       <id>m2e</id>
-      <url>http://download.eclipse.org/technology/m2e/releases/</url>
+	  <layout>p2</layout>
+      <url>http://download.eclipse.org/technology/m2e/releases/1.1/1.1.0.20120530-0009</url>
+<!--       <url>http://download.eclipse.org/technology/m2e/releases/</url> -->
     </repository>
 	<repository>
 	  <id>mylyn</id>
@@ -404,6 +410,16 @@
         <version>${tycho-version}</version>
         <configuration>
           <resolver>p2</resolver>
+          <!-- workaround  https://bugs.eclipse.org/bugs/show_bug.cgi?id=379425 
+            <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>p2-installable-unit</type>
+                <id>org.eclipse.platform.feature.group</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution> -->
         </configuration>
       </plugin>
 
