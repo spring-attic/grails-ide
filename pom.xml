@@ -26,6 +26,7 @@
 	<module>org.grails.ide.eclipse.explorer</module>
 <!--	<module>org.grails.ide.eclipse.junit</module> -->
 <!--	<module>org.grails.ide.eclipse.junit.runtime</module> -->
+	<module>org.grails.ide.eclipse.maven</module>
 	<module>org.grails.ide.eclipse.refactoring</module>
 	<module>org.grails.ide.eclipse.resources</module>
 	<module>org.grails.ide.eclipse.runonserver</module>
@@ -453,11 +454,6 @@
 						<os>macosx</os>
 						<ws>cocoa</ws>
 						<arch>x86_64</arch>
-					</environment>
-					<environment>
-						<os>macosx</os>
-						<ws>carbon</ws>
-						<arch>x86</arch>
 					</environment>
 					<environment>
 						<os>win32</os>
