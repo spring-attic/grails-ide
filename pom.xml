@@ -282,7 +282,10 @@
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
 	</repository>
-	
+    <repository>
+      <id>m2e</id>
+      <url>http://download.eclipse.org/technology/m2e/releases/</url>
+    </repository>
 	<repository>
 	  <id>mylyn</id>
 	  <layout>p2</layout>
