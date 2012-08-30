@@ -75,7 +75,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 	 * @throws Exception
 	 */
 	public void testDownloadSourcesWithFunnyChars() throws Exception {
-		if (GrailsVersion.V_2_1_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
+		if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
 			//This is known to be broken in Grails 2.0.3:
 			//See http://jira.grails.org/browse/GRAILS-8955
 			return; 
@@ -94,7 +94,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
      * @throws Exception
      */
     public void testDownloadSources() throws Exception {
-        if (GrailsVersion.V_2_1_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
+        if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
 			//This is known to be broken in Grails 2.0.3:
 			//See http://jira.grails.org/browse/GRAILS-8955
 			return; 

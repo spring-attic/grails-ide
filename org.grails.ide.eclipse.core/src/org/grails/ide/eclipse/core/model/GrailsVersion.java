@@ -63,7 +63,9 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 //	public static final GrailsVersion V_2_0_0_RC2 = new GrailsVersion("2.0.0.RC2");
 //	public static final GrailsVersion V_2_0_0_RC3 = new GrailsVersion("2.0.0.RC3");
 
-	public static final GrailsVersion MOST_RECENT_1_3 = V_1_3_8;
+    public static final GrailsVersion V_2_3_ = new GrailsVersion("2.3"); //Any '2.3' version *including* milestones is 'greater' than this one
+
+    public static final GrailsVersion MOST_RECENT_1_3 = V_1_3_8;
 	
 	//////////////////////////////////////////
 	//For running test with 1.3.X
