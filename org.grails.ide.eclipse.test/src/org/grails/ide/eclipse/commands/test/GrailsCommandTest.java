@@ -46,6 +46,7 @@ import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 
 import org.grails.ide.eclipse.editor.gsp.tags.PerProjectTagProvider;
+import org.grails.ide.eclipse.test.GrailsTestsActivator;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
@@ -74,7 +75,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
      */
     public void testAgentBasedReloading() throws Exception {
         GrailsVersion version = GrailsVersion.MOST_RECENT;
-        if (version.compareTo(GrailsVersion.V_2_0_0)>=0) {
+        if (version.compareTo(GrailsVersion.V_2_0_0)>=0 && !GrailsTestsActivator.isJointGrailsTest()) {
             ensureDefaultGrailsVersion(version);
             final String projectName = TEST_PROJECT_NAME;
             project = ensureProject(projectName);
