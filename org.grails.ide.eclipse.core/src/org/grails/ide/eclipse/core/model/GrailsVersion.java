@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.core.model;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -17,6 +18,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.GrailsNature;
 
 
 /**
@@ -240,19 +242,38 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	 * the grails version is for this project).
 	 */
 	public static GrailsVersion getGrailsVersion(IProject project) {
-		try {
-			Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
-			if (props!=null) {
-				String versionString = (String) props.get("app.grails.version");
-				return new GrailsVersion(versionString);
+		if (project!=null) {
+			try {
+				Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
+				if (props!=null) {
+					String versionString = (String) props.get("app.grails.version");
+					return new GrailsVersion(versionString);
+				}
+				return UNKNOWN;
+			} catch (Throwable e) {
+				GrailsCoreActivator.log("Couldn't determine grails version for project "+project, e);
 			}
-			return UNKNOWN;
-		} catch (Throwable e) {
-			GrailsCoreActivator.log("Couldn't determine grails version for project "+project, e);
-			return UNKNOWN;
 		}
+		return UNKNOWN;
 	}
 
+	public static GrailsVersion getGrailsVersion(File project) {
+		if (project!=null && GrailsNature.looksLikeGrailsProject(project)) {
+			try {
+				Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
+				if (props!=null) {
+					String versionString = (String) props.get("app.grails.version");
+					return new GrailsVersion(versionString);
+				}
+				return UNKNOWN;
+			} catch (Throwable e) {
+				GrailsCoreActivator.log("Couldn't determine grails version for project "+project, e);
+			}
+		}
+		return UNKNOWN;
+	}
+	
+	
 	/**
 	 * Retrieve grails version of the associated grails install of this project.
 	 * I.e. what does "eclipse think" the associated Grails version is of this project.

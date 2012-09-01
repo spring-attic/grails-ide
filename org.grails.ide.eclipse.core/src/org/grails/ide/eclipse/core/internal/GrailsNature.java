@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.core.internal;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
@@ -46,13 +48,27 @@ public class GrailsNature implements IProjectNature {
 	}
 	
 	/**
-	 * Determine whetjer a given project 'looks like' a Grails project based 
+	 * Determine whether a given project 'looks like' a Grails project based 
 	 * on its contents, without relying on eclipse metadata.
 	 */
 	public static boolean looksLikeGrailsProject(IProject project) {
 		if (project!=null && project.isAccessible()) {
 			return project.getFolder("grails-app").exists()
 					&& project.getFile("application.properties").exists();
+		}
+		return false;
+	}
+
+	/**
+	 * This expresses the same logic as looksLikeGrailsProject(IProject) but for
+	 * a situation where we have java.io.File rather than an Eclipse project.
+	 * (typically, this is because we are examining the project before it 
+	 * has been imported so it doesn't yet exist in the workspace.
+	 */
+	public static boolean looksLikeGrailsProject(File project) {
+		if (project!=null && project.isDirectory()) {
+			return new File(project, "grails-app").isDirectory()
+					&& new File(project, "application.properties").isFile();
 		}
 		return false;
 	}
@@ -126,5 +142,5 @@ public class GrailsNature implements IProjectNature {
         }
         return false;
     }
-    
+
 }

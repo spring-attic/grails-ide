@@ -56,6 +56,20 @@ public class GrailsBuildSettingsHelper {
 	public static Properties getApplicationProperties(IProject project) {
 		IFile eclipsePropFile = project.getFile("application.properties");
 		File propFile = eclipsePropFile.getLocation().toFile();
+		return getProps(propFile);
+	}
+
+	/**
+	 * Retrieve contents of "application.properties" for a given Grails project.
+	 * 
+	 * @param project
+	 */
+	public static Properties getApplicationProperties(File project) {
+		File propFile = new File(project, "application.properties");
+		return getProps(propFile);
+	}
+	
+	private static Properties getProps(File propFile) {
 		Properties props = new Properties();
 		FileInputStream input = null;
 		try {

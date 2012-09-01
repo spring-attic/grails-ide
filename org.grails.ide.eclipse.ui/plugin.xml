@@ -671,6 +671,25 @@
       </launchConfigurationTabGroup>
    </extension>
    
+	<extension 
+	     point="org.eclipse.ui.importWizards"> 
+	      <wizard
+	            category="org.grails.ide.eclipse.wizards.import"
+	            class="org.grails.ide.eclipse.ui.internal.wizard.inport.GrailsImportWizard"
+	            icon="icons/full/obj16/grails_obj.png"
+	            id="org.grails.ide.eclipse.wizards.import"
+	            name="Grails Project"> 
+	         <description> 
+	            An import wizards that imports an existing Grails project into Grails IDE.
+	         </description> 
+	         <selection class="org.eclipse.core.resources.IResource"/> 
+	      </wizard>
+	      <category
+	            id="org.grails.ide.eclipse.wizards.import"
+	            name="Grails">
+	      </category> 
+	</extension>
+   
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard

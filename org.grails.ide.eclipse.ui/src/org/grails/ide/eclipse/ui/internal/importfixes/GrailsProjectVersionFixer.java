@@ -97,6 +97,7 @@ public class GrailsProjectVersionFixer {
 
 	
 	private static Set<String> ignoredProjects = new HashSet<String>();
+	
 	/**
 	 * Temporarily disable the fixer for a given projectName. This allows other components of the
 	 * IDE (i.e. the NewGrailsProjectWizard) to be fully responsible for producing correct 

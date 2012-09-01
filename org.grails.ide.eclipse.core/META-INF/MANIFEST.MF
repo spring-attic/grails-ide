@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.springsource.ide.eclipse.commons.core,
  org.codehaus.groovy.eclipse.core,
  org.eclipse.jdt.junit.core,
- org.eclipse.jdt.groovy.core
+ org.eclipse.jdt.groovy.core,
+ org.springsource.ide.eclipse.commons.livexp
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
@@ -32,6 +33,7 @@ Export-Package: org.grails.ide.eclipse.commands,
  org.grails.ide.eclipse.core.launch,
  org.grails.ide.eclipse.core.model,
  org.grails.ide.eclipse.core.util,
+ org.grails.ide.eclipse.core.wizard,
  org.grails.ide.eclipse.core.workspace,
  org.grails.ide.eclipse.core.workspace.internal,
  org.grails.ide.eclipse.longrunning,

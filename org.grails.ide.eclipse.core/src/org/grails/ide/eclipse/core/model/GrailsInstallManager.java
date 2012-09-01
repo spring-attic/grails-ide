@@ -234,7 +234,7 @@ public class GrailsInstallManager {
 		for (IGrailsInstall install : installs.values()) {
 			newInstalls.add(install.getName());
 		}
-		return (String[]) newInstalls.toArray(new String[newInstalls.size()]);
+		return newInstalls.toArray(new String[newInstalls.size()]);
 	}
 
 	/**
