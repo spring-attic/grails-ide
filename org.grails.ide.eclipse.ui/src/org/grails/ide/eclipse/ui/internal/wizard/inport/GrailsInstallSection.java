@@ -103,7 +103,7 @@ public class GrailsInstallSection extends WizardPageSection {
 		installComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Label options = new Label(installComposite, SWT.WRAP);
-		options.setText("nstall: ");
+		options.setText("Install: ");
 		options.setLayoutData(new GridData(GridData.BEGINNING));
 
 		grailsInstallCombo = new Combo(installComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
