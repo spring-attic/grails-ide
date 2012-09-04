@@ -8,25 +8,43 @@ It also comes with the SpringSource Dashboard is an optional component, which br
 
 ## Installation (Release)
 
-  You can install the latest release of the Grails IDE from the Eclipse Marketplace by looking for "grails". You can also install it manually
-  from this update site:
+You can install the latest release of the Grails IDE from the Eclipse Marketplace by looking for "grails". You can also install it manually from one of the following update sites.
 
-  http://dist.springsource.com/release/TOOLS/grails-ide/
+    http://dist.springsource.com/release/TOOLS/grails-ide
+
+From version 3.1 and onward we will also be publishing 'one-stop' sites which contain all the required
+dependencies for easy installation into a plain Eclipse. These sites are specific to a version of Eclipse
+so make sure to pick the correct link for your version of Eclipse.
+
+    http://dist.springsource.com/release/TOOLS/grails-ide/e3.7
+    http://dist.springsource.com/release/TOOLS/grails-ide/e4.2
 
 ## Installation (Milestone)
 
 You can install the latest milestone build of the Grails IDE manually from this udpate site:
 
     http://dist.springsource.com/milestone/TOOLS/grails-ide/
+    
+From version 3.1 and onward we will also be publishing 'one-stop' sites which contain all the required
+dependencies for easy installation into a plain Eclipse. These sites are specific to a version of Eclipse
+so make sure to pick the correct link for your version of Eclipse.
+    
+    http://dist.springsource.com/milestone/TOOLS/grails-ide/e3.7
+    http://dist.springsource.com/milestone/TOOLS/grails-ide/e4.2
 
 ## Installation (CI builds)
 
 If you want to live on the leading egde, you can also install always up-to-date continuous integration buids from this update site:
 
-  http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly
+    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly
 
-  But take care, those builds could be broken from time to time and might contain non-ship-ready
-  features that might never appear in the milestone or release builds.
+The following sites contain the same content as the above site, but also contain all the required dependencies to install into plain Eclipse. 
+
+    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e3.7
+    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e4.2
+
+But take care, those builds could be broken from time to time and might contain non-ship-ready
+features that might never appear in the milestone or release builds.
 
 ## Questions and bug reports:
 
