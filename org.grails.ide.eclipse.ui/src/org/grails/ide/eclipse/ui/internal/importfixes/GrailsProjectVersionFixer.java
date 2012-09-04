@@ -12,7 +12,6 @@ package org.grails.ide.eclipse.ui.internal.importfixes;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +38,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
+import org.grails.ide.eclipse.core.internal.IgnoredProjectsList;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerUpdateJob;
 import org.grails.ide.eclipse.core.internal.model.GrailsInstallWorkspaceConfigurator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
@@ -94,41 +94,6 @@ public class GrailsProjectVersionFixer {
 	 * temporarily disable the fixer completely.
 	 */
 	private static boolean isEnabled = true;
-
-	
-	private static Set<String> ignoredProjects = new HashSet<String>();
-	
-	/**
-	 * Temporarily disable the fixer for a given projectName. This allows other components of the
-	 * IDE (i.e. the NewGrailsProjectWizard) to be fully responsible for producing correct 
-	 * projects and not be interrupted unexpectedly because the fixer's detects it just got created.
-	 * 
-	 * TODO: This isn't nice. The right way to handles this would be with some kind of concurrency
-	 * control. The fixer should be divided into a listener that detects and marks projects to check.
-	 * And then schedules an operation to actualy check *and* fix them. This would allow the
-	 * check and fix to be performed atomically and in mutual exclusion with the other parties
-	 * creating and configuring projects. The 'ignored projects' list. Is really just a quick
-	 * hack to avoid major restructuring of how the fixer works.
-	 * 
-	 * @param projectName
-	 */
-	public static void addIgnoredProject(String projectName) {
-		synchronized (ignoredProjects) {
-			ignoredProjects.add(projectName);
-		}
-	}
-	
-	public static void removeIgnoredProject(String projectName) {
-		synchronized (ignoredProjects) {
-			ignoredProjects.remove(projectName);
-		}
-	}
-	
-	public static boolean isIgnorable(IProject project) {
-		synchronized (ignoredProjects) {
-			return ignoredProjects.contains(project.getName());
-		}
-	}
 	
 	/**
 	 * Listener that detects new projects in the workspace and fixes them.
@@ -313,7 +278,7 @@ public class GrailsProjectVersionFixer {
 		}
 
 		private void fix(IProject project) {
-			if (!isIgnorable(project) && isEnabled && GrailsNature.looksLikeGrailsProject(project)) {
+			if (!IgnoredProjectsList.isIgnorable(project) && isEnabled && GrailsNature.looksLikeGrailsProject(project)) {
 				debug("Project to fix? "+project);
 				GrailsVersion grailsVersion = GrailsVersion.getGrailsVersion(project);
 				debug("grails version = "+grailsVersion);

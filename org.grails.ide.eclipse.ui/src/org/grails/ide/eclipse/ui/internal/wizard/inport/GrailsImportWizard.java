@@ -21,10 +21,10 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.IgnoredProjectsList;
 import org.grails.ide.eclipse.core.util.JobUtil;
 import org.grails.ide.eclipse.core.wizard.GrailsImportWizardCore;
 import org.grails.ide.eclipse.ui.GrailsUiActivator;
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 public class GrailsImportWizard extends Wizard implements IImportWizard {
 
@@ -72,12 +72,12 @@ public class GrailsImportWizard extends Wizard implements IImportWizard {
 				try {
 					String projectName = model.getProjectName();
 					if (projectName!=null) {
-						GrailsProjectVersionFixer.addIgnoredProject(projectName);
+						IgnoredProjectsList.addIgnoredProject(projectName);
 						try {
 							model.perform();
 							return Status.OK_STATUS;
 						} finally {
-							GrailsProjectVersionFixer.removeIgnoredProject(projectName);
+							IgnoredProjectsList.removeIgnoredProject(projectName);
 						}
 					} else {
 						return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Couldn't determine project name");

@@ -43,9 +43,9 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.IgnoredProjectsList;
 import org.grails.ide.eclipse.core.model.GrailsInstallManager;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 
 /**
@@ -146,7 +146,7 @@ public abstract class ANewGrailsProjectWizard extends NewElementWizard
 			public IStatus run(IProgressMonitor monitor) {
 				boolean isImport = false;
 				monitor.beginTask("create-app", 2);
-				GrailsProjectVersionFixer.addIgnoredProject(projectName);
+				IgnoredProjectsList.addIgnoredProject(projectName);
 				try {
 					URI location = projectPage.getProjectLocationURI();
 					IProject project = null;
@@ -221,7 +221,7 @@ public abstract class ANewGrailsProjectWizard extends NewElementWizard
 					GrailsCoreActivator.log(e);
 					return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, e.getMessage());
 				} finally {
-					GrailsProjectVersionFixer.removeIgnoredProject(projectName);
+					IgnoredProjectsList.removeIgnoredProject(projectName);
 					monitor.done();
 				}
 			}

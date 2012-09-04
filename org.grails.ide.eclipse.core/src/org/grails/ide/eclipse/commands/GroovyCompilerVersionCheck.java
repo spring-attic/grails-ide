@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.osgi.service.resolver.VersionRange;
+import org.grails.ide.eclipse.core.internal.IgnoredProjectsList;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.osgi.framework.Version;
 
@@ -96,16 +97,20 @@ public class GroovyCompilerVersionCheck {
 	 * This method is called every time refresh dependencies is called.
 	 */
 	public static void check(IJavaProject javaProject) {
-		IProject project = javaProject.getProject(); 
-		GrailsVersion grailsVersion = GrailsVersion.getEclipseGrailsVersion(project);
-		if (seen.contains(grailsVersion)) { 
-			//if already seen we can skip the rest since no message will be shown anyway.
+		if (IgnoredProjectsList.isIgnorable(javaProject.getProject())) {
+			return;
 		} else {
-			VersionRange requiredGroovyVersion = getRequiredGroovyVersion(project);
-			if (requiredGroovyVersion!=null) {
-				Version actualGroovyVersion = new Version(CompilerUtils.getGroovyVersion());
-				if (!requiredGroovyVersion.isIncluded(actualGroovyVersion)) {
-					messageDialog(project, grailsVersion, requiredGroovyVersion, actualGroovyVersion);
+			IProject project = javaProject.getProject(); 
+			GrailsVersion grailsVersion = GrailsVersion.getEclipseGrailsVersion(project);
+			if (seen.contains(grailsVersion)) { 
+				//if already seen we can skip the rest since no message will be shown anyway.
+			} else {
+				VersionRange requiredGroovyVersion = getRequiredGroovyVersion(project);
+				if (requiredGroovyVersion!=null) {
+					Version actualGroovyVersion = new Version(CompilerUtils.getGroovyVersion());
+					if (!requiredGroovyVersion.isIncluded(actualGroovyVersion)) {
+						messageDialog(project, grailsVersion, requiredGroovyVersion, actualGroovyVersion);
+					}
 				}
 			}
 		}
