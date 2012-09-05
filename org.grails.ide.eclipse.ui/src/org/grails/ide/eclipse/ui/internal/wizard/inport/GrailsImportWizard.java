@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -68,13 +69,12 @@ public class GrailsImportWizard extends Wizard implements IImportWizard {
 		JobUtil.schedule(new Job("Import Grails Project") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask("Importing", 1);
 				try {
 					String projectName = model.getProjectName();
 					if (projectName!=null) {
 						IgnoredProjectsList.addIgnoredProject(projectName);
 						try {
-							model.perform();
+							model.perform(monitor);
 							return Status.OK_STATUS;
 						} finally {
 							IgnoredProjectsList.removeIgnoredProject(projectName);
@@ -85,8 +85,6 @@ public class GrailsImportWizard extends Wizard implements IImportWizard {
 				} catch (CoreException e) {
 					GrailsCoreActivator.log(e);
 					return e.getStatus();
-				} finally {
-					monitor.done();
 				}
 			}
 			

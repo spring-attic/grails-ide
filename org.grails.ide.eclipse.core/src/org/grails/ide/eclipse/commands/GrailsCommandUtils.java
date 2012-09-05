@@ -135,11 +135,7 @@ public class GrailsCommandUtils {
 	private static IProject eclipsifyProject(IGrailsInstall grailsInstall,
 			boolean isDefault, IPath projectAbsolutePath, IProject project)
 			throws CoreException {
-//		  
-//		  Note: As of Grails 1.3.5 (possibly earlier), grails is much better at generating
-//		  correct .project, .classpath etc. so much of the work in here might actually
-//		  be skipped for a sufficiently modern grails install.
-		
+
 		if (grailsInstall == null) {
 			grailsInstall = GrailsCoreActivator.getDefault()
 					.getInstallManager().getDefaultGrailsInstall();

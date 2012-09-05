@@ -10,11 +10,22 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.core.wizard;
 
+import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.OK;
+import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.error;
+
 import java.io.File;
 
+import org.eclipse.core.internal.resources.ProjectDescription;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
@@ -24,8 +35,6 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
-
-import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.*;
 
 /**
  * Core counterpart of {@link GrailsImportWizard} in the ui plugin. 
@@ -155,17 +164,46 @@ public class GrailsImportWizardCore {
 		});
 	}
 	
-	public boolean perform() throws CoreException {
-		IGrailsInstall install = grailsInstall.getValue();
-		if (install!=null) {
-			File projectAbsoluteFile = location.getValue();
-			if (projectAbsoluteFile!=null) {
-				IPath projectAbsolutePath = new Path(projectAbsoluteFile.toString());
-				GrailsCommandUtils.eclipsifyProject(grailsInstall.getValue(), false, projectAbsolutePath);
-				return true;
-			}
+	private boolean isDefaultProjectLocation(String projectName, File projectDir) {
+		IPath workspaceLoc = Platform.getLocation();
+		if (workspaceLoc!=null) {
+			File defaultLoc = new File(workspaceLoc.toFile(), projectName);
+			return defaultLoc.equals(projectDir);
 		}
 		return false;
+	}
+	
+	public boolean perform(IProgressMonitor mon) throws CoreException {
+		mon.beginTask("Import", 2);
+		try {
+			IWorkspace ws = ResourcesPlugin.getWorkspace();
+			File projectDir = location.getValue();
+			String projectName = projectDir.getName();
+	
+			//1: create project
+			IProjectDescription projectDescription = ws.newProjectDescription(projectName);
+			if (!isDefaultProjectLocation(projectName, projectDir)) {
+				projectDescription.setLocation(new Path(projectDir.getAbsolutePath()));
+			}
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			project.create(projectDescription, new SubProgressMonitor(mon, 1));
+
+			//2: configure project
+			IGrailsInstall install = grailsInstall.getValue();
+			if (install!=null) {
+				File projectAbsoluteFile = location.getValue();
+				if (projectAbsoluteFile!=null) {
+					IPath projectAbsolutePath = new Path(projectAbsoluteFile.toString());
+					GrailsCommandUtils.eclipsifyProject(grailsInstall.getValue(), false, projectAbsolutePath);
+					return true;
+				}
+			}
+			mon.worked(1);
+			
+			return false;
+		} finally {
+			mon.done();
+		}
 	}
 
 	public String getProjectName() {
