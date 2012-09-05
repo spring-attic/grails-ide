@@ -88,7 +88,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 			addBootstrapJar(jars, new File(home, "dist"));
 		}
 
-		return (File[]) jars.toArray(new File[jars.size()]);
+		return jars.toArray(new File[jars.size()]);
 	}
 
 	public File[] getDependencyClasspath() {
@@ -112,7 +112,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				}
 			}
 
-			String version = (String) GrailsCoreActivator.getDefault()
+			String version = GrailsCoreActivator.getDefault()
 					.getBundle().getHeaders().get(Constants.BUNDLE_VERSION);
 			if (version.endsWith("qualifier")) {
 				addBundleFile(jars, "/bin");
@@ -120,7 +120,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				addBundleFile(jars, "/");
 			}
 		}
-		return (File[]) jars.toArray(new File[jars.size()]);
+		return jars.toArray(new File[jars.size()]);
 	}
 
 	public String getHome() {

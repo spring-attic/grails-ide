@@ -280,7 +280,7 @@ public class GrailsCommandUtils {
 		
 		natures.remove(GrailsNature.OLD_NATURE_ID);
 		
-		desc.setNatureIds((String[]) natures.toArray(new String[natures
+		desc.setNatureIds(natures.toArray(new String[natures
 				.size()]));
 
 		// prepare builder
@@ -290,8 +290,7 @@ public class GrailsCommandUtils {
 				builders.add(builder);
 			}
 		}
-		desc.setBuildSpec((ICommand[]) builders
-				.toArray(new ICommand[builders.size()]));
+		desc.setBuildSpec(builders.toArray(new ICommand[builders.size()]));
 		return addJavaNature;
 	}
 

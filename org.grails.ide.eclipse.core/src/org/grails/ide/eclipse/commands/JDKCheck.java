@@ -37,7 +37,7 @@ public class JDKCheck {
 	private static final boolean CHECK_DISABLED_DEFAULT = false;
 	
 	private static IEclipsePreferences prefs() {
-		return new InstanceScope().getNode(GrailsCoreActivator.PLUGIN_ID);
+		return InstanceScope.INSTANCE.getNode(GrailsCoreActivator.PLUGIN_ID);
 	}
 	
 	/**
