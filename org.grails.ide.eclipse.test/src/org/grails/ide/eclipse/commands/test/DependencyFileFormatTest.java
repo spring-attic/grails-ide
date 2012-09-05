@@ -16,10 +16,10 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyFileFormat;
-
 import junit.framework.TestCase;
+
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
+import org.grails.ide.eclipse.runtime.shared.DependencyFileFormat;
 
 
 /**

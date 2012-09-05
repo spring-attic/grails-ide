@@ -22,14 +22,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
-import org.grails.ide.eclipse.core.launch.SharedLaunchConstants;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.LaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
+import org.grails.ide.eclipse.runtime.shared.SharedLaunchConstants;
 
 
 /**

@@ -33,13 +33,13 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.Console;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
-import org.grails.ide.eclipse.longrunning.process.GrailsProcess;
-import org.grails.ide.eclipse.longrunning.process.ProtocolException;
+import org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessConstants;
+import org.grails.ide.eclipse.runtime.shared.longrunning.ProtocolException;
 
 
 /**
  * A client that is able to send request to execute Grails commands to
- * an external grails process. (Note that the class GrailsProcess itself which 
+ * an external grails process. (Note that the class GrailsProcessConstants itself which 
  * implements the process, shouldn't be instantiated since it runs on an external JVM).
  * <p>
  * Normally you shouldn't instantiate GrailsClient instances directly. Instead use {@link GrailsProcessManager} to obtain client instances.
@@ -52,7 +52,7 @@ public class GrailsClient {
 	
 	/**
 	 * Set this to a value other than null to add debugging stuff to the command line to 
-	 * start the GrailsProcess that this client connects to in debugging mode. To be able to 
+	 * start the GrailsProcessConstants that this client connects to in debugging mode. To be able to 
 	 * actually debug it, you will need to create and start a remote debugging launch configuration 
 	 * in Eclipse.
 	 * <p>
@@ -71,7 +71,7 @@ public class GrailsClient {
 	 * to this remote debugging session when it starts.
 	 * <p>
 	 * Note that if the process is running in 'client' mode but a corresponding debug process isn't
-	 * started in Eclipse, then the GrailsProcess will fail to start.
+	 * started in Eclipse, then the GrailsProcessConstants will fail to start.
 	 * <p>
 	 * See also http://www.grails.org/GrailsDevEnvironment for a bit more info on debugging
 	 * Grails.
@@ -181,7 +181,7 @@ public class GrailsClient {
 
 		// Program args
 		args.add("--main");
-		args.add(GrailsProcess.class.getName());
+		args.add(GrailsProcessConstants.PROCESS_CLASS_NAME);
 		args.add("--conf");
 		args.add(grailsHome+"/conf/groovy-starter.conf");
 		args.add("--classpath");
@@ -232,11 +232,11 @@ public class GrailsClient {
 		workingDir = newDir;
 		if (isRunning()) {
 			//This will ensure that if process is running it assumes the correct dir... or shuts down
-			println(toProcess, GrailsProcess.CHANGE_DIR+newDir.getCanonicalPath());
+			println(toProcess, GrailsProcessConstants.CHANGE_DIR+newDir.getCanonicalPath());
 			String ack = fromProcess.readLine(POLLING_INTERVAL+20000);
-			if (GrailsProcess.ACK_BAD.equals(ack)) {
+			if (GrailsProcessConstants.ACK_BAD.equals(ack)) {
 				waitFor(process); // We expect the process to shutdown soon.
-			} else if (GrailsProcess.ACK_OK.equals(ack)) {
+			} else if (GrailsProcessConstants.ACK_OK.equals(ack)) {
 				// fine
 			} else {
 				throw new ProtocolException("Expected an 'ack' but got:\n"+ack);
@@ -326,11 +326,11 @@ public class GrailsClient {
 //			if (out!=null) {
 //				toConsole = new PrintWriter(out);
 //			}
-//			toProcess.println(GrailsProcess.COMMAND_SCRIPT_NAME	+scriptName);
-//			toProcess.println(GrailsProcess.COMMAND_ARGS			+args);
-//			toProcess.println(GrailsProcess.END_COMMAND);
+//			toProcess.println(GrailsProcessConstants.COMMAND_SCRIPT_NAME	+scriptName);
+//			toProcess.println(GrailsProcessConstants.COMMAND_ARGS			+args);
+//			toProcess.println(GrailsProcessConstants.END_COMMAND);
 //			toProcess.flush(); //Must call 'flush or output may remain buffered-up and not processed by 
-//			// the GrailsProcess. This will cause both the client and the GrailsProcess to hang waiting for 
+//			// the GrailsProcessConstants. This will cause both the client and the GrailsProcessConstants to hang waiting for 
 //			// input that is not coming.
 //			return getCommandResult(timeOut);
 //		}
@@ -357,15 +357,15 @@ public class GrailsClient {
 				toConsoleOut = new PrintWriter(console.getOutputStream());
 				toConsoleErr = new PrintWriter(console.getErrorStream());
 			}
-			println(toProcess, GrailsProcess.BEGIN_COMMAND);
-			println(toProcess, GrailsProcess.COMMAND_UNPARSED + cmd.getCommand());
+			println(toProcess, GrailsProcessConstants.BEGIN_COMMAND);
+			println(toProcess, GrailsProcessConstants.COMMAND_UNPARSED + cmd.getCommand());
 			File depFile = cmd.getDependencyFile();
 			if (depFile !=null) {
-				println(toProcess, GrailsProcess.COMMAND_DEPENDENCY_FILE+depFile.getCanonicalPath());
+				println(toProcess, GrailsProcessConstants.COMMAND_DEPENDENCY_FILE+depFile.getCanonicalPath());
 			}
-			println(toProcess, GrailsProcess.END_COMMAND);
+			println(toProcess, GrailsProcessConstants.END_COMMAND);
 			toProcess.flush(); //Must call 'flush or output may remain buffered-up and not processed by 
-			// the GrailsProcess. This will cause both the client and the GrailsProcess to hang waiting for 
+			// the GrailsProcessConstants. This will cause both the client and the GrailsProcessConstants to hang waiting for 
 			// input that is not coming.
 			
 			SendCommandInput sendInput = new SendCommandInput(this, console.getInputStream(), toProcess);
@@ -415,11 +415,11 @@ public class GrailsClient {
 			timeOut = timeOut * 30; // Otherwise with breakpoints in the process, it will timeout
 		}
 		String line = fromProcess.readLine(timeOut);
-		while (line!=null && !line.startsWith(GrailsProcess.END_COMMAND)) {
-			if (line.startsWith(GrailsProcess.CONSOLE_OUT)) {
-				println(toConsoleOut, line.substring(GrailsProcess.PROTOCOL_HEADER_LEN));
-			} else if (line.startsWith(GrailsProcess.CONSOLE_ERR)) {
-				println(toConsoleErr, line.substring(GrailsProcess.PROTOCOL_HEADER_LEN));
+		while (line!=null && !line.startsWith(GrailsProcessConstants.END_COMMAND)) {
+			if (line.startsWith(GrailsProcessConstants.CONSOLE_OUT)) {
+				println(toConsoleOut, line.substring(GrailsProcessConstants.PROTOCOL_HEADER_LEN));
+			} else if (line.startsWith(GrailsProcessConstants.CONSOLE_ERR)) {
+				println(toConsoleErr, line.substring(GrailsProcessConstants.PROTOCOL_HEADER_LEN));
 			}
 			line = fromProcess.readLine(timeOut);
 		}
@@ -428,7 +428,7 @@ public class GrailsClient {
 			// But it might if something goes wrong that makes the grails process crash.
 			return -1;
 		}
-		return Integer.valueOf(line.substring(GrailsProcess.PROTOCOL_HEADER_LEN));
+		return Integer.valueOf(line.substring(GrailsProcessConstants.PROTOCOL_HEADER_LEN));
 	}
 	
 	void println(PrintWriter out, String line) {
@@ -448,11 +448,11 @@ public class GrailsClient {
 	 */
 	public synchronized void shutDown() {
 		//Ask the process (nicely) to terminate
-		println(toProcess, GrailsProcess.EXIT);
+		println(toProcess, GrailsProcessConstants.EXIT);
 		flush(toProcess);
 		try {
 			String ack = fromProcess.readLine(POLLING_INTERVAL+300);
-			if (GrailsProcess.ACK_OK.equals(ack)) {
+			if (GrailsProcessConstants.ACK_OK.equals(ack)) {
 				waitFor(process);
 				process = null;
 			}

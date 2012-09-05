@@ -12,16 +12,13 @@ package org.grails.ide.eclipse.maven;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -37,7 +34,6 @@ import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainer;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
@@ -46,7 +42,7 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.launch.ClasspathLocalizer;
 import org.grails.ide.eclipse.core.launch.EclipsePluginClasspathEntry;
-import org.grails.ide.eclipse.core.launch.SharedLaunchConstants;
+import org.grails.ide.eclipse.runtime.shared.SharedLaunchConstants;
 
 public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
 

@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeoutException;
 
-import org.grails.ide.eclipse.longrunning.process.GrailsProcess;
+import org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessConstants;
 
 
 /**
@@ -111,9 +111,9 @@ public class LineReader {
 			} else {
 				try {
 					waiting++;
-					if (waiting>1 && line.length()>GrailsProcess.PROTOCOL_HEADER_LEN) {
-						String header = line.substring(0, GrailsProcess.PROTOCOL_HEADER_LEN);
-						if (header.equals(GrailsProcess.CONSOLE_OUT) || header.equals(GrailsProcess.CONSOLE_ERR)) {
+					if (waiting>1 && line.length()>GrailsProcessConstants.PROTOCOL_HEADER_LEN) {
+						String header = line.substring(0, GrailsProcessConstants.PROTOCOL_HEADER_LEN);
+						if (header.equals(GrailsProcessConstants.CONSOLE_OUT) || header.equals(GrailsProcessConstants.CONSOLE_ERR)) {
 							//If we are blocked for more than one polling interval, and we have partial line data meant for the console...
 							//then pretend we had a newline. This is to avoid getting blocked when we are sent a question without a line terminator.
 							partialLineHeader = header; //next time we read... we'll need to pretend we see this

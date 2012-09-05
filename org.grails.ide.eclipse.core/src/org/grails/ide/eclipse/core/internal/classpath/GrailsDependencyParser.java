@@ -15,6 +15,8 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
+import org.grails.ide.eclipse.runtime.shared.DependencyFileFormat;
 
 /**
  * @author Nieraj Singh

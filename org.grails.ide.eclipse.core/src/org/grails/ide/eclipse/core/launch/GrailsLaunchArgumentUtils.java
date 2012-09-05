@@ -11,7 +11,6 @@
 package org.grails.ide.eclipse.core.launch;
 
 import static org.eclipse.debug.core.DebugPlugin.ATTR_PROCESS_FACTORY_ID;
-import grails.build.GrailsBuildListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -633,10 +632,31 @@ public class GrailsLaunchArgumentUtils {
 			return null; //If there's no build listener there's no need for this
 		} else {
 			ClasspathLocalizer localizer = new ClasspathLocalizer();
-			return localizer.localizeClasspath(new EclipsePluginClasspathEntry(GrailsCoreActivator.PLUGIN_ID, null));
+			return localizer.localizeClasspath(
+					new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null),
+					new EclipsePluginClasspathEntry(getRuntimeBundleFor(conf), null)
+			);
 		}
 	}
 
+	/**
+	 * Determine which version-specific runtime bundle should be added to a given Grails launch configuration's classpath.
+	 * 
+	 * @return Bundle-id
+	 */
+	private static String getRuntimeBundleFor(ILaunchConfiguration conf) {
+		IGrailsInstall install = getGrailsInstall(conf);
+		Assert.isNotNull(install, "Can't determine Grails install for launch config");
+		GrailsVersion version = install.getVersion();
+		if (version.compareTo(GrailsVersion.V_2_2_)>=0) {
+			return "org.grails.ide.eclipse.runtime22";
+		} else if (version.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)<=0) {
+			throw new Error("This version of Grails no longer supported: "+version);
+		} else {
+			return "org.grails.ide.eclipse.runtime13";
+		}
+	}
+	
 	public static void setSystemProperties(
 			ILaunchConfigurationWorkingCopy launchConf,
 			Map<String, String> systemProperties) {

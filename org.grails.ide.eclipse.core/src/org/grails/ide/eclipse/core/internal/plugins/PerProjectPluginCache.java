@@ -23,13 +23,13 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginParser;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginVersion;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.classpath.PluginDescriptorParser;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.BasePluginData;
 
 

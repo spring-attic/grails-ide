@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 import org.grails.ide.eclipse.longrunning.Console;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
-import org.grails.ide.eclipse.longrunning.process.Pipe;
+import org.grails.ide.eclipse.runtime.shared.longrunning.Pipe;
 
 import junit.framework.Assert;
 

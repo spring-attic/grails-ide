@@ -40,16 +40,15 @@ import org.grails.ide.eclipse.commands.GrailsCommandFactory;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.classpath.SourceFolderJob;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
+import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.grails.ide.eclipse.ui.internal.inplace.GrailsLaunchUtils;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
-import org.grails.ide.eclipse.ui.internal.inplace.GrailsLaunchUtils;
 
 /**
  * Tests for (portions of) the {@link GrailsCommandUtils} class. 

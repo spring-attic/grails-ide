@@ -14,9 +14,9 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.grails.ide.eclipse.longrunning.process.PrefixedOutputStream;
-
 import junit.framework.TestCase;
+
+import org.grails.ide.eclipse.runtime.shared.longrunning.PrefixedOutputStream;
 
 
 /**

@@ -33,6 +33,7 @@ import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 
 
 /**

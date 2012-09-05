@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.internal.plugins.IGrailsProjectInfo;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 
 
 /**

@@ -34,6 +34,7 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsException;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 import org.osgi.framework.Bundle;
 import org.springsource.ide.eclipse.commons.core.SpringCorePreferences;
 

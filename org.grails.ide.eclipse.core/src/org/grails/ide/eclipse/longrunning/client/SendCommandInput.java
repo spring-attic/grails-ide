@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.concurrent.TimeoutException;
 
-import org.grails.ide.eclipse.longrunning.process.GrailsProcess;
+import org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessConstants;
 
 
 /**
@@ -53,7 +53,7 @@ public class SendCommandInput extends Thread {
 				if (line == null) {
 					eof = true;
 				} else {
-					client.println(toProcess, GrailsProcess.CONSOLE_INPUT+line);
+					client.println(toProcess, GrailsProcessConstants.CONSOLE_INPUT+line);
 					toProcess.flush();
 				}
 			} catch (TimeoutException e) {
@@ -62,7 +62,7 @@ public class SendCommandInput extends Thread {
 				eof = true;
 			}
 		}
-		client.println(toProcess, GrailsProcess.CONSOLE_EOF);
+		client.println(toProcess, GrailsProcessConstants.CONSOLE_EOF);
 	}
 
 	public void terminate() {

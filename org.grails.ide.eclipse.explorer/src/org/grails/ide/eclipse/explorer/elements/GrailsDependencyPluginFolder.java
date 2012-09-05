@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.grails.ide.eclipse.core.internal.GrailsResourceUtil;
-import org.grails.ide.eclipse.core.internal.classpath.DependencyData;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructureTypes;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.PluginVersion;
 
 

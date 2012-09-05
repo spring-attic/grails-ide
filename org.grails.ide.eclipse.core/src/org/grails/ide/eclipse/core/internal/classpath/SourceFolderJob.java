@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +44,7 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.workspace.GrailsClassPath;
 import org.grails.ide.eclipse.core.workspace.GrailsProject;
 import org.grails.ide.eclipse.core.workspace.GrailsWorkspace;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 
 /**
  * This class should be renamed.

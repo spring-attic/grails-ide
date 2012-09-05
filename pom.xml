@@ -24,6 +24,11 @@
 	<module>org.grails.ide.eclipse.editor.groovy</module>
 	<module>org.grails.ide.eclipse.editor.gsp</module>
 	<module>org.grails.ide.eclipse.explorer</module>
+	
+	<module>org.grails.ide.eclipse.runtime.shared</module>
+	<module>org.grails.ide.eclipse.runtime13</module>
+	<module>org.grails.ide.eclipse.runtime22</module>
+	
 <!--	<module>org.grails.ide.eclipse.junit</module> -->
 <!--	<module>org.grails.ide.eclipse.junit.runtime</module> -->
 	<module>org.grails.ide.eclipse.maven</module>
