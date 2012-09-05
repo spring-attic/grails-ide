@@ -350,7 +350,7 @@ public class GrailsCoreActivator extends Plugin {
 	}
 	
 	private IEclipsePreferences getPreferences() {
-		return new InstanceScope().getNode(PLUGIN_ID);
+		return InstanceScope.INSTANCE.getNode(PLUGIN_ID);
 	}
 	
 	/**

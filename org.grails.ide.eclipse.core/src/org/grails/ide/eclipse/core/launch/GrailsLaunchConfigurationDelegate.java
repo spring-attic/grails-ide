@@ -175,8 +175,8 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		String mainTypeName = verifyMainTypeName(configuration);
 
 		VMRunnerConfiguration runConfiguration = new VMRunnerConfiguration(mainTypeName, classpath);
-		runConfiguration.setProgramArguments((String[]) programArguments.toArray(new String[programArguments.size()]));
-		runConfiguration.setVMArguments((String[]) vmArgs.toArray(new String[vmArgs.size()]));
+		runConfiguration.setProgramArguments(programArguments.toArray(new String[programArguments.size()]));
+		runConfiguration.setVMArguments(vmArgs.toArray(new String[vmArgs.size()]));
 		runConfiguration.setWorkingDirectory(workingDirName);
 		runConfiguration.setEnvironment(envp);
 		runConfiguration.setVMSpecificAttributesMap(vmAttributesMap);

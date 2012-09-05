@@ -20,7 +20,6 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
 import org.objectweb.asm.Opcodes;
-import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.BasePluginData;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.PluginVersion;
 
 
