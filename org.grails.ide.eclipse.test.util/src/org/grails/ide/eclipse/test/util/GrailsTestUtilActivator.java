@@ -112,9 +112,8 @@ public class GrailsTestUtilActivator implements BundleActivator {
 			//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
 			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
-//			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_0;
-			
+			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
+			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_0_SNAP;
 		} else {
 			//Treats 1.3.7. as most recent Grails, runs majority of tests with 1.3.8:
 			GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_1_3_6;
