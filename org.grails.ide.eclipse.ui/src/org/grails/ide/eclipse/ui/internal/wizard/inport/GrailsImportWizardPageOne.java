@@ -29,6 +29,7 @@ public class GrailsImportWizardPageOne extends GrailsImportWizardPage {
 	protected List<WizardPageSection> createSections() {
 		return Arrays.asList(
 				new RootFolderSection(this),
+				new CopyToWorkspaceSection(this),
 				new MavenWarningSection(this, "Mavenized Project Warning"),
 				new GroupSection(this, "Grails Install",
 						new DisplayGrailsVersionSection(this),

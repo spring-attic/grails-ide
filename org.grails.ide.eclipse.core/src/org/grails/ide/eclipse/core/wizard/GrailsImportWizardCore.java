@@ -14,8 +14,9 @@ import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.
 import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.error;
 
 import java.io.File;
+import java.io.IOException;
 
-import org.eclipse.core.internal.resources.ProjectDescription;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
@@ -23,10 +24,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
@@ -47,12 +51,26 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 public class GrailsImportWizardCore {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	/// inputs where the user can enter data
+	/// "inputs" where the user can enter data
+	/// 
+	/// In the UI there will be some widgetry to set the values of these things.
+	/// But this 'core' wizard can also be used in headless mode. Anyone/thing can set the values.
 	
 	public final LiveVariable<File> location = new LiveVariable<File>(null);
 	public final LiveVariable<Boolean> ignoreMavenWarning = new LiveVariable<Boolean>(false);
 	public final LiveVariable<IGrailsInstall> grailsInstall = new LiveVariable<IGrailsInstall>(null);
-
+	public final LiveVariable<Boolean> copyToWorkspace = new LiveVariable<Boolean>(false);
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	/// Validators
+	
+	private boolean existsInWorkspace(String name) {
+		if (name!=null) {
+			return ResourcesPlugin.getWorkspace().getRoot().getProject(name).exists();
+		}
+		return false;
+	}
+	
 	/**
 	 * Location is valid if it looks like a Grails project exists at the location.
 	 */
@@ -67,12 +85,46 @@ public class GrailsImportWizardCore {
 				return error("'"+rf+"' is not a directory.");
 			} else if (!GrailsNature.looksLikeGrailsProject(rf)) {
 				return error("'"+rf+"' doesn't look like a Grails project");
+			} else if (existsInWorkspace(rf.getName())) {
+				return error("Project '"+rf.getName()+"' already exists in the workspace.");
+			}
+			return OK;
+		}
+
+	}
+	.dependsOn(location);
+
+	/**
+	 * Compute the target location where the imported project should be copied to.
+	 * If the option to copy resources into the workspace is not selected this will return null.
+	 * It may also return null if other pre-requisites to compute this have not yet been 
+	 * filled in (e.g. if a project to import has yet to be selected).
+	 */
+	public File getCopyLocation() {
+		if (copyToWorkspace.getValue()) {
+			File loc = location.getValue();
+			if (loc!=null) {
+				String name = loc.getName();
+				if (name!=null && !"".equals(name)) {
+					return Platform.getLocation().append(name).toFile();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public LiveExpression<ValidationResult> copyToWorkspaceValidator = new Validator() {
+		protected ValidationResult compute() {
+			File targetLocation = getCopyLocation();
+			if (targetLocation!=null && targetLocation.exists()) {
+				return error("Can not copy project into workspace because '"+targetLocation+"' already exists");
 			}
 			return OK;
 		}
 	}
+	.dependsOn(copyToWorkspace)
 	.dependsOn(location);
-
+	
 	public final LiveExpression<Boolean> isMaven = new LiveExpression<Boolean>(false) {
 		@Override
 		protected Boolean compute() {
@@ -143,7 +195,7 @@ public class GrailsImportWizardCore {
 	}
 	.dependsOn(grailsInstall)
 	.dependsOn(projectGrailsVersion);
-
+	
 	{
 		/*
 		 * If a project is selected and a matching Grails install is not, then try to automatically select 
@@ -174,13 +226,24 @@ public class GrailsImportWizardCore {
 	}
 	
 	public boolean perform(IProgressMonitor mon) throws CoreException {
-		mon.beginTask("Import", 2);
+		int totalWork = 2;
+		File copyLoc = getCopyLocation();
+		if (copyLoc!=null) {
+			totalWork++;
+		}
+		mon.beginTask("Import", totalWork);
 		try {
+			//1: copy files to workspace
+			if (copyLoc!=null) {
+				FileUtils.copyDirectory(location.getValue(), copyLoc);
+				mon.worked(1);
+			}
+			
 			IWorkspace ws = ResourcesPlugin.getWorkspace();
-			File projectDir = location.getValue();
+			File projectDir = copyLoc!=null?copyLoc:location.getValue();
 			String projectName = projectDir.getName();
 	
-			//1: create project
+			//2: create project
 			IProjectDescription projectDescription = ws.newProjectDescription(projectName);
 			if (!isDefaultProjectLocation(projectName, projectDir)) {
 				projectDescription.setLocation(new Path(projectDir.getAbsolutePath()));
@@ -188,7 +251,7 @@ public class GrailsImportWizardCore {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			project.create(projectDescription, new SubProgressMonitor(mon, 1));
 
-			//2: configure project
+			//3: configure project
 			IGrailsInstall install = grailsInstall.getValue();
 			if (install!=null) {
 				File projectAbsoluteFile = location.getValue();
@@ -201,6 +264,8 @@ public class GrailsImportWizardCore {
 			mon.worked(1);
 			
 			return false;
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Import failed", e));
 		} finally {
 			mon.done();
 		}
