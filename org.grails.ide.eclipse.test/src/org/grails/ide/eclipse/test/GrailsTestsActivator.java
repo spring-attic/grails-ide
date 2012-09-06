@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Platform;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -41,12 +42,12 @@ public class GrailsTestsActivator implements BundleActivator {
     private static boolean isJointGrailsTest;
     
     public static String[] getURLDependencies() throws Exception {
-        List<String> allJars = findJars(".", false);
+        List<String> allJars = new ArrayList<String>();
         
-        if (allJars.size() == 0) {
-            // probably running in a runtime workspace
-            allJars = findJars("resources", false);
-        }
+        Bundle servletBundle = Platform.getBundle("javax.servlet");
+        allJars.add(FileLocator.getBundleFile(servletBundle).getAbsolutePath());
+        Bundle elBundle = Platform.getBundle("javax.el");
+        allJars.add(FileLocator.getBundleFile(elBundle).getAbsolutePath());
         
         GrailsTest.waitForGrailsIntall();
         GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
