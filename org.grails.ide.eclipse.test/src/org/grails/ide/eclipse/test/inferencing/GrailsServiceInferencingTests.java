@@ -174,10 +174,12 @@ public class GrailsServiceInferencingTests extends AbstractGrailsInferencingTest
             assertService("someService", allServices);
             
             GrailsVersion version = GrailsVersion.getEclipseGrailsVersion(project);
-            if (GrailsVersion.V_2_0_0.compareTo(version)<=0) {
-            	//In Grails 1.4. there are some extra services installed by default, which is expected.
-            	assertServices(allServices, 
-            			"springSecurityService", "someService", "jQueryService");
+            if (GrailsVersion.V_2_1_0.compareTo(version)<=0) {
+                assertServices(allServices, 
+                        "springSecurityService", "someService", "jQueryService", "grailsCacheAdminService");
+            } else if (GrailsVersion.V_2_0_0.compareTo(version)<=0) {
+                assertServices(allServices, 
+                        "springSecurityService", "someService", "jQueryService");
             } else {
             	assertServices(allServices, 
             			"springSecurityService", "someService");

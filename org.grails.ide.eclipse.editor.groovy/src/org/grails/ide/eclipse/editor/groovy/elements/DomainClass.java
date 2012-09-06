@@ -74,6 +74,11 @@ public class DomainClass extends AbstractGrailsElement implements INavigableGrai
             super(NAMED_CRITERIA_PROXY, VariableScope.OBJECT_CLASS_NODE.getModifiers(), VariableScope.GROOVY_OBJECT_SUPPORT);
             this.isPrimaryNode = false;
             this.setRedirect(typeCache.getClassNode(NAMED_CRITERIA_PROXY));
+            this.setGenericsPlaceHolder(true);
+            GenericsType gt = new GenericsType();
+            gt.setType(DomainClass.this.getGroovyClass());
+            gt.setName(gt.getType().getName());
+            this.setGenericsTypes(new GenericsType[] { gt });
         }
         
         public DomainClass getDomainClass() {

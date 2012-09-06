@@ -179,7 +179,14 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         String str = "first.";
         String strRegex = "first\\.";
         int offset = contents.indexOf(str)+str.length();
-        String expected = contents.replaceFirst(strRegex, "first.list(parameterTypes)");
+        String expected;
+        
+        GrailsVersion version = GrailsVersion.getDefault();
+        if (GrailsVersion.V_2_1_0.compareTo(version)<=0) {
+            expected = contents.replaceFirst(strRegex, "first.list(parameterTypes) {");
+        } else {
+            expected = contents.replaceFirst(strRegex, "first.list(parameterTypes)");
+        }
         checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "list", false);
         // seems to be a bit random whether the result is 'null' or 'this'
         // so try both ways
