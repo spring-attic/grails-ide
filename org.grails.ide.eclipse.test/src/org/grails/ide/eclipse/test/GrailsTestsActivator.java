@@ -44,9 +44,8 @@ public class GrailsTestsActivator implements BundleActivator {
     public static String[] getURLDependencies() throws Exception {
         List<String> allJars = new ArrayList<String>();
         
-        Bundle servletBundle = Platform.getBundle("javax.servlet");
-        allJars.add(FileLocator.getBundleFile(servletBundle).getAbsolutePath());
-        Bundle elBundle = Platform.getBundle("javax.el");
+        allJars.add(getLocationForBundle("javax.servlet"));
+        allJars.add(getLocationForBundle("javax.el"));
         allJars.add(FileLocator.getBundleFile(elBundle).getAbsolutePath());
         
         GrailsTest.waitForGrailsIntall();
@@ -62,6 +61,14 @@ public class GrailsTestsActivator implements BundleActivator {
         allJars.addAll(findJars(install.getHome() + "dist/", true));
         allJars.addAll(findJars(install.getHome() + "lib/", true));
         return allJars.toArray(new String[0]);
+    }
+    
+    private static String getLocationForBundle(String bundleId) throws IOException {
+        try {
+            return FileLocator.getBundleFile(Platform.getBundle(bundleId)).getAbsolutePath();
+        } catch (NullPointerException e) {
+            throw new AssertionFailedError("Could not find bundle " + bundleId);
+        }
     }
     
     public static boolean isGrails200OrLater() {

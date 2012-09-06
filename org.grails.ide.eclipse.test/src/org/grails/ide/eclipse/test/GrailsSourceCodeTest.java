@@ -113,7 +113,7 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	
 	public void testGrails20SourceAttachements() throws Exception {
 		//Workaround for http://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
-		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_1_0)>=0) {
+		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_1_0)>0) {
 			try {
 				doTestType(GrailsVersion.MOST_RECENT, "org.springframework.uaa.client.UaaService", "@author Ben Alex");
 				fail("Source code already available beforehand? That's not a good test then!");

@@ -67,7 +67,9 @@ Require-Bundle:
  org.junit;bundle-version="4.7.0",
  org.codehaus.groovy.eclipse.dsl.tests;bundle-version="2.6.1",
  org.junit4,
- org.eclipse.ui
+ org.eclipse.ui,
+ javax.el;bundle-version="2.2.0",
+ javax.servlet;bundle-version="3.0.0"
 Export-Package: org.grails.ide.eclipse.commands.test;x-internal:=true,
  org.grails.ide.eclipse.longrunning.test;x-internal:=true,
  org.grails.ide.eclipse.test;x-internal:=true,
