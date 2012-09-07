@@ -20,7 +20,7 @@ import junit.framework.Test;
  * @created Nov 28, 2011
  */
 public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
-    private static final String NAMED_QUERY_PROXY = "org.codehaus.groovy.grails.orm.hibernate.cfg.NamedCriteriaProxy";
+    private static final String NAMED_QUERY_PROXY_SEARCH = "org.codehaus.groovy.grails.orm.hibernate.cfg.NamedCriteriaProxy<Search>";
     private static final String SEARCH = "Search";
     private static final String LIST_OF_SEARCH = "java.util.List<Search>";
     public static Test suite() {
@@ -41,11 +41,11 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.indexOf("first");
         int end = start + "first".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
         start = contents.indexOf("second");
         end = start + "second".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
     public void testNamedQuery2() throws Exception {
@@ -58,11 +58,11 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("first");
         int end = start + "first".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
         start = contents.lastIndexOf("second");
         end = start + "second".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
     public void testNamedQuery3() throws Exception {
@@ -76,11 +76,11 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("first");
         int end = start + "first".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
         start = contents.lastIndexOf("second");
         end = start + "second".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
     public void testNamedQuery4() throws Exception {
@@ -94,11 +94,11 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("first");
         int end = start + "first".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
         start = contents.lastIndexOf("second");
         end = start + "second".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
     public void testNamedQuery5() throws Exception {
@@ -112,11 +112,11 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("first");
         int end = start + "first".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
         start = contents.lastIndexOf("second");
         end = start + "second".length();
-        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
     public void testNamedQueryWithFinder1() throws Exception {
@@ -133,7 +133,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         // Commented out see http://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, LIST_OF_SEARCH);
         assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
-        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
     }
     public void testNamedQueryWithFinder1a() throws Exception {
         String contents = 
@@ -146,10 +146,8 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("count");
         int end = start + "count".length();
-        // Commented out see http://jira.grails.org/browse/GRAILS-8387
-//        assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Integer");
-        assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
-        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Integer");
+        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
     }
     public void testNamedQueryWithFinder2() throws Exception {
         String contents = 
@@ -162,10 +160,8 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("get");
         int end = start + "get".length();
-        // Commented out see http://jira.grails.org/browse/GRAILS-8387
-//        assertTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
-        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
+        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
     }
     public void testNamedQueryWithFinder3() throws Exception {
         String contents = 
@@ -181,7 +177,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         // Commented out see http://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
       assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
-        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
     }
     public void testNamedQueryWithFinder4() throws Exception {
         String contents = 
@@ -197,7 +193,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         // Commented out see http://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, LIST_OF_SEARCH);
         assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
-        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY);
+        assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
     }
     public void testNamedQueryWithFinder5() throws Exception {
         String contents = 

@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Platform;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -41,12 +42,10 @@ public class GrailsTestsActivator implements BundleActivator {
     private static boolean isJointGrailsTest;
     
     public static String[] getURLDependencies() throws Exception {
-        List<String> allJars = findJars(".", false);
+        List<String> allJars = new ArrayList<String>();
         
-        if (allJars.size() == 0) {
-            // probably running in a runtime workspace
-            allJars = findJars("resources", false);
-        }
+        allJars.add(getLocationForBundle("javax.servlet"));
+        allJars.add(getLocationForBundle("javax.el"));
         
         GrailsTest.waitForGrailsIntall();
         GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
@@ -61,6 +60,14 @@ public class GrailsTestsActivator implements BundleActivator {
         allJars.addAll(findJars(install.getHome() + "dist/", true));
         allJars.addAll(findJars(install.getHome() + "lib/", true));
         return allJars.toArray(new String[0]);
+    }
+    
+    private static String getLocationForBundle(String bundleId) throws IOException {
+        try {
+            return FileLocator.getBundleFile(Platform.getBundle(bundleId)).getAbsolutePath();
+        } catch (NullPointerException e) {
+            throw new AssertionFailedError("Could not find bundle " + bundleId);
+        }
     }
     
     public static boolean isGrails200OrLater() {

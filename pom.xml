@@ -287,10 +287,11 @@
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
 	</repository>
-<!-- 	<repository>
+ 	<repository>
 	  <id>orbit</id>
+	  <layout>p2</layout>
 	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url>
-	</repository> -->
+	</repository>
     <repository>
       <id>m2e</id>
 	  <layout>p2</layout>
@@ -608,7 +609,7 @@
             <testSuite>${project.artifactId}</testSuite>
             <testClass>${test.class}</testClass>
             <argLine>
-              -Xmx1024m -XX:MaxPermSize=382m ${groovy.compiler.switch} -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
+              -Xmx1024m -XX:ReservedCodeCacheSize=64m -XX:MaxPermSize=382m ${groovy.compiler.switch} -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
             </argLine>
             <appArgLine>
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password

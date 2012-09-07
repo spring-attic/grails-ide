@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.internal.corext.SourceRange;
+import org.eclipse.jdt.core.SourceRange;
 
 import org.grails.ide.eclipse.editor.gsp.search.IGSPSearchRequestor;
 import org.grails.ide.eclipse.editor.gsp.search.SearchInGSPs;
