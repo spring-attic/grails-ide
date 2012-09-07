@@ -46,7 +46,6 @@ public class GrailsTestsActivator implements BundleActivator {
         
         allJars.add(getLocationForBundle("javax.servlet"));
         allJars.add(getLocationForBundle("javax.el"));
-        allJars.add(FileLocator.getBundleFile(elBundle).getAbsolutePath());
         
         GrailsTest.waitForGrailsIntall();
         GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
