@@ -51,6 +51,7 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
             IClasspathDescriptor classpath, IProgressMonitor monitor)
             throws CoreException {
         IProject project = request.getProject();
+        GrailsCommandUtils.ensureNaturesAndBuilders(project);
         IJavaProject javaProject = JavaCore.create(project);
 
         // make sure that we have a dependency file
@@ -108,14 +109,16 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
     public AbstractBuildParticipant getBuildParticipant(
             IMavenProjectFacade projectFacade, MojoExecution execution,
             IPluginExecutionMetadata executionMetadata) {
-        IProject project = projectFacade.getProject();
-        // delete old dependency info will be recreated
-        String descriptorName = GrailsClasspathUtils.getDependencyDescriptorName(project);
-        File f = new File(descriptorName);
-        f.delete();
-        
-        Xpp3Dom newConfiguration = augmentConfiguration(project, execution.getConfiguration());
-        execution.setConfiguration(newConfiguration);
+        if ("maven-compile".equals(execution.getGoal())) {
+            IProject project = projectFacade.getProject();
+            // delete old dependency info will be recreated
+            String descriptorName = GrailsClasspathUtils.getDependencyDescriptorName(project);
+            File f = new File(descriptorName);
+            f.delete();
+            
+            Xpp3Dom newConfiguration = augmentConfiguration(project, execution.getConfiguration());
+            execution.setConfiguration(newConfiguration);
+        }
         return new MojoExecutionBuildParticipant(execution, false, true);
     }
 
@@ -132,7 +135,11 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
             configuration.addChild(node);
         }
         ClasspathLocalizer localizer = new ClasspathLocalizer();
-        List<String> extraCp = localizer.localizeClasspath(new EclipsePluginClasspathEntry(GrailsCoreActivator.PLUGIN_ID, null));
+        List<String> extraCp;
+        // Grails 2.2.0 changed the way that is 
+        extraCp = localizer.localizeClasspath(
+                new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime13", null),
+                new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null)); 
         StringBuilder sb = new StringBuilder();
         for (String cpEntry : extraCp) {
             sb.append(cpEntry.replaceAll(",", "\\,")).append(",");

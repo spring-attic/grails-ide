@@ -479,7 +479,7 @@ public class GrailsCommandUtils {
 		}
 	}
 
-	private static void ensureNaturesAndBuilders(IProject project) throws CoreException {
+	public static void ensureNaturesAndBuilders(IProject project) throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		addNaturesAndBuilders(desc);
 		project.setDescription(desc, new NullProgressMonitor());
