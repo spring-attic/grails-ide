@@ -32,6 +32,12 @@ public class SharedLaunchConstants {
 	   // Note: it is tempting to use DependencyExtractingBuildListener.class.getName() but that would pull in unwanted dependencies!
 	   // and cause "class not found exceptions".
 
-	public static final String DEPENDENCY_FILE_NAME_PROP = DependencyExtractingBuildListener_CLASS+".filename";
+	/**
+	 * Name of the system property used to pass 'filename' to the external Grails process.
+	 * 
+	 * IMPORTANT: Try not to change the String value of this constant moving forward because Grails Maven support has a 'copy-pasted' version
+	 * of this constant. So if it is changed here, it will break Grails Maven support.
+	 */
+	public static final String DEPENDENCY_FILE_NAME_PROP = "org.grails.ide.eclipse.dependencies.filename";
 	
 }
