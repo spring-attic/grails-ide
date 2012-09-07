@@ -287,10 +287,10 @@
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
 	</repository>
-<!-- 	<repository>
+ 	<repository>
 	  <id>orbit</id>
 	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url>
-	</repository> -->
+	</repository>
     <repository>
       <id>m2e</id>
 	  <layout>p2</layout>
