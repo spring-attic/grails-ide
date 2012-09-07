@@ -623,31 +623,39 @@ public class GrailsLaunchArgumentUtils {
 	/**
 	 * Extra classpath entries, telling grails where to classload our implementation of 
 	 * GrailsBuildListener.
-	 * <p>
-	 * For now this is hard coded to return a reference to the sts.grails.core plugin.
 	 */
 	public static List<String> getBuildListenerClassPath(ILaunchConfiguration conf) {
 		String buildListener = getGrailsBuildListener(conf);
 		if (buildListener==null) {
 			return null; //If there's no build listener there's no need for this
 		} else {
-			ClasspathLocalizer localizer = new ClasspathLocalizer();
-			return localizer.localizeClasspath(
-					new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null),
-					new EclipsePluginClasspathEntry(getRuntimeBundleFor(conf), null)
-			);
+			IGrailsInstall install = getGrailsInstall(conf);
+			Assert.isNotNull(install, "Can't determine Grails install for launch config");
+			GrailsVersion version = install.getVersion();
+			return getBuildListenerClassPath(version);
 		}
 	}
 
 	/**
-	 * Determine which version-specific runtime bundle should be added to a given Grails launch configuration's classpath.
+	 * Determine which extra entries should be added to the runtime classpath for a given GrailsVersion.
+	 * This includes both Grails version specific as well as 'shared' bits of the BuildListener.
 	 * 
 	 * @return Bundle-id
 	 */
-	private static String getRuntimeBundleFor(ILaunchConfiguration conf) {
-		IGrailsInstall install = getGrailsInstall(conf);
-		Assert.isNotNull(install, "Can't determine Grails install for launch config");
-		GrailsVersion version = install.getVersion();
+	public static List<String> getBuildListenerClassPath(GrailsVersion version) {
+		ClasspathLocalizer localizer = new ClasspathLocalizer();
+		return localizer.localizeClasspath(
+				new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null),
+				new EclipsePluginClasspathEntry(getRuntimeBundleFor(version), null)
+		);
+	}
+
+	/**
+	 * Determine which version-specific runtime bundle should be added to the classpath for a given GrailsVersion.
+	 * 
+	 * @return Bundle-id
+	 */
+	private static String getRuntimeBundleFor(GrailsVersion version) {
 		if (version.compareTo(GrailsVersion.V_2_2_)>=0) {
 			return "org.grails.ide.eclipse.runtime22";
 		} else if (version.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)<=0) {
