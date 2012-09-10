@@ -69,7 +69,9 @@ import org.grails.ide.eclipse.core.workspace.GrailsWorkspace;
  */
 public class GrailsCommandUtils {
 
-	/**
+    private static final String M2E_NATURE = "org.eclipse.m2e.maven2Nature";
+
+    /**
 	 * Defines the output folder that eclipsify project will configure a project with by default.
 	 */
 	public static final String DEFAULT_GRAILS_OUTPUT_FOLDER
@@ -356,6 +358,11 @@ public class GrailsCommandUtils {
 		workspace.run(new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor monitor) throws CoreException {
+			    // This job is a no-op for maven projects since maven handles the source folders
+                if (!isMavenProject(javaProject)) {
+                    return;
+                }
+			    
 				// Grails "compile" command may have changed resources...?
 				// TODO: KDV: (depend) find out why this refresh is necessary. See STS-1263.
 				// Note: if this line is removed, it *will* break STS-1270. We should revisit
@@ -375,13 +382,17 @@ public class GrailsCommandUtils {
 				GrailsCore.get().connect(javaProject.getProject(), PerProjectDependencyDataCache.class).refreshData();
 				GrailsCore.get().connect(javaProject.getProject(), PerProjectPluginCache.class).refreshDependencyCache();
 
-				// recompute source folders now
+                // recompute source folders now
 				SourceFolderJob updateSourceFolders = new SourceFolderJob(javaProject);
 				updateSourceFolders.refreshSourceFolders(new NullProgressMonitor());
-
+				
 				// This will force the JDT to re-resolve the CP, even if only the "contents" of class path container changed see STS-1347
 				javaProject.setRawClasspath(javaProject.getRawClasspath(), monitor);
 			}
+
+            private boolean isMavenProject(IJavaProject javaProject) throws CoreException {
+                return javaProject.getProject().hasNature(M2E_NATURE);
+            }
 		}, new NullProgressMonitor());
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" DONE");
 	}
