@@ -10,15 +10,9 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test.inferencing;
 
-import java.io.File;
 import java.net.URL;
-import java.util.Hashtable;
 
-import org.codehaus.groovy.eclipse.core.model.GroovyRuntime;
-import org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
-import org.codehaus.jdt.groovy.model.GroovyNature;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -30,7 +24,6 @@ import org.eclipse.jdt.groovy.search.TypeLookupResult.TypeConfidence;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaModelManager;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
@@ -38,7 +31,8 @@ import org.grails.ide.eclipse.core.model.IGrailsInstall;
 
 import org.grails.ide.eclipse.editor.groovy.elements.GrailsProject;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectServiceCache;
-import org.grails.ide.eclipse.test.GrailsTestsActivator;
+import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
+import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
  * @author Andrew Eisenberg
@@ -245,34 +239,6 @@ public abstract class AbstractGrailsInferencingTests extends AbstractInferencing
         return unit;
     }
 
-    protected void ensureGrailsProject() throws Exception {
-        // These tests must use Grails 1.3.x since inferencing under 1.4.x uses DSLDs instead
-//        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT_1_3);
-        
-        //Ensure Java compliance level is set to something that supports generics
-        @SuppressWarnings("rawtypes")
-        Hashtable options = JavaCore.getDefaultOptions();
-        options.put(JavaCore.COMPILER_COMPLIANCE, "1.5");
-        options.put(JavaCore.COMPILER_SOURCE, "1.5");
-        JavaCore.setOptions(options);
-
-        IProjectDescription description = project.getDescription();
-        description.setNatureIds(new String[] { JavaCore.NATURE_ID, GroovyNature.GROOVY_NATURE, GrailsNature.NATURE_ID });
-        project.setDescription(description, null);
-        String[] files = GrailsTestsActivator.getURLDependencies();
-        for (String file : files) {
-            env.addExternalJar(project.getFullPath(), file);
-        }
-        
-        GroovyRuntime.addGroovyClasspathContainer(JavaCore.create(project));
-        
-        // now get the grails.dsld, if it exists
-        File grailsDSLD = GrailsTestsActivator.getGrailsDSLD();
-        env.addExternalFolders(project.getFullPath(), new String[] {grailsDSLD.getCanonicalPath()});
-        // force refresh dslds
-        new RefreshDSLDJob(project).run(null);
-    }
-    
     private void assertTypeInGrailsArtifact(int exprStart, int exprEnd,
             String expectedType, GroovyCompilationUnit unit, TypeConfidence expectedConfidence) throws JavaModelException {
         unit.becomeWorkingCopy(null);
@@ -293,8 +259,9 @@ public abstract class AbstractGrailsInferencingTests extends AbstractInferencing
     
     @Override
     protected void setUp() throws Exception {
+        GrailsProjectVersionFixer.testMode();
         super.setUp();
-        ensureGrailsProject();
+        MockGrailsTestProjectUtils.mockGrailsProject(project);
     }
     		
     @Override

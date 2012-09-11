@@ -224,7 +224,7 @@ public class GrailsTest extends TestCase {
 	/**
 	 * Ensure a project with the given name exists, so we can use it as a test Fixture.
 	 */
-	protected IProject ensureProject(String name) throws Exception {
+	public static IProject ensureProject(String name) throws Exception {
 	    return ensureProject(name, false);
 	}
 
@@ -236,7 +236,7 @@ public class GrailsTest extends TestCase {
 	 * @return the created Grails projet
 	 * @throws CoreException
 	 */
-	protected IProject ensureProject(String name, boolean isPluginProject)
+	protected static IProject ensureProject(String name, boolean isPluginProject)
 			throws Exception {
 		IProject project = StsTestUtil.getProject(name);
 		if (project.exists()) {
@@ -284,7 +284,7 @@ public class GrailsTest extends TestCase {
 		}
 	}
 
-	public String workspacePath() {
+	public static String workspacePath() {
 		return ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 	}
 

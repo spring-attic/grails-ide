@@ -15,15 +15,10 @@ import java.io.InputStream;
 
 import junit.framework.Test;
 
-import org.codehaus.jdt.groovy.model.GroovyNature;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.groovy.tests.search.AbstractInferencingTest;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jst.jsp.core.internal.java.IJSPTranslation;
@@ -32,12 +27,12 @@ import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationAdapter;
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationAdapterFactory;
+import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 
 
 /**
@@ -60,7 +55,7 @@ public class GSPTranslationTests extends AbstractInferencingTest {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        addGrailsNature(project.getName());
+        MockGrailsTestProjectUtils.addGrailsNature(project);
     }
     
     public void testBasicTranslation1() throws Exception {
@@ -221,12 +216,5 @@ public class GSPTranslationTests extends AbstractInferencingTest {
         } finally {  
             model.releaseFromRead();
         }
-    }
-    
-    public void addGrailsNature(String projectName) throws CoreException {
-        IProject project = env.getProject(projectName);
-        IProjectDescription description = project.getDescription();
-        description.setNatureIds(new String[] { GrailsNature.NATURE_ID, JavaCore.NATURE_ID, GroovyNature.GROOVY_NATURE });
-        project.setDescription(description, null);
     }
 }
