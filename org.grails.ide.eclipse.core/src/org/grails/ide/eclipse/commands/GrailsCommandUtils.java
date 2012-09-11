@@ -359,7 +359,7 @@ public class GrailsCommandUtils {
 
 			public void run(IProgressMonitor monitor) throws CoreException {
 			    // This job is a no-op for maven projects since maven handles the source folders
-                if (!isMavenProject(javaProject)) {
+                if (isMavenProject(javaProject)) {
                     return;
                 }
 			    
@@ -391,7 +391,12 @@ public class GrailsCommandUtils {
 			}
 
             private boolean isMavenProject(IJavaProject javaProject) throws CoreException {
-                return javaProject.getProject().hasNature(M2E_NATURE);
+            	try {
+            		return javaProject.getProject().hasNature(M2E_NATURE);
+            	} catch (CoreException e) {
+            		GrailsCoreActivator.log(e);
+            		return false;
+            	}
             }
 		}, new NullProgressMonitor());
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" DONE");
