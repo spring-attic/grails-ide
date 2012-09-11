@@ -33,8 +33,8 @@ import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
-import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainer;
+import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerInitializer;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.classpath.SourceFolderJob;
@@ -58,7 +58,8 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
         String descriptorName = GrailsClasspathUtils.getDependencyDescriptorName(project);
         File f = new File(descriptorName);
         if (!f.exists()) {
-            throw new CoreException(new Status(IStatus.ERROR, GrailsMavenActivator.PLUGIN_ID, "Could not find the grails dependency file.", new Exception()));
+            throw new CoreException(new Status(IStatus.ERROR, GrailsMavenActivator.PLUGIN_ID, "Could not find the grails dependency file." +
+            		" This probably means that there is a bad dependency in the pom file.", new Exception()));
         }
         
         // ensure that the dependency and plugin data is forgotten
