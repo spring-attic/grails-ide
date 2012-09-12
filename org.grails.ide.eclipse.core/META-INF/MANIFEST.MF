@@ -19,8 +19,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.codehaus.groovy.eclipse.core,
  org.eclipse.jdt.junit.core,
  org.eclipse.jdt.groovy.core,
- org.springsource.ide.eclipse.commons.livexp,
- org.grails.ide.eclipse.runtime.shared;bundle-version="3.1.0";visibility:=reexport
+ org.springsource.ide.eclipse.commons.livexp;visibility:=reexport,
+ org.grails.ide.eclipse.runtime.shared;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy

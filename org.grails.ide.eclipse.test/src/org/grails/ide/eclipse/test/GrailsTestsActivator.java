@@ -44,7 +44,8 @@ public class GrailsTestsActivator implements BundleActivator {
     public static String[] getURLDependencies() throws Exception {
         List<String> allJars = new ArrayList<String>();
         
-        allJars.add(getLocationForBundle("javax.servlet"));
+//        allJars.add(getLocationForBundle("javax.servlet"));
+ //       allJars.add("/home/kdvolder/commandline-dev/groovy-eclipse/base/org.codehaus.groovy18/lib/servlet-api-2.4.jar");
         allJars.add(getLocationForBundle("javax.el"));
         
         GrailsTest.waitForGrailsIntall();

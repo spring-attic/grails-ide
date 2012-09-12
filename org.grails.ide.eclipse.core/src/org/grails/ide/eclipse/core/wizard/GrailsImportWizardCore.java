@@ -34,6 +34,7 @@ import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
@@ -62,7 +63,6 @@ public class GrailsImportWizardCore {
 	public final LiveVariable<Boolean> copyToWorkspace = new LiveVariable<Boolean>(false);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
-	/// Validators
 	
 	private boolean existsInWorkspace(String name) {
 		if (name!=null) {
@@ -153,7 +153,8 @@ public class GrailsImportWizardCore {
 			}
 		}
 	}
-	.dependsOn(location);
+	.dependsOn(location)
+	.dependsOn(locationValidator);
 	
 	/**
 	 * 'maven' state is valid if either the selected project is not a maven project, or ignoreMavenWarning
@@ -170,7 +171,7 @@ public class GrailsImportWizardCore {
 			return OK;
 		}
 	}
-	.dependsOn(location)
+	.dependsOn(isMaven)
 	.dependsOn(ignoreMavenWarning);
 
 	/**
@@ -278,4 +279,5 @@ public class GrailsImportWizardCore {
 		}
 		return null;
 	}
+	
 }
