@@ -26,6 +26,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.framework.internal.core.FrameworkProperties;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 
 
 /**
@@ -137,6 +138,23 @@ public class GrailsClasspathUtils {
 		catch (JavaModelException e) {
 		}
 		return hasContainer;
+	}
+	/**
+	 * Returns <code>true</code> if the given project has the OLD (pre-3.0.0) bundle dependency classpath container installed.
+	 */
+	public static boolean hasOldClasspathContainer(IJavaProject javaProject) {
+	    boolean hasContainer = false;
+	    try {
+	        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+	            if (entry.getPath().equals(IConversionConstants.GRAILS_OLD_CONTAINER)) {
+	                hasContainer = true;
+	                break;
+	            }
+	        }
+	    }
+	    catch (JavaModelException e) {
+	    }
+	    return hasContainer;
 	}
 
 }

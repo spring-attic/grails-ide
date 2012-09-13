@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2e.jdt;bundle-version="1.1.0";resolution:=optional,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
- org.eclipse.m2e.core.ui;bundle-version="1.1.0";resolution:=optional
+ org.eclipse.m2e.core.ui;bundle-version="1.1.0";resolution:=optional,
+ org.springsource.ide.eclipse.commons.frameworks.core;bundle-version="3.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.grails.ide.eclipse.maven.ui

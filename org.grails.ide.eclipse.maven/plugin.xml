@@ -9,4 +9,12 @@
              id="org.grails.ide.eclipse.maven.grailsProjectConfigurator">
        </configurator>
     </extension>
+    <extension
+          point="org.eclipse.m2e.core.lifecycleMappings">
+       <lifecycleMapping
+             class="org.grails.ide.eclipse.maven.GrailsAppLifecycleMapping"
+             id="org.grails.ide.eclipse.maven.grailsAppLifecycleMapping"
+             name="Grails app lifecycle mapping">
+       </lifecycleMapping>
+    </extension>
 </plugin>
