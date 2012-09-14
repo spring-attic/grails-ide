@@ -17,10 +17,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.core.internal.expressions.Messages;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.osgi.util.NLS;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-
+import org.eclipse.m2e.actions.MavenLaunchConstants;
 
 /**
  * @author Christian Dupuis
@@ -123,5 +134,4 @@ public class GrailsBuildSettingsHelper {
 		props.put(key, value);
 		setApplicationProperties(project, props);
 	}
-	
 }

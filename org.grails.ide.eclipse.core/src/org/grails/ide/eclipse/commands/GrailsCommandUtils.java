@@ -69,7 +69,7 @@ import org.grails.ide.eclipse.core.workspace.GrailsWorkspace;
  */
 public class GrailsCommandUtils {
 
-    private static final String M2E_NATURE = "org.eclipse.m2e.maven2Nature";
+    private static final String M2E_NATURE = "org.eclipse.m2e.core.maven2Nature";
 
     /**
 	 * Defines the output folder that eclipsify project will configure a project with by default.
@@ -329,6 +329,14 @@ public class GrailsCommandUtils {
 	 */
 	public static void refreshDependencies(final IJavaProject javaProject, boolean showOutput) throws CoreException {
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" ...");
+		
+        // This job is a no-op for maven projects since maven handles the source folders
+		if (isMavenProject(javaProject)) {
+		    // don't do refresh dependencies on maven projects.  This is handled by project configurator
+		    debug("Not refreshing dependencies because this is a maven project.");
+		    return;
+		}
+		
 		GroovyCompilerVersionCheck.check(javaProject);
 		deleteOutOfSynchPlugins(javaProject.getProject());
 
@@ -358,11 +366,6 @@ public class GrailsCommandUtils {
 		workspace.run(new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor monitor) throws CoreException {
-			    // This job is a no-op for maven projects since maven handles the source folders
-                if (isMavenProject(javaProject)) {
-                    return;
-                }
-			    
 				// Grails "compile" command may have changed resources...?
 				// TODO: KDV: (depend) find out why this refresh is necessary. See STS-1263.
 				// Note: if this line is removed, it *will* break STS-1270. We should revisit
@@ -390,18 +393,18 @@ public class GrailsCommandUtils {
 				javaProject.setRawClasspath(javaProject.getRawClasspath(), monitor);
 			}
 
-            private boolean isMavenProject(IJavaProject javaProject) throws CoreException {
-            	try {
-            		return javaProject.getProject().hasNature(M2E_NATURE);
-            	} catch (CoreException e) {
-            		GrailsCoreActivator.log(e);
-            		return false;
-            	}
-            }
 		}, new NullProgressMonitor());
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" DONE");
 	}
 	
+    protected static boolean isMavenProject(IJavaProject javaProject) throws CoreException {
+        try {
+            return javaProject.getProject().hasNature(M2E_NATURE);
+        } catch (CoreException e) {
+            GrailsCoreActivator.log(e);
+            return false;
+        }
+    }
 	/**
 	 * Grails 1.3.5 and 1.3.6 won't update plugin versions during grails compile when the update is
 	 * a "downgrade" to an older version. To remedy this, a workaround is to delete the
@@ -415,7 +418,6 @@ public class GrailsCommandUtils {
 		    throw new IllegalArgumentException("Could not find a grails install for '"+project.getName()+"'. " +
 		    		"Please configure an install from the Grails preferences page.");
 		}
-		GrailsVersion grailsVersion = install.getVersion();
 		if (true/*GrailsVersion.V_1_3_5.compareTo(grailsVersion)<=0*/) {
 			//This workaround is only required for grails 1.3.5 (until the bug that requires it is fixed)
 			//The workaround should not be harmful even if the bug it addresses is fixed.

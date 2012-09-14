@@ -40,4 +40,5 @@ Export-Package: org.grails.ide.eclipse.commands,
  org.grails.ide.eclipse.longrunning,
  org.grails.ide.eclipse.longrunning.client
 Bundle-Localization: plugin
-Import-Package: org.apache.commons.io
+Import-Package: org.apache.commons.io,
+ org.eclipse.m2e.actions

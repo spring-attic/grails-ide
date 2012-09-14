@@ -35,9 +35,11 @@ import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionKey;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathManager;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.AbstractJavaProjectConfigurator;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
+import org.grails.ide.eclipse.core.internal.GrailsResourceUtil;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainer;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
@@ -46,10 +48,14 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.launch.ClasspathLocalizer;
 import org.grails.ide.eclipse.core.launch.EclipsePluginClasspathEntry;
+import org.grails.ide.eclipse.core.launch.GrailsLaunchArgumentUtils;
+import org.grails.ide.eclipse.core.model.GrailsInstallManager;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.runtime.shared.SharedLaunchConstants;
 import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 
 public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator implements IJavaProjectConfigurator {
+    
     @Override
     public void configure(ProjectConfigurationRequest request,
             IProgressMonitor monitor) throws CoreException {
@@ -58,25 +64,31 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator i
         IJavaProject javaProject = JavaCore.create(project);
         boolean noContainer = !GrailsClasspathUtils.hasClasspathContainer(javaProject);
         boolean hasOldContainer = GrailsClasspathUtils.hasOldClasspathContainer(javaProject);
-        if (noContainer || hasOldContainer) {
-            IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
-            List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>(Arrays.asList(rawClasspath));
-            if (hasOldContainer) {
-                for (Iterator<IClasspathEntry> entryIter = entries.iterator(); entryIter.hasNext();) {
-                    IClasspathEntry entry = entryIter.next();
-                    if (entry.getPath().toPortableString().equals(IConversionConstants.GRAILS_OLD_CONTAINER)) {
-                        entryIter.remove();
-                        break;
-                    }
+        IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+        List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>(Arrays.asList(rawClasspath));
+        if (hasOldContainer) {
+            for (Iterator<IClasspathEntry> entryIter = entries.iterator(); entryIter.hasNext();) {
+                IClasspathEntry entry = entryIter.next();
+                if (entry.getPath().toPortableString().equals(IConversionConstants.GRAILS_OLD_CONTAINER)) {
+                    entryIter.remove();
+                    break;
                 }
             }
-            if (noContainer) {
-                entries.add(JavaCore.newContainerEntry(
-                        GrailsClasspathContainer.CLASSPATH_CONTAINER_PATH, null,
-                        null, false));
-            }
-            javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), monitor);
         }
+        if (noContainer) {
+            entries.add(JavaCore.newContainerEntry(
+                    GrailsClasspathContainer.CLASSPATH_CONTAINER_PATH, null,
+                    null, false));
+        }
+        
+        // also remove any grails source folders that have the grails classpath attribute
+        for (Iterator<IClasspathEntry> entryIter = entries.iterator(); entryIter.hasNext();) {
+            IClasspathEntry entry = entryIter.next();
+            if (GrailsResourceUtil.isGrailsClasspathEntry(entry) && !GrailsResourceUtil.hasClasspathAttribute(entry, IClasspathManager.POMDERIVED_ATTRIBUTE)) {
+                entryIter.remove();
+            }
+        }            
+        javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), monitor);
         super.configure(request, monitor);
     }
 
@@ -185,8 +197,10 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator i
         List<String> extraCp;
         // FIXADE must use different plugin for Grails 2.2.0 and later
         // Grails 2.2.0 changed the way that is 
+        GrailsVersion version = GrailsVersion.getGrailsVersion(project);
+        String pluginId = GrailsLaunchArgumentUtils.getRuntimeBundleFor(version);
         extraCp = localizer.localizeClasspath(
-                new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime13", null),
+                new EclipsePluginClasspathEntry(pluginId, null),
                 new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null)); 
         StringBuilder sb = new StringBuilder();
         for (String cpEntry : extraCp) {

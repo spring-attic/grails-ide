@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.GenericsType;
-import org.codehaus.groovy.eclipse.core.model.GroovyRuntime;
 import org.codehaus.groovy.eclipse.test.EclipseTestCase;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFile;

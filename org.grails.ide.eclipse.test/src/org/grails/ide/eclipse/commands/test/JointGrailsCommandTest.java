@@ -11,13 +11,8 @@
 package org.grails.ide.eclipse.commands.test;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Map;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandFactory;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
@@ -25,11 +20,9 @@ import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectAttachementsCache;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectAttachementsCache.Dependency;
 import org.grails.ide.eclipse.core.launch.GrailsCommandLaunchConfigurationDelegate;
-import org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
-import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
