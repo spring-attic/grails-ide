@@ -194,12 +194,9 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator i
             configuration.addChild(node);
         }
         ClasspathLocalizer localizer = new ClasspathLocalizer();
-        List<String> extraCp;
-        // FIXADE must use different plugin for Grails 2.2.0 and later
-        // Grails 2.2.0 changed the way that is 
-        GrailsVersion version = GrailsVersion.getGrailsVersion(project);
+        GrailsVersion version = GrailsVersion.getEclipseGrailsVersion(project);
         String pluginId = GrailsLaunchArgumentUtils.getRuntimeBundleFor(version);
-        extraCp = localizer.localizeClasspath(
+        List<String> extraCp = localizer.localizeClasspath(
                 new EclipsePluginClasspathEntry(pluginId, null),
                 new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null)); 
         StringBuilder sb = new StringBuilder();

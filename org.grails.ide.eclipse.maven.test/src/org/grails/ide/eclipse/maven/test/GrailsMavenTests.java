@@ -77,9 +77,6 @@ public class GrailsMavenTests extends AbstractLifecycleMappingTest {
     private final static String FACET_BUILDER_ID = "org.eclipse.wst.common.project.facet.core.builder";
     
     private final static Dependency FEEDS_DEPENDENCY = createDependency("org.grails.plugins", "feeds", "1.5", "zip");
-    
-    
-    
     private static Dependency createDependency(String group, String artifact, String version, String type) {
         Dependency d = new Dependency();
         d.setArtifactId(artifact);
@@ -144,9 +141,6 @@ public class GrailsMavenTests extends AbstractLifecycleMappingTest {
         ResolverConfiguration configuration = new ResolverConfiguration();
         IProject project = importProject("testProjects/ggts-maven-test/pom.xml", configuration);
 
-        IMavenProjectFacade facade = mavenProjectManager.create(project, monitor);
-        List<Dependency> dependencies = facade.getMavenProject().getDependencies();
-
         project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
         assertNaturesAndBuilders(project);
         assertClasspath(project, false);
@@ -176,33 +170,17 @@ public class GrailsMavenTests extends AbstractLifecycleMappingTest {
         assertClasspath(project, false);
     }
 
-    /**
-     * @param project
-     * @throws CoreException
-     */
-    private void cleanProject(IProject project) throws CoreException {
+    private void cleanProject(IProject project) throws CoreException, InterruptedException {
         // simulate a cleam
         ILaunchConfiguration configuration = createLaunchConfiguration(project, "clean");
         DebugUITools.launch(configuration, "run");
-//        project.getFolder("plugins").delete(true, monitor);
         project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
-//        ExecutePomAction cleanAction = new ExecutePomAction();
-//        cleanAction.setInitializationData(null, null, "clean");
-//        cleanAction.launch(new StructuredSelection(project), "run");
-//        IMaven maven = MavenPlugin.getMaven();
-//        IMavenProjectFacade facade = this.mavenProjectManager.create(project, monitor);
-//        MavenSession session = maven.createSession(MavenPlugin.getMaven().createExecutionRequest(monitor), facade.getMavenProject());
-//        MojoExecution clean = facade.getMojoExecution(new MojoExecutionKey("org.grails", "grails-maven-plugin", "2.1.1", "maven-clean", null, null), monitor);
-//        maven.execute(session, clean, monitor);
-        MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
         project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        waitForJobsToComplete(monitor);
+        MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
         project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
     }
 
-    /**
-     * @param project
-     * @throws CoreException
-     */
     private void assertNaturesAndBuilders(IProject project)
             throws CoreException {
         assertTrue("Expected Grails nature", project.hasNature(GrailsNature.NATURE_ID));
