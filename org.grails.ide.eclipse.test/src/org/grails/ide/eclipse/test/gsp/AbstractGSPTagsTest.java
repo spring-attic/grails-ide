@@ -25,8 +25,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.TestLogger;
+import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
@@ -49,6 +51,7 @@ public abstract class AbstractGSPTagsTest extends EclipseTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
         GrailsProjectVersionFixer.testMode();
         MockGrailsTestProjectUtils.mockGrailsProject(testProject.getProject());
         models = new ArrayList<IStructuredModel>();
