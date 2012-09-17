@@ -29,7 +29,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -173,7 +175,9 @@ public class GrailsMavenTests extends AbstractLifecycleMappingTest {
     private void cleanProject(IProject project) throws CoreException, InterruptedException {
         // simulate a cleam
         ILaunchConfiguration configuration = createLaunchConfiguration(project, "clean");
-        DebugUITools.launch(configuration, "run");
+        DebugEventWaiter waiter = new DebugEventWaiter(DebugEvent.TERMINATE);
+        configuration.launch("run", monitor, false);
+        waiter.waitForEvent();
         project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
         project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
         waitForJobsToComplete(monitor);
