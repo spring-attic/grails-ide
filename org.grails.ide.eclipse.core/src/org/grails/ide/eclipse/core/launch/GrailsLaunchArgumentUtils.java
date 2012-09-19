@@ -655,7 +655,7 @@ public class GrailsLaunchArgumentUtils {
 	 * 
 	 * @return Bundle-id
 	 */
-	private static String getRuntimeBundleFor(GrailsVersion version) {
+	public static String getRuntimeBundleFor(GrailsVersion version) {
 		if (version.compareTo(GrailsVersion.V_2_2_)>=0) {
 			return "org.grails.ide.eclipse.runtime22";
 		} else if (version.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)<=0) {

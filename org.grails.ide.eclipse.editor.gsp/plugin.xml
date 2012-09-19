@@ -202,7 +202,7 @@
     <extension
           point="org.eclipse.ui.commands">
        <command
-             categoryId="com.springsource.ide.grails.ui.commands"
+             categoryId="org.grails.ide.eclipse.ui.commands"
              description="Open a GSP corresponding to the current Grails artifact"
              id="org.grails.ide.eclipse.editor.gsp.gspCommand"
              name="Go to GSP">

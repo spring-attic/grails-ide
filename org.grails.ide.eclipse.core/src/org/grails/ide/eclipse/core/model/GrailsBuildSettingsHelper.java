@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 
-
 /**
  * @author Christian Dupuis
  * @author Kris De Volder
@@ -123,5 +122,4 @@ public class GrailsBuildSettingsHelper {
 		props.put(key, value);
 		setApplicationProperties(project, props);
 	}
-	
 }

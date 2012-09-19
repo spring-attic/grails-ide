@@ -27,7 +27,7 @@
       <filter
             description="Hides linked Grails Plugin Source Folders"
             enabled="true"
-            id="com.springsource.ide.grails.ui.hideSourceFoldersFilters"
+            id="org.grails.ide.eclipse.ui.hideSourceFoldersFilters"
             name="Hide Grails Plugin Sources"
             class="org.grails.ide.eclipse.ui.internal.filter.PackageExplorerFilter"
             targetId="org.eclipse.jdt.ui.PackageExplorer">
@@ -43,7 +43,7 @@
              id="org.grails.ide.eclipse.ui.menu">
         <menu
              label="Grails Tools"
-             id="com.springsource.ide.grails.ui.tools">
+             id="org.grails.ide.eclipse.ui.tools">
             <separator
                	name="group1">
             </separator>
@@ -64,95 +64,88 @@
         </enablement>
         <action
               class="org.grails.ide.eclipse.ui.internal.actions.RefreshGrailsDependenciesActionDelegate"
-              definitionId="com.springsource.ide.grails.ui.command.refreshClasspath"
+              definitionId="org.grails.ide.eclipse.ui.command.refreshClasspath"
               enablesFor="+"
-              id="com.springsource.ide.grails.ui.refreshClasspath"
+              id="org.grails.ide.eclipse.ui.refreshClasspath"
               label="Refresh Dependencies"
-              menubarPath="com.springsource.ide.grails.ui.tools/group1">
-           <enablement>
-              <not>
-	              <test forcePluginActivation="true"
-		   		   			property="org.eclipse.core.resources.projectNature" 
-		   		   			value="org.eclipse.m2e.core.maven2Nature" />
-              </not>
-           </enablement>
+              menubarPath="org.grails.ide.eclipse.ui.tools/group1">
          </action>
         <action
               class="org.grails.ide.eclipse.ui.internal.actions.DownloadSourcesActionDelegate"
               enablesFor="+"
-              id="com.springsource.ide.grails.ui.refreshClasspathWithSources"
+              id="org.grails.ide.eclipse.ui.refreshClasspathWithSources"
               label="Download Source Jars"
-              menubarPath="com.springsource.ide.grails.ui.tools/group1">
+              menubarPath="org.grails.ide.eclipse.ui.tools/group1">
          </action>
         <action
                class="org.grails.ide.eclipse.ui.internal.actions.EnableGrailsClasspathContainerActionDelegate"
                enablesFor="+"
                id="org.grails.ide.eclipse.ui.disableGrailsClasspathContainerActionDelegate"
                label="Disable Dependency Management"
-               menubarPath="com.springsource.ide.grails.ui.tools/group1">
+               menubarPath="org.grails.ide.eclipse.ui.tools/group1">
          </action>
           <action
                 class="org.grails.ide.eclipse.ui.internal.actions.OpenGrailsPluginsManagerActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.openPluginManager"
+                definitionId="org.grails.ide.eclipse.ui.command.openPluginManager"
                 enablesFor="1"
                 id="org.grails.ide.eclipse.ui.browseGrailsPlugins"
                 label="Grails Plugin Manager..."
-                menubarPath="com.springsource.ide.grails.ui.tools/group2">
+                menubarPath="org.grails.ide.eclipse.ui.tools/group2">
          </action>
 		 <action
-				definitionId="com.springsource.ide.grails.ui.command.openGrailsCommandPrompt"
+				definitionId="org.grails.ide.eclipse.ui.command.openGrailsCommandPrompt"
 				label="Open Grails Command Prompt"
 				class="org.grails.ide.eclipse.ui.internal.inplace.OpenGrailsInplaceActionDelegate"
 				id="org.grails.ide.eclipse.ui.PopupMenuOpenInplace"
-                menubarPath="com.springsource.ide.grails.ui.tools/group2">
+                menubarPath="org.grails.ide.eclipse.ui.tools/group2">
 		 </action>
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.grailsCommandWizard"
+           definitionId="org.grails.ide.eclipse.ui.command.grailsCommandWizard"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.grailsCommandWizard"
            label="Grails Command Wizard..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group2">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group2">
    		</action>
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.createDomainClass"
+           definitionId="org.grails.ide.eclipse.ui.command.createDomainClass"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.createDomainClass"
            label="Create Domain Class..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group3">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group3">
    		</action>
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.createController"
+           definitionId="org.grails.ide.eclipse.ui.command.createController"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.createController"
            label="Create Controller..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group3">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group3">
    		</action> 
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.createService"
+           definitionId="org.grails.ide.eclipse.ui.command.createService"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.createService"
            label="Create Service..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group3">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group3">
    		</action>
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.createFilters"
+           definitionId="org.grails.ide.eclipse.ui.command.createFilters"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.createFilters"
            label="Create Filters..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group3">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group3">
    		</action>
    		<action
            class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-           definitionId="com.springsource.ide.grails.ui.command.createTaglib"
+           definitionId="org.grails.ide.eclipse.ui.command.createTaglib"
            enablesFor="1"
            id="org.grails.ide.eclipse.ui.createTaglib"
            label="Create Taglib..."
-           menubarPath="com.springsource.ide.grails.ui.tools/group3">
+           menubarPath="org.grails.ide.eclipse.ui.tools/group3">
    		</action>
       </objectContribution>
       <objectContribution
@@ -164,7 +157,7 @@
                enablesFor="+"
                id="org.grails.ide.eclipse.ui.disableGrailsClasspathContainerActionDelegate"
                label="Enable Dependency Management"
-               menubarPath="com.springsource.ide.grails.ui.tools/group1">
+               menubarPath="org.grails.ide.eclipse.ui.tools/group1">
          </action>
         <enablement>
            <and>
@@ -213,12 +206,12 @@
 		     clutter all perspectives -->
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.OpenGrailsPluginsManagerActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.openPluginManager"
+                definitionId="org.grails.ide.eclipse.ui.command.openPluginManager"
                 id="org.grails.ide.eclipse.ui.browseGrailsPlugins"
                 label="Grails Plugin Manager...">
            </action>
 			<action
-				definitionId="com.springsource.ide.grails.ui.command.openGrailsCommandPrompt"
+				definitionId="org.grails.ide.eclipse.ui.command.openGrailsCommandPrompt"
 				label="Open Grails Command Prompt"
 				class="org.grails.ide.eclipse.ui.internal.inplace.OpenGrailsInplaceActionDelegate"
 				id="org.grails.ide.eclipse.ui.GlobalKeybindingOpenInplace">
@@ -226,44 +219,44 @@
 			
 			<action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.grailsCommandWizard"
+                definitionId="org.grails.ide.eclipse.ui.command.grailsCommandWizard"
 				id="org.grails.ide.eclipse.ui.grailsCommandWizard"
          		label="Grails Command Wizard...">
            </action>
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.createDomainClass"
+                definitionId="org.grails.ide.eclipse.ui.command.createDomainClass"
 				id="org.grails.ide.eclipse.ui.createDomainClass"
          		label="Create Domain Class...">
            </action>
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.createController"
+                definitionId="org.grails.ide.eclipse.ui.command.createController"
          		id="org.grails.ide.eclipse.ui.createController"
          		label="Create Controller...">
            </action>
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.createService"
+                definitionId="org.grails.ide.eclipse.ui.command.createService"
        			id="org.grails.ide.eclipse.ui.createService"
          		label="Create Service...">
            </action>
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.createFilters"
+                definitionId="org.grails.ide.eclipse.ui.command.createFilters"
        			id="org.grails.ide.eclipse.ui.createFilters"
          		label="Create Filters...">
            </action>
            <action
                 class="org.grails.ide.eclipse.ui.internal.actions.GrailsCommandWizardActionDelegate"
-                definitionId="com.springsource.ide.grails.ui.command.createTaglib"
+                definitionId="org.grails.ide.eclipse.ui.command.createTaglib"
          		id="org.grails.ide.eclipse.ui.createTaglib"
          		label="Create Taglib...">
            </action>
            <action
                  class="org.grails.ide.eclipse.ui.internal.actions.RefreshGrailsDependenciesActionDelegate"
-                 definitionId="com.springsource.ide.grails.ui.command.refreshClasspath"
-                 id="com.springsource.ide.grails.ui.refreshClasspath"
+                 definitionId="org.grails.ide.eclipse.ui.command.refreshClasspath"
+                 id="org.grails.ide.eclipse.ui.refreshClasspath"
                  label="Refresh Dependencies">
            </action>
 		</actionSet>
@@ -292,60 +285,60 @@
 	<extension point="org.eclipse.ui.commands">
 		<category
             name="SpringSource Grails Tools"
-            id="com.springsource.ide.grails.ui.commands">
+            id="org.grails.ide.eclipse.ui.commands">
         </category>
         
 		<command name="Open Grails Command Prompt"
 			description="Open a quick Grails command prompt"
-			categoryId="com.springsource.ide.grails.ui.commands"
-			id="com.springsource.ide.grails.ui.command.openGrailsCommandPrompt">
+			categoryId="org.grails.ide.eclipse.ui.commands"
+			id="org.grails.ide.eclipse.ui.command.openGrailsCommandPrompt">
 		</command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Open the Grails plugin manager"
-              id="com.springsource.ide.grails.ui.command.openPluginManager"
+              id="org.grails.ide.eclipse.ui.command.openPluginManager"
               name="Open Grails Plugin Manager">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Open the Grails command wizard"
-              id="com.springsource.ide.grails.ui.command.grailsCommandWizard"
+              id="org.grails.ide.eclipse.ui.command.grailsCommandWizard"
               name="Grails Command Wizard">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Create a Grails domain class"
-              id="com.springsource.ide.grails.ui.command.createDomainClass"
+              id="org.grails.ide.eclipse.ui.command.createDomainClass"
               name="Create Domain Class">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Create a Grails controller"
-              id="com.springsource.ide.grails.ui.command.createController"
+              id="org.grails.ide.eclipse.ui.command.createController"
               name="Create Controller">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Create a Grails tag library"
-              id="com.springsource.ide.grails.ui.command.createTaglib"
+              id="org.grails.ide.eclipse.ui.command.createTaglib"
               name="Create Taglib">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Create a Grails service"
-              id="com.springsource.ide.grails.ui.command.createService"
+              id="org.grails.ide.eclipse.ui.command.createService"
               name="Create Service">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Create a Grails filters class"
-              id="com.springsource.ide.grails.ui.command.createFilters"
+              id="org.grails.ide.eclipse.ui.command.createFilters"
               name="Create Filters">
         </command>
         <command
-              categoryId="com.springsource.ide.grails.ui.commands"
+              categoryId="org.grails.ide.eclipse.ui.commands"
               description="Refresh Dependencies"
-              id="com.springsource.ide.grails.ui.command.refreshClasspath"
+              id="org.grails.ide.eclipse.ui.command.refreshClasspath"
               name="Refresh Dependencies">
         </command>
 
@@ -353,18 +346,18 @@
 
 	<extension point="org.eclipse.ui.bindings">
 		<key sequence="CTRL+SHIFT+ALT+G"
-			commandId="com.springsource.ide.grails.ui.command.openGrailsCommandPrompt"
+			commandId="org.grails.ide.eclipse.ui.command.openGrailsCommandPrompt"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
 		<key platform="carbon" sequence="CTRL+SHIFT+ALT+G" commandId=""
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
 		<key platform="carbon" sequence="COMMAND+SHIFT+ALT+G"
-			commandId="com.springsource.ide.grails.ui.command.openGrailsCommandPrompt"
+			commandId="org.grails.ide.eclipse.ui.command.openGrailsCommandPrompt"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
     <key
-        commandId="com.springsource.ide.grails.ui.command.openPluginManager"
+        commandId="org.grails.ide.eclipse.ui.command.openPluginManager"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M"/>
@@ -377,14 +370,14 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.openPluginManager"
+        commandId="org.grails.ide.eclipse.ui.command.openPluginManager"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M"/>
 
 	
 	<key
-        commandId="com.springsource.ide.grails.ui.command.grailsCommandWizard"
+        commandId="org.grails.ide.eclipse.ui.command.grailsCommandWizard"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G W"/>
@@ -397,14 +390,14 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.grailsCommandWizard"
+        commandId="org.grails.ide.eclipse.ui.command.grailsCommandWizard"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G W"/>
 
 	
 	<key
-        commandId="com.springsource.ide.grails.ui.command.createDomainClass"
+        commandId="org.grails.ide.eclipse.ui.command.createDomainClass"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M3+D"/>
@@ -417,7 +410,7 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.createDomainClass"
+        commandId="org.grails.ide.eclipse.ui.command.createDomainClass"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M3+D"/>
@@ -425,7 +418,7 @@
 	
 	
 	<key
-        commandId="com.springsource.ide.grails.ui.command.createController"
+        commandId="org.grails.ide.eclipse.ui.command.createController"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M3+C"/>
@@ -438,7 +431,7 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.createController"
+        commandId="org.grails.ide.eclipse.ui.command.createController"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M3+C"/>
@@ -446,7 +439,7 @@
 	
 	
 	<key
-        commandId="com.springsource.ide.grails.ui.command.createTaglib"
+        commandId="org.grails.ide.eclipse.ui.command.createTaglib"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M3+T"/>
@@ -459,7 +452,7 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.createTaglib"
+        commandId="org.grails.ide.eclipse.ui.command.createTaglib"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M3+T"/>
@@ -467,7 +460,7 @@
 	
 	
 	<key
-        commandId="com.springsource.ide.grails.ui.command.createService"
+        commandId="org.grails.ide.eclipse.ui.command.createService"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M3+S"/>
@@ -480,13 +473,13 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.createService"
+        commandId="org.grails.ide.eclipse.ui.command.createService"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M3+S"/>
 
 	<key
-        commandId="com.springsource.ide.grails.ui.command.createFilters"
+        commandId="org.grails.ide.eclipse.ui.command.createFilters"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G M3+I"/>
@@ -499,14 +492,14 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.createFilters"
+        commandId="org.grails.ide.eclipse.ui.command.createFilters"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G M3+I"/>
         
         
 	<key
-        commandId="com.springsource.ide.grails.ui.command.refreshClasspath"
+        commandId="org.grails.ide.eclipse.ui.command.refreshClasspath"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M3+G R"/>
@@ -519,7 +512,7 @@
     <!-- Reenable commands using M1+M3+G for Swiss German -->      
     <key
         locale="de_CH"
-        commandId="com.springsource.ide.grails.ui.command.refreshClasspath"
+        commandId="org.grails.ide.eclipse.ui.command.refreshClasspath"
         contextId="org.eclipse.ui.contexts.window"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="M1+M3+G R"/>
@@ -532,7 +525,7 @@
       <page
             adaptable="true"
             class="org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage"
-            id="com.springsource.ide.grails.ui.projectPropertyPage"
+            id="org.grails.ide.eclipse.ui.projectPropertyPage"
             name="Grails"
             objectClass="org.eclipse.core.resources.IProject">
          <filter
@@ -540,13 +533,13 @@
                value="org.grails.ide.eclipse.core.nature">
          </filter>
          <keywordReference
-               id="com.springsource.ide.grails.ui.keywords">
+               id="org.grails.ide.eclipse.ui.keywords">
          </keywordReference>
       </page>
    </extension>
    
      <extension point="org.eclipse.ui.keywords">
-         <keyword id="com.springsource.ide.grails.ui.keywords"
+         <keyword id="org.grails.ide.eclipse.ui.keywords"
             label="Grails"/>
     </extension>
    

@@ -224,7 +224,7 @@ public class GrailsTest extends TestCase {
 	/**
 	 * Ensure a project with the given name exists, so we can use it as a test Fixture.
 	 */
-	protected IProject ensureProject(String name) throws Exception {
+	public static IProject ensureProject(String name) throws Exception {
 	    return ensureProject(name, false);
 	}
 
@@ -236,7 +236,7 @@ public class GrailsTest extends TestCase {
 	 * @return the created Grails projet
 	 * @throws CoreException
 	 */
-	protected IProject ensureProject(String name, boolean isPluginProject)
+	protected static IProject ensureProject(String name, boolean isPluginProject)
 			throws Exception {
 		IProject project = StsTestUtil.getProject(name);
 		if (project.exists()) {
@@ -256,13 +256,7 @@ public class GrailsTest extends TestCase {
 			GrailsCommandUtils.eclipsifyProject(null, true, project);
 
 			assertTrue(project.exists());
-			try {
-				StsTestUtil.assertNoErrors(project);
-			} catch (Throwable e) {
-				//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
-				GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
-				StsTestUtil.assertNoErrors(project);
-			}
+			assertNoErrors(project);
 			assertTrue(project.hasNature(GrailsNature.NATURE_ID));
 
 			if (!isPluginProject) {
@@ -278,13 +272,23 @@ public class GrailsTest extends TestCase {
 		}
 	}
 
+	public static void assertNoErrors(IProject project) throws CoreException {
+		try {
+			StsTestUtil.assertNoErrors(project);
+		} catch (Throwable e) {
+			//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
+			GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
+			StsTestUtil.assertNoErrors(project);
+		}
+	}
+
 	public static void assertContains(String needle, String haystack) {
 		if (!haystack.contains(needle)) {
 			fail("Couldn't find expected substring: '"+needle+"'\n in '"+haystack+"'");
 		}
 	}
 
-	public String workspacePath() {
+	public static String workspacePath() {
 		return ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 	}
 

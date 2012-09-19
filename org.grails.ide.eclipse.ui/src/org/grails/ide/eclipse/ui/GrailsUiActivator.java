@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.ui;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.commands.JDKCheck;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
 import org.osgi.framework.BundleContext;
 
@@ -69,7 +72,16 @@ public class GrailsUiActivator extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public static GrailsUiActivator getDefault() {
+	public static boolean isM2EProject(IProject project) {
+        try {
+            return project.isAccessible() && project.hasNature(M2ECLIPSE_NATURE);
+        } catch (CoreException e) {
+            GrailsCoreActivator.log(e);
+            return false;
+        }
+    }
+
+    public static GrailsUiActivator getDefault() {
 		return plugin;
 	}
 

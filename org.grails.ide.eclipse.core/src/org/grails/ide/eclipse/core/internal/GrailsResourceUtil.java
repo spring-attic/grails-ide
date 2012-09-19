@@ -120,21 +120,28 @@ public class GrailsResourceUtil {
 		}
 
 		try {
-			IClasspathEntry entry = root.getRawClasspathEntry();
-			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-				for (IClasspathAttribute attr : entry.getExtraAttributes()) {
-					if (attr.getName().equals(
-							GrailsClasspathContainer.PLUGIN_SOURCEFOLDER_ATTRIBUTE_NAME)) {
-						return true;
-					}
-				}
-			}
+		    return isGrailsClasspathEntry(root.getRawClasspathEntry());
+        } catch (JavaModelException e) {
+            GrailsCoreActivator.log(e);
+            return false;
+        }
 
-		} catch (JavaModelException e) {
-			GrailsCoreActivator.log(e);
-		}
-		return false;
 	}
+
+    public static boolean isGrailsClasspathEntry(IClasspathEntry entry) {
+        return hasClasspathAttribute(entry, GrailsClasspathContainer.PLUGIN_SOURCEFOLDER_ATTRIBUTE_NAME);
+    }
+    
+    public static boolean hasClasspathAttribute(IClasspathEntry entry, String attributeName) {
+        if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+            for (IClasspathAttribute attr : entry.getExtraAttributes()) {
+                if (attr.getName().equals(attributeName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Certain file folders containing source files are now filtered out as they

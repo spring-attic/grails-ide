@@ -101,12 +101,8 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
     private List<IProject> getMavenProjects(List<IProject> projects) {
         List<IProject> mavenProjects = new ArrayList<IProject>(projects.size());
         for (IProject project : projects) {
-            try {
-                if (project.isAccessible() && project.hasNature(GrailsUiActivator.M2ECLIPSE_NATURE)) {
-                    mavenProjects.add(project);
-                }
-            } catch (CoreException e) {
-                GrailsCoreActivator.log(e);
+            if (GrailsUiActivator.isM2EProject(project)) {
+                mavenProjects.add(project);
             }
         }
         return mavenProjects;
@@ -118,7 +114,7 @@ public class RefreshGrailsDependenciesActionDelegate implements IObjectActionDel
 		selected = SelectionUtils.getProjects(selection, new ProjectFilter() {
 			@Override
 			public boolean isAcceptable(IProject project) {
-				return GrailsNature.isGrailsProject(project);
+				return GrailsNature.isGrailsProject(project) && !GrailsUiActivator.isM2EProject(project);
 			}
 		});
 		boolean enabled = !selected.isEmpty();

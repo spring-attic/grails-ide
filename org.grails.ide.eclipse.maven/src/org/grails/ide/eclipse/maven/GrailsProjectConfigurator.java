@@ -11,7 +11,11 @@
 package org.grails.ide.eclipse.maven;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -30,10 +34,12 @@ import org.eclipse.m2e.core.project.configurator.ILifecycleMappingConfiguration;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.MojoExecutionKey;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
-import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathManager;
+import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.internal.AbstractJavaProjectConfigurator;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
-import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.GrailsResourceUtil;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainer;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
@@ -42,11 +48,50 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.launch.ClasspathLocalizer;
 import org.grails.ide.eclipse.core.launch.EclipsePluginClasspathEntry;
+import org.grails.ide.eclipse.core.launch.GrailsLaunchArgumentUtils;
+import org.grails.ide.eclipse.core.model.GrailsInstallManager;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.runtime.shared.SharedLaunchConstants;
+import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 
-public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
-
+public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator implements IJavaProjectConfigurator {
+    
     @Override
+    public void configure(ProjectConfigurationRequest request,
+            IProgressMonitor monitor) throws CoreException {
+        IProject project = request.getProject();
+        addJavaNature(project, monitor);
+        IJavaProject javaProject = JavaCore.create(project);
+        boolean noContainer = !GrailsClasspathUtils.hasClasspathContainer(javaProject);
+        boolean hasOldContainer = GrailsClasspathUtils.hasOldClasspathContainer(javaProject);
+        IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+        List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>(Arrays.asList(rawClasspath));
+        if (hasOldContainer) {
+            for (Iterator<IClasspathEntry> entryIter = entries.iterator(); entryIter.hasNext();) {
+                IClasspathEntry entry = entryIter.next();
+                if (entry.getPath().toPortableString().equals(IConversionConstants.GRAILS_OLD_CONTAINER)) {
+                    entryIter.remove();
+                    break;
+                }
+            }
+        }
+        if (noContainer) {
+            entries.add(JavaCore.newContainerEntry(
+                    GrailsClasspathContainer.CLASSPATH_CONTAINER_PATH, null,
+                    null, false));
+        }
+        
+        // also remove any grails source folders that have the grails classpath attribute
+        for (Iterator<IClasspathEntry> entryIter = entries.iterator(); entryIter.hasNext();) {
+            IClasspathEntry entry = entryIter.next();
+            if (GrailsResourceUtil.isGrailsClasspathEntry(entry) && !GrailsResourceUtil.hasClasspathAttribute(entry, IClasspathManager.POMDERIVED_ATTRIBUTE)) {
+                entryIter.remove();
+            }
+        }            
+        javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), monitor);
+        super.configure(request, monitor);
+    }
+
     public void configureRawClasspath(ProjectConfigurationRequest request,
             IClasspathDescriptor classpath, IProgressMonitor monitor)
             throws CoreException {
@@ -58,7 +103,8 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
         String descriptorName = GrailsClasspathUtils.getDependencyDescriptorName(project);
         File f = new File(descriptorName);
         if (!f.exists()) {
-            throw new CoreException(new Status(IStatus.ERROR, GrailsMavenActivator.PLUGIN_ID, "Could not find the grails dependency file.", new Exception()));
+            throw new CoreException(new Status(IStatus.ERROR, GrailsMavenActivator.PLUGIN_ID, "Could not find the grails dependency file." +
+            		" This probably means that there is a bad dependency in the pom file.", new Exception()));
         }
         
         // ensure that the dependency and plugin data is forgotten
@@ -84,6 +130,19 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
             container.invalidate();
             container.getClasspathEntries();
         }
+    }
+    
+    @Override
+    protected void addJavaProjectOptions(Map<String, String> options,
+            ProjectConfigurationRequest request, IProgressMonitor monitor)
+            throws CoreException {
+        super.addJavaProjectOptions(options, request, monitor);
+        
+        // hard code for now
+        // not finding the values in maven-compiler-plugin
+        options.put(JavaCore.COMPILER_SOURCE, "1.6");
+        options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
+        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.6");
     }
     
     @Override
@@ -135,10 +194,10 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
             configuration.addChild(node);
         }
         ClasspathLocalizer localizer = new ClasspathLocalizer();
-        List<String> extraCp;
-        // Grails 2.2.0 changed the way that is 
-        extraCp = localizer.localizeClasspath(
-                new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime13", null),
+        GrailsVersion version = GrailsVersion.getEclipseGrailsVersion(project);
+        String pluginId = GrailsLaunchArgumentUtils.getRuntimeBundleFor(version);
+        List<String> extraCp = localizer.localizeClasspath(
+                new EclipsePluginClasspathEntry(pluginId, null),
                 new EclipsePluginClasspathEntry("org.grails.ide.eclipse.runtime.shared", null)); 
         StringBuilder sb = new StringBuilder();
         for (String cpEntry : extraCp) {
@@ -162,6 +221,21 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator {
         }
         node.setValue(GrailsClasspathUtils.getDependencyDescriptorName(project));
         
+        
+        node = configuration.getChild("fork");
+        if (node == null) {
+            node = new Xpp3Dom("fork");
+            configuration.addChild(node);
+        }
+        // must run in forked mode
+        node.setValue("true");
+        
         return configuration;
+    }
+
+    public void configureClasspath(IMavenProjectFacade facade,
+            IClasspathDescriptor classpath, IProgressMonitor monitor)
+            throws CoreException {
+        // do nuthin
     }
 }

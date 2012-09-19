@@ -12,26 +12,18 @@ package org.grails.ide.eclipse.test;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.AssertionFailedError;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
-import org.grails.ide.eclipse.core.model.IGrailsInstall;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
-import org.grails.ide.eclipse.test.util.GrailsTest;
 
 /**
  * @author Andrew Eisenberg
@@ -40,53 +32,9 @@ public class GrailsTestsActivator implements BundleActivator {
     
     public static final String PLUGIN_ID = "org.grails.ide.eclipse.test"; //$NON-NLS-1$
     private static boolean isJointGrailsTest;
-    
-    public static String[] getURLDependencies() throws Exception {
-        List<String> allJars = new ArrayList<String>();
-        
-        allJars.add(getLocationForBundle("javax.servlet"));
-        allJars.add(getLocationForBundle("javax.el"));
-        
-        GrailsTest.waitForGrailsIntall();
-        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
-        // now add grails-*.jar from the grails install
-        // Most recent version may be 1.3.7 or 2.0.0 depending on what is set in GrailsTestUtilActivator
-        IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getInstallFor(GrailsVersion.MOST_RECENT);
-        
-        if (install == null) {
-            throw new AssertionFailedError("Could not find Grails version " + GrailsVersion.MOST_RECENT);
-        }
-        
-        allJars.addAll(findJars(install.getHome() + "dist/", true));
-        allJars.addAll(findJars(install.getHome() + "lib/", true));
-        return allJars.toArray(new String[0]);
-    }
-    
-    private static String getLocationForBundle(String bundleId) throws IOException {
-        try {
-            return FileLocator.getBundleFile(Platform.getBundle(bundleId)).getAbsolutePath();
-        } catch (NullPointerException e) {
-            throw new AssertionFailedError("Could not find bundle " + bundleId);
-        }
-    }
-    
+       
     public static boolean isGrails200OrLater() {
         return GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_)>=0;
-    }
-    /**
-     * @return
-     * @throws IOException
-     */
-    private static List<String> findJars(String path, boolean recursive) throws IOException {
-        String pluginFileName;
-        if (new Path(path).isAbsolute()) {
-            pluginFileName = path;
-        } else {
-            URL pluginURL = FileLocator.resolve(Platform.getBundle(PLUGIN_ID).getEntry(path));
-            pluginFileName = pluginURL.getFile();
-        }
-        File file = new File(pluginFileName);
-        return findFiles(file, recursive);
     }
 
     protected static List<String> findFiles(File file, final boolean recursive) {

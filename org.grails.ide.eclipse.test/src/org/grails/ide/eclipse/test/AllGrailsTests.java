@@ -10,16 +10,11 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test;
 
-import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
-import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.model.GrailsVersion;
-import org.springsource.ide.eclipse.commons.tests.util.ManagedTestSuite;
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.commands.test.DependencyFileFormatTest;
 import org.grails.ide.eclipse.commands.test.ExtraPluginInstallerTests;
 import org.grails.ide.eclipse.commands.test.GrailsCommandFactoryTest;
@@ -29,6 +24,9 @@ import org.grails.ide.eclipse.commands.test.GrailsCommandWizardExpressionTest;
 import org.grails.ide.eclipse.commands.test.JointGrailsCommandTest;
 import org.grails.ide.eclipse.commands.test.LaunchSystemPropertiesTest;
 import org.grails.ide.eclipse.commands.test.PluginInstallerTests;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
+import org.grails.ide.eclipse.core.wizard.GrailsImportWizardCore;
 import org.grails.ide.eclipse.groovy.debug.tests.AllGroovyDebugTests;
 import org.grails.ide.eclipse.longrunning.test.LongRunningGrailsTest;
 import org.grails.ide.eclipse.longrunning.test.PrefixedOutputStreamTest;
@@ -57,9 +55,10 @@ import org.grails.ide.eclipse.test.inferencing.PluginInferencingTests;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.test.util.GroovySanityTest;
 import org.grails.ide.eclipse.test.util.ZipFileUtilTest;
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.grails.ide.eclipse.ui.test.GrailsConsoleLineTrackerTests;
 import org.grails.ide.eclipse.ui.test.StackFrameConsoleLineTrackerTests;
+import org.springsource.ide.eclipse.commons.tests.util.ManagedTestSuite;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * @author Andrew Eisenberg
@@ -172,6 +171,7 @@ public class AllGrailsTests {
         		suite.addTestSuite(GrailsSourceCodeTest.class);
         		suite.addTestSuite(GSPHyperlinkTests.class);
         		suite.addTestSuite(NamedQueryInferencingTests.class);
+        		suite.addTestSuite(GrailsImportWizardCoreTests.class);
         	}
         }
 		suite.addTestSuite(ThreadLeakTest.class);

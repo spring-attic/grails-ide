@@ -11,33 +11,26 @@
 package org.grails.ide.eclipse.test.inferencing;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 
 import junit.framework.AssertionFailedError;
 
 import org.codehaus.groovy.eclipse.codeassist.tests.CompletionTestCase;
-import org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob;
 import org.codehaus.groovy.eclipse.editor.GroovyEditor;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
-import org.codehaus.jdt.groovy.model.GroovyNature;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.tests.util.GroovyUtils;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.ui.internal.Workbench;
-import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
-import org.grails.ide.eclipse.core.model.IGrailsInstall;
-
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass;
-import org.grails.ide.eclipse.test.GrailsTestsActivator;
+import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
+import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
  * Tests content assist in grails artifact files
@@ -48,6 +41,12 @@ public class GrailsContentAssistTests extends CompletionTestCase {
 
     public GrailsContentAssistTests(String name) {
         super(name);
+    }
+    
+    @Override
+    protected void setUp() throws Exception {
+        GrailsProjectVersionFixer.testMode();
+        super.setUp();
     }
     
     @Override
@@ -237,21 +236,7 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         }
         IPath projectPath = super.createGenericProject();
         IProject project = env.getProject(projectPath);
-        IProjectDescription description = project.getDescription();
-        description.setNatureIds(new String[] { JavaCore.NATURE_ID, GroovyNature.GROOVY_NATURE, GrailsNature.NATURE_ID });
-        project.setDescription(description, null);
-        String[] files = GrailsTestsActivator.getURLDependencies();
-        for (String file : files) {
-            env.addExternalJar(project.getFullPath(), file);
-        }
-        // now get the grails.dsld, if it exists
-        IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getInstallFor(GrailsVersion.MOST_RECENT);
-        String dslSupport = install.getHome() + "dsl-support";
-        if (new File(dslSupport).exists()) {
-            env.addExternalFolders(project.getFullPath(), new String[] {dslSupport});
-            // force refresh dslds
-            new RefreshDSLDJob(project).run(null);
-        }
+        MockGrailsTestProjectUtils.mockGrailsProject(project);
         
         fullBuild(projectPath);
         env.addPackageFragmentRoot(projectPath, "grails-app/services"); //$NON-NLS-1$
