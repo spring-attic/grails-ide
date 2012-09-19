@@ -32,8 +32,7 @@ public class GrailsTestsActivator implements BundleActivator {
     
     public static final String PLUGIN_ID = "org.grails.ide.eclipse.test"; //$NON-NLS-1$
     private static boolean isJointGrailsTest;
-    
-    
+       
     public static boolean isGrails200OrLater() {
         return GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_)>=0;
     }

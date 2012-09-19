@@ -256,13 +256,7 @@ public class GrailsTest extends TestCase {
 			GrailsCommandUtils.eclipsifyProject(null, true, project);
 
 			assertTrue(project.exists());
-			try {
-				StsTestUtil.assertNoErrors(project);
-			} catch (Throwable e) {
-				//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
-				GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
-				StsTestUtil.assertNoErrors(project);
-			}
+			assertNoErrors(project);
 			assertTrue(project.hasNature(GrailsNature.NATURE_ID));
 
 			if (!isPluginProject) {
@@ -275,6 +269,16 @@ public class GrailsTest extends TestCase {
 			}
 			System.out.println("Created project '"+project.getName()+" uses Grails "+GrailsVersion.getEclipseGrailsVersion(project));
 			return project;
+		}
+	}
+
+	public static void assertNoErrors(IProject project) throws CoreException {
+		try {
+			StsTestUtil.assertNoErrors(project);
+		} catch (Throwable e) {
+			//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
+			GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
+			StsTestUtil.assertNoErrors(project);
 		}
 	}
 
