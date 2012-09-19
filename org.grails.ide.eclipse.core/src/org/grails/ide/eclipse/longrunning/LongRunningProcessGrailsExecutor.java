@@ -110,7 +110,7 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 	}
 
 	public static boolean canHandleVersion(GrailsVersion version) {
-		//Long running process executor doesn't work for V_2_0
-		return version.compareTo(GrailsVersion.V_2_0_)<0;
+		//Long running process executor now only works for V_2_2 or above
+ 		return version.compareTo(GrailsVersion.V_2_2_)>=0;
 	}
 }

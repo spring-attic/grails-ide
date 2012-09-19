@@ -87,7 +87,7 @@ public class GrailsTest extends TestCase {
 	
 	public static void clearGrailsState() {
 		File home = GrailsCoreActivator.getDefault().getUserHome();
-		deleteDir(new File(home, ".ivy2"));
+		//deleteDir(new File(home, ".ivy2"));
 		deleteDir(new File(home, ".grails"));
 	}
 
