@@ -10,9 +10,15 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.ui.internal.inplace;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
@@ -20,6 +26,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.grails.ide.eclipse.commands.GrailsCommand;
+import org.grails.ide.eclipse.commands.GrailsCommandFactory;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
@@ -84,8 +92,46 @@ public abstract class GrailsLaunchUtils {
 	 * @param javaProject Context for launching
 	 * @param script      Text of grails command to launch
 	 */
-	public static void launch(IJavaProject javaProject, String script) {
-		launch(javaProject, script, false);
+	public static void launch(IJavaProject javaProject, final String script) {
+		//launch(javaProject, script, false);
+		final IProject project = javaProject.getProject();
+		final GrailsCommand cmd = GrailsCommandFactory.fromString(project, script);
+		final String title = "grails "+script;
+		
+		// Register the command listeners
+		final GrailsCoreActivator grailsCore = GrailsCoreActivator.getDefault();
+		grailsCore.addGrailsCommandResourceListener(
+				new OpenNewResourcesCommandListener(javaProject.getProject()));
+
+		if (script != null && script.contains("install-plugin") || script.contains("s2-create-acl-domains")) {
+			grailsCore.addGrailsCommandResourceListener(
+					new RefreshDependenciesCommandListener(javaProject.getProject()));
+		}
+		
+		new Job(title) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask(title, 3);
+				try {
+					try {
+						monitor.worked(1);
+						grailsCore.notifyCommandStart(project);
+						try {
+							cmd.synchExec();
+							monitor.worked(1);
+						} finally {
+							project.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
+							grailsCore.notifyCommandFinish(project);
+						}
+					} catch (CoreException e) {
+						return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Problem executing: "+script, e);
+					}
+					return Status.OK_STATUS;
+				} finally {
+					monitor.done();
+				}
+			}
+		}.schedule();
 	}
 
 }

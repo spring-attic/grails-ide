@@ -11,6 +11,7 @@
 package org.grails.ide.eclipse.commands;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -26,7 +27,6 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
 
-
 /**
  * An instance of this class provides some way of executing Grails commands.
  * <p>
@@ -40,6 +40,8 @@ import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
  * @since 2.5.3
  */
 public class GrailsExecutor {
+	
+	protected static GrailsExecutor DEFAULT_INSTANCE = new GrailsExecutor();
 	
 	private static Map<GrailsVersion, GrailsExecutor> instances = new HashMap<GrailsVersion, GrailsExecutor>();
 	
@@ -63,7 +65,7 @@ public class GrailsExecutor {
 		if (instance==null) {
 			boolean keepRunning = GrailsCoreActivator.getDefault().getKeepRunning();
 			if (keepRunning && LongRunningProcessGrailsExecutor.canHandleVersion(version)) {
-				instance = new LongRunningProcessGrailsExecutor();
+				instance = LongRunningProcessGrailsExecutor.INSTANCE;
 			} else {
 				instance = new GrailsExecutor();
 			}
@@ -146,9 +148,12 @@ public class GrailsExecutor {
 	}
 
 	public static synchronized void shutDownIfNeeded() {
-		for (GrailsVersion version : instances.keySet()) {
+		Iterator<GrailsVersion> versions = instances.keySet().iterator();
+		while (versions.hasNext()) {
+			GrailsVersion version = versions.next();
 			GrailsExecutor instance = instances.get(version);
 			instance.shutDown();
+			versions.remove();
 		}
 	}
 

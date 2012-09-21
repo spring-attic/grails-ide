@@ -13,7 +13,7 @@ package org.grails.ide.api;
 import java.io.File;
 
 /**
- * An instance of this class represents a 'connection' to Grails tied to a specific 'working directory'.
+ * An instance of this provides a means to open a Grails connection pointing it to a specific 'working directory'.
  * 
  * @author Kris De Volder
  */

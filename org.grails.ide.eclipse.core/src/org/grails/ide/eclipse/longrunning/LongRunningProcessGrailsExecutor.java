@@ -29,6 +29,8 @@ import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.client.GrailsClient;
 import org.springsource.ide.eclipse.commons.core.util.MultiplexingOutputStream;
 
+import org.grails.ide.eclipse.core.launch.Grails20OutputCleaner;
+
 
 /**
  * Alternate implementation of GrailsExecutor that executes Grails commands using a "long running"
@@ -39,8 +41,23 @@ import org.springsource.ide.eclipse.commons.core.util.MultiplexingOutputStream;
  */
 public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 	
+	/**
+	 * Note that although this instance is public... the proper way to use this is via {@link GrailsExecutor}.getInstance
+	 * which has some logic to determine which executor to use depending on the Grails version.
+	 */
+	public static final LongRunningProcessGrailsExecutor INSTANCE = new LongRunningProcessGrailsExecutor();
+	
+	private LongRunningProcessGrailsExecutor() {
+		super();
+	}
+	
 	@Override
 	public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
+		if (cmd.getCommand().contains("run-app")) {
+			//For now... we know run-app isn't really working in long running process. So use the
+			//older launch infrasctucture instead.
+			return DEFAULT_INSTANCE.synchExec(cmd);
+		}
 		IGrailsInstall grailsHome = cmd.getGrailsInstall();
 
 		if (grailsHome == null) {
@@ -94,13 +111,20 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 		if (cmd.isShowOutput()) {
 			//Create a UI console and send output there.
 			Console console = GrailsProcessManager.consoleProvider.getConsole(cmd.getCommand());
-			OutputStream out = new MultiplexingOutputStream(bytesOut, console.getOutputStream());
+			OutputStream out = clean(new MultiplexingOutputStream(bytesOut, console.getOutputStream()));
 			OutputStream err = new MultiplexingOutputStream(bytesErr, console.getErrorStream());
 			return Console.make(console.getInputStream(), out, err);
 		} else {
 			//Create a dummy console that only sends output to 'bytes'
-			return Console.make(bytesOut, bytesErr);
+			return Console.make(clean(bytesOut), bytesErr);
 		}
+	}
+
+	private OutputStream clean(OutputStream out) {
+		if (GrailsCoreActivator.getDefault().getCleanOutput()) {
+			return new Grails20OutputStreamCleaner(out);
+		}
+		return out;
 	}
 
 	@Override

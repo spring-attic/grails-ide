@@ -11,7 +11,6 @@
 package org.grails.ide.eclipse.longrunning.process;
 
 import org.codehaus.groovy.grails.cli.parsing.CommandLineParser;
-import org.grails.ide.api.impl.APIScriptRunner;
 import org.grails.ide.eclipse.runtime.shared.longrunning.ProtocolException;
 
 /**
@@ -28,8 +27,6 @@ import org.grails.ide.eclipse.runtime.shared.longrunning.ProtocolException;
  * @author Kris De Volder
  */
 class ExternalGrailsCommand {
-	
-	private static final CommandLineParser parser = APIScriptRunner.getCommandLineParser();
 	
 	private String grailsCommand;
 	private String dependencyFile = null; // if set, makes us write dependency data to file at this location after successful command completion.

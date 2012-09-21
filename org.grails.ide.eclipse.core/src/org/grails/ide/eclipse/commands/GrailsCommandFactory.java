@@ -739,4 +739,14 @@ public abstract class GrailsCommandFactory {
 		return new GrailsCommand(project, "list-plugins");
 	}
 
+	/**
+	 * Used to create a command from a String entered by the user (i.e. in Grails command prompt or a similar UI for enterning and
+	 * executing commands. This way of creating commands is completely unaward of command syntax and escape sequences etc.
+	 * It is assumed that the user entering the command is familiar with the syntax and uses it correctly. This
+	 */
+	public static GrailsCommand fromString(IProject project, String script) {
+		return new GrailsCommand(project, script, true); //Since the command is entered by the user, its up to the user to escape spaces etc.
+		                                                // So, exceptionally, it is ok here to use the 'dirty' method of creating commands.
+	}
+
 }

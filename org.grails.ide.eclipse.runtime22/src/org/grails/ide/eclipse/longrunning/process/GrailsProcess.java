@@ -22,7 +22,6 @@ import static org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessCon
 import static org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessConstants.EXIT;
 import static org.grails.ide.eclipse.runtime.shared.longrunning.GrailsProcessConstants.PROTOCOL_HEADER_LEN;
 
-import grails.build.logging.GrailsEclipseConsole;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,6 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.grails.ide.api.GrailsConnector;
 import org.grails.ide.api.GrailsToolingAPI;
 import org.grails.ide.api.impl.GrailsToolingAPIImpl;
+import org.grails.ide.api.impl.ReflectionHacks;
 import org.grails.ide.eclipse.runtime.GrailsBuildSettingsDependencyExtractor;
 import org.grails.ide.eclipse.runtime.shared.longrunning.CommandInput;
 import org.grails.ide.eclipse.runtime.shared.longrunning.FlushingPrintStream;
@@ -109,8 +109,6 @@ public class GrailsProcess extends SafeProcess {
         	new HeartBeatMonitor().start();
         }
 	}
-
-	
 	
 	private void run() throws IOException {
 		try {
@@ -124,7 +122,7 @@ public class GrailsProcess extends SafeProcess {
 					System.setIn(cmdInput.getInputStream());
 					int code = -999;
 					try {
-						code = grails().executeCommand(cmd.getCommandLine(), new GrailsEclipseConsole());
+						code = grails().executeCommand(cmd.getCommandLine(), ReflectionHacks.new_GrailsEclipseConsole());
 						heartBeat();
 						if (code==0) {
 							writeDependencyFile(cmd);

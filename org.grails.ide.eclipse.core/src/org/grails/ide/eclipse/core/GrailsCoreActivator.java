@@ -50,7 +50,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 
-
 /**
  * @author Christian Dupuis
  * @author Andy Clement
@@ -165,7 +164,7 @@ public class GrailsCoreActivator extends Plugin {
 	public static final String PATH_VARIABLE_NAME = "GRAILS_ROOT";
 	private static final String KEEP_RUNNING_PREFERENCE = PLUGIN_ID + ".KEEP_RUNNING";
 	
-	public static final boolean DEFAULT_KEEP_RUNNING_PREFERENCE = false;
+	public static final boolean DEFAULT_KEEP_RUNNING_PREFERENCE = true; //From now on this will be on by default
 	private static final String GRAILS_COMMAND_OUTPUT_LIMIT_PREFERENCE = PLUGIN_ID+".OUTPUT_LIMIT";
 
 	private static final int DEFAULT_GRAILS_COMMAND_OUTPUT_LIMIT_PREFERENCE = 200000;;
@@ -392,8 +391,6 @@ public class GrailsCoreActivator extends Plugin {
         }
 	    return propsMap;
 	}
-	
-	
 	
 	private boolean isWindows() {
 		String os = System.getProperty("os.name").toLowerCase();

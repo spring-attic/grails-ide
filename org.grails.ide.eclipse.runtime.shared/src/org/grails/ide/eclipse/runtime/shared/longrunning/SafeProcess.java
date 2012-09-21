@@ -91,6 +91,6 @@ public class SafeProcess {
 	 * As a safety precaution to avoid runaway rogue processes, GrailsProcess will terminate if
 	 * it hasn't been asked to execute any commands for this amount of time.
 	 */
-	public static final long MAX_IDLE_TIME = 10 * MINUTES * 10;
+	public static final long MAX_IDLE_TIME = 20 * MINUTES;
 	
 }

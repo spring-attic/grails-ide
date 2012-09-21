@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandFactory;
+import org.grails.ide.eclipse.commands.test.GrailsCommandTest;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsInstallManager;
@@ -28,11 +29,9 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
-import org.grails.ide.eclipse.longrunning.client.GrailsClient;
-
-import org.grails.ide.eclipse.commands.test.GrailsCommandTest;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * Inherits all the tests from GrailsCommandTest, but runs them with "keep running" option enabled.
@@ -163,6 +162,9 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 			doUpgrade(project, GrailsVersion.PREVIOUS, GrailsVersion.MOST_RECENT);
 		} finally {
 			GrailsProjectVersionFixer.setEnabled(wasEnabled);
+			//All this up-and-down grading is likely to compromise the project's integrity. Ensure we create new one for next test.
+			StsTestUtil.deleteAllProjects();
+			GrailsTest.clearGrailsState();
 		}
 	}
 
