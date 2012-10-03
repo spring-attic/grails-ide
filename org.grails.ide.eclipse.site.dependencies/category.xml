@@ -44,25 +44,25 @@
 	</feature>
 
 	<feature 
-	   url="features/org.eclipse.contribution.weaving_2.2.2.qualifier.jar"
+	   url="features/org.eclipse.contribution.weaving_0.0.0.jar"
 	   id="org.eclipse.contribution.weaving"
-       version="2.2.2.qualifier">
+       version="0.0.0">
     </feature>
     
 	<feature 
-	   url="features/org.codehaus.groovy18.feature_2.7.2.qualifier.jar"
+	   url="features/org.codehaus.groovy18.feature_0.0.0.jar"
 	   id="org.codehaus.groovy18.feature"
-       version="2.7.2.qualifier">
+       version="0.0.0">
     </feature>
     
     <feature 
-       url="features/org.codehaus.groovy.eclipse.feature_2.7.2.qualifier.jar"
-       id="org.codehaus.groovy.eclipse.feature" version="2.7.2.qualifier">
+       url="features/org.codehaus.groovy.eclipse.feature_0.0.0.jar"
+       id="org.codehaus.groovy.eclipse.feature" version="0.0.0">
     </feature>
 
     <feature 
-       url="features/org.codehaus.groovy.jdt.patch_2.7.2.qualifier.jar"
-       id="org.codehaus.groovy.jdt.patch" version="2.7.2.qualifier">
+       url="features/org.codehaus.groovy.jdt.patch_0.0.0.jar"
+       id="org.codehaus.groovy.jdt.patch" version="0.0.0">
     </feature>
 
 </site>
