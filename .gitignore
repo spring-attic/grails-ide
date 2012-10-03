@@ -1,3 +1,5 @@
 target/
 bin/
 classes/
+.buildpath
+org.ebayopensource.vjet.eclipse.core.prefs
