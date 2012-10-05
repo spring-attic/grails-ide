@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecution;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
@@ -136,13 +137,50 @@ public class GrailsProjectConfigurator extends AbstractJavaProjectConfigurator i
     protected void addJavaProjectOptions(Map<String, String> options,
             ProjectConfigurationRequest request, IProgressMonitor monitor)
             throws CoreException {
-        super.addJavaProjectOptions(options, request, monitor);
+        // because of the use of the extension, we cannot get the source and target info from 
+        // super.  must calculate it ourselves.
+        Plugin plugin = request.getMavenProject().getPlugin("org.apache.maven.plugins:maven-compiler-plugin");
+        String source = null;
+        String target = null;
+        if (plugin != null) {
+            Object configuration = plugin.getConfiguration();
+            if (configuration instanceof Xpp3Dom) {
+                Xpp3Dom xml = (Xpp3Dom) configuration;
+                Xpp3Dom sourceChild = xml.getChild("source");
+                if (sourceChild != null) {
+                    source = sourceChild.getValue();
+                    if(source.equals("5")) {
+                        source = "1.5";
+                    } else if(source.equals("6")) {
+                        source = "1.6";
+                    } else if(source.equals("7")) {
+                        source = "1.7";
+                    }
+                }
+                
+                Xpp3Dom targetChild = xml.getChild("target");
+                if (targetChild != null) {
+                    target = targetChild.getValue();
+                    if(target.equals("5")) {
+                        target = "1.5";
+                    } else if(target.equals("6")) {
+                        target = "1.6";
+                    } else if(target.equals("7")) {
+                        target = "1.7";
+                    }
+                }
+            }
+        }
         
-        // hard code for now
-        // not finding the values in maven-compiler-plugin
-        options.put(JavaCore.COMPILER_SOURCE, "1.6");
-        options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
-        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.6");
+        if (source == null) {
+            source = "1.6";
+        }
+        if (target == null) {
+            target = "1.6";
+        }
+        options.put(JavaCore.COMPILER_SOURCE, source);
+        options.put(JavaCore.COMPILER_COMPLIANCE, source);
+        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, target);
     }
     
     @Override

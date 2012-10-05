@@ -16,13 +16,18 @@ import org.eclipse.m2e.core.project.configurator.AbstractCustomizableLifecycleMa
 import org.eclipse.m2e.core.project.configurator.ILifecycleMapping;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 
+/**
+ * Stub for now
+ * 
+ * @author Andrew Eisenberg
+ * @created Oct 5, 2012
+ */
 public class GrailsAppLifecycleMapping extends AbstractCustomizableLifecycleMapping 
         implements ILifecycleMapping {
 
     @Override
     public void configure(ProjectConfigurationRequest request,
             IProgressMonitor mon) throws CoreException {
-        // TODO Auto-generated method stub
         super.configure(request, mon);
     }
 }
