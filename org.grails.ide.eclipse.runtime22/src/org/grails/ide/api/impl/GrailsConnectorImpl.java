@@ -77,7 +77,7 @@ public class GrailsConnectorImpl implements GrailsConnector {
 			return buildSettings.getBaseDir();
 		}
 		
-//More conservative version: treats mismatching baseDir between buildSettings and our own instance as
+// The above appears to work, but below is a ,ore conservative version: treats mismatching baseDir between buildSettings and our own instance as
 // a 'corrupted' state.
 		
 //		if (baseDir!=null) {
