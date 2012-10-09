@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.commands;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -25,7 +27,6 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
 
-
 /**
  * An instance of this class provides some way of executing Grails commands.
  * <p>
@@ -40,61 +41,69 @@ import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
  */
 public class GrailsExecutor {
 	
-	private static GrailsExecutor instance = null;
+	protected static GrailsExecutor DEFAULT_INSTANCE = new GrailsExecutor();
 	
-	/**
-	 * At present this only used for testing purposes, to monitor whether the expected commands get executed, and if
-	 * they produce the expected results.
-	 */
-	public static GrailsExecutorListener listener = null;
+	private static Map<GrailsVersion, GrailsExecutor> instances = new HashMap<GrailsVersion, GrailsExecutor>();
 	
-	public static synchronized void setListener(GrailsExecutorListener newListener) {
-		shutDownIfNeeded(); // Force new executor creation to ensure listener will be installed in it.
-		listener = newListener; 
-	}
+// The code that is commented out below, related to listener is used by run on server tests which are currently disabled.
+// When those tests are re-enabled we may need this code back, and it will then need some work, since it
+// assumes only a single executor is exists... but we now have a map of executors per grails version.
+	
+//	/**
+//	 * At present this only used for testing purposes, to monitor whether the expected commands get executed, and if
+//	 * they produce the expected results.
+//	 */
+//	public static GrailsExecutorListener listener = null;
+//	
+//	public static synchronized void setListener(GrailsExecutorListener newListener) {
+//		shutDownIfNeeded(); // Force new executor creation to ensure listener will be installed in it.
+//		listener = newListener; 
+//	}
 	
 	public static synchronized GrailsExecutor getInstance(GrailsVersion version) {
-		if (instance==null || canHandleVersion(instance, version)) {
+		GrailsExecutor instance = instances.get(version);
+		if (instance==null) {
 			boolean keepRunning = GrailsCoreActivator.getDefault().getKeepRunning();
 			if (keepRunning && LongRunningProcessGrailsExecutor.canHandleVersion(version)) {
-				instance = new LongRunningProcessGrailsExecutor();
+				instance = LongRunningProcessGrailsExecutor.INSTANCE;
 			} else {
 				instance = new GrailsExecutor();
 			}
+			instances.put(version, instance);
 		}
-		if (listener!=null) {
-			//copy listener to local, final variable used by the instance. Don't want to have access
-			//listener variable, which is mutable, outside of this synchronized method.
-			final GrailsExecutorListener wrappedListener = listener;
-			final GrailsExecutor wrapped = instance;
-			instance = new GrailsExecutor() {
-				public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
-					try {
-						ILaunchResult result = wrapped.synchExec(cmd);
-						wrappedListener.commandExecuted(cmd, result);
-						return result;
-					} catch (CoreException e) {
-						wrappedListener.commandExecuted(cmd, e);
-						throw e;
-					} catch (RuntimeException e) {
-						wrappedListener.commandExecuted(cmd, e);
-						throw e;
-					}
-				}
-				public void shutDown() {
-					wrapped.shutDown();
-				}
-			};
-		}
+//		if (listener!=null) {
+//			//copy listener to local, final variable used by the instance. Don't want to have access
+//			//listener variable, which is mutable, outside of this synchronized method.
+//			final GrailsExecutorListener wrappedListener = listener;
+//			final GrailsExecutor wrapped = instance;
+//			instance = new GrailsExecutor() {
+//				public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
+//					try {
+//						ILaunchResult result = wrapped.synchExec(cmd);
+//						wrappedListener.commandExecuted(cmd, result);
+//						return result;
+//					} catch (CoreException e) {
+//						wrappedListener.commandExecuted(cmd, e);
+//						throw e;
+//					} catch (RuntimeException e) {
+//						wrappedListener.commandExecuted(cmd, e);
+//						throw e;
+//					}
+//				}
+//				public void shutDown() {
+//					wrapped.shutDown();
+//				}
+//			};
+//		}
 		return instance;
 	}
 
-	private static boolean canHandleVersion(GrailsExecutor instance, GrailsVersion version) {
-		if (instance instanceof LongRunningProcessGrailsExecutor) {
-			return LongRunningProcessGrailsExecutor.canHandleVersion(version);
-		}
-		return true; // default executor handles all versions.
-	}
+//	private static boolean canHandleVersion(GrailsExecutor instance, GrailsVersion version) {
+//		if (instance instanceof LongRunningProcessGrailsExecutor) {
+//			return LongRunningProcessGrailsExecutor.canHandleVersion(version);
+//		}
+//		return true; // default executor handles all versions.
+//	}
 
 	public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
 		try {
@@ -139,9 +148,12 @@ public class GrailsExecutor {
 	}
 
 	public static synchronized void shutDownIfNeeded() {
-		if (instance!=null) {
+		Iterator<GrailsVersion> versions = instances.keySet().iterator();
+		while (versions.hasNext()) {
+			GrailsVersion version = versions.next();
+			GrailsExecutor instance = instances.get(version);
 			instance.shutDown();
-			instance = null;
+			versions.remove();
 		}
 	}
 

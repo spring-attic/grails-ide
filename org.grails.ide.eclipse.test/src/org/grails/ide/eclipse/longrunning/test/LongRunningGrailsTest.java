@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandFactory;
+import org.grails.ide.eclipse.commands.test.GrailsCommandTest;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsInstallManager;
@@ -28,9 +29,9 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
-
-import org.grails.ide.eclipse.commands.test.GrailsCommandTest;
+import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * Inherits all the tests from GrailsCommandTest, but runs them with "keep running" option enabled.
@@ -39,6 +40,10 @@ import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
  * @since 2.6
  */
 public class LongRunningGrailsTest extends GrailsCommandTest {
+	
+	static {
+		GrailsTest.clearGrailsState();
+	}
 
 	private ConsoleProvider savedConsoleProvider;
 	
@@ -60,7 +65,8 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 	 * Most basic test that simply runs a single command and prints the result.
 	 */
 	public void testOneCommand() throws Exception {
-		System.out.println(GrailsCommandFactory.createApp("frullBot").synchExec());
+		//GrailsClient.DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005";
+		System.out.println(GrailsCommandFactory.createApp("frullBot").addArgument("--stacktrace").synchExec());
 	}
 	
 	public void testCommandWithEnvParam() throws Exception {
@@ -75,24 +81,29 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 	 */
 	public void testCommandWithInput()throws Exception {
 		IProject proj = ensureProject(TEST_PROJECT_NAME);
+
+		GrailsProcessManager.getInstance().shutDown();
+		//GrailsClient.DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005";
 		
 		expectedInteraction(/*empty*/);
 		
 		GrailsCommand cmd = createDomainClass(proj, "gTunes.Bong");
 		ILaunchResult result = cmd.synchExec();
 		System.out.println(result.getOutput());
-		assertContains("Created DomainClass for Bong", result.getOutput());
-		assertContains("Created Tests for Bong", result.getOutput());
+		assertContains("Created file grails-app/domain/gTunes/Bong", result.getOutput());
 		proj.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		assertResourceExists(TEST_PROJECT_NAME+"/grails-app/domain/gTunes/Bong.groovy");
 		
+		//GrailsProcessManager.getInstance().shutDown();
+		//GrailsClient.DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005";
+
 		expectedInteraction(
 				new QuestionAnswer(
-						"DomainClass Bong.groovy already exists. Overwrite? [y/n] (y, Y, n, N)",
+						"Bong.groovy already exists. Overwrite?[y,n]",
 						"y"
 				),
 				new QuestionAnswer(
-						"Tests BongTests.groovy already exists. Overwrite? [y/n] (y, Y, n, N)",
+						"BongTests.groovy already exists. Overwrite?[y,n]",
 						"y"
 				)
 		);
@@ -101,8 +112,7 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		assertAllQuestionsAnswered();
 		
 		System.out.println(result.getOutput());
-		assertContains("Created DomainClass for Bong", result.getOutput());
-		assertContains("Created Tests for Bong", result.getOutput());
+		assertContains("Created file grails-app/domain/gTunes/Bong", result.getOutput());
 		proj.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		assertResourceExists(TEST_PROJECT_NAME+"/grails-app/domain/gTunes/Bong.groovy");
 		
@@ -110,11 +120,11 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		
 		expectedInteraction(
 				new QuestionAnswer(
-						"DomainClass Bong.groovy already exists. Overwrite? [y/n] (y, Y, n, N)",
+						"Bong.groovy already exists. Overwrite?[y,n]",
 						"y"
 				),
 				new QuestionAnswer(
-						"Tests BongTests.groovy already exists. Overwrite? [y/n] (y, Y, n, N)",
+						"BongTests.groovy already exists. Overwrite?[y,n]",
 						"y"
 				)
 		);
@@ -123,8 +133,7 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		assertAllQuestionsAnswered();
 		
 		System.out.println(result.getOutput());
-		assertContains("Created DomainClass for Bong", result.getOutput());
-		assertContains("Created Tests for Bong", result.getOutput());
+		assertContains("Created file grails-app/domain/gTunes/Bong", result.getOutput());
 		proj.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		assertResourceExists(TEST_PROJECT_NAME+"/grails-app/domain/gTunes/Bong.groovy");
 		
@@ -153,6 +162,9 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 			doUpgrade(project, GrailsVersion.PREVIOUS, GrailsVersion.MOST_RECENT);
 		} finally {
 			GrailsProjectVersionFixer.setEnabled(wasEnabled);
+			//All this up-and-down grading is likely to compromise the project's integrity. Ensure we create new one for next test.
+			StsTestUtil.deleteAllProjects();
+			GrailsTest.clearGrailsState();
 		}
 	}
 
@@ -175,7 +187,8 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		
 		// Check whether correct version of Grails was used...
-		assertContains("Welcome to Grails "+toVersion, result.getOutput());; 
+		String welcome = (GrailsVersion.V_2_0_.compareTo(toVersion)<=0) ? "Loading Grails ": "Welcome to Grails ";
+		assertContains(welcome+toVersion, result.getOutput());; 
 		
 		//Verify expected project version state (i.e. back in synch)
 		assertEquals(toVersion, GrailsVersion.getEclipseGrailsVersion(project));

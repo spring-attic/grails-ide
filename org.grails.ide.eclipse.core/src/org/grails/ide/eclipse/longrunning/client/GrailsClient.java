@@ -71,26 +71,26 @@ public class GrailsClient {
 	 * to this remote debugging session when it starts.
 	 * <p>
 	 * Note that if the process is running in 'client' mode but a corresponding debug process isn't
-	 * started in Eclipse, then the GrailsProcessConstants will fail to start.
+	 * started in Eclipse, then the GrailsProcess will fail to start.
 	 * <p>
 	 * See also http://www.grails.org/GrailsDevEnvironment for a bit more info on debugging
 	 * Grails.
 	 */
-	public static final String DEBUG_PROCESS = null; //Disabled
-	//public static final String DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005";		
+	public static String DEBUG_PROCESS = null; //Disabled
+	//public static final String DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005";
 	//public static final String DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=n,address=8000";
 	
 	/**
 	 * When this flag is set we will echo anything sent from the external process to the client 
 	 * or vice versa onto System.out.
 	 */
-	private static final boolean DEBUG_PROTOCOL = false;
+	private static final boolean DEBUG_PROTOCOL = true;
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
 	 * out.
 	 */
-	private static final boolean DEBUG_CLIENT = false;
+	private static final boolean DEBUG_CLIENT = true;
 
 	/**
 	 * Polling interval used to check for data coming from the process.
@@ -272,9 +272,7 @@ public class GrailsClient {
 	}
 	
 	private String neededPlugins() throws IOException {
-		ClasspathLocalizer localizer = new ClasspathLocalizer();
-		List<String> entries = localizer.localizeClasspath(
-				new EclipsePluginClasspathEntry(GrailsCoreActivator.PLUGIN_ID) );
+		List<String> entries = GrailsLaunchArgumentUtils.getBuildListenerClassPath(install.getVersion());
 		return GrailsLaunchArgumentUtils.toPathsString(entries);
 	}
 

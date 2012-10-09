@@ -161,7 +161,7 @@ public class AllGrailsTests {
         		suite.addTestSuite(GrailsCommandTest.class);
         		suite.addTestSuite(GrailsCommandFactoryTest.class);
         		suite.addTestSuite(LaunchSystemPropertiesTest.class);
-        		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_0)<0) {
+        		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_)>=0) {
         			suite.addTestSuite(LongRunningGrailsTest.class);
         		}
         		suite.addTestSuite(GrailsCommandWizardExpressionTest.class);
