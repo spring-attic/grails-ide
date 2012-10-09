@@ -70,18 +70,28 @@ public class GrailsConnectorImpl implements GrailsConnector {
 	}
 
 	public File getBaseDir() {
-		if (baseDir!=null) {
-			if (getBuildSettings()!=null) {
-				//BuildSettings and initial basedir must agree, otherwise flaky results ensue.
-				if (baseDir.equals(getBuildSettings().getBaseDir())) {
-					return baseDir;
-				} else {
-					return null; //To the client this will mean we are in an not very well defined state
-								// and the process shouldn't be re-used.
-				}
-			}
+		if (buildSettings==null) {
+			return baseDir; // not yet initialised, so our originally set baseDir is the one.
+		} else {
+			//buildSettings already created its state takes priority over the 'original' baseDir
+			return buildSettings.getBaseDir();
 		}
-		return baseDir;
+		
+//More conservative version: treats mismatching baseDir between buildSettings and our own instance as
+// a 'corrupted' state.
+		
+//		if (baseDir!=null) {
+//			if (getBuildSettings()!=null) {
+//				//BuildSettings and initial basedir must agree, otherwise flaky results ensue.
+//				if (baseDir.equals(getBuildSettings().getBaseDir())) {
+//					return baseDir;
+//				} else {
+//					return null; //To the client this will mean we are in an not very well defined state
+//								// and the process shouldn't be re-used.
+//				}
+//			}
+//		}
+//		return baseDir;
 	}
 
 	private BuildSettings createBuildSettings()  {
