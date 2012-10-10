@@ -350,9 +350,9 @@ contribute(currentType("grails.orm.HibernateCriteriaBuilder")) {
    method name : "projections", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
    method name : "maxResults", type : void, params : [num : int]
    
-   delegatesTo type:"org.hibernate.Criteria", except:["list", "scroll"]
-   method name : "list", declaringType : "grails.orm.HibernateCriteriaBuilder", type: List, params : [query : Closure]
-   method name : "scroll", declaringType : "grails.orm.HibernateCriteriaBuilder", type: "org.hibernate.ScrollableResults", params : [query : Closure]
+   delegatesTo type:"org.hibernate.Criteria", except:["list", "scroll"], noParens:true
+   method name : "list", declaringType : "grails.orm.HibernateCriteriaBuilder", type: List, params : [query : Closure], noParens:true
+   method name : "scroll", declaringType : "grails.orm.HibernateCriteriaBuilder", type: "org.hibernate.ScrollableResults", params : [query : Closure], noParens:true
 }
 
 
@@ -362,12 +362,12 @@ contribute(currentType("grails.orm.HibernateCriteriaBuilder")) {
 // allow methods directly inside of the top-level namedQueries closure.
 contribute(enclosingField("namedQueries") & domainClass) {
    provider = "Criteria builder DSL"
-   method name : "and", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
-   method name : "or", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
-   method name : "not", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
-   method name : "projections", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure]
-   delegatesTo type:"grails.orm.HibernateCriteriaBuilder", isStatic:true
-   delegatesTo type:"org.hibernate.Criteria", isStatic:true
+   method name : "and", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure], isStatic:true
+   method name : "or", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure], isStatic:true
+   method name : "not", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure], isStatic:true
+   method name : "projections", type : "grails.orm.HibernateCriteriaBuilder", params : [components : Closure], isStatic:true
+   delegatesTo type:"grails.orm.HibernateCriteriaBuilder", isStatic:true, noParens:true
+   delegatesTo type:"org.hibernate.Criteria", isStatic:true, noParens:true
 }
 
 // -----------------------------------------------------
