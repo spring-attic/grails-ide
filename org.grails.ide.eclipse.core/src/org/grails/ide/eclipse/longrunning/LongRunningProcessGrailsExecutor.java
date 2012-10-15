@@ -26,6 +26,7 @@ import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ResultFromTerminatedLaunch;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.core.util.LimitedByteArrayOutputStream;
 import org.grails.ide.eclipse.longrunning.client.GrailsClient;
 import org.springsource.ide.eclipse.commons.core.util.MultiplexingOutputStream;
 
@@ -76,8 +77,8 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 				throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Error creating grails process", e));
 			}
 
-			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-			ByteArrayOutputStream bytesErr = new ByteArrayOutputStream();
+			ByteArrayOutputStream bytesOut = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
+			ByteArrayOutputStream bytesErr = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
 			final Console console = buildConsole(cmd, bytesOut, bytesErr);
 			ResultFromTerminatedLaunch result = null; 
 			final String cmdInfo = cmd.toString();
