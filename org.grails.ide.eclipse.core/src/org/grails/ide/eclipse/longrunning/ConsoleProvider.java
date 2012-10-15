@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.longrunning;
 
+import org.grails.ide.eclipse.commands.GrailsCommand;
+
 /**
  * An abstraction that shields grails core plugin from having to depend directly on UI plugins to instantiate
  * an IOConsole view instance (or something equivalent) to show output to the user. 
@@ -26,6 +28,6 @@ public abstract class ConsoleProvider {
 	 * Creates a page in the console view to show output and returns output and input streams to
 	 * write to / read from it.
 	 */
-	public abstract Console getConsole(String title);
+	public abstract Console getConsole(String string);
 
 }

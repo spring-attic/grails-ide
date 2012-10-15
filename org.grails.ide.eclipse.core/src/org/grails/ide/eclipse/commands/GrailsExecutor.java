@@ -65,7 +65,7 @@ public class GrailsExecutor {
 		if (instance==null) {
 			boolean keepRunning = GrailsCoreActivator.getDefault().getKeepRunning();
 			if (keepRunning && LongRunningProcessGrailsExecutor.canHandleVersion(version)) {
-				instance = LongRunningProcessGrailsExecutor.INSTANCE;
+				instance = LongRunningProcessGrailsExecutor.getInstance();
 			} else {
 				instance = new GrailsExecutor();
 			}

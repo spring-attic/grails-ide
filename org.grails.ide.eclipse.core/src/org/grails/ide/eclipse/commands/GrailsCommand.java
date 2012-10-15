@@ -377,4 +377,19 @@ public class GrailsCommand {
 		return new GrailsCommand(commandName);
 	}
 
+	/**
+	 * The working directory where the command should execute (i.e. the 'cwd' location)
+	 * TODO: a number of places in the code duplicate this kind of logic for determining
+	 * the working directory. REfactor these so they use this method instead.
+	 */
+	public File getWorkingDir() {
+		if (path!=null) {
+			return new File(path);
+		} else if (project!=null) {
+			return project.getLocation().toFile();
+		} else {
+			return ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+		}
+	}
+
 }

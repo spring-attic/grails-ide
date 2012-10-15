@@ -5,6 +5,7 @@
  * Copyright (c) 2007, 2009 SpringSource.  All rights reserved.
  *******************************************************************************/-->
 <plugin>
+   <extension-point id="org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor" name="LongRunningProcessGrailsExecutor" schema="schema/org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor.exsd"/>
 	
     <extension
          point="org.eclipse.jdt.core.classpathContainerInitializer">

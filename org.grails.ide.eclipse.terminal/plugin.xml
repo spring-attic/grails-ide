@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.tm.terminal.terminalConnectors">
+      <connector
+            class="org.grails.ide.eclipse.terminal.GrailsTerminalConnector"
+            hidden="false"
+            id="org.grails.ide.eclipse.terminal.connector"
+            name="Grails Terminal">
+      </connector>
+   </extension>
+   <extension
+         point="org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor">
+      <impl
+            class="org.grails.ide.eclipse.terminal.GrailsTerminalExecutor">
+      </impl>
+   </extension>
+
+</plugin>

@@ -17,7 +17,9 @@ import java.io.OutputStream;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsExecutor;
@@ -41,11 +43,28 @@ import org.grails.ide.eclipse.core.launch.Grails20OutputCleaner;
  */
 public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 	
-	/**
-	 * Note that although this instance is public... the proper way to use this is via {@link GrailsExecutor}.getInstance
-	 * which has some logic to determine which executor to use depending on the Grails version.
-	 */
-	public static final LongRunningProcessGrailsExecutor INSTANCE = new LongRunningProcessGrailsExecutor();
+	public static ConsoleProvider consoleProvider;
+	
+	private static GrailsExecutor INSTANCE;
+	
+	public static GrailsExecutor getInstance() {
+		if (INSTANCE==null) {
+			IConfigurationElement[] exts = Platform.getExtensionRegistry().getConfigurationElementsFor(LongRunningProcessGrailsExecutor.class.getName());
+			//We can only handle at most one for now, anything beyond the first one is ignored.
+			if (exts!=null && exts.length>0) {
+				try {
+					INSTANCE = (GrailsExecutor) exts[0].createExecutableExtension("class");
+				} catch (CoreException e) {
+					GrailsCoreActivator.log(e);
+				}
+			}
+			if (INSTANCE==null) {
+				INSTANCE = new LongRunningProcessGrailsExecutor(); //So there's at least something that works.
+			}
+		}
+		
+		return INSTANCE;
+	}
 	
 	private LongRunningProcessGrailsExecutor() {
 		super();
@@ -110,7 +129,7 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 	protected Console buildConsole(GrailsCommand cmd, ByteArrayOutputStream bytesOut, ByteArrayOutputStream bytesErr) {
 		if (cmd.isShowOutput()) {
 			//Create a UI console and send output there.
-			Console console = GrailsProcessManager.consoleProvider.getConsole(cmd.getCommand());
+			Console console = LongRunningProcessGrailsExecutor.consoleProvider.getConsole(cmd.getCommand());
 			OutputStream out = clean(new MultiplexingOutputStream(bytesOut, console.getOutputStream()));
 			OutputStream err = new MultiplexingOutputStream(bytesErr, console.getErrorStream());
 			return Console.make(console.getInputStream(), out, err);

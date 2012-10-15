@@ -18,6 +18,7 @@ import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.commands.JDKCheck;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
+import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
 import org.osgi.framework.BundleContext;
 
 import org.grails.ide.eclipse.ui.console.GrailsUIConsoleProvider;
@@ -59,7 +60,7 @@ public class GrailsUiActivator extends AbstractUIPlugin {
 		outputFolderFixer = new GrailsOutputFolderFixer(projectVersionFixer);
 		
 		// Hookup some stuff the UI plugin implements that needs to be 'plugged in' to core
-		GrailsProcessManager.consoleProvider = new GrailsUIConsoleProvider();
+		LongRunningProcessGrailsExecutor.consoleProvider = new GrailsUIConsoleProvider();
 		JDKCheck.ui = new JDKCheckMessageDialogProvider();
 		GroovyCompilerVersionCheck.setDialogProvider(new GroovyCompilerVersionCheckDialogProvider());
 	}

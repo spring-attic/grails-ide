@@ -39,7 +39,7 @@ import org.grails.ide.eclipse.runtime.shared.longrunning.ProtocolException;
 
 /**
  * A client that is able to send request to execute Grails commands to
- * an external grails process. (Note that the class GrailsProcessConstants itself which 
+ * an external grails process. (Note that the class GrailsProcess itself which 
  * implements the process, shouldn't be instantiated since it runs on an external JVM).
  * <p>
  * Normally you shouldn't instantiate GrailsClient instances directly. Instead use {@link GrailsProcessManager} to obtain client instances.
@@ -434,7 +434,8 @@ public class GrailsClient {
 			if (toProcess==out) {
 				debug_protocol("send>>> "+line);
 			}
-			out.println(line);
+			out.println(line+"\r"); //TODO: The addition of \r is temporary hack because VT-100 term expexcts it
+			                        // but printwriter isn't sending it on Linux
 			out.flush();
 		}
 	}

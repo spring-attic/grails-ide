@@ -62,6 +62,7 @@ public class GrailsConnectorImpl implements GrailsConnector {
 		this.baseDir = baseDir;
 
         System.setProperty("net.sf.ehcache.skipUpdateCheck", "true"); //TODO: Copied from GrailsScriptRunner, what's this for?
+        System.setProperty("grails.console.eclipse.ansi", "true");   //TODO: Bad! Needs API way.
         System.setProperty("jline.terminal", "jline.UnsupportedTerminal"); //TODO: Bad! Needs API way.
         System.setProperty("grails.console.class", GrailsEclipseConsole.class.getName()); //TODO: Bad! Needs API way.
         System.setProperty("grails.disable.exit", "true"); //TODO: do we really need this?

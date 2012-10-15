@@ -29,6 +29,7 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
+import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
@@ -51,13 +52,13 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 	 * Sets the input that will be used for the next command execution.
 	 */
 	private void expectedInteraction(QuestionAnswer... qas) {
-		GrailsProcessManager.consoleProvider = new TestConsoleProvider(qas);
+		LongRunningProcessGrailsExecutor.consoleProvider = new TestConsoleProvider(qas);
 	}
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		savedConsoleProvider = GrailsProcessManager.consoleProvider;
+		savedConsoleProvider = LongRunningProcessGrailsExecutor.consoleProvider;
 		GrailsCoreActivator.getDefault().setKeepGrailsRunning(true);
 	}
 	
@@ -140,7 +141,7 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 	}
 	
 	private void assertAllQuestionsAnswered() {
-		((TestConsoleProvider)GrailsProcessManager.consoleProvider).assertAllQuestionsAnswered();
+		((TestConsoleProvider)LongRunningProcessGrailsExecutor.consoleProvider).assertAllQuestionsAnswered();
 	}
 
 	/**
@@ -211,7 +212,7 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		GrailsProcessManager.consoleProvider = savedConsoleProvider;
+		LongRunningProcessGrailsExecutor.consoleProvider = savedConsoleProvider;
 		GrailsCoreActivator.getDefault().setKeepGrailsRunning(GrailsCoreActivator.DEFAULT_KEEP_RUNNING_PREFERENCE);
 		super.tearDown();
 	}

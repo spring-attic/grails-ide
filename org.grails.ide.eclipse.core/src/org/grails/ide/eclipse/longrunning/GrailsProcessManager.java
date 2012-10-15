@@ -29,7 +29,6 @@ import org.grails.ide.eclipse.longrunning.client.GrailsClient;
 public class GrailsProcessManager {
 	
 	private static GrailsProcessManager instance;
-	public static ConsoleProvider consoleProvider;
 
 	/**
 	 * The process that may be reused. The process will only be reused if both of the following
@@ -52,7 +51,7 @@ public class GrailsProcessManager {
 	 * Important: users of the process must add the necessary synchronized block around the code fetching the GrailsClient
 	 * instance and using it. Normally, only the {@link LongRunningProcessGrailsExecutor} should be calling this method.
 	 */
-	GrailsClient getGrailsProcess(IGrailsInstall install, File workingDir) throws IOException, TimeoutException {
+	public GrailsClient getGrailsProcess(IGrailsInstall install, File workingDir) throws IOException, TimeoutException {
 		//shutDown(); // can uncomment for testing purposes (process will not be reused at all)
 		try {
 			if (theProcess==null) {
