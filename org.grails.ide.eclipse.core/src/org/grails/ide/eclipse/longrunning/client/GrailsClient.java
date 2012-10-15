@@ -373,6 +373,7 @@ public class GrailsClient {
 				sendInput.terminate();
 			}
 		} catch (TimeoutException e) {
+			e.printStackTrace();
 			//Process is probably stuck, should be killed
 			shutDown();
 			throw e;

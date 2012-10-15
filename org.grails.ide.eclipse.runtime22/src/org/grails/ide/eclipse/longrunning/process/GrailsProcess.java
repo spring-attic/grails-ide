@@ -73,6 +73,7 @@ public class GrailsProcess extends SafeProcess {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("Starting process...");
 		try {
 			int i = 0;
 			while (i < args.length) {
@@ -89,7 +90,7 @@ public class GrailsProcess extends SafeProcess {
 			System.exit(0); //Make sure we exit, even if Grails may have started some non-daemon threads (Yes, it seems like it did and without
 			//calling System.exit the process doesn't terminate.
 		} catch (Throwable e) {
-			e.printStackTrace(System.err);
+			e.printStackTrace(System.out);
 			System.exit(-1);
 		}
 	}

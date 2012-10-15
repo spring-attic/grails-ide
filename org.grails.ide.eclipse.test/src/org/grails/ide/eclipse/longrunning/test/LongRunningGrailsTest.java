@@ -196,12 +196,6 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		
 	}
 	
-	
-	@Override
-	public void testOutputLimit() throws Exception {
-		//Skip: output limit isn't implemented for long running grails process executor.
-	}
-	
 	/**
 	 * @return An 'empty' input stream
 	 */
