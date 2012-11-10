@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Grails Runtime Classpath Additions for Grails 2.2.
 Bundle-SymbolicName: org.grails.ide.eclipse.runtime22
-Bundle-Version: 3.1.0.qualifier
+Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: SpringSource
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.codehaus.groovy,
