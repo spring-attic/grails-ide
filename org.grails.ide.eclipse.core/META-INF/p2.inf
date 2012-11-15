@@ -1,0 +1,11 @@
+instructions.configure = \
+	addJVMArg(-Dgrails.console.enable.interactive=false); \
+	addJVMArg(-Dgrails.console.enable.terminal=false); \
+	addJVMArg(-Djline.terminal=jline.UnsupportedTerminal); \
+	addJVMArg(-Dgrails.console.class=grails.build.logging.GrailsEclipseConsole);
+	
+instructions.configure = \
+	removeJVMArg(-Dgrails.console.enable.interactive=false); \
+	removeJVMArg(-Dgrails.console.enable.terminal=false); \
+	removeJVMArg(-Djline.terminal=jline.UnsupportedTerminal); \
+	removeJVMArg(-Dgrails.console.class=grails.build.logging.GrailsEclipseConsole);
