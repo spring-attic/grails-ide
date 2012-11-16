@@ -4,7 +4,7 @@ instructions.configure = \
 	addJvmArg(jvmArg:-Djline.terminal=jline.UnsupportedTerminal); \
 	addJvmArg(jvmArg:-Dgrails.console.class=grails.build.logging.GrailsEclipseConsole);
 	
-instructions.configure = \
+instructions.unconfigure = \
 	removeJvmArg(jvmArg:-Dgrails.console.enable.interactive=false); \
 	removeJvmArg(jvmArg:-Dgrails.console.enable.terminal=false); \
 	removeJvmArg(jvmArg:-Djline.terminal=jline.UnsupportedTerminal); \
