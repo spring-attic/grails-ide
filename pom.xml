@@ -32,6 +32,7 @@
 <!--	<module>org.grails.ide.eclipse.junit</module> -->
 <!--	<module>org.grails.ide.eclipse.junit.runtime</module> -->
 	<module>org.grails.ide.eclipse.maven</module>
+	<module>org.grails.ide.eclipse.maven.test</module>
 	<module>org.grails.ide.eclipse.refactoring</module>
 	<module>org.grails.ide.eclipse.resources</module>
 	<module>org.grails.ide.eclipse.runonserver</module>
@@ -654,6 +655,7 @@
 			  <explodedBundle>org.codehaus.groovy.eclipse.tests</explodedBundle>
 			  <explodedBundle>org.codehaus.groovy.eclipse.core.test</explodedBundle>
 			  <explodedBundle>org.eclipse.jdt.groovy.core.tests.builder</explodedBundle>
+			  <explodedBundle>org.grails.ide.eclipse.maven.test</explodedBundle>
 			</explodedBundles>
 			<frameworkExtensions>
               <frameworkExtension>
