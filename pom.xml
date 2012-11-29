@@ -320,11 +320,6 @@
       <id>maven-mirror</id>
       <url>http://repo.exist.com/maven2</url>
     </repository>
-	<repository>
-	  <id>m2e</id>
-	  <layout>p2</layout>
-	  <url>http://download.eclipse.org/technology/m2e/releases</url>
-	</repository>
   </repositories>
   
   <pluginRepositories>
