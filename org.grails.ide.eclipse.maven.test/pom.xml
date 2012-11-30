@@ -17,7 +17,7 @@
 	<profile>
       <id>heartbeat</id>
       <properties>
-         <test.class>org.grails.ide.eclipse.maven.test.GrailsMavenTests</test.class>
+         <test.class>org.grails.ide.eclipse.maven.test.GrailsMavenTestSuite</test.class>
       </properties>
     </profile>
 	<profile>
