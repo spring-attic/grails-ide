@@ -260,7 +260,10 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	
 	private class SpringloadedJarFinder {
 		
-		private final String searchIn = "lib/com.springsource.springloaded/springloaded-core";
+		private final String[] searchIn = { 
+				"lib/com.springsource.springloaded/springloaded-core",
+				"lib/org.springsource.springloaded/springloaded-core"
+		};
 		
 		private File foundJar = null;
 		private Version foundVersion = null;
@@ -270,7 +273,12 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 			//Only relevant for Grails 2.0.0 and up
 			if (getVersion().compareTo(GrailsVersion.V_2_0_0)>=0) {
 				if (foundJar==null) {
-					find(new File(getHome(), searchIn));
+					for (String searchLoc : searchIn) {
+						if (foundJar!=null) {
+							break;
+						}
+						find(new File(getHome(), searchLoc));
+					}
 				}
 			}
 			return foundJar;
