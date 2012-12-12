@@ -334,8 +334,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 		eclipsePropFile.refreshLocal(IResource.DEPTH_ZERO,
 				new NullProgressMonitor());
 
-		// Refresh dependencies
-		GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+		refreshDependencies(proj);
 
 		// Check that the plugins linked source folders are now there.
 		assertPluginSourceFolder(proj, "feeds-1.5", "src", "groovy");
@@ -352,7 +351,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
 		// Refresh dependencies
 		// GrailsClient.DEBUG_PROCESS = true;
-		GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+		refreshDependencies(proj);
 		// GrailsClient.DEBUG_PROCESS = false;
 
 		// Check that the linked source folders of the replaced version are no
@@ -374,7 +373,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 				new NullProgressMonitor());
 
 		// Refresh dependencies
-		GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+		refreshDependencies(proj);
 
 		// Check that the linked source folders of the replaced version are no
 		// longer there.
@@ -385,6 +384,15 @@ public class GrailsCommandTest extends AbstractCommandTest {
 		// longer there.
 		assertAbsentPluginSourceFolder(proj, "feeds-1.4", "src", "groovy");
 		assertAbsentPluginSourceFolder(proj, "acegi-0.5.2", "src", "groovy");
+	}
+
+	private void refreshDependencies(IProject proj) throws CoreException {
+		try {
+			GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+		} catch (Exception e) {
+			//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
+			GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+		}
 	}
 	
 	
