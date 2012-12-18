@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.project.configurator.AbstractCustomizableLifecycleMapping;
 import org.eclipse.m2e.core.project.configurator.ILifecycleMapping;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 
 /**
  * Stub for now
@@ -28,6 +29,15 @@ public class GrailsAppLifecycleMapping extends AbstractCustomizableLifecycleMapp
     @Override
     public void configure(ProjectConfigurationRequest request,
             IProgressMonitor mon) throws CoreException {
-        super.configure(request, mon);
+        try {
+            super.configure(request, mon);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("Element not found:")) {
+                // problem with initial creation of project. OK to ignore
+                GrailsCoreActivator.logWarning("Problem importing project.  OK to ignore.", e);
+            } else {
+                throw e;
+            }
+        }
     }
 }
