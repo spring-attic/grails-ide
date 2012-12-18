@@ -142,34 +142,47 @@ public class GrailsMavenTests extends AbstractLifecycleMappingTest {
     public void testGrailsApp() throws Exception {
         ResolverConfiguration configuration = new ResolverConfiguration();
         IProject project = importProject("testProjects/ggts-maven-test/pom.xml", configuration);
-
+        System.out.println("Project imported ggts-maven-test");
+        
         project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+        System.out.println("Project built ggts-maven-test");
         assertNaturesAndBuilders(project);
         assertClasspath(project, false);
+        System.out.println("First round of assertions complete ggts-maven-test");
         
         // add a dependency
         IFile pomFile = project.getFile("pom.xml");
         addDependency(FEEDS_DEPENDENCY, pomFile);
         MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
+        System.out.println("Dependency added ggts-maven-test");
         
         project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+        System.out.println("Project rebuilt ggts-maven-test");
         assertClasspath(project, true);
+        System.out.println("Second round of assertions ggts-maven-test");
 
         // remove dependency
         removeDependency(FEEDS_DEPENDENCY, pomFile);
+        System.out.println("Dependency removed ggts-maven-test");
         cleanProject(project);
+        System.out.println("Project cleaned ggts-maven-test");
         assertClasspath(project, false);
+        System.out.println("Third round of assertions ggts-maven-test");
 
         // issue a grails command
         GrailsCommand cmd = createDomainClass(project, "gTunes.Song");
         ILaunchResult result = cmd.synchExec();
         System.out.println(result.getOutput());
+        System.out.println("Grails command complete ggts-maven-test");
         GrailsTest.assertRegexp("Created.*Song", result.getOutput());
         project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         assertTrue("Expected domain class to exist", project.getFile("/grails-app/domain/gTunes/Song.groovy").exists());
+        System.out.println("Domain class exists ggts-maven-test");
         
         project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+        System.out.println("Project rebuilt ggts-maven-test");
         assertClasspath(project, false);
+        System.out.println("Final round of assertions ggts-maven-test");
     }
 
     private void cleanProject(IProject project) throws CoreException, InterruptedException {
