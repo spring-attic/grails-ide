@@ -24,6 +24,7 @@ import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.ast.Parameter;
 import org.codehaus.groovy.ast.PropertyNode;
+import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jdt.core.IJavaProject;
@@ -347,7 +348,9 @@ public class ControllerClass extends AbstractGrailsElement implements INavigable
     	    }
 	    }
 	    PropertyNode property = getGroovyClass().getProperty(name);
-	    if (property != null && !property.isStatic() && !isServiceReference(property)) {
+	    if (property != null && !property.isStatic() && !isServiceReference(property) && 
+	            property.getType().equals(VariableScope.OBJECT_CLASS_NODE) && 
+	            property.getInitialExpression() instanceof ClosureExpression) {
 	        return property;
 	    }
 	    return null;
