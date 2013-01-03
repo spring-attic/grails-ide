@@ -655,7 +655,8 @@
 			  <explodedBundle>org.codehaus.groovy.eclipse.tests</explodedBundle>
 			  <explodedBundle>org.codehaus.groovy.eclipse.core.test</explodedBundle>
 			  <explodedBundle>org.eclipse.jdt.groovy.core.tests.builder</explodedBundle>
-			  <explodedBundle>org.grails.ide.eclipse.maven.test</explodedBundle>
+			<!-- graven tests hanging on build server   -->
+<!--			  <explodedBundle>org.grails.ide.eclipse.maven.test</explodedBundle>   -->
 			</explodedBundles>
 			<frameworkExtensions>
               <frameworkExtension>
