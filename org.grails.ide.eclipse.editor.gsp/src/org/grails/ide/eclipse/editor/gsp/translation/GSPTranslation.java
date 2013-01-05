@@ -474,6 +474,11 @@ class GSPTranslation extends JSPTranslationExtension {
 //        ICompilationUnit cu = packageFragment.getCompilationUnit(getClassname() + ".java").getWorkingCopy(getWorkingCopyOwner(), getProgressMonitor()); //$NON-NLS-1$
         setContents(cu);
 
+        // GRAILS CHANGE
+        // need extra call to makeConsistent
+        // https://issuetracker.springsource.com/browse/STS-3091#comment-79054
+        cu.makeConsistent(getProgressMonitor());
+        
         if(DEBUG) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"); //$NON-NLS-1$
             System.out.println("(+) JSPTranslation ["+ this + "] finished creating CompilationUnit: " + cu); //$NON-NLS-1$ //$NON-NLS-2$
