@@ -460,8 +460,11 @@ public class InstalledGrailsInstallBlock implements ISelectionProvider {
 			if (result != null) {
 				fVMs.add(result);
 				fVMList.refresh();
-				fVMList.setSelection(new StructuredSelection(result));
-				setSelection(new StructuredSelection(result));
+				Object[] checkedElements = fVMList.getCheckedElements();
+				if (checkedElements==null || checkedElements.length==0) {
+					fVMList.setSelection(new StructuredSelection(result));
+					setSelection(new StructuredSelection(result));
+				}
 			}
 		}
 	}

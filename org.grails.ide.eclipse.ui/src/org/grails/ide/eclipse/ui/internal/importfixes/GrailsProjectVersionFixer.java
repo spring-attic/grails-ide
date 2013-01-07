@@ -123,7 +123,7 @@ public class GrailsProjectVersionFixer {
 	 * projects that may be affected by the change.
 	 */
 	private IGrailsInstallListener installListener = new IGrailsInstallListener() {
-		public void installChanged(Set<IGrailsInstall> installs) {
+		public void defaultInstallChanged(IGrailsInstall oldDefault, IGrailsInstall newDefault) {
 			if (installListenerEnabled
 				&& !GrailsInstallWorkspaceConfigurator.isBusy()) {
 				// GIWC.isBusy: avoids bug STS-1819: double migration dialog.
@@ -131,6 +131,10 @@ public class GrailsProjectVersionFixer {
 				//  it only adds new install but this shouldn't affect existing projects (unless they are already broken).
 				new ProjectChangeHandler().defaultGrailsVersionChanged();
 			}
+		}
+
+		public void installsChanged(Set<IGrailsInstall> newInstalls) {
+			//We only care about the default install. Ignore!
 		}
 		
 	};

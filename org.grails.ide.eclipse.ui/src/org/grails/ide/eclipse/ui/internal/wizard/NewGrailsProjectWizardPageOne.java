@@ -963,15 +963,17 @@ public class NewGrailsProjectWizardPageOne extends WizardPage {
 	}
 
 	private class InstallChangeListener implements IGrailsInstallListener {
-
-		public void installChanged(Set<IGrailsInstall> installs) {
+		public void installsChanged(Set<IGrailsInstall> installs) {
 			// Make sure that we run the refresh in the UI thread
 			Display.getDefault().asyncExec(new Runnable() {
-				
 				public void run() {
 					grailsInstallGroup.refresh();
 				}
 			});
+		}
+
+		public void defaultInstallChanged(IGrailsInstall oldDefault, IGrailsInstall newDefault) {
+			//Ignore
 		}
 
 	}

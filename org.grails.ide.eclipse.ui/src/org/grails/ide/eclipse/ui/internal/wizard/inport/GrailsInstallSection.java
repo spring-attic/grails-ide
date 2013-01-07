@@ -49,13 +49,17 @@ public class GrailsInstallSection extends WizardPageSection {
 	}
 	
 	private class InstallChangeListener implements IGrailsInstallListener {
-		public void installChanged(Set<IGrailsInstall> installs) {
+		public void installsChanged(Set<IGrailsInstall> installs) {
 			// Make sure that we run the refresh in the UI thread
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					refreshInstalls();
 				}
 			});
+		}
+		public void defaultInstallChanged(IGrailsInstall oldDefault,
+				IGrailsInstall newDefault) {
+			//We don't care.
 		}
 	}
 	

@@ -147,6 +147,7 @@ public class GrailsInstallManager {
 	}
 
 	public void setGrailsInstalls(Set<IGrailsInstall> newInstalls) {
+		IGrailsInstall oldDefault = getDefaultGrailsInstall();
 		installs.clear();
 
 		DocumentBuilder documentBuilder = SpringCoreUtils.getDocumentBuilder();
@@ -177,11 +178,26 @@ public class GrailsInstallManager {
 		}
 
 		save(document);
-
+		
+		IGrailsInstall newDefault = getDefaultGrailsInstall();
 		for (IGrailsInstallListener listener : listeners) {
-			listener.installChanged(newInstalls);
+			listener.installsChanged(newInstalls);
+			if (!equals(oldDefault, newDefault)) {
+				listener.defaultInstallChanged(oldDefault, newDefault);
+			}
 		}
+	}
 
+	
+	/**
+	 * Equals comparison that is null pointer safe.
+	 */
+	private boolean equals(Object x, Object y) {
+		if (x==null) {
+			return y==null;
+		} else {
+			return x.equals(y);
+		}
 	}
 
 	private void save(Document document) {
