@@ -253,7 +253,14 @@ public class GrailsTest extends TestCase {
 			ILaunchResult result = cmd.synchExec();
 
 			project = StsTestUtil.getProject(name);
-			GrailsCommandUtils.eclipsifyProject(null, true, project);
+			try {
+                GrailsCommandUtils.eclipsifyProject(null, true, project);
+            } catch (Exception e) {
+                System.err.println("Ugh...tried to Eclipsify project, but failed.  Maybe a network error.  Retrying");
+                System.err.println("Project is: " + project.getName());
+                // try again maybe something from the server
+                GrailsCommandUtils.eclipsifyProject(null, true, project);
+            }
 
 			assertTrue(project.exists());
 			assertNoErrors(project);
