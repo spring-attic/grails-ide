@@ -22,6 +22,9 @@ import org.codehaus.groovy.ast.PropertyNode;
 import org.codehaus.groovy.ast.expr.ClassExpression;
 import org.codehaus.groovy.ast.expr.MapEntryExpression;
 import org.codehaus.groovy.ast.expr.MapExpression;
+import org.codehaus.groovy.ast.expr.VariableExpression;
+import org.codehaus.groovy.ast.expr.Expression;
+import org.codehaus.groovy.ast.expr.ListExpression;
 
 /**
 * DSL support for the Grails Framework when editing inside of STS.  Requires STS 2.7.0 or later.
@@ -116,14 +119,28 @@ ClassNode unbox(ClassNode orig) {
 }
 
 // converts a type name to a property name by converting first char to lower case
-def toPropertyName(String typeName) {
-   // Check whether the name begins with two upper case letters.
-   if (typeName.length() > 1
+def toPropertyName(Expression expr) {
+    def typeName;
+    if (expr instanceof ClassExpression) {
+        typeName = expr.type.nameWithoutPackage
+    } else {
+        typeName = expr.text
+    }
+    // Check whether the name begins with two upper case letters.
+    if (typeName.length() > 1
                   && Character.isUpperCase(typeName.charAt(0))
                   && Character.isUpperCase(typeName.charAt(1)))  {
          return typeName
-   }
-   return typeName[0].toLowerCase(Locale.ENGLISH) + typeName.substring(1);
+    }
+    return typeName[0].toLowerCase(Locale.ENGLISH) + typeName.substring(1);
+}
+
+/**
+ * Converts a property name to a method name with the given prefix.
+ * Converts first char or prop to upper case
+ */
+String toMethodName(String prefix, String prop) {
+    return prefix + prop[0].toUpperCase(Locale.ENGLISH) + prop.substring(1);
 }
 
 /**
@@ -254,20 +271,43 @@ contribute(domainClass & currentType(props : properties(isStatic() & name("hasOn
 }
 // belongsTo
 contribute(domainClass & currentType(props : properties(isStatic() & name("belongsTo")))) {
-   provider = "Grails belongsTo"
-   props.each { PropertyNode belongsTo ->
-           if (belongsTo.initialExpression instanceof MapExpression) {
-               belongsTo.initialExpression.mapEntryExpressions.each { MapEntryExpression entry ->
+    def createBelongsTo = { name, type ->
+        property name : name, type : type
+        addSyntheticFieldToWormhole(name, type, wormhole)
+        method name : toMethodName("addTo", name), type: currentType, params: [owner:Class],
+            doc: "Adds a domain class relationship for one-to-many or many-to-many relationship, where the relationship is indicated by the property used as the suffix to the method."
+        method name : toMethodName("removeFrom", name), type: currentType, params: [owner:Class],
+            doc: "Opposite of the addTo method in that it removes instances from an association."
+    }
+    props.each { PropertyNode belongsTo ->
+           def init = belongsTo.initialExpression
+           
+           // avoid using the type of expressions since they may not be resovled
+           // use the text instead.  However, will be problematic for qualified names (but this is rare enough to ignore) 
+           if (init instanceof MapExpression) {
+               // of the form 'static belongsTo = [foo: Foo, bar:Bar]'
+               init.mapEntryExpressions.each { MapEntryExpression entry ->
                    def name = entry.keyExpression.text
                    def type = entry.valueExpression.text
-                   property name : name, type : type
-                   addSyntheticFieldToWormhole(name, type, wormhole)
+                   createBelongsTo(name, type)
                }
-           } else if (belongsTo.initialExpression instanceof ClassExpression) {
-               def name = toPropertyName(belongsTo.type.nameWithoutPackage)
-               def type = belongsTo.text
-               property name : name, type : type
-               addSyntheticFieldToWormhole(name, type, wormhole)
+           } else if (init instanceof ListExpression) {
+               // of the form 'static belongsTo = [Foo, Bar]'
+               init.expressions.each { Expression expr ->
+                   if (expr instanceof ClassExpression || expr instanceof VariableExpression) {
+                       // init may not have been resolved to a ClassExpression, so check for VariableExpressions also
+                       def name = toPropertyName(expr)
+                       def type = expr.text
+                       createBelongsTo(name, type)
+                   }
+               }
+               
+           } else if (init instanceof ClassExpression || init instanceof VariableExpression) {
+               // of the form 'static belongsTo = Foo'
+               // init may not have been resolved to a ClassExpression, so check for VariableExpressions also
+               def name = toPropertyName(init)
+               def type = init.text
+               createBelongsTo(name, type)
            }
        }
 }

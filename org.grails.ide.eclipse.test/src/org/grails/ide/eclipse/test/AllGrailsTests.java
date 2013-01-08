@@ -41,6 +41,7 @@ import org.grails.ide.eclipse.test.gsp.GSPTokenizerTest;
 import org.grails.ide.eclipse.test.gsp.GSPTranslationTests;
 import org.grails.ide.eclipse.test.gsp.GSPValidationTests;
 import org.grails.ide.eclipse.test.gsp.ScannerUnitTests;
+import org.grails.ide.eclipse.test.inferencing.BelongsToInferencingTests;
 import org.grails.ide.eclipse.test.inferencing.CaseInsensitiveDynamicFinderProposalsTests;
 import org.grails.ide.eclipse.test.inferencing.ControllerReturnTypeInferencingTests;
 import org.grails.ide.eclipse.test.inferencing.DSLDGrailsInferencingTests;
@@ -144,6 +145,7 @@ public class AllGrailsTests {
         		if (StsTestUtil.ECLIPSE_3_6_OR_LATER) {
         			suite.addTestSuite(GrailsProjectVersionFixerTest.class);
         			suite.addTest(GrailsInferencingTests.suite());
+        			suite.addTest(BelongsToInferencingTests.suite());
         			suite.addTest(ControllerReturnTypeInferencingTests.suite());
         			suite.addTest(GrailsServiceInferencingTests.suite());
         			suite.addTest(AllGroovyDebugTests.suite());

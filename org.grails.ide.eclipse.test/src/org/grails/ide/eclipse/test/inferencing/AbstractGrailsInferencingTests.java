@@ -7,21 +7,27 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test.inferencing;
 
+import java.util.Hashtable;
+
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.groovy.tests.search.AbstractInferencingTest;
+import org.eclipse.jdt.groovy.core.util.ReflectionUtils;
 import org.eclipse.jdt.groovy.search.TypeInferencingVisitorWithRequestor;
 import org.eclipse.jdt.groovy.search.TypeLookupResult.TypeConfidence;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaModelManager;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.editor.groovy.elements.GrailsProject;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectServiceCache;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
+import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
@@ -307,7 +313,10 @@ public abstract class AbstractGrailsInferencingTests extends
     @Override
     protected void setUp() throws Exception {
         GrailsProjectVersionFixer.testMode();
+        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
         super.setUp();
+//        project = GrailsTest.ensureProject(AbstractGrailsInferencingTests.class.getSimpleName());
+//        env.addProject(project);
         MockGrailsTestProjectUtils.mockGrailsProject(project);
     }
 
@@ -320,9 +329,13 @@ public abstract class AbstractGrailsInferencingTests extends
                 if (units[i] instanceof GroovyCompilationUnit) {
                     GrailsProject
                             .removeExtraGrailsElement((GroovyCompilationUnit) units[i]);
+                    units[i].delete(true, null);
                 }
             }
         }
+        
+        // remove the project from the testing environment so that it is not auto-deleted
+//        ((Hashtable) ReflectionUtils.getPrivateField(env.getClass(), "fProjects", env)).remove(project.getName());
         super.tearDown();
     }
 

@@ -73,7 +73,11 @@ public class MockGrailsTestProjectUtils {
             Set<String> dependencies = findDependencies();
             for (String file : dependencies) {
                 if (new File(file).exists()) {
-                    addExternalLibrary(project, file);
+                    // adding the xalan jar also adds another jar to 
+                    // to classpath.  so just ignore this jar
+                    if (file.indexOf("xalan") < 0) {
+                        addExternalLibrary(project, file);
+                    }
                 } else {
                     System.out.println("Warning file does not exist, but was returned by refresh dependencies: " + file);
                 }
