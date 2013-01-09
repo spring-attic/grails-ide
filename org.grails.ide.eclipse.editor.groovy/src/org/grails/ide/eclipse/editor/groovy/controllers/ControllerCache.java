@@ -12,6 +12,8 @@ package org.grails.ide.eclipse.editor.groovy.controllers;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -20,7 +22,9 @@ import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.MapEntryExpression;
 import org.codehaus.groovy.ast.expr.MapExpression;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.NamedArgumentListExpression;
 import org.codehaus.groovy.ast.expr.PropertyExpression;
+import org.codehaus.groovy.ast.expr.TupleExpression;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -41,21 +45,20 @@ import org.grails.ide.eclipse.core.GrailsCoreActivator;
  */
 public class ControllerCache {
     
-    private static final String[] NO_PARAMETERS = new String[0];
-
     private class ActionReturnValueRequestor implements ITypeRequestor {
         private final IMember targetMember;
         
         private MapExpression targetMapExpression;
         
-        Map<String, ClassNode> returnValues = new HashMap<String, ClassNode>();
+        Map<String, ClassNode> returnValues;
+        List<String> redirects = null;  // FIXADE should be Set
         private Map<Expression, String> reverse;
 
-        public ActionReturnValueRequestor(IMember targetMember) {
+        public ActionReturnValueRequestor(IMember targetMember, Map<String, ClassNode> returnValues) {
             this.targetMember = targetMember;
+            this.returnValues = returnValues;
         }
-
-
+        
         public VisitStatus acceptASTNode(ASTNode node, TypeLookupResult result,
                 IJavaElement enclosingElement) {
             if (enclosingElement.getElementType() != targetMember.getElementType()) {
@@ -84,6 +87,22 @@ public class ControllerCache {
                         }
                         
                         reverse.put(valueExpression, expr.getKeyExpression().getText());
+                    }
+                }
+            } else if (node instanceof MethodCallExpression) {
+                MethodCallExpression call = (MethodCallExpression) node;
+                if (call.getMethodAsString().equals("redirect")) {
+                    // remember the redirect call so that we can traverse the redirect target later
+                    Expression args = call.getArguments();
+                    if (args instanceof TupleExpression && ((TupleExpression) args).getExpression(0) instanceof NamedArgumentListExpression) {
+                        NamedArgumentListExpression named = (NamedArgumentListExpression) ((TupleExpression) args).getExpression(0);
+                        MapEntryExpression entry = named.getMapEntryExpressions().get(0);
+                        if (entry.getKeyExpression().getText().equals("action")) {
+                            if (redirects == null) {
+                                redirects = new LinkedList<String>();
+                            }
+                            redirects.add(entry.getValueExpression().getText());
+                        }
                     }
                 }
             } else if (targetMapExpression != null) {
@@ -118,9 +137,6 @@ public class ControllerCache {
         Map<String, ClassNode> returnValues = actionToReturnValue.get(actionName);
         if (returnValues == null) {
             returnValues = calculateValuesForAction(actionName);
-            if (returnValues != null) {
-                actionToReturnValue.put(actionName, returnValues);
-            }
         }
         return returnValues;
     }
@@ -141,9 +157,8 @@ public class ControllerCache {
             return Collections.emptyMap();
         }
         
-        // temporarily add action map to prevent infinite recursion if 
-        // inferring the return types triggers a recursive attempt to infer return types
-        actionToReturnValue.put(actionName, Collections.<String, ClassNode>emptyMap());
+        Map<String, ClassNode> existing = new HashMap<String, ClassNode>();
+        actionToReturnValue.put(actionName, existing);
         
         // Here is a little problem.
         // in Grails 1.3.7 and earlier, controller actions were defined as fields with closure initializers
@@ -155,11 +170,19 @@ public class ControllerCache {
             return Collections.emptyMap();
         }
         
-        ActionReturnValueRequestor requestor = new ActionReturnValueRequestor(actionMember);
+        ActionReturnValueRequestor requestor = new ActionReturnValueRequestor(actionMember, existing);
         TypeInferencingVisitorWithRequestor visitor = new TypeInferencingVisitorFactory().createVisitor(controllerUnit);
         visitor.visitCompilationUnit(requestor);
-        
-        return requestor.returnValues;
+
+        if (requestor.redirects != null) {
+            for (String redirectedAction : requestor.redirects) {
+                existing.putAll(findReturnValuesForAction(redirectedAction));
+            }
+        }        
+        if (requestor.returnValues != null) {
+            existing.putAll(requestor.returnValues);
+        }
+        return existing;
     }
 
     /**

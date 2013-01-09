@@ -79,12 +79,56 @@ public class ControllerCacheTests extends AbstractGSPTagsTest {
     }
     
     public void testControllerCacheGenerics1() throws Exception {
-        String resultType;
-        resultType = "java.util.Map<java.lang.Integer,java.lang.Integer>";
         assertControllerCacheContents("def index = { [foo:[''], bar:[9:9] ] }",
-                "foo", "java.util.List<java.lang.String>", "bar", resultType);
+                "foo", "java.util.List<java.lang.String>", "bar", "java.util.Map<java.lang.Integer,java.lang.Integer>");
     }
 
+    public void testControllerCacheRedirect1() throws Exception {
+        assertControllerCacheContents("def index = { redirect(action: 'other') }\n def other = { [foo:[''], bar:[9:9] ] }",
+                "foo", "java.util.List<java.lang.String>", "bar", "java.util.Map<java.lang.Integer,java.lang.Integer>");
+    }
+    
+    public void testControllerCacheRedirect2() throws Exception {
+        assertControllerCacheContents(
+                "def index = { redirect(action: 'other')\n" +
+                "   [baz : 9 ] }\n " +
+        		"def other = { [foo:[''], bar:[9:9] ] }",
+        		
+                "baz", "java.lang.Integer", 
+                "foo", "java.util.List<java.lang.String>", 
+                "bar", "java.util.Map<java.lang.Integer,java.lang.Integer>");
+    }
+    
+    public void testControllerCacheRedirect3() throws Exception {
+        assertControllerCacheContents(
+                "def index = {\n" +
+                "   redirect(action: 'other')\n" +
+                "   redirect(action: 'other2')\n" +
+                "   [baz : 9 ] }\n " +
+                "def other = { [foo:[''], bar:[9:9] ] }\n" +
+                "def other2 = { [foo1:[''], bar1:[9:9] ] }",
+                
+                "baz", "java.lang.Integer", 
+                "foo", "java.util.List<java.lang.String>", 
+                "bar", "java.util.Map<java.lang.Integer,java.lang.Integer>",
+                "foo1", "java.util.List<java.lang.String>", 
+                "bar1", "java.util.Map<java.lang.Integer,java.lang.Integer>");
+    }
+    public void testControllerCacheRedirect4() throws Exception {
+        assertControllerCacheContents(
+                "def other2 = {\n" +
+                "   redirect(action: 'other')\n" +
+                "   redirect(action: 'other2')\n" +
+                "   [baz : 9 ] }\n " +
+                "def other = { [foo:[''], bar:[9:9] ] }\n" +
+                "def index = { [foo1:[''], bar1:[9:9] ] }",
+                
+                "foo1", "java.util.List<java.lang.String>", 
+                "bar1", "java.util.Map<java.lang.Integer,java.lang.Integer>");
+    }
+    
+    
+    
     
     // these tests are of the PerProjectControllerCache
     
