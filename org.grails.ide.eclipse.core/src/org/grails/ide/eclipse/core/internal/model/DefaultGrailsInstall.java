@@ -194,15 +194,11 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	private void addBootstrapJar(Set<File> jars, File home) {
 		if (home.exists()) {
 			for (File file : home.listFiles()) {
-				String name = file.getName();
 				if (file.isDirectory()) {
 					addBootstrapJar(jars, file);
-				} else if (name.endsWith(".jar") 
-						&& (
-							name.startsWith("groovy-all") || name.startsWith("grails-bootstrap")
-//						) && !(
-//							name.endsWith("sources.jar") || name.endsWith("javadoc.jar")
-						)) {
+				} else if (file.getName().endsWith(".jar")
+						&& (file.getName().startsWith("groovy-all") || file
+								.getName().startsWith("grails-bootstrap"))) {
 					jars.add(file);
 				}
 			}
