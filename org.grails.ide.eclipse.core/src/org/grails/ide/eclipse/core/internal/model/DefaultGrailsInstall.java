@@ -33,7 +33,6 @@ import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 
-
 /**
  * @author Christian Dupuis
  * @author Nieraj Singh
@@ -84,7 +83,8 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 		File grailsHome = new File(home);
 		if (grailsHome.exists()) {
 			addBootstrapJar(jars, new File(home, "lib"));
-//			addBootstrapJar(jars, new File(home, "lib/org.codehaus.groovy/groovy-all/jars"));
+			// addBootstrapJar(jars, new File(home,
+			// "lib/org.codehaus.groovy/groovy-all/jars"));
 			addBootstrapJar(jars, new File(home, "dist"));
 		}
 
@@ -112,8 +112,8 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				}
 			}
 
-			String version = GrailsCoreActivator.getDefault()
-					.getBundle().getHeaders().get(Constants.BUNDLE_VERSION);
+			String version = GrailsCoreActivator.getDefault().getBundle()
+					.getHeaders().get(Constants.BUNDLE_VERSION);
 			if (version.endsWith("qualifier")) {
 				addBundleFile(jars, "/bin");
 			} else {
@@ -138,12 +138,13 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	}
 
 	/**
-	 * Warning, don't use this method to determine the .grails work dir that grails
-	 * actually uses. This method only returns a "correct" result if either
-	 *   - the grails work dir is set by calling setDefaultGrailsWorkDir => used during testing
-	 *   - the grails workdir is the default grails computes itself (i.e. it was not set by the user in some
-	 *     other way (e.g. by using settings.groovy to change it from the grails default))
-	 * Instead, you can use the utility method in GrailsPluginUtil.getGrailsWorkDir.
+	 * Warning, don't use this method to determine the .grails work dir that
+	 * grails actually uses. This method only returns a "correct" result if
+	 * either - the grails work dir is set by calling setDefaultGrailsWorkDir =>
+	 * used during testing - the grails workdir is the default grails computes
+	 * itself (i.e. it was not set by the user in some other way (e.g. by using
+	 * settings.groovy to change it from the grails default)) Instead, you can
+	 * use the utility method in GrailsPluginUtil.getGrailsWorkDir.
 	 * 
 	 * @return The location of the ".grails" folder (on the command line is set
 	 *         by -Dgrails.work.dir=...)
@@ -197,12 +198,11 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				String name = file.getName();
 				if (file.isDirectory()) {
 					addBootstrapJar(jars, file);
-				} else if (name.endsWith(".jar") 
-						&& (
-							name.startsWith("groovy-all") || name.startsWith("grails-bootstrap")
-//						) && !(
-//							name.endsWith("sources.jar") || name.endsWith("javadoc.jar")
-						)) {
+				} else if (name.endsWith(".jar")
+						&& (name.startsWith("groovy-all") || name
+								.startsWith("grails-bootstrap"))
+						&& !(name.endsWith("sources.jar") || name
+								.endsWith("javadoc.jar"))) {
 					jars.add(file);
 				}
 			}
@@ -245,15 +245,18 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 
 	public IStatus verify() {
 		String homeStr = getHome();
-		if (homeStr==null) {
-			return error("Install '"+getName()+"' home is not set");
-		} 
+		if (homeStr == null) {
+			return error("Install '" + getName() + "' home is not set");
+		}
 		File home = new File(homeStr);
 		if (!home.exists()) {
-			return error("Install '"+getName()+"' at location '"+homeStr+"' does not exist. Was it deleted or moved?");
+			return error("Install '" + getName() + "' at location '" + homeStr
+					+ "' does not exist. Was it deleted or moved?");
 		}
-		if (UNKNOWN_VERSION_STRING.equals(getVersionString()) || getVersionString()==null) {
-			return error("Install '"+getName()+"' does not appear to be a valid Grails install.");
+		if (UNKNOWN_VERSION_STRING.equals(getVersionString())
+				|| getVersionString() == null) {
+			return error("Install '" + getName()
+					+ "' does not appear to be a valid Grails install.");
 		}
 		return Status.OK_STATUS;
 	}
@@ -261,24 +264,26 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	private Status error(String msg) {
 		return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, msg);
 	}
-	
+
 	private class SpringloadedJarFinder {
-		
-		private final String[] searchIn = { 
+
+		private final String[] searchIn = {
 				"lib/com.springsource.springloaded/springloaded-core",
-				"lib/org.springsource.springloaded/springloaded-core"
-		};
-		
+				"lib/org.springsource.springloaded/springloaded-core" };
+
 		private File foundJar = null;
 		private Version foundVersion = null;
-		
-		/** Get the springloaded jar, search for it the first time. Cached after that */
+
+		/**
+		 * Get the springloaded jar, search for it the first time. Cached after
+		 * that
+		 */
 		public File get() {
-			//Only relevant for Grails 2.0.0 and up
-			if (getVersion().compareTo(GrailsVersion.V_2_0_0)>=0) {
-				if (foundJar==null) {
+			// Only relevant for Grails 2.0.0 and up
+			if (getVersion().compareTo(GrailsVersion.V_2_0_0) >= 0) {
+				if (foundJar == null) {
 					for (String searchLoc : searchIn) {
-						if (foundJar!=null) {
+						if (foundJar != null) {
 							break;
 						}
 						find(new File(getHome(), searchLoc));
@@ -287,27 +292,39 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 			}
 			return foundJar;
 		}
-		
+
 		private synchronized void find(File libPath) {
 			File[] files = libPath.listFiles();
-			if (files!=null) {
+			if (files != null) {
 				for (File jarCandidate : files) {
 					if (jarCandidate.isFile()) {
 						String fileName = jarCandidate.getName();
-						if (fileName.startsWith("springloaded-core-") && fileName.endsWith(".jar")) {
-							//Found a springloaded jar.
+						if (fileName.startsWith("springloaded-core-")
+								&& fileName.endsWith(".jar")) {
+							// Found a springloaded jar.
 							String versionString = fileName.substring(
 									"springloaded-core-".length(),
-									fileName.length()-4/*".jar".length()*/);
-							Version version = new Version(versionString); //Not really an OSGi bundle, but this should work anyway.
-							if (foundVersion==null || foundVersion.compareTo(version)<0) {
-								//Only keep most recent version
+									fileName.length() - 4/* ".jar".length() */);
+							Version version = new Version(versionString); // Not
+																			// really
+																			// an
+																			// OSGi
+																			// bundle,
+																			// but
+																			// this
+																			// should
+																			// work
+																			// anyway.
+							if (foundVersion == null
+									|| foundVersion.compareTo(version) < 0) {
+								// Only keep most recent version
 								foundVersion = version;
 								foundJar = jarCandidate;
 							}
 						}
 					} else if (jarCandidate.isDirectory()) {
-						//Extend search into sub directories (to support the mavenRepo-like file layout in Grails 2.0.2)
+						// Extend search into sub directories (to support the
+						// mavenRepo-like file layout in Grails 2.0.2)
 						find(jarCandidate);
 					}
 				}
@@ -320,23 +337,28 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	}
 
 	/**
-	 * Check whether a given javaInstall meets requirements to run commands for this Grails install.
+	 * Check whether a given javaInstall meets requirements to run commands for
+	 * this Grails install.
 	 */
 	public void verifyJavaInstall(IVMInstall _javaInstall) throws CoreException {
 		GrailsVersion grailsVersion = getVersion();
-		if (grailsVersion.compareTo(GrailsVersion.V_2_0_0)>=0) {
-			//2.0 or above requires at least Java 1.6
+		if (grailsVersion.compareTo(GrailsVersion.V_2_0_0) >= 0) {
+			// 2.0 or above requires at least Java 1.6
 			if (_javaInstall instanceof IVMInstall2) {
 				IVMInstall2 javaInstall = (IVMInstall2) _javaInstall;
 				String javaVersion = javaInstall.getJavaVersion();
-				if (javaVersion!=null) {
+				if (javaVersion != null) {
 					if (javaVersion.compareTo("1.6") < 0) {
-						//String compare isn't strictly correct, but will work in this case (at least until we get to
-						//Java version 1.10.x
-						throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID,
-								"Grails "+grailsVersion+" requires at least Java 1.6.\n" +
-								"The Java install at "+ _javaInstall.getInstallLocation()+"\n" +
-								"is version "+javaVersion));
+						// String compare isn't strictly correct, but will work
+						// in this case (at least until we get to
+						// Java version 1.10.x
+						throw new CoreException(new Status(IStatus.ERROR,
+								GrailsCoreActivator.PLUGIN_ID, "Grails "
+										+ grailsVersion
+										+ " requires at least Java 1.6.\n"
+										+ "The Java install at "
+										+ _javaInstall.getInstallLocation()
+										+ "\n" + "is version " + javaVersion));
 					}
 				}
 			}
@@ -344,7 +366,8 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	}
 
 	public File getSpringLoadedCacheDir() {
-		File wsMetadata = GrailsCoreActivator.getDefault().getStateLocation().toFile();
+		File wsMetadata = GrailsCoreActivator.getDefault().getStateLocation()
+				.toFile();
 		File cacheDir = new File(wsMetadata, getVersionString());
 		cacheDir.mkdirs();
 		return cacheDir;
