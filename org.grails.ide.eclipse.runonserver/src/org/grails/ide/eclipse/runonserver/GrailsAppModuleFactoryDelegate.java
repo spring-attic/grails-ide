@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012 - 2013 VMWare, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -300,8 +300,9 @@ public class GrailsAppModuleFactoryDelegate extends ProjectModuleFactoryDelegate
 		synchronized (delegates) {
 			GrailsAppModuleDelegate delegate = delegates.get(project);
 			if (delegate!=null) {
+				// STS-3162: Commented out because it causes apps in Cloud Foundry to be automatically removed.
 				// Ensure that any module associated with deleted project are removed from server.
-				removeModulesFromServer(project);
+                //	removeModulesFromServer(project);
 				
 				// Remove any delegates from our map
 				delegates.remove(project);
