@@ -280,9 +280,10 @@ public class SynchLaunch {
 			} else {
 				shortSummary = "Command terminated with an error code (see details for output)";
 			}
-			MultiStatus status = new MultiStatus(GrailsCoreActivator.PLUGIN_ID, IStatus.ERROR, shortSummary, null);
-			status.add(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "------System.out:-----------\n "+getOutput(), null));
-			status.add(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "------System.err:-----------\n"+getErrorOutput(), null));
+			int statusCode = code==0 ? IStatus.OK : IStatus.ERROR;
+			MultiStatus status = new MultiStatus(GrailsCoreActivator.PLUGIN_ID, statusCode, shortSummary, null);
+			status.add(new Status(statusCode, GrailsCoreActivator.PLUGIN_ID, "------System.out:-----------\n "+getOutput(), null));
+			status.add(new Status(statusCode, GrailsCoreActivator.PLUGIN_ID, "------System.err:-----------\n"+getErrorOutput(), null));
 			return status;
 		}
 	}

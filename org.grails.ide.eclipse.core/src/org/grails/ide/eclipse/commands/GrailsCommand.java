@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
+import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
+import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.LaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
@@ -179,7 +181,21 @@ public class GrailsCommand {
 	}
 
 	public void runPostOp() {
-        // empty for now
+		if (this.command.contains("clean")) {
+			//A fix for https://issuetracker.springsource.com/browse/STS-2941
+			// Ensure the plugin-classes directory which may be deleted by grails clean
+			// exists at least as an empty dir to avoid error from grails class path container.
+			PerProjectDependencyDataCache info = GrailsCore.get().connect(project, PerProjectDependencyDataCache.class);
+			if (info!=null) {
+				DependencyData data = info.getData();
+				if (data!=null) {
+					File pluginClasses = data.getPluginClassesDirectoryFile();
+					if (!pluginClasses.exists()) {
+						pluginClasses.mkdirs();
+					}
+				}
+			}
+		}
     }
 
 	/**
