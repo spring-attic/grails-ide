@@ -24,6 +24,8 @@
       <import feature="org.eclipse.jdt"/>
       <import feature="org.springsource.ide.eclipse.commons" version="3.2.0.qualifier"/>
       <import feature="org.eclipse.contribution.weaving"/>
+      <import plugin="org.aspectj.runtime"/>
+      <import plugin="org.aspectj.weaver"/>
    </requires>
 
    <plugin
