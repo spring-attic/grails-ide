@@ -39,13 +39,12 @@ import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 
-
 /**
  * LaunchConfigurationDelegate used by the {@link GrailsCommand} class. It
  * duplicates the behaviour of its superclass, except for the fact that it
  * provides support for the LaunchListener infrastructure (see
  * {@link LaunchListenerManager}), and that it doesn't do any automatic
- * post-processing of commands (but post-processing can be added externally, via 
+ * post-processing of commands (but post-processing can be added externally, via
  * {@link LaunchListenerManager})
  * 
  * @author Kris De Volder
@@ -76,10 +75,10 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		checkCancelled(subMonitor);
 		subMonitor.subTask("Configuring launch parameters...");
 
-		// FIXKDV FIXADE Copies of this code exist in 
+		// FIXKDV FIXADE Copies of this code exist in
 		// GrailsLaunchArgumentUtils.prepareClasspath()
-        // and GrailsCommandLaunchConfigurationDelegate.launch()
-        // consider refactoring to combine
+		// and GrailsCommandLaunchConfigurationDelegate.launch()
+		// consider refactoring to combine
 
 		IVMInstall vm = verifyVMInstall(configuration);
 		IVMRunner runner = vm.getVMRunner(mode);
@@ -95,22 +94,26 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 					.getProject(projectName);
 		}
 
-		String grailsHome = GrailsLaunchArgumentUtils.getGrailsHome(configuration);
-		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<String, String>()).put(
-				"JAVA_HOME", vm.getInstallLocation().getAbsolutePath());
-		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<String, String>()).put(
-				"GRAILS_HOME", grailsHome);
+		String grailsHome = GrailsLaunchArgumentUtils
+				.getGrailsHome(configuration);
+		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
+				new HashMap<String, String>()).put("JAVA_HOME",
+				vm.getInstallLocation().getAbsolutePath());
+		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
+				new HashMap<String, String>()).put("GRAILS_HOME", grailsHome);
 		// ensure that extra line number information is added to GSPs.
-		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<String, String>()).put(
-		        "GROOVY_PAGE_ADD_LINE_NUMBERS", "true");
+		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
+				new HashMap<String, String>()).put(
+				"GROOVY_PAGE_ADD_LINE_NUMBERS", "true");
 		String baseDir = configuration.getAttribute(
 				GrailsLaunchArgumentUtils.PROJECT_DIR_LAUNCH_ATTR, "");
-		
+
 		if (baseDir.equals("")) {
 			baseDir = ResourcesPlugin.getWorkspace().getRoot().getLocation()
 					.toString();
 		}
-		String script = GrailsLaunchConfigurationDelegate.getScript(configuration);
+		String script = GrailsLaunchConfigurationDelegate
+				.getScript(configuration);
 		configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
 				new HashMap<String, String>()).put("GRAILS_HOME", grailsHome);
 
@@ -123,47 +126,57 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		}
 
 		List<String> programArguments = new ArrayList<String>();
-		
-		String buildListener = GrailsLaunchArgumentUtils.getGrailsBuildListener(configuration);
-		List<String> buildListenerClassPathList = GrailsLaunchArgumentUtils.getBuildListenerClassPath(configuration);
-		if (buildListenerClassPathList!=null && !buildListenerClassPathList.isEmpty()) {
-			//Note: It is important that buildListenerClassPath entries are added by using --classpath argument to
-			//the GrailsStarter. If the entries are added to the boot class path or user classpath in the configuration
-			//itself, it will end up resolving the GrailsBuildListener interface to one loaded by a different classloader
-			//than the one resolved inside of grails itself. This will make grails complain that our class does not implement
-			//that interface (because the interfaces loaded by different classloaders are not considered equal).
+
+		String buildListener = GrailsLaunchArgumentUtils
+				.getGrailsBuildListener(configuration);
+		List<String> buildListenerClassPathList = GrailsLaunchArgumentUtils
+				.getBuildListenerClassPath(configuration);
+		if (buildListenerClassPathList != null
+				&& !buildListenerClassPathList.isEmpty()) {
+			// Note: It is important that buildListenerClassPath entries are
+			// added by using --classpath argument to
+			// the GrailsStarter. If the entries are added to the boot class
+			// path or user classpath in the configuration
+			// itself, it will end up resolving the GrailsBuildListener
+			// interface to one loaded by a different classloader
+			// than the one resolved inside of grails itself. This will make
+			// grails complain that our class does not implement
+			// that interface (because the interfaces loaded by different
+			// classloaders are not considered equal).
 			programArguments.add("--classpath");
-			programArguments.add(GrailsLaunchArgumentUtils.toPathsString(buildListenerClassPathList));
+			programArguments.add(GrailsLaunchArgumentUtils
+					.toPathsString(buildListenerClassPathList));
 		}
-		
+
 		programArguments.add("--conf");
 		programArguments.add(grailsHome + "conf" + File.separatorChar
 				+ "groovy-starter.conf");
 		programArguments.add("--main");
 		programArguments
 				.add("org.codehaus.groovy.grails.cli.GrailsScriptRunner");
-		
+
 		StringBuilder grailsCommand = new StringBuilder();
 		String grailsWorkDir = configuration.getAttribute(
-		GrailsLaunchArgumentUtils.GRAILS_WORK_DIR_LAUNCH_ATTR, "");
+				GrailsLaunchArgumentUtils.GRAILS_WORK_DIR_LAUNCH_ATTR, "");
 		if (!grailsWorkDir.equals("")) {
-			grailsCommand.append("-Dgrails.work.dir=" + grailsWorkDir+" ");
+			grailsCommand.append("-Dgrails.work.dir=" + grailsWorkDir + " ");
 		}
-		if (buildListener!=null) {
-			grailsCommand.append("-Dgrails.build.listeners="+buildListener+" ");
+		if (buildListener != null) {
+			grailsCommand.append("-Dgrails.build.listeners=" + buildListener
+					+ " ");
 		}
-		grailsCommand.append(script+" ");
+		grailsCommand.append(script + " ");
 		programArguments.add(windowsEscape(grailsCommand.toString().trim()));
-		
+
 		List<String> vmArgs = new ArrayList<String>();
-		
+
 		if (DEBUG) {
 			vmArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=8123");
 		}
 
 		// add manual configured vm options to the argument list
 		String existingVmArgs = getVMArguments(configuration);
-		if (existingVmArgs != null  && existingVmArgs.length() > 0) {
+		if (existingVmArgs != null && existingVmArgs.length() > 0) {
 			StringTokenizer additionalArguments = new StringTokenizer(
 					existingVmArgs, " ");
 			while (additionalArguments.hasMoreTokens()) {
@@ -172,11 +185,12 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		}
 		vmArgs.add("-Dbase.dir=" + baseDir);
 		vmArgs.add("-Dgrails.home=" + grailsHome);
-		
-		Map<String,String> systemProps = GrailsLaunchArgumentUtils.getSystemProperties(configuration);
-		if (systemProps!=null) {
+
+		Map<String, String> systemProps = GrailsLaunchArgumentUtils
+				.getSystemProperties(configuration);
+		if (systemProps != null) {
 			for (Map.Entry<String, String> entry : systemProps.entrySet()) {
-				vmArgs.add("-D"+entry.getKey()+"="+entry.getValue());
+				vmArgs.add("-D" + entry.getKey() + "=" + entry.getValue());
 			}
 		}
 
@@ -195,8 +209,8 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 				mainTypeName, classpath);
 		runConfiguration.setProgramArguments(programArguments
 				.toArray(new String[programArguments.size()]));
-		runConfiguration.setVMArguments(vmArgs
-				.toArray(new String[vmArgs.size()]));
+		runConfiguration
+				.setVMArguments(vmArgs.toArray(new String[vmArgs.size()]));
 		runConfiguration.setWorkingDirectory(workingDirName);
 		runConfiguration.setEnvironment(envp);
 		runConfiguration.setVMSpecificAttributesMap(vmAttributesMap);
@@ -205,7 +219,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		if (bootpath != null && bootpath.length > 0) {
 			runConfiguration.setBootClassPath(bootpath);
 		}
-		
+
 		subMonitor.worked(1);
 		checkCancelled(subMonitor);
 
@@ -230,38 +244,52 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		} catch (Exception e) {
 			GrailsCoreActivator.log(e);
 		}
-		
+
 		/*
-		 * When I run grails 2.0.2. on the command line it use this to launch create app command:
+		 * When I run grails 2.0.2. on the command line it use this to launch
+		 * create app command:
 		 * 
-		 * exec /usr/lib/jvm/java-6-sun//bin/java 
-		 * -server -Xmx768M -Xms768M -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8 
-		 * -classpath /home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT/lib/org.codehaus.groovy/groovy-all/1.8.6/jar/groovy-all-1.8.6.jar:/home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT/dist/grails-bootstrap-2.0.2.BUILD-SNAPSHOT.jar 
-		 * -Dgrails.home=/home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT 
-		 * -Dtools.jar=/usr/lib/jvm/java-6-sun//lib/tools.jar org.codehaus.groovy.grails.cli.support.GrailsStarter 
-		 * --main org.codehaus.groovy.grails.cli.GrailsScriptRunner 
-		 * --conf /home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT/conf/groovy-starter.conf --classpath   
-		 * create-app bork
+		 * exec /usr/lib/jvm/java-6-sun//bin/java -server -Xmx768M -Xms768M
+		 * -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8
+		 * -classpath
+		 * /home/kdvolder/Applications/grails-distros/grails-2.0.2.BUILD
+		 * -SNAPSHOT
+		 * /lib/org.codehaus.groovy/groovy-all/1.8.6/jar/groovy-all-1.8.6
+		 * .jar:/home
+		 * /kdvolder/Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT
+		 * /dist/grails-bootstrap-2.0.2.BUILD-SNAPSHOT.jar
+		 * -Dgrails.home=/home/kdvolder
+		 * /Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT
+		 * -Dtools.jar=/usr/lib/jvm/java-6-sun//lib/tools.jar
+		 * org.codehaus.groovy.grails.cli.support.GrailsStarter --main
+		 * org.codehaus.groovy.grails.cli.GrailsScriptRunner --conf
+		 * /home/kdvolder
+		 * /Applications/grails-distros/grails-2.0.2.BUILD-SNAPSHOT
+		 * /conf/groovy-starter.conf --classpath create-app bork
 		 */
 	}
 
 	private static String windowsEscape(String argument) {
-		// There appears to be a bug(?) http://bugs.sun.com/view_bug.do?bug_id=6468220
-		// in Windows ProcessBuilder implementation that incorrectly 
-		// escapes program arguments that contain both spaces and quotes. 
-		if (System.getProperty("os.name").toLowerCase().indexOf("win")>=0) {
+		// There appears to be a bug(?)
+		// http://bugs.sun.com/view_bug.do?bug_id=6468220
+		// in Windows ProcessBuilder implementation that incorrectly
+		// escapes program arguments that contain both spaces and quotes.
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
 			return winQuote(argument);
 		}
 		return argument;
 	}
-	
+
 	static boolean needsQuoting(String s) {
 		int len = s.length();
 		if (len == 0) // empty string have to be quoted
 			return true;
 		for (int i = 0; i < len; i++) {
 			switch (s.charAt(i)) {
-			case ' ': case '\t': case '\\': case '"':
+			case ' ':
+			case '\t':
+			case '\\':
+			case '"':
 				return true;
 			}
 		}
@@ -269,28 +297,31 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 	}
 
 	static String winQuote(String s) {
-		if (! needsQuoting(s))
+		if (!needsQuoting(s))
 			return s;
 		s = s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"");
 		s = s.replaceAll("([\\\\]*)\\z", "$1$1");
 		return "\"" + s + "\"";
 	}
-	
-	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(IGrailsInstall install, IProject project, String script, String baseDirectory) throws CoreException {
+
+	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(
+			IGrailsInstall install, IProject project, String script,
+			String baseDirectory) throws CoreException {
 		ILaunchConfigurationType configType = DebugPlugin.getDefault()
 				.getLaunchManager()
 				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
-		if (install==null) {
-			install = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(project);
+		if (install == null) {
+			install = GrailsCoreActivator.getDefault().getInstallManager()
+					.getGrailsInstall(project);
 			if (install == null) {
 				return null;
 			}
 		}
-		if (baseDirectory==null) {
-			if (project!=null) {
+		if (baseDirectory == null) {
+			if (project != null) {
 				baseDirectory = GrailsBuildSettingsHelper.getBaseDir(project);
 			}
-			//If not set, launch will use workspace as baseDir
+			// If not set, launch will use workspace as baseDir
 		}
 		String nameAndScript = (script != null ? "(" + script + ")" : "");
 		if (project != null) {
@@ -307,11 +338,12 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 	private static String getLaunchConfigurationTypeId() {
 		return "org.grails.ide.eclipse.core.launchCommandConfig";
 	}
-	
+
 	@Override
 	public boolean finalLaunchCheck(ILaunchConfiguration configuration,
 			String mode, IProgressMonitor monitor) throws CoreException {
-		// We don't do the one from super (which checks for build errors). Grails command does its own  compiling and checking if it needs to.
+		// We don't do the one from super (which checks for build errors).
+		// Grails command does its own compiling and checking if it needs to.
 		return true;
 	}
 

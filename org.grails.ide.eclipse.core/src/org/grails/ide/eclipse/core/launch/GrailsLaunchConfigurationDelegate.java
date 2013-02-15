@@ -25,6 +25,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -36,16 +38,24 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jdt.internal.launching.LaunchingMessages;
+import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IVMConnector;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMRunner;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
+import org.eclipse.osgi.util.NLS;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 
+import org.eclipse.jdt.launching.SocketUtil;
 
 /**
  * @author Christian Dupuis
@@ -79,11 +89,87 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		grailsInstall.verifyJavaInstall(javaInstall);
 		return javaInstall;
 	}
+
+	/**
+	 * Create debugging target similar to a remote debugging session would and add them to the launch.
+	 * This is to support debugging of 'forked mode' run-app and test-app processes. These are
+	 * processes spun-off by Grails in new JVM. 
+	 * @param port 
+	 * 
+	 * @return The port the remote launch will be listening on for forked process to connect to. or -1 if no remote launch was 
+	 *         created.
+	 */
+	private void launchRemote(int port, ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		if (port<0) {
+			return;
+		}
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(NLS.bind(LaunchingMessages.JavaRemoteApplicationLaunchConfigurationDelegate_Attaching_to__0_____1, new String[]{configuration.getName()}), 3); 
+		// check for cancellation
+		if (monitor.isCanceled()) {
+			return;
+		}						
+		try {			
+			monitor.subTask(LaunchingMessages.JavaRemoteApplicationLaunchConfigurationDelegate_Verifying_launch_attributes____1); 
+							
+			String connectorId = "org.eclipse.jdt.launching.socketListenConnector";//getVMConnectorId(configuration);
+			IVMConnector connector = JavaRuntime.getVMConnector(connectorId);
+			if (connector == null) {
+				abort(LaunchingMessages.JavaRemoteApplicationLaunchConfigurationDelegate_Connector_not_specified_2, null, IJavaLaunchConfigurationConstants.ERR_CONNECTOR_NOT_AVAILABLE); 
+			}
+			
+			Map<String, String> argMap = new HashMap<String, String>();
+	        
+//	        int connectTimeout = Platform.getPreferencesService().getInt(
+//	        		LaunchingPlugin.ID_PLUGIN, 
+//	        		JavaRuntime.PREF_CONNECT_TIMEOUT, 
+//	        		JavaRuntime.DEF_CONNECT_TIMEOUT, 
+//	        		null);
+	        argMap.put("timeout", "120000"); // Give grails run-app command enough time to build the app and kick off a forked process.
+	        argMap.put("port", ""+port);
+	
+			// check for cancellation
+			if (monitor.isCanceled()) {
+				return;
+			}
+			
+			monitor.worked(1);
+
+			//Don't think we need to set source location since the main launch method already does this.
+			
+//			monitor.subTask(LaunchingMessages.JavaRemoteApplicationLaunchConfigurationDelegate_Creating_source_locator____2); 
+//			// set the default source locator if required
+//			setDefaultSourceLocator(launch, configuration);
+//			monitor.worked(1);		
+			
+			// connect to remote VM
+			connector.connect(argMap, monitor, launch);
+			
+			// check for cancellation
+			if (monitor.isCanceled()) {
+				IDebugTarget[] debugTargets = launch.getDebugTargets();
+	            for (int i = 0; i < debugTargets.length; i++) {
+	                IDebugTarget target = debugTargets[i];
+	                if (target.canDisconnect()) {
+	                    target.disconnect();
+	                }
+	            }
+	            return;
+			}
+		}
+		finally {
+			monitor.done();
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException {
 
+		GrailsVersion version = GrailsLaunchArgumentUtils.getGrailsVersion(configuration);
 		IProgressMonitor subMonitor = new SubProgressMonitor(monitor, 5);
 		checkCancelled(subMonitor);
 		subMonitor.beginTask("Starting Grails", 5);
@@ -96,8 +182,14 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
         // and GrailsLaunchConfigurationDelegate.launch()
         // consider refactoring to combine
 
+		IVMRunner runner;
 		IVMInstall vm = verifyVMInstall(configuration);
-		IVMRunner runner = vm.getVMRunner(mode);
+		if (GrailsVersion.V_2_3_.compareTo(version) <= 0) {
+			//We'll be debugging the forked process, not the run-app command.
+			runner = vm.getVMRunner(ILaunchManager.RUN_MODE);
+		} else {
+			runner = vm.getVMRunner(mode);
+		}
 		if (runner == null) {
 			runner = vm.getVMRunner(ILaunchManager.RUN_MODE);
 		}
@@ -140,8 +232,7 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		programArguments.add(grailsCommand.toString().trim());
 		
 		List<String> vmArgs = new ArrayList<String>();
-		//vmArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=8123");
-
+		//vmArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8123");
 
 		// add manual configured vm options to the argument list
 		String existingVmArgs = getVMArguments(configuration);
@@ -158,6 +249,7 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		for (Map.Entry<String, String> prop : systemProps.entrySet()) {
 			vmArgs.add("-D"+prop.getKey()+"="+prop.getValue());
 		}
+		int forkedProcessDebugPort = addForkedModeDebuggingArgs(configuration, mode, vmArgs);
 
 		// Grails uses some default memory settings that we want to use as well if no others have been configured
 		vmArgs = GrailsLaunchArgumentUtils.addMemorySettings(vmArgs);
@@ -200,6 +292,9 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		subMonitor.subTask("Launching Grails...");
 
 		try {
+			if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+				launchRemote(forkedProcessDebugPort, configuration, mode, launch, subMonitor); 
+			}
 			GrailsCoreActivator.getDefault().notifyCommandStart(project);
 			runner.run(runConfiguration, launch, monitor);
 			AbstractLaunchProcessListener listener = getLaunchListener(configuration);
@@ -212,6 +307,36 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 		catch (Exception e) {
 			GrailsCoreActivator.log(e);
 		}
+	}
+
+	/**
+	 * Helper function to add system properties that tell Grails to debug run-app or test-app in 
+	 * as a forked process in debugging mode. 
+	 * <p>
+	 * These properties are added only if applicable. I.e. recent enough graisl version and
+	 * this is a debug-mode launch.
+	 * <p>
+	 * In the process of adding the arguments, we will pick a free port. 
+     *
+	 * @return Chosen debug port or -1 if not launching in forked debug mode.
+	 */
+	private int addForkedModeDebuggingArgs(ILaunchConfiguration conf,
+			String mode, List<String> args) {
+		// TODO Auto-generated method stub
+		if (!ILaunchManager.DEBUG_MODE.equals(mode)) {
+			return -1;
+		}
+		GrailsVersion version = GrailsLaunchArgumentUtils.getGrailsVersion(conf);
+		if (GrailsVersion.V_2_3_.compareTo(version)>0) {
+			return -1; //Disable this feature for pre Grails 2.3.
+		}
+		int port = SocketUtil.findFreePort();
+		args.add("-Dgrails.project.fork.run.debug=true");
+		args.add("-Dgrails.project.fork.test.debug=true");
+		String debugArgs = "-Xrunjdwp:transport=dt_socket,server=n,suspend=y,address=" + port;
+		args.add("-Dgrails.project.fork.run.debugArgs="+debugArgs);
+		args.add("-Dgrails.project.fork.test.debugArgs="+debugArgs);
+		return port;
 	}
 
 	protected void checkCancelled(IProgressMonitor monitor) throws CoreException {

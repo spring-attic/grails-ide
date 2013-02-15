@@ -462,6 +462,7 @@ public class GrailsLaunchArgumentUtils {
 	public static void prepareLaunchConfiguration(IProject project,
 			String script, IGrailsInstall install, String baseDir,
 			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_ALLOW_TERMINATE, true);
 		wc.setAttribute(ATTR_PROCESS_FACTORY_ID, GrailsRuntimeProcessFactory.ID);
 		if (project==null) {
 			//Only add this explicitly to the config if outside of a project.
@@ -785,6 +786,14 @@ public class GrailsLaunchArgumentUtils {
 	 */
 	private static String caseKey(String key, boolean win32) {
 		return win32 ? key.toUpperCase() : key;
+	}
+
+	public static GrailsVersion getGrailsVersion(ILaunchConfiguration conf) {
+		IGrailsInstall install = getGrailsInstall(conf);
+		if (install!=null) {
+			return install.getVersion();
+		}
+		return GrailsVersion.UNKNOWN;
 	}
 
 }
