@@ -82,16 +82,16 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		GrailsCommandUtils.DEBUG = false;
 	}
 	
-	public void testImportVeryOldProjectAsLinkedProject() throws Throwable {
-		final URL zipFileURL = this.getClass().getClassLoader().getResource("OldTestApp.zip");
-		final String projectName = "OldTestApp";
-		
-		importAsLinkedProject(zipFileURL, projectName);
-		
-		/////////////////////////////////////////////////////////////////////////////////////////////////
-		//Check a few things about this test project
-		checkImportedProject();
-	}
+//	public void testImportVeryOldProjectAsLinkedProject() throws Throwable {
+//		final URL zipFileURL = this.getClass().getClassLoader().getResource("OldTestApp.zip");
+//		final String projectName = "OldTestApp";
+//		
+//		importAsLinkedProject(zipFileURL, projectName);
+//		
+//		/////////////////////////////////////////////////////////////////////////////////////////////////
+//		//Check a few things about this test project
+//		checkImportedProject();
+//	}
 
 	/**
 	 * Tests whether our 'ensureDefaultGrailsVersion' test utility method works properly.
@@ -170,20 +170,20 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		checkImportedProject();
 	}
 
-	/**
-	 * Test for the case were a project using an older version of grails is being imported, where the
-	 * older version is not configured in the workspace and the user asks to upgrade the project.
-	 */
-	public void testImportNotSoOldProject() throws Throwable {
-		final URL zipFileURL = this.getClass().getClassLoader().getResource("NotSoOldTestApp.zip");
-		final String projectName = "NotSoOldTestApp";
-		
-		importProject(zipFileURL, projectName);
-		
-		/////////////////////////////////////////////////////////////////////////////////////////////////
-		//Check a few things about this test project
-		checkImportedProject();
-	}
+//	/**
+//	 * Test for the case were a project using an older version of grails is being imported, where the
+//	 * older version is not configured in the workspace and the user asks to upgrade the project.
+//	 */
+//	public void testImportNotSoOldProject() throws Throwable {
+//		final URL zipFileURL = this.getClass().getClassLoader().getResource("NotSoOldTestApp.zip");
+//		final String projectName = "NotSoOldTestApp";
+//		
+//		importProject(zipFileURL, projectName);
+//		
+//		/////////////////////////////////////////////////////////////////////////////////////////////////
+//		//Check a few things about this test project
+//		checkImportedProject();
+//	}
 	
 	/**
 	 * Test for the case where we import a project that doesn't have eclipse specific files committed.
