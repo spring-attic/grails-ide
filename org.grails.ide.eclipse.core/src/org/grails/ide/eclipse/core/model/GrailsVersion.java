@@ -59,7 +59,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_1_0_revisit = V_2_1_0; // references to this constant should be reviewed when new version of Grails comes out.
 
 	public static final GrailsVersion V_2_2_ = new GrailsVersion("2.2"); //Any '2.2' version *including* milestones is 'greater' than this one
-	public static final GrailsVersion V_2_2_0_RC1 = new GrailsVersion("2.2.0.RC1", "http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.2.0.RC1.zip"); 
+	public static final GrailsVersion V_2_2_1 = new GrailsVersion("2.2.1");
 	
 //	public static final GrailsVersion V_2_0_0_M1 = new GrailsVersion("2.0.0.M1");
 	public static final GrailsVersion V_2_0_0_M2 = new GrailsVersion("2.0.0.M2");

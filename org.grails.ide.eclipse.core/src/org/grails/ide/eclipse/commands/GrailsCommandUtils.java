@@ -238,7 +238,13 @@ public class GrailsCommandUtils {
 			grailsProject.setClassPath(entries, new NullProgressMonitor());
 			
 			// Make sure class path container and source folders are up-to-date
-			refreshDependencies(javaProject, true); 
+			try {
+				refreshDependencies(javaProject, true);
+			} catch (Exception e) {
+				//Sometimes Grails throws exceptions because incomplete classpath and it 
+				//needs a second refresh before it gets the classpath right.
+				refreshDependencies(javaProject, true);
+			}
 
 			javaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, null);
 			return project;

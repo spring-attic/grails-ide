@@ -224,7 +224,9 @@ public class GrailsTypeRenameTest extends GrailsRefactoringTest {
 		
 	private void assertRenamedGSPFiles(IFolder newGspFolder, List<GSPFile> oldGspFiles, String oldName, String newName) throws IOException, CoreException {
 		for (GSPFile oldGspFile : oldGspFiles) {
-			GSPFile expectedGspFile = oldGspFile.replace(oldName, newName);
+			GSPFile expectedGspFile = oldGspFile.replace(oldName, newName)
+					//Exceptions that we don't expect to be renamed:
+					.replace("default: '"+newName+"'", "default: '"+oldName+"'");
 			GSPFile newGspFile = new GSPFile(newGspFolder.getFile(new Path(oldGspFile.name)));
 			assertEqualLines(expectedGspFile.contents, newGspFile.contents);
 		}
