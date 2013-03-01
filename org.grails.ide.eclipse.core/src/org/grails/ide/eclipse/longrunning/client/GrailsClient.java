@@ -84,13 +84,13 @@ public class GrailsClient {
 	 * When this flag is set we will echo anything sent from the external process to the client 
 	 * or vice versa onto System.out.
 	 */
-	private static final boolean DEBUG_PROTOCOL = true;
+	private static final boolean DEBUG_PROTOCOL = false;
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
 	 * out.
 	 */
-	private static final boolean DEBUG_CLIENT = true;
+	private static final boolean DEBUG_CLIENT = false;
 
 	/**
 	 * Polling interval used to check for data coming from the process.
