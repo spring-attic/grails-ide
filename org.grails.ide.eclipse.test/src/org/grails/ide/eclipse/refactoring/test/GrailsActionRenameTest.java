@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.refactoring.rename.RenameFieldProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.rename.RenameMethodProcessor;
 import org.eclipse.jdt.internal.corext.refactoring.rename.RenameVirtualMethodProcessor;
@@ -82,7 +83,9 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 			String newActionName = "catalog";
 
 			IType controller = getType("gtunez.SongController");
-			IMethod target = controller.getMethod(oldActionName, new String[] {});
+			IMethod target = getMethod(controller, "list");
+			//		controller.getMethod(oldActionName, new String[] {});
+			assertTrue("Method doesn't exist: ", target.exists());
 
 			RenameMethodProcessor processor = new RenameVirtualMethodProcessor(target);
 			processor.setNewElementName(newActionName);
@@ -121,6 +124,16 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 		}
 	}
 	
+	private IMethod getMethod(IType controller, String name) throws JavaModelException {
+		IMethod[] methods = controller.getMethods();
+		for (IMethod m : methods) {
+			if (m.getElementName().equals(name)) {
+				return m;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * It is possible to have controller without associated views. This shouldn't break the refactoring.
 	 */
