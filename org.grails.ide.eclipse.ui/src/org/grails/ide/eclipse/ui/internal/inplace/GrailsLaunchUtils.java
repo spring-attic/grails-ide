@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandFactory;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 
@@ -91,8 +93,13 @@ public abstract class GrailsLaunchUtils {
 	 * 
 	 * @param javaProject Context for launching
 	 * @param script      Text of grails command to launch
+	 * @throws CoreException 
 	 */
 	public static void launch(IJavaProject javaProject, final String script) {
+		if (script!=null && script.contains("run-app")) {
+			launchRunApp(javaProject, script);
+			return;
+		}
 		//launch(javaProject, script, false);
 		final IProject project = javaProject.getProject();
 		final GrailsCommand cmd = GrailsCommandFactory.fromString(project, script);
@@ -123,6 +130,32 @@ public abstract class GrailsLaunchUtils {
 							project.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
 							grailsCore.notifyCommandFinish(project);
 						}
+					} catch (CoreException e) {
+						return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Problem executing: "+script, e);
+					}
+					return Status.OK_STATUS;
+				} finally {
+					monitor.done();
+				}
+			}
+		}.schedule();
+	}
+
+	/**
+	 * Special handling for run-app, see https://issuetracker.springsource.com/browse/STS-3155
+	 * @throws CoreException 
+	 */
+	private static void launchRunApp(final IJavaProject javaProject, final String script) {
+		final String title = "Launching "+javaProject.getElementName() + ": " + script;
+		new Job(title) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask(title, 3);
+				try {
+					try {
+						ILaunchConfiguration launchConf = GrailsLaunchConfigurationDelegate.getLaunchConfiguration(javaProject.getProject(), script, false);
+						monitor.worked(1);
+						DebugUITools.launch(launchConf, ILaunchManager.RUN_MODE);
 					} catch (CoreException e) {
 						return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Problem executing: "+script, e);
 					}
