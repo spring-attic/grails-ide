@@ -344,11 +344,7 @@ public abstract class AbstractGrailsInferencingTests extends
         new ACondition("Grails test setup") {
             @Override
             public boolean test() throws Exception {
-                try {
-                    return setupJob.getResult()!=null;
-                } catch (Exception e) {
-                    return false;
-                }
+                return setupJob.getResult()!=null;
             }
         }.waitFor(3000);
     }
