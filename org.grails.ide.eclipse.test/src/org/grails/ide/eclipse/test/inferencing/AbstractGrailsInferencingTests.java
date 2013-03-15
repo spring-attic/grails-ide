@@ -345,8 +345,7 @@ public abstract class AbstractGrailsInferencingTests extends
             @Override
             public boolean test() throws Exception {
                 try {
-                    setupJob.join();
-                    return true;
+                    return setupJob.getResult()!=null;
                 } catch (Exception e) {
                     return false;
                 }
