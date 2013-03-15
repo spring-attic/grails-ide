@@ -10,8 +10,13 @@ package org.grails.ide.eclipse.test.inferencing;
 import java.util.Hashtable;
 
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
+import org.eclipse.core.internal.jobs.JobManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -29,6 +34,7 @@ import org.grails.ide.eclipse.editor.groovy.types.PerProjectServiceCache;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 
 /**
  * @author Andrew Eisenberg
@@ -310,14 +316,42 @@ public abstract class AbstractGrailsInferencingTests extends
         unit.discardWorkingCopy();
     }
 
+    
+    private void superSetup() throws Exception {
+        super.setUp();
+    }
+    
     @Override
     protected void setUp() throws Exception {
-        GrailsProjectVersionFixer.testMode();
-        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
-        super.setUp();
-//        project = GrailsTest.ensureProject(AbstractGrailsInferencingTests.class.getSimpleName());
-//        env.addProject(project);
-        MockGrailsTestProjectUtils.mockGrailsProject(project);
+        final Job setupJob = new Job("grails test setup job") {
+            
+            @Override
+            protected IStatus run(IProgressMonitor monitor) {
+                try {
+                    GrailsProjectVersionFixer.testMode();
+                    GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+                    superSetup();
+                    MockGrailsTestProjectUtils.mockGrailsProject(project);
+                    return Status.OK_STATUS;
+                } catch (Exception e) {
+                    return new Status(IStatus.ERROR, "", "", e);
+                }
+            }
+        };
+        setupJob.setPriority(Job.SHORT);
+        setupJob.schedule();
+        
+        new ACondition("Grails test setup") {
+            @Override
+            public boolean test() throws Exception {
+                try {
+                    setupJob.join();
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }.waitFor(3000);
     }
 
     @Override
