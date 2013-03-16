@@ -266,7 +266,8 @@ public class SynchLaunch {
 		public IStatus getStatus() {
 			String shortSummary;
 			int code = getExitValue();
-			if (code==0) {
+			Exception e = getException();
+			if (code==0 && e==null) {
 				shortSummary = "Command terminated normally";
 			} else if (code==ILaunchResult.EXIT_TIMEOUT) {
 				shortSummary = "The command '"+commandString+"' was terminated because it didn't produce new output for some time.\n" +
@@ -277,11 +278,13 @@ public class SynchLaunch {
 						"time limit in the Grails preferences page.\n" +
 						"\n" +
 						"See menu Windows >> Preferences >> Grails >> Launch";
+			} else if (e!=null) {
+				shortSummary = "Command terminated with an exception: "+e+" (see details for partial output)";
 			} else {
 				shortSummary = "Command terminated with an error code (see details for output)";
 			}
 			int statusCode = code==0 ? IStatus.OK : IStatus.ERROR;
-			MultiStatus status = new MultiStatus(GrailsCoreActivator.PLUGIN_ID, statusCode, shortSummary, null);
+			MultiStatus status = new MultiStatus(GrailsCoreActivator.PLUGIN_ID, statusCode, shortSummary, e);
 			status.add(new Status(statusCode, GrailsCoreActivator.PLUGIN_ID, "------System.out:-----------\n "+getOutput(), null));
 			status.add(new Status(statusCode, GrailsCoreActivator.PLUGIN_ID, "------System.err:-----------\n"+getErrorOutput(), null));
 			return status;

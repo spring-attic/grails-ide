@@ -204,7 +204,7 @@ public class GrailsClient {
 		processBuilder.redirectErrorStream(true);
 
 		process = processBuilder.start();
-		fromProcess = new LineReader(process.getInputStream(), DEBUG_PROTOCOL);
+		fromProcess = new LineReader(this, process.getInputStream(), DEBUG_PROTOCOL);
 		toProcess = new PrintWriter(process.getOutputStream());
 		timeStamps = getTimeStamps();
 		Assert.isTrue(isRunning());
@@ -363,7 +363,7 @@ public class GrailsClient {
 			}
 			println(toProcess, GrailsProcessConstants.END_COMMAND);
 			toProcess.flush(); //Must call 'flush or output may remain buffered-up and not processed by 
-			// the GrailsProcessConstants. This will cause both the client and the GrailsProcessConstants to hang waiting for 
+			// the GrailsProcess. This will cause both the client and the GrailsProcess to hang waiting for 
 			// input that is not coming.
 			
 			SendCommandInput sendInput = new SendCommandInput(this, console.getInputStream(), toProcess);
@@ -373,6 +373,8 @@ public class GrailsClient {
 				sendInput.terminate();
 			}
 		} catch (TimeoutException e) {
+			System.out.println("Connection to GrailsProcess timed out");
+			System.out.println("Still running ? "+ isRunning());
 			e.printStackTrace();
 			//Process is probably stuck, should be killed
 			shutDown();

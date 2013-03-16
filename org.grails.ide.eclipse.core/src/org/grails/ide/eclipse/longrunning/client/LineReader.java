@@ -31,6 +31,7 @@ public class LineReader {
 	
 	private final boolean DEBUG_PROTOCOL; 
 	private BufferedReader in;
+	private GrailsClient grailsClient;
 
 	public LineReader(InputStream in) {
 		this.DEBUG_PROTOCOL = false;
@@ -44,6 +45,11 @@ public class LineReader {
 	public LineReader(InputStream in, boolean debugProtocol) {
 		this.DEBUG_PROTOCOL = debugProtocol;
 		this.in =  new BufferedReader(new InputStreamReader(in));
+	}
+
+	public LineReader(GrailsClient grailsClient, InputStream inputStream, boolean debugProtocol) {
+		this(inputStream, debugProtocol);
+		this.grailsClient = grailsClient;
 	}
 
 	public String readLine(long timeOut) throws IOException, TimeoutException {
@@ -120,6 +126,11 @@ public class LineReader {
 											//header since we won't see the header again when reading the remainder of a partial line.
 							eol = true;
 						}
+					}
+					if (waiting>1 && grailsClient!=null && !grailsClient.isRunning()) {
+						//If the data we are reading comes from a Grails process, don't keep waiting
+						// after process is already dead.
+						throw new IOException("Grails process died");
 					}
 					Thread.sleep(GrailsClient.POLLING_INTERVAL); 
 				} catch (InterruptedException e) {
