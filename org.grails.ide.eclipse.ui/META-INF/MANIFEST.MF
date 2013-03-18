@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.ui,
  org.codehaus.groovy.eclipse.ui,
  org.codehaus.groovy.eclipse.core,
  org.springsource.ide.eclipse.commons.livexp,
- org.grails.ide.eclipse.maven
+ org.grails.ide.eclipse.maven,
+ org.eclipse.ui.editors
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy

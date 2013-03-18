@@ -28,6 +28,7 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.core.util.LimitedByteArrayOutputStream;
 import org.grails.ide.eclipse.longrunning.client.GrailsClient;
+import org.grails.ide.eclipse.longrunning.client.GrailsCommandExecution;
 import org.springsource.ide.eclipse.commons.core.util.MultiplexingOutputStream;
 
 import org.grails.ide.eclipse.core.launch.Grails20OutputCleaner;
@@ -77,56 +78,11 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 				throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Error creating grails process", e));
 			}
 
-			ByteArrayOutputStream bytesOut = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
-			ByteArrayOutputStream bytesErr = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
-			final Console console = buildConsole(cmd, bytesOut, bytesErr);
-			ResultFromTerminatedLaunch result = null; 
-			final String cmdInfo = cmd.toString();
-			try {
-				int code = process.executeCommand(cmd, console);
-				result = new ResultFromTerminatedLaunch(cmdInfo, code, bytesOut.toString(), bytesErr.toString());
-			} catch (TimeoutException e) {
-				result = new ResultFromTerminatedLaunch(cmdInfo, ILaunchResult.EXIT_TIMEOUT, bytesOut.toString(), bytesErr.toString());
-			} catch (final Exception e) {
-				result = new ResultFromTerminatedLaunch(cmdInfo, -999, bytesOut.toString(), bytesErr.toString()) {
-					public Exception getException() {
-						return e;
-					}
-				};
-			} finally {
-				try {
-					console.close();
-				} catch (IOException e) {
-				}
-			}
-			if (result.isOK()) {
-				cmd.runPostOp();
-				return result;
-			} else {
-				throw result.getCoreException();
-			}
+			GrailsCommandExecution execution = new GrailsCommandExecution(process, cmd);
+			return execution.execute();
 		}
 	}
  
-	protected Console buildConsole(GrailsCommand cmd, ByteArrayOutputStream bytesOut, ByteArrayOutputStream bytesErr) {
-		if (cmd.isShowOutput()) {
-			//Create a UI console and send output there.
-			Console console = GrailsProcessManager.consoleProvider.getConsole(cmd.getCommand());
-			OutputStream out = clean(new MultiplexingOutputStream(bytesOut, console.getOutputStream()));
-			OutputStream err = new MultiplexingOutputStream(bytesErr, console.getErrorStream());
-			return Console.make(console.getInputStream(), out, err);
-		} else {
-			//Create a dummy console that only sends output to 'bytes'
-			return Console.make(clean(bytesOut), bytesErr);
-		}
-	}
-
-	private OutputStream clean(OutputStream out) {
-		if (GrailsCoreActivator.getDefault().getCleanOutput()) {
-			return new Grails20OutputStreamCleaner(out);
-		}
-		return out;
-	}
 
 	@Override
 	public void shutDown() {

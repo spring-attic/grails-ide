@@ -26,8 +26,6 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.launch.ClasspathLocalizer;
-import org.grails.ide.eclipse.core.launch.EclipsePluginClasspathEntry;
 import org.grails.ide.eclipse.core.launch.GrailsLaunchArgumentUtils;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
@@ -140,6 +138,7 @@ public class GrailsClient {
 
 	private String javaVM;
 
+	private boolean wasDestroyed = false;
 	
 
 	public GrailsClient(IGrailsInstall install, File workingDir) {
@@ -379,6 +378,14 @@ public class GrailsClient {
 			//Process is probably stuck, should be killed
 			shutDown();
 			throw e;
+		} catch (GrailsProcessDiedException e) {
+			if (wasDestroyed) {
+				toConsoleErr.println("\nProcess was killed");
+				toConsoleErr.flush();
+				//Since someone clicked 'stop' button the error is expected. Don't treat as a problem:
+				return 0;
+			}
+			throw e;
 		}
 		finally {
 			flush(toConsoleOut); //Ensure all output is written before proceeding
@@ -444,10 +451,16 @@ public class GrailsClient {
 
 	/**
 	 * Calling this method ensures that the external process associated with this client is terminated.
+	 * Note that this method is synchronized as is the executeCommand method. Thus it will wait for
+	 * the current command to finish. To more quickly and forcibly shutdown the process, call the
+	 * 'destroy' method instead.
 	 * <p>
 	 * Calling this method when the process is already terminated has no effect.
 	 */
 	public synchronized void shutDown() {
+		if (process==null) { 
+			return;
+		}
 		//Ask the process (nicely) to terminate
 		println(toProcess, GrailsProcessConstants.EXIT);
 		flush(toProcess);
@@ -472,6 +485,15 @@ public class GrailsClient {
 		}
 	}
 
+	public void destroy() {
+		Process p = this.process;
+		if (p!=null) {
+			p.destroy();
+			this.process = null;
+		}
+		wasDestroyed = true; // Will suppress the now expected error when we detect later that process has died.
+	}
+	
 	private void waitFor(Process process) {
 		boolean done = false;
 		while (!done) {

@@ -903,5 +903,17 @@
 			<actionSet id="org.grails.ide.eclipse.ui.actionSet" />
 		</perspectiveExtension>
 	</extension>
+	
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="org.grails.ide.eclipse.ui.console.GrailsUIConsolePageParticipant"
+            id="org.eclipse.debug.ui.processConsolePageParticipant">
+         <enablement>
+            <instanceof value="org.grails.ide.eclipse.ui.console.GrailsIOConsole"/>
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+	
    
 </plugin>

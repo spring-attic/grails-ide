@@ -19,6 +19,7 @@ import java.util.LinkedList;
 
 import org.grails.ide.eclipse.longrunning.Console;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
+import org.grails.ide.eclipse.longrunning.client.GrailsCommandExecution;
 import org.grails.ide.eclipse.runtime.shared.longrunning.Pipe;
 
 import junit.framework.Assert;
@@ -134,7 +135,7 @@ public class TestConsoleProvider extends ConsoleProvider {
 	}
 
 	@Override
-	public Console getConsole(String title) {
+	public Console getConsole(String title, GrailsCommandExecution execution) {
 		Pipe grailsOut; // pipe that receives output from the grails command
 		Pipe grailsErr; // pipe that receives error output from the grails command
 		Pipe keyboard;  // pipe that receives input from the keyboard

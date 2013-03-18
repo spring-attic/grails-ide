@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * @since 2.6
  */
 public abstract class Console {
-
+	
 	public abstract InputStream getInputStream();
 	public abstract OutputStream getOutputStream();
 	public abstract OutputStream getErrorStream();
@@ -72,5 +72,4 @@ public abstract class Console {
 			throw e;
 		}
 	}
-
 }

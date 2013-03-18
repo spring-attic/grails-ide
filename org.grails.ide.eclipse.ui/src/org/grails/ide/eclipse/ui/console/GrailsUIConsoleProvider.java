@@ -23,6 +23,7 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.grails.ide.eclipse.longrunning.Console;
 import org.grails.ide.eclipse.longrunning.ConsoleProvider;
 import org.grails.ide.eclipse.longrunning.GrailsProcessManager;
+import org.grails.ide.eclipse.longrunning.client.GrailsCommandExecution;
 
 import org.grails.ide.eclipse.ui.GrailsUiActivator;
 
@@ -59,9 +60,9 @@ public class GrailsUIConsoleProvider extends ConsoleProvider {
 	private LinkedList<IOConsole> history = new LinkedList<IOConsole>();
 
 	@Override
-	public Console getConsole(String title) {
+	public Console getConsole(String title, GrailsCommandExecution execution) {
 		
-		final IOConsole console = new IOConsole(title, null);
+		final GrailsIOConsole console = new GrailsIOConsole(title, execution);
 		final IOConsoleInputStream in  = console.getInputStream();
 		final IOConsoleOutputStream out = console.newOutputStream();
 		final IOConsoleOutputStream err = console.newOutputStream();
@@ -71,7 +72,8 @@ public class GrailsUIConsoleProvider extends ConsoleProvider {
 		err.setColor(getErrorColor());
 		
 		add(console);
-		return Console.make(in, out, err);
+		Console coreConsole = Console.make(in, out, err);
+		return coreConsole;
 	}
 
 	private void add(IOConsole console) {

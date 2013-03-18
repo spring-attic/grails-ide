@@ -130,7 +130,7 @@ public class LineReader {
 					if (waiting>1 && grailsClient!=null && !grailsClient.isRunning()) {
 						//If the data we are reading comes from a Grails process, don't keep waiting
 						// after process is already dead.
-						throw new IOException("Grails process died");
+						throw new GrailsProcessDiedException("Grails process died");
 					}
 					Thread.sleep(GrailsClient.POLLING_INTERVAL); 
 				} catch (InterruptedException e) {
