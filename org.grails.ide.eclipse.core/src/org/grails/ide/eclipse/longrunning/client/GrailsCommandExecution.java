@@ -50,7 +50,7 @@ public class GrailsCommandExecution extends ExecutionEventSource {
 		this.bytesOut = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
 		this.bytesErr = new LimitedByteArrayOutputStream(GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
 		this.console = buildConsole(cmd, bytesOut, bytesErr);
-		this.console.setExection(this);
+//		this.console.setExection(this);
 	}
 	
 	protected Console buildConsole(GrailsCommand cmd, ByteArrayOutputStream bytesOut, ByteArrayOutputStream bytesErr) {
