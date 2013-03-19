@@ -1,18 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Kris De Volder - copied from org.eclipse.debug.internal.ui.views.console.ProcessConsolePageParticipant
+ *                    - modified to create similar functionality for GrailsIOConsole
+ *******************************************************************************/
 package org.grails.ide.eclipse.ui.console;
 
+import org.eclipse.debug.internal.ui.views.console.ConsoleRemoveAllTerminatedAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsolePageParticipant;
 import org.eclipse.ui.console.IConsoleView;
-import org.eclipse.ui.contexts.IContextService;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.IPageBookViewPage;
-import org.eclipse.ui.part.IPageSite;
 import org.grails.ide.eclipse.longrunning.client.ExecutionEventSource;
-import org.grails.ide.eclipse.longrunning.client.GrailsCommandExecution;
 import org.grails.ide.eclipse.longrunning.client.ExecutionEventSource.ExecutionListener;
+import org.grails.ide.eclipse.longrunning.client.GrailsCommandExecution;
 
 /**
  * Creates and manages process console specific actions
@@ -23,6 +33,7 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
 	
 	// actions
 	private StopCommandAction fTerminate;
+	private RemoveAllTerminatedAction fRemoveAllTerminated;
 
     private IPageBookViewPage fPage;
 
@@ -40,6 +51,7 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
 //        fRemoveTerminated = new ConsoleRemoveLaunchAction(fConsole.getProcess().getLaunch());
 //        fRemoveAllTerminated = new ConsoleRemoveAllTerminatedAction();
         fTerminate = new StopCommandAction(page.getSite().getWorkbenchWindow(), fConsole);
+        fRemoveAllTerminated = new RemoveAllTerminatedAction();
         
         fView = (IConsoleView) fPage.getSite().getPage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
         
@@ -87,14 +99,14 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
 //            fRemoveTerminated.dispose();
 //            fRemoveTerminated = null;
 //        }
-//		if (fRemoveAllTerminated != null) {
-//			fRemoveAllTerminated.dispose();
-//			fRemoveAllTerminated = null;
-//		}
-//		if (fTerminate != null) {
-//		    fTerminate.dispose();
-//		    fTerminate = null;
-//		}
+		if (fRemoveAllTerminated != null) {
+			fRemoveAllTerminated.dispose();
+			fRemoveAllTerminated = null;
+		}
+		if (fTerminate != null) {
+		    fTerminate.dispose();
+		    fTerminate = null;
+		}
 //		if (fStdOut != null) {
 //			fStdOut.dispose();
 //			fStdOut = null;
@@ -111,6 +123,8 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
      */
     protected void configureToolBar(IToolBarManager mgr) {
 		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fTerminate);
+		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveAllTerminated);
+		
 //      mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveTerminated);
 //		mgr.appendToGroup(IConsoleConstants.LAUNCH_GROUP, fRemoveAllTerminated);
 //		mgr.appendToGroup(IConsoleConstants.OUTPUT_GROUP, fStdOut);
@@ -127,9 +141,9 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
      */
     public void activated() {
         // add EOF submissions
-        IPageSite site = fPage.getSite();
-        IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
-        IContextService contextService = (IContextService)site.getService(IContextService.class);
+//        IPageSite site = fPage.getSite();
+//        IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
+//        IContextService contextService = (IContextService)site.getService(IContextService.class);
 //        fActivatedContext = contextService.activateContext(fContextId);
 //        fActivatedHandler = handlerService.activateHandler("org.eclipse.debug.ui.commands.eof", fEOFHandler); //$NON-NLS-1$
     }
@@ -139,9 +153,9 @@ public class GrailsUIConsolePageParticipant implements IConsolePageParticipant {
      */
     public void deactivated() {
         // remove EOF submissions
-        IPageSite site = fPage.getSite();
-        IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
-        IContextService contextService = (IContextService)site.getService(IContextService.class);
+//        IPageSite site = fPage.getSite();
+//        IHandlerService handlerService = (IHandlerService)site.getService(IHandlerService.class);
+//        IContextService contextService = (IContextService)site.getService(IContextService.class);
 //      handlerService.deactivateHandler(fActivatedHandler);
 //		contextService.deactivateContext(fActivatedContext);
     }

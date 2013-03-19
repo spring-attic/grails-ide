@@ -106,6 +106,7 @@ public class GrailsCommandExecution extends ExecutionEventSource {
 		} finally {
 			isTerminated = true;
 			notifyExecutionListeners();
+			clearListeners(); //No more state changes possible in the future!
 		}
 	}
 	
@@ -123,6 +124,10 @@ public class GrailsCommandExecution extends ExecutionEventSource {
 			process.destroy();
 			process = null;
 		}
+	}
+
+	public boolean isTerminated() {
+		return isTerminated;
 	}
 
 }

@@ -30,4 +30,14 @@ public abstract class ConsoleProvider {
 	 */
 	public abstract Console getConsole(String command, GrailsCommandExecution grailsCommandExecution);
 
+	/**
+	 * If a console provider keeps track of consoles that have been created, this method
+	 * can be called to remove all those associated with terminated executions.
+	 * <p>
+	 * The default implementation provided here does nothing, assuming the provides doesn't
+	 * keep a history. Subclass should override if they do maintain a history.
+	 */
+	public void removeAllTerminated() {
+	}
+
 }

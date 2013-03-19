@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.ui.console;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
@@ -57,7 +58,7 @@ public class GrailsUIConsoleProvider extends ConsoleProvider {
 		return DebugUIPlugin.getPreferenceColor(IDebugPreferenceConstants.CONSOLE_SYS_IN_COLOR);
 	}
 	
-	private LinkedList<IOConsole> history = new LinkedList<IOConsole>();
+	private LinkedList<GrailsIOConsole> history = new LinkedList<GrailsIOConsole>();
 
 	@Override
 	public Console getConsole(String title, GrailsCommandExecution execution) {
@@ -76,7 +77,7 @@ public class GrailsUIConsoleProvider extends ConsoleProvider {
 		return coreConsole;
 	}
 
-	private void add(IOConsole console) {
+	private void add(GrailsIOConsole console) {
 		history.addLast(console);
 		if (history.size()>MAX_SIZE) {
 			close(history.removeFirst());
@@ -87,6 +88,17 @@ public class GrailsUIConsoleProvider extends ConsoleProvider {
 
 	private void close(IOConsole console) {
 		ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[] {console});
+	}
+	
+	@Override
+	public void removeAllTerminated() {
+		for (Iterator<GrailsIOConsole> iterator = history.iterator(); iterator.hasNext();) {
+			GrailsIOConsole console = iterator.next();
+			if (console.isTerminated()) {
+				iterator.remove();
+				close(console);
+			}
+		}
 	}
 
 }

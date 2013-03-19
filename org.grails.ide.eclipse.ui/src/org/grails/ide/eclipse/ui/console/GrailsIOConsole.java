@@ -18,11 +18,13 @@ import org.grails.ide.eclipse.longrunning.client.ExecutionEventSource.ExecutionL
 
 public class GrailsIOConsole extends IOConsole {
 
+	private static final String CONSOLE_TYPE = GrailsIOConsole.class.getName();
+	
 	private final GrailsCommandExecution execution;
 	private Display display;
 
 	public GrailsIOConsole(final String title, GrailsCommandExecution execution) {
-		super(title, null);
+		super(title, CONSOLE_TYPE, null);
 		display = Display.getCurrent();
 		this.execution = execution;
 		if (execution!=null) {
@@ -43,6 +45,10 @@ public class GrailsIOConsole extends IOConsole {
 
 	public GrailsCommandExecution getExecution() {
 		return execution;
+	}
+
+	public boolean isTerminated() {
+		return execution==null || execution.isTerminated();
 	}
 
 }
