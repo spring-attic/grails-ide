@@ -560,6 +560,20 @@
               <version>0.8.1</version>
             </dependency>
           </dependencies>
+		  <executions>
+		    <execution>
+		      <id>create-heapdump-dir</id>
+		      <phase>generate-test-resources</phase>
+		      <configuration>
+		        <tasks>
+		          <mkdir dir="${project.build.directory}/heapdumps"/>
+		        </tasks>
+		      </configuration>
+		      <goals>
+		        <goal>run</goal>
+		      </goals>
+		    </execution>
+		  </executions>          
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -611,7 +625,7 @@
             <testSuite>${project.artifactId}</testSuite>
             <testClass>${test.class}</testClass>
             <argLine>
-              -Xmx1024m -XX:ReservedCodeCacheSize=64m -XX:MaxPermSize=382m ${groovy.compiler.switch} -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
+              -XX:+TraceClassLoading -XX:+TraceClassUnloading -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${project.build.directory}/heapdumps -Xmx1024m -XX:ReservedCodeCacheSize=64m -XX:MaxPermSize=382m ${groovy.compiler.switch} -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
             </argLine>
             <appArgLine>
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
