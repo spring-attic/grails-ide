@@ -37,7 +37,7 @@ public abstract class GrailsUITestCase extends UITestCase {
 	// for SWTBot
 	// wait conditions for those.
 
-	public static final long TIMEOUT_CREATE_DOMAIN_CLASS = 30000;
+	public static final long TIMEOUT_CREATE_DOMAIN_CLASS = 60000;
 	public static final long TIMEOUT_CREATE_APP = 60000;
 	public static final long TIMEOUT_TEST_APP = 60000;
 	protected static String dotGrailsFolder;
