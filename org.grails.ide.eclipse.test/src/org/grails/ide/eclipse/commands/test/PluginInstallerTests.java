@@ -84,21 +84,22 @@ public class PluginInstallerTests extends AbstractPluginInstallerTest {
     	return getLatestPluginVersions(manager, names);
 	}
 
-	public void testInstallPluginwithDependentPlugin() throws Exception {
-    	//TODO: This test fails in Grails 2.0 because multi-tenant core plugin isn't compatible (yet?) with 2.0.
-    	// See http://jira.grails.org/browse/GRAILS-8198
-    	if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_2_1)) {
-    		return;
-    	}
-    	
-    	assertPluginsInstalled(GrailsTest.defaultPlugins());
-    	IStatus status = GrailsPluginInstaller.performPluginChanges(null, getLatestPluginVersions("multi-tenant-core"), installable, null);
-    	GrailsTest.assertStatusOK(status);
-    	assertPluginsInstalled(GrailsTest.join(GrailsTest.defaultPlugins(), "multi-tenant-core", "falcone-util"));
-    	status = GrailsPluginInstaller.performPluginChanges(getLatestPluginVersions("multi-tenant-core", "falcone-util"), null, installable, null);
-    	GrailsTest.assertStatusOK(status);
-    	assertPluginsInstalled(GrailsTest.defaultPlugins());
-    }
+// Test removed, the multi-tenant-core plugin hasn't actually worked for a long time now.
+//	public void testInstallPluginwithDependentPlugin() throws Exception {
+//    	//TODO: This test fails in Grails 2.0 because multi-tenant core plugin isn't compatible (yet?) with 2.0.
+//    	// See http://jira.grails.org/browse/GRAILS-8198
+//    	if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_2_1)) {
+//    		return;
+//    	}
+//    	
+//    	assertPluginsInstalled(GrailsTest.defaultPlugins());
+//    	IStatus status = GrailsPluginInstaller.performPluginChanges(null, getLatestPluginVersions("multi-tenant-core"), installable, null);
+//    	GrailsTest.assertStatusOK(status);
+//    	assertPluginsInstalled(GrailsTest.join(GrailsTest.defaultPlugins(), "multi-tenant-core", "falcone-util"));
+//    	status = GrailsPluginInstaller.performPluginChanges(getLatestPluginVersions("multi-tenant-core", "falcone-util"), null, installable, null);
+//    	GrailsTest.assertStatusOK(status);
+//    	assertPluginsInstalled(GrailsTest.defaultPlugins());
+//    }
     
     public void testInstallInPlaceWithProblem() throws Exception {
         assertPluginsInstalled(GrailsTest.defaultPlugins());
@@ -149,8 +150,7 @@ public class PluginInstallerTests extends AbstractPluginInstallerTest {
         assertPluginsInstalled(GrailsTest.defaultPlugins());
 
         //Install the 'export' plugin
-        // final Collection<PluginVersion> latestPluginVersions = getLatestPluginVersions("export"); //TODO: reinstate this when GRAILSPLUGINS-2944 is fixed
-        final Collection<PluginVersion> latestPluginVersions = Arrays.asList(getPluginVersion("export", "0.8"));
+        Collection<PluginVersion> latestPluginVersions = getLatestPluginVersions("export");
         IStatus status = GrailsPluginInstaller.performPluginChanges(null, latestPluginVersions, installable, null);
         GrailsTest.assertStatusOK(status);
         assertPluginsInstalled(GrailsTest.join(GrailsTest.defaultPlugins(), "export"));
