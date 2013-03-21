@@ -375,10 +375,10 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	}
 	
 	public void testChangeDefaultGrails() throws Exception {
+		System.out.println("Testing project upgrade: "+GrailsVersion.PREVIOUS + " => "+GrailsVersion.MOST_RECENT);
 		ensureDefaultGrailsVersion(GrailsVersion.PREVIOUS);
-		final String projectName = "gTunes";
-		final URL zipFileURL = getProjectZip(projectName, GrailsVersion.PREVIOUS);
-		importProject(zipFileURL, projectName);
+		final String projectName = "testChangeDefaultGrails";
+		project = ensureProject(projectName);
 		
 		//Double check that project was created ok with correct version numbers in both eclipse settings and application.properties
 		assertEquals(GrailsVersion.PREVIOUS, GrailsVersion.getEclipseGrailsVersion(project));
@@ -388,7 +388,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT); 
 		
 		// Project should get upgraded... eventually
-		new ACondition() {
+		new ACondition("Project upgraded") {
 			public boolean test() throws Exception {
 				ACondition.assertJobManagerIdle();
 				assertEquals("Eclipse Grails version", GrailsVersion.MOST_RECENT, GrailsVersion.getEclipseGrailsVersion(project));
