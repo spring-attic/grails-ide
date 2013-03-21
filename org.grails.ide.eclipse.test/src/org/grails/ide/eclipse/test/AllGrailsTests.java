@@ -148,7 +148,7 @@ public class AllGrailsTests {
         			suite.addTest(BelongsToInferencingTests.suite());
         			suite.addTest(ControllerReturnTypeInferencingTests.suite());
         			suite.addTest(GrailsServiceInferencingTests.suite());
-        			//suite.addTest(AllGroovyDebugTests.suite());
+        			suite.addTest(AllGroovyDebugTests.suite());
         			suite.addTestSuite(GrailsContentAssistTests.class);
         		}
         		suite.addTestSuite(DynamicFinderProposalsTests.class);
