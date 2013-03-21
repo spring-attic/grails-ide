@@ -86,7 +86,7 @@ public class GrailsJUnitIntegrationTests extends GrailsProjectHarness {
 		}
 	}
 
-	private static final long TIMEOUT_TEST_APP = 30000;
+	private static final long TIMEOUT_TEST_APP = 60000;
 	private static IProject project;
 
 	@Override
