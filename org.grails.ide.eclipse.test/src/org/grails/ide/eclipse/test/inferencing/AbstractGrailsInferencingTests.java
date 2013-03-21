@@ -346,7 +346,7 @@ public abstract class AbstractGrailsInferencingTests extends
             public boolean test() throws Exception {
                 return setupJob.getResult()!=null;
             }
-        }.waitFor(3000);
+        }.waitFor(15000);
     }
 
     @Override
