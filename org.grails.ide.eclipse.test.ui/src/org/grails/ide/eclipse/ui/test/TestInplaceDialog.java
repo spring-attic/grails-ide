@@ -45,14 +45,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.classpath.SourceFolderJob;
+import org.grails.ide.eclipse.ui.internal.inplace.GrailsInplaceDialog;
+import org.grails.ide.eclipse.ui.test.util.GrailsUITestCase;
 import org.springsource.ide.eclipse.commons.core.Entry;
 import org.springsource.ide.eclipse.commons.core.ICommandHistory;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotConditions;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
-import org.grails.ide.eclipse.ui.internal.inplace.GrailsInplaceDialog;
-import org.grails.ide.eclipse.ui.test.util.GrailsUITestCase;
 
 /**
  * @author Andrew Eisenberg
@@ -460,9 +459,9 @@ public class TestInplaceDialog extends GrailsUITestCase {
 		catch (TimeoutException e) {
 			throw new Error("---console Text---\n"+SWTBotUtils.getConsoleText(bot)+"\n-------------", e);
 		}
-		SWTBotConditions.waitForConsoleOutput(bot, "Plugin twitter-0.1 installed", TIMEOUT_CREATE_DOMAIN_CLASS);
+		SWTBotConditions.waitForConsoleOutput(bot, "Installed plugin twitter-0.1", TIMEOUT_CREATE_DOMAIN_CLASS);
 		bot.sleep(1000); // Wait a little, to see if the text stays put after completion
-		SWTBotConditions.waitForConsoleOutput(bot, "Plugin twitter-0.1 installed"); // Text still there?
+		SWTBotConditions.waitForConsoleOutput(bot, "Installed plugin twitter-0.1"); // Text still there?
 	}
 	
 	public void testCanSelectProject() {
