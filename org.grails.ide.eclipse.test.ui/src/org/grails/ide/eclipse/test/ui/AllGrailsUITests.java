@@ -16,10 +16,6 @@ import junit.framework.TestSuite;
 
 import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.springsource.ide.eclipse.commons.frameworks.test.util.UITestCase;
-import org.springsource.ide.eclipse.commons.tests.util.ManagedTestSuite;
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.test.util.GroovySanityTest;
 import org.grails.ide.eclipse.ui.test.GrailsExplorerTests;
@@ -27,8 +23,10 @@ import org.grails.ide.eclipse.ui.test.GrailsJUnitIntegrationTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerBasicTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerSelectionTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerUpdatesTest;
-import org.grails.ide.eclipse.ui.test.GrailsPluginProjectExplorerTests;
 import org.grails.ide.eclipse.ui.test.TestInplaceDialog;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.UITestCase;
+import org.springsource.ide.eclipse.commons.tests.util.ManagedTestSuite;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * From the IDE run this suite as an "SWTBot test".
@@ -73,6 +71,7 @@ public class AllGrailsUITests {
 			// //////////////////////////////////////////////////////
 			// SWTBot tests:
 
+
 			addTest(suite, GrailsJUnitIntegrationTests.class);
 			addTest(suite, GrailsExplorerTests.class);
 			if (!StsTestUtil.isOnBuildSite()) {
@@ -80,7 +79,7 @@ public class AllGrailsUITests {
 				// figure a way around it
 				// we won't be running them on the build server.
 				addTest(suite, TestInplaceDialog.class);
-				addTest(suite, GrailsPluginProjectExplorerTests.class);
+//				addTest(suite, GrailsPluginProjectExplorerTests.class);
 				addTest(suite, GrailsPluginManagerBasicTests.class);
 				addTest(suite, GrailsPluginManagerSelectionTests.class);
 				addTest(suite, GrailsPluginManagerUpdatesTest.class);
