@@ -263,7 +263,7 @@ public class GrailsCommandWizardExpressionTest extends
         assertCommandExecution(instance, project);
 	}
 
-	public void test_PACKAGEPLUGIN_expression() throws Exception {
+	public void test_PACKAGEPLUGIN_expression() throws Throwable {
 		IFrameworkCommand instance = createCommandInstance(GrailsCommandFactory.PACKAGE_PLUGIN);
 		assertCommandDefinition(instance, "package-plugin", 0);
 		assertExpectedCommandString(instance, "package-plugin");

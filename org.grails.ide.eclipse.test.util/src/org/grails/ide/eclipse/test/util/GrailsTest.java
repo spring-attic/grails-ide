@@ -30,7 +30,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
@@ -40,9 +39,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -59,13 +61,14 @@ import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsInstallManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
+import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.osgi.service.prefs.BackingStoreException;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.DownloadManager;
 import org.springsource.ide.eclipse.commons.tests.util.DownloadManager.DownloadRequestor;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 
 /**
@@ -89,6 +92,9 @@ public class GrailsTest extends TestCase {
 		File home = GrailsCoreActivator.getDefault().getUserHome();
 		//deleteDir(new File(home, ".ivy2"));
 		deleteDir(new File(home, ".grails"));
+		//Long running Grails processes may hold on to state as well if they are still running.
+		// Plus.... they will break if the files in .grails are all deleted. So kill em all :-)
+		LongRunningProcessGrailsExecutor.shutDownIfNeeded();
 	}
 
 	private static void deleteDir(File dir) {
@@ -234,48 +240,73 @@ public class GrailsTest extends TestCase {
 	 * @param name name of the project
 	 * @param isPluginProject whether this project should be a plugin project
 	 * @return the created Grails projet
+	 * @throws Throwable 
 	 * @throws CoreException
 	 */
-	protected static IProject ensureProject(String name, boolean isPluginProject)
+	protected static IProject ensureProject(final String name, final boolean isPluginProject)
 			throws Exception {
-		IProject project = StsTestUtil.getProject(name);
-		if (project.exists()) {
-			System.out.println("Reusing test project '"+name+"'");
-			return project;
-		} else {
-			System.out.println("Creating test project '"+name+"' with Grails " + GrailsVersion.getDefault());
-			GrailsCommand cmd;
-			if (isPluginProject) {
-				cmd = GrailsCommandFactory.createPlugin(name);
-			} else {
-				cmd = GrailsCommandFactory.createApp(name);
+		try {
+			final IProject project = StsTestUtil.getProject(name);
+			if (project.exists()) {
+				System.out.println("Reusing test project '"+name+"'");
+				return project;
 			}
-			ILaunchResult result = cmd.synchExec();
-
-			project = StsTestUtil.getProject(name);
-			try {
-                GrailsCommandUtils.eclipsifyProject(null, true, project);
-            } catch (Exception e) {
-                System.err.println("Ugh...tried to Eclipsify project, but failed.  Maybe a network error.  Retrying");
-                System.err.println("Project is: " + project.getName());
-                // try again maybe something from the server
-                GrailsCommandUtils.eclipsifyProject(null, true, project);
-            }
-
+	
+			final Job job = new Job("EnsureProject "+name) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						System.out.println("Creating test project '"+name+"' with Grails " + GrailsVersion.getDefault());
+						GrailsCommand cmd;
+						if (isPluginProject) {
+							cmd = GrailsCommandFactory.createPlugin(name);
+						} else {
+							cmd = GrailsCommandFactory.createApp(name);
+						}
+						ILaunchResult result = cmd.synchExec();
+						try {
+			                GrailsCommandUtils.eclipsifyProject(null, true, project);
+			            } catch (Exception e) {
+			                System.err.println("Ugh...tried to Eclipsify project, but failed.  Maybe a network error.  Retrying");
+			                System.err.println("Project is: " + project.getName());
+			                // try again maybe something from the server
+			                GrailsCommandUtils.eclipsifyProject(null, true, project);
+			            }
+						if (!isPluginProject) {
+							assertContains("Created Grails Application at "+workspacePath()+"/"+name, result.getOutput());
+						} else {
+							String pluginName = GrailsNature.createPluginName(name);
+							String projectName = pluginName.substring(0, pluginName.indexOf("GrailsPlugin.groovy"));
+							assertContains("Created plugin "+projectName, result.getOutput());
+							assertTrue("Plugin file " + pluginName + " does not exist", GrailsNature.isGrailsPluginProject(project));
+						}
+						return Status.OK_STATUS;
+					} catch (Throwable e) {
+						return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "problem creating test project", e);
+					}
+				}
+			};
+			//This is an attempt to get rid of random problems refreshing external linked folders. Presumably this is because someone else
+			// is mucking in the workspace in parallel... and normally these kinds of operation modifying resources should exeuctue as jobs
+			// with proper rules. so :
+			job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
+			job.schedule();
+			new ACondition("Create project "+name) {
+				@Override
+				public boolean test() throws Exception {
+					return job.getResult()!=null;
+				}
+			}.waitFor(180000);
+			assertStatusOK(job.getResult());
 			assertTrue(project.exists());
 			assertNoErrors(project);
 			assertTrue(project.hasNature(GrailsNature.NATURE_ID));
 
-			if (!isPluginProject) {
-				assertContains("Created Grails Application at "+workspacePath()+"/"+name, result.getOutput());
-			} else {
-				String pluginName = GrailsNature.createPluginName(name);
-				String projectName = pluginName.substring(0, pluginName.indexOf("GrailsPlugin.groovy"));
-				assertContains("Created plugin "+projectName, result.getOutput());
-				assertTrue("Plugin file " + pluginName + " does not exist", GrailsNature.isGrailsPluginProject(project));
-			}
 			System.out.println("Created project '"+project.getName()+" uses Grails "+GrailsVersion.getEclipseGrailsVersion(project));
+			
 			return project;
+		} catch (Throwable e) {
+			throw new Error(e);
 		}
 	}
 

@@ -147,26 +147,23 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 	 * If a project's Grails version is changed does the long running process use the right version?
 	 */
 	public void testChangeGrailsVersion() throws Exception {
+		//Note: It is important that this test use a differently named test project from the other tests
+		// because up-and-down grades and uses different grails versions from the other tests.
+		
 		//This test now only tests that an upgrade from previous to current grails works.
 		// Other operations seem even more unreliable and it breaks our test if the 
 		// Grails upgrade command fails.
 		boolean wasEnabled = GrailsProjectVersionFixer.isEnabled();
 		try {
 			GrailsProjectVersionFixer.setEnabled(false);
-			//Test project may already exist and likely with wrong Grails version so ...
-			StsTestUtil.deleteAllProjects();
-			GrailsTest.clearGrailsState();
 
 			ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 			ensureDefaultGrailsVersion(GrailsVersion.PREVIOUS);
 
-			IProject project = ensureProject(getClass().getSimpleName()); //Should create the project with previous grails version
+			IProject project = ensureProject(getClass().getSimpleName()+"Upgrade"); //Should create the project with previous grails version
 			doUpgrade(project, GrailsVersion.PREVIOUS, GrailsVersion.MOST_RECENT);
 		} finally {
-			StsTestUtil.deleteAllProjects();
-			GrailsTest.clearGrailsState();
 			GrailsProjectVersionFixer.setEnabled(wasEnabled);
-			//All this up-and-down grading is likely to compromise the project's integrity. Ensure we create new one for next test.
 		}
 	}
 

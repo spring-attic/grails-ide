@@ -28,9 +28,8 @@ public class ExtraPluginInstallerTests extends AbstractPluginInstallerTest {
 
     /**
      * Regression test for STS-1289 Transitive in place plugin dependencies not being properly refreshed.
-     * @throws Exception 
      */
-    public void testSTS1289TransitivePluginDependencies() throws Exception {
+    public void testSTS1289TransitivePluginDependencies() throws Throwable {
     	IProject main = ensureProject("main");
     	IProject sub = ensureProject("sub", true);
     	IProject subsub = ensureProject("subsub", true);

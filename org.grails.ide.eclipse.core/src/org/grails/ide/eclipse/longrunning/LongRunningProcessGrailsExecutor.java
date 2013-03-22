@@ -55,7 +55,7 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 	
 	@Override
 	public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
-		if (cmd.getCommand().contains("run-app")) {
+		if (useDefaultExecutor(cmd.getCommand())) {
 			//For now... we know run-app isn't really working in long running process. So use the
 			//older launch infrasctucture instead.
 			return DEFAULT_INSTANCE.synchExec(cmd);
@@ -83,6 +83,10 @@ public class LongRunningProcessGrailsExecutor extends GrailsExecutor {
 		}
 	}
  
+
+	private boolean useDefaultExecutor(String command) {
+		return command.contains("run-app"); // || command.contains("create-app") || command.contains("create-plugin");
+	}
 
 	@Override
 	public void shutDown() {
