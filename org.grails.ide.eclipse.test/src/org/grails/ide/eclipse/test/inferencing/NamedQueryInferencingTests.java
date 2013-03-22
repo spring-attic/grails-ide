@@ -35,16 +35,16 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
                 "}";
-        int start = contents.indexOf("first");
-        int end = start + "first".length();
+        int start = contents.indexOf("firstQuery");
+        int end = start + "firstQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        start = contents.indexOf("second");
-        end = start + "second".length();
+        start = contents.indexOf("secondQuery");
+        end = start + "secondQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
@@ -52,16 +52,16 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { first.second }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { firstQuery.secondQuery }\n" +
                 "  }\n" +
                 "}";
-        int start = contents.lastIndexOf("first");
-        int end = start + "first".length();
+        int start = contents.lastIndexOf("firstQuery");
+        int end = start + "firstQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        start = contents.lastIndexOf("second");
-        end = start + "second".length();
+        start = contents.lastIndexOf("secondQuery");
+        end = start + "secondQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
@@ -69,17 +69,17 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { first.second }\n" +
+                "  def x = { firstQuery.secondQuery }\n" +
                 "}";
-        int start = contents.lastIndexOf("first");
-        int end = start + "first".length();
+        int start = contents.lastIndexOf("firstQuery");
+        int end = start + "firstQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        start = contents.lastIndexOf("second");
-        end = start + "second".length();
+        start = contents.lastIndexOf("secondQuery");
+        end = start + "secondQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
@@ -87,17 +87,17 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.second }\n" +
+                "  def x = { Search.firstQuery.secondQuery }\n" +
                 "}";
-        int start = contents.lastIndexOf("first");
-        int end = start + "first".length();
+        int start = contents.lastIndexOf("firstQuery");
+        int end = start + "firstQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        start = contents.lastIndexOf("second");
-        end = start + "second".length();
+        start = contents.lastIndexOf("secondQuery");
+        end = start + "secondQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
@@ -105,17 +105,17 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.second.first.second.first.second.first.second }\n" +
+                "  def x = { Search.firstQuery.secondQuery.firstQuery.secondQuery.firstQuery.secondQuery.firstQuery.secondQuery }\n" +
                 "}";
-        int start = contents.lastIndexOf("first");
-        int end = start + "first".length();
+        int start = contents.lastIndexOf("firstQuery");
+        int end = start + "firstQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
-        start = contents.lastIndexOf("second");
-        end = start + "second".length();
+        start = contents.lastIndexOf("secondQuery");
+        end = start + "secondQuery".length();
         assertTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
     }
@@ -123,10 +123,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.list }\n" +
+                "  def x = { Search.firstQuery.list }\n" +
                 "}";
         int start = contents.lastIndexOf("list");
         int end = start + "list".length();
@@ -139,10 +139,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.count }\n" +
+                "  def x = { Search.firstQuery.count }\n" +
                 "}";
         int start = contents.lastIndexOf("count");
         int end = start + "count".length();
@@ -153,10 +153,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.get }\n" +
+                "  def x = { Search.firstQuery.get }\n" +
                 "}";
         int start = contents.lastIndexOf("get");
         int end = start + "get".length();
@@ -167,10 +167,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.findWhere }\n" +
+                "  def x = { Search.firstQuery.findWhere }\n" +
                 "}";
         int start = contents.lastIndexOf("findWhere");
         int end = start + "findWhere".length();
@@ -183,10 +183,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
         String contents = 
                 "class Search {\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.findAllWhere }\n" +
+                "  def x = { Search.firstQuery.findAllWhere }\n" +
                 "}";
         int start = contents.lastIndexOf("findAllWhere");
         int end = start + "findAllWhere".length();
@@ -200,10 +200,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "class Search {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.findByName }\n" +
+                "  def x = { Search.firstQuery.findByName }\n" +
                 "}";
         int start = contents.lastIndexOf("findByName");
         int end = start + "findByName".length();
@@ -215,10 +215,10 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "class Search {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { Search.first.findAllByNameBetween }\n" +
+                "  def x = { Search.firstQuery.findAllByNameBetween }\n" +
                 "}";
         int start = contents.lastIndexOf("findAllByNameBetween");
         int end = start + "findAllByNameBetween".length();
