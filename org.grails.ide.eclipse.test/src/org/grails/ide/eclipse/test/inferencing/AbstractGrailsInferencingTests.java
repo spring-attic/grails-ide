@@ -323,13 +323,14 @@ public abstract class AbstractGrailsInferencingTests extends
     
     @Override
     protected void setUp() throws Exception {
+        GrailsProjectVersionFixer.testMode();
+        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+        
         final Job setupJob = new Job("grails test setup job") {
             
             @Override
             protected IStatus run(IProgressMonitor monitor) {
                 try {
-                    GrailsProjectVersionFixer.testMode();
-                    GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
                     superSetup();
                     MockGrailsTestProjectUtils.mockGrailsProject(project);
                     return Status.OK_STATUS;
