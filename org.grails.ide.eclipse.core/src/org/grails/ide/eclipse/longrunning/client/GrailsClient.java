@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.grails.ide.eclipse.commands.GrailsCommand;
@@ -82,7 +83,7 @@ public class GrailsClient {
 	 * When this flag is set we will echo anything sent from the external process to the client 
 	 * or vice versa onto System.out.
 	 */
-	private static final boolean DEBUG_PROTOCOL = false;
+	private static final boolean DEBUG_PROTOCOL = (""+Platform.getLocation()).contains("bamboo");
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
