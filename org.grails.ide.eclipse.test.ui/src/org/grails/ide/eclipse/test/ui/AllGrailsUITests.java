@@ -72,9 +72,9 @@ public class AllGrailsUITests {
 			// SWTBot tests:
 
 
-			addTest(suite, GrailsJUnitIntegrationTests.class);
-			addTest(suite, GrailsExplorerTests.class);
 			if (!StsTestUtil.isOnBuildSite()) {
+				addTest(suite, GrailsJUnitIntegrationTests.class);
+				addTest(suite, GrailsExplorerTests.class);
 				// These tests are not working on the build server. Until we can
 				// figure a way around it
 				// we won't be running them on the build server.
