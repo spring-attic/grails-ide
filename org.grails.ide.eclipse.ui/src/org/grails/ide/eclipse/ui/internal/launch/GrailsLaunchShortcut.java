@@ -102,7 +102,7 @@ public class GrailsLaunchShortcut implements ILaunchShortcut, IExecutableExtensi
 		}
 	}
 
-	protected ILaunchConfiguration findLaunchConfiguration(IResource resource) throws CoreException {
+	public ILaunchConfiguration findLaunchConfiguration(IResource resource) throws CoreException {
 		if (resource != null) {
 			boolean persist = true;
 			IProject project = resource.getProject();

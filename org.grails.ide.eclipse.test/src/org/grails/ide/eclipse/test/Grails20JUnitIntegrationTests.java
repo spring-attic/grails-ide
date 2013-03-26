@@ -43,7 +43,7 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.osgi.framework.Bundle;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
-import org.grails.ide.eclipse.test.util.GrailsJUnitIntegrationsTest;
+import org.grails.ide.eclipse.test.util.AbstractGrailsJUnitIntegrationsTest;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 
 /**
@@ -55,7 +55,7 @@ import org.grails.ide.eclipse.test.util.GrailsTest;
  *
  * @since 2.9
  */
-public class Grails20JUnitIntegrationTests extends GrailsJUnitIntegrationsTest {
+public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegrationsTest {
 	
 	public final String TEST_PROJECT_NAME = this.getClass().getSimpleName();
 	private IProject project;

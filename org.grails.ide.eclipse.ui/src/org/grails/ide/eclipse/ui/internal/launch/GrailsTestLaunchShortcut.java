@@ -116,7 +116,7 @@ public class GrailsTestLaunchShortcut extends GrailsLaunchShortcut {
 		return null;
 	}
 
-	protected ILaunchConfiguration findLaunchConfiguration(IResource resource) throws CoreException {
+	public ILaunchConfiguration findLaunchConfiguration(IResource resource) throws CoreException {
 		ILaunchConfiguration result = super.findLaunchConfiguration(resource);
 		if (result!=null) {
 			GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(new OpenInterestingNewResourceListener(resource.getProject()));

@@ -52,7 +52,7 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
  *
  * @since 2.9
  */
-public class GrailsJUnitIntegrationsTest extends GrailsTest {
+public class AbstractGrailsJUnitIntegrationsTest extends GrailsTest {
 
 	public static class MockTestRunListener extends TestRunListener {
 		public ITestRunSession session = null; //captured when the session ends.

@@ -26,7 +26,7 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 
 	private IProject project;
 	private int greatestInterest = 0;
-	private IResource interestingResource = null;
+	protected IResource interestingResource = null;
 
 	public OpenInterestingNewResourceListener(IProject project) {
 		this.project = project;
@@ -56,7 +56,7 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 	 * resource is interesting (so it should be opened). Only the one resource
 	 * of greatest interesingness value will be opened.
 	 */
-	protected int howInteresting(IResource resource) {
+	public int howInteresting(IResource resource) {
 		String path = resource.getFullPath().toString();
 		if (!(resource instanceof IFile)) return 0;
 		if (!resource.isAccessible()) return 0;

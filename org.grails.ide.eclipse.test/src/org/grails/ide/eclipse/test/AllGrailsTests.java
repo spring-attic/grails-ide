@@ -175,6 +175,7 @@ public class AllGrailsTests {
         		suite.addTestSuite(GSPHyperlinkTests.class);
         		suite.addTestSuite(NamedQueryInferencingTests.class);
         		suite.addTestSuite(GrailsImportWizardCoreTests.class);
+        		suite.addTestSuite(GrailsRunAsTestAppTests.class);
         	}
         }
 		suite.addTestSuite(ThreadLeakTest.class);

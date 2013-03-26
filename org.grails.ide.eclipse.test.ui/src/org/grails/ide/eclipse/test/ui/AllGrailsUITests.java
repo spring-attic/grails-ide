@@ -19,7 +19,6 @@ import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.test.util.GroovySanityTest;
 import org.grails.ide.eclipse.ui.test.GrailsExplorerTests;
-import org.grails.ide.eclipse.ui.test.GrailsJUnitIntegrationTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerBasicTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerSelectionTests;
 import org.grails.ide.eclipse.ui.test.GrailsPluginManagerUpdatesTest;
@@ -73,7 +72,6 @@ public class AllGrailsUITests {
 
 
 			if (!StsTestUtil.isOnBuildSite()) {
-				addTest(suite, GrailsJUnitIntegrationTests.class);
 				addTest(suite, GrailsExplorerTests.class);
 				// These tests are not working on the build server. Until we can
 				// figure a way around it

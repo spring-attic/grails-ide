@@ -32,7 +32,7 @@ public abstract class NewGrailsTestWizard extends GrailsCommandWizard implements
 			IProject project) {
 		return new OpenInterestingNewResourceListener(project) {
 			@Override
-			protected int howInteresting(IResource resource) {
+			public int howInteresting(IResource resource) {
 				String name = resource.getName();
 				//Tests are interesting
 				if (name.endsWith("Tests.groovy") || name.endsWith("Test.groovy")) {
