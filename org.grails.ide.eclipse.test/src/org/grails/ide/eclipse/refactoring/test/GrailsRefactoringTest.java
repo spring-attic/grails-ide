@@ -183,7 +183,7 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 		super.tearDown();
 	}
 
-	protected void importZippedProject(String projectName) throws CoreException {
+	protected void importZippedProject(String projectName) throws Exception {
 		final URL zipFileURL = getProjectZip(projectName, GrailsVersion.getDefault());
 		importProject(zipFileURL, projectName);
 	}

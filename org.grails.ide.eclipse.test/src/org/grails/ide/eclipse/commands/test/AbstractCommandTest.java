@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
@@ -154,15 +155,14 @@ public abstract class AbstractCommandTest extends GrailsTest {
         return false;
     }
 
-	public void importProject(final URL zipFileURL, final String projectName) throws CoreException {
+	public void importProject(final URL zipFileURL, final String projectName) throws Exception {
 		IProject existing = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (existing.exists()) {
 			existing.delete(true, true, new NullProgressMonitor());
 		}
-		WorkspaceJob atomic = new WorkspaceJob("Create project from zip") {
+		final Job atomic = new Job("Create project from zip") {
 			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor)
-					throws CoreException {
+			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					// Create project from zip file
 					IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
@@ -174,14 +174,24 @@ public abstract class AbstractCommandTest extends GrailsTest {
 					if (!project.isOpen()) {
 						project.open(null);
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 					return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "bad", e);
 				}
 				return Status.OK_STATUS;
 			}
+
 		};
-		IStatus status = atomic.run(new NullProgressMonitor());
-		Assert.assertTrue(status.isOK());
+		atomic.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
+		atomic.schedule();
+		new ACondition("Wait for import") {
+			@Override
+			public boolean test() throws Exception {
+				IStatus status = atomic.getResult();
+				assertNotNull("Import job not yet complete", status);
+				assertStatusOK(status);
+				return true;
+			}
+		}.waitFor(60000);
 		assertTrue(project.isAccessible());
 		assertTrue(project.getFolder("grails-app").exists());
 	}

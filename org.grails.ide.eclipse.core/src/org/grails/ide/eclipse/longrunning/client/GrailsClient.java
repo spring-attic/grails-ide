@@ -83,7 +83,7 @@ public class GrailsClient {
 	 * When this flag is set we will echo anything sent from the external process to the client 
 	 * or vice versa onto System.out.
 	 */
-	private static final boolean DEBUG_PROTOCOL = (""+Platform.getLocation()).contains("bamboo");
+	private static final boolean DEBUG_PROTOCOL = (""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
