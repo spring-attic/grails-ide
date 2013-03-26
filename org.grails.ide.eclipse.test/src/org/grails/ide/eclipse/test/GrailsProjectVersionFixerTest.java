@@ -248,7 +248,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		// The config may not be right initially... but should eventually become correct as a background
 		// refresh dependency job should get scheduled. 
 		// ACondition
-		new ACondition() {
+		new ACondition("check importe project: "+project.getName()) {
 			@Override
 			public boolean test() throws Exception {
 				System.out.println("Checking project config...");
@@ -306,7 +306,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				return true;
 			}
 
-		}.waitFor(120000);
+		}.waitFor(180000);
 	}
 	
 	/**
@@ -369,7 +369,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				assertEquals("Project not upgraded", GrailsVersion.MOST_RECENT, GrailsVersion.getGrailsVersion(project));
 				return true;
 			}
-		}.waitFor(120000);
+		}.waitFor(180000);
 		checkImportedProject();
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<testSTS1604UserChangesProjectSpecificGrailsInstall");
 	}
