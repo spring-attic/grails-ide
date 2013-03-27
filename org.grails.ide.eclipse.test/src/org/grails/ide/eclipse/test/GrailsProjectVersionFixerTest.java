@@ -411,7 +411,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				
 				return true;
 			}
-		}.waitFor(120000);
+		}.waitFor(180000);
 		
 		assertTrue("Test project for this test should be configured to inherit the default install", GrailsInstallManager.inheritsDefaultInstall(project));
 		
