@@ -29,6 +29,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.grails.ide.api.GrailsConnector;
 import org.grails.ide.api.GrailsToolingAPI;
@@ -71,8 +75,11 @@ public class GrailsProcess extends SafeProcess {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Starting process...");
+	public static void main(String[] args) throws UnknownHostException {
+		//https://issuetracker.springsource.com/browse/STS-3258
+		//On windows it has been observed that the Grails process gets stuck calling InetAddress.getLocalHost. 
+		//No idea why this happens. But it seems that if we call it here first then all is well later on.
+		System.out.println("Starting process on "+InetAddress.getLocalHost());
 		try {
 			int i = 0;
 			while (i < args.length) {

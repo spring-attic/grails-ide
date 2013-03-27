@@ -83,13 +83,14 @@ public class GrailsClient {
 	 * When this flag is set we will echo anything sent from the external process to the client 
 	 * or vice versa onto System.out.
 	 */
-	private static final boolean DEBUG_PROTOCOL = (""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
+	private static final boolean DEBUG_PROTOCOL = true;
+			//(""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
 	 * out.
 	 */
-	private static final boolean DEBUG_CLIENT = false;
+	private static final boolean DEBUG_CLIENT = true;
 
 	/**
 	 * Polling interval used to check for data coming from the process.
@@ -374,11 +375,17 @@ public class GrailsClient {
 			}
 		} catch (TimeoutException e) {
 			System.out.println("Connection to GrailsProcess timed out");
-			System.out.println("Still running ? "+ isRunning());
-			e.printStackTrace();
-			//Process is probably stuck, should be killed
+			// Try to get some diagnostic info from grails process before killing it.
+			String traces = null;
+			if (isRunning()) {
+				traces = new GrailsProcessStackTracer().getStackTraces();
+			}
 			shutDown();
-			throw e;
+			if (traces!=null) {
+				throw new TimeoutException(traces);
+			} else {
+				throw e;
+			}
 		} catch (GrailsProcessDiedException e) {
 			if (wasDestroyed) {
 				toConsoleErr.println("\nProcess was killed");

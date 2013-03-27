@@ -13,6 +13,7 @@ package org.grails.ide.eclipse.longrunning.client;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -84,6 +85,14 @@ public class GrailsCommandExecution extends ExecutionEventSource {
 				int code = process.executeCommand(cmd, console);
 				result = new ResultFromTerminatedLaunch(cmdInfo, code, bytesOut.toString(), bytesErr.toString());
 			} catch (TimeoutException e) {
+				String extraInfo = e.getMessage();
+				if (extraInfo!=null) {
+					try {
+						bytesErr.write(extraInfo.getBytes("UTF-8"));
+					} catch (UnsupportedEncodingException e1) {
+					} catch (IOException e1) {
+					}
+				}
 				result = new ResultFromTerminatedLaunch(cmdInfo, ILaunchResult.EXIT_TIMEOUT, bytesOut.toString(), bytesErr.toString());
 			} catch (final Exception e) {
 				result = new ResultFromTerminatedLaunch(cmdInfo, -999, bytesOut.toString(), bytesErr.toString()) {
