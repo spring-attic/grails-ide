@@ -11,9 +11,7 @@
 package org.grails.ide.api.impl;
 
 import grails.build.logging.GrailsConsole;
-import grails.build.logging.GrailsEclipseConsole;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -48,14 +46,14 @@ public class ReflectionHacks {
 		}
 	}
 
-	public static GrailsConsole new_GrailsEclipseConsole() {
-		try {
-			Constructor<GrailsEclipseConsole> c = GrailsEclipseConsole.class.getDeclaredConstructor();
-			c.setAccessible(true);
-			return c.newInstance();
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
+//	public static GrailsConsole new_GrailsEclipseConsole() {
+//		try {
+//			Constructor<GrailsEclipseConsole> c = GrailsEclipseConsole.class.getDeclaredConstructor();
+//			c.setAccessible(true);
+//			return c.newInstance();
+//		} catch (Throwable e) {
+//			throw new RuntimeException(e);
+//		}
+//	}
 
 }

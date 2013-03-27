@@ -11,7 +11,6 @@
 package org.grails.ide.api.impl;
 
 import grails.build.logging.GrailsConsole;
-import grails.build.logging.GrailsEclipseConsole;
 import grails.util.BuildSettings;
 import groovy.lang.ExpandoMetaClass;
 
@@ -28,6 +27,7 @@ import org.codehaus.groovy.grails.cli.parsing.CommandLine;
 import org.codehaus.groovy.grails.cli.parsing.CommandLineParser;
 import org.codehaus.groovy.grails.cli.support.ClasspathConfigurer;
 import org.grails.ide.api.GrailsConnector;
+import org.grails.ide.eclipse.runtime.GrailsEclipseConsole;
 
 public class GrailsConnectorImpl implements GrailsConnector {
 	
