@@ -1000,7 +1000,7 @@ public class ScannerUnitTests extends TestCase {
 		assertTrue("region context type check", typeCheck);
 		typeCheck = checkSimpleRegionTypes(nodes.item(1).getRegions(), new String[]{DOMRegionContext.XML_CONTENT});
 		assertTrue("region context type check", typeCheck);
-		typeCheck = checkSimpleRegionTypes(nodes.item(2).getRegions(), new String[]{DOMRegionContext.XML_PI_OPEN, DOMRegionContext.XML_TAG_NAME, DOMRegionContext.XML_TAG_ATTRIBUTE_NAME, DOMRegionContext.XML_TAG_ATTRIBUTE_EQUALS, DOMRegionContext.XML_TAG_ATTRIBUTE_VALUE, DOMRegionContext.XML_PI_CLOSE});
+		typeCheck = checkSimpleRegionTypes(nodes.item(2).getRegions(), new String[]{DOMRegionContext.XML_PI_OPEN, DOMRegionContext.XML_TAG_NAME, DOMRegionContext.XML_PI_CONTENT});
 		assertTrue("region context type check", typeCheck);
 		verifyLengths(0, nodes, text);
 	}
