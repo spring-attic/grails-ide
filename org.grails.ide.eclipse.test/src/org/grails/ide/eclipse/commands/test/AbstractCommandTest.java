@@ -156,14 +156,14 @@ public abstract class AbstractCommandTest extends GrailsTest {
     }
 
 	public void importProject(final URL zipFileURL, final String projectName) throws Exception {
-		IProject existing = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		if (existing.exists()) {
-			existing.delete(true, true, new NullProgressMonitor());
-		}
 		final Job atomic = new Job("Create project from zip") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					IProject existing = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+					if (existing.exists()) {
+						existing.delete(true, true, new NullProgressMonitor());
+					}
 					// Create project from zip file
 					IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 					IPath unzipLoc = workspaceRoot.getLocation();

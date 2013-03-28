@@ -24,10 +24,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.core.search.TypeNameRequestor;
+import org.eclipse.jdt.core.tests.compiler.regression.Requestor;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CheckConditionsOperation;
 import org.eclipse.ltk.core.refactoring.CreateChangeOperation;
@@ -36,11 +42,10 @@ import org.eclipse.ltk.core.refactoring.PerformChangeOperation;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
-
-import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
 
 /**
  * @author Kris De Volder
@@ -204,9 +209,25 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 		assertFalse("File exists: "+file, file.exists());
 	}
 
+	public static void performDummySearch(IJavaElement element) throws Exception{
+		new SearchEngine().searchAllTypeNames(
+			null,
+			SearchPattern.R_EXACT_MATCH,
+			"XXXXXXXXX".toCharArray(), // make sure we search a concrete name. This is faster according to Kent
+			SearchPattern.R_EXACT_MATCH,
+			IJavaSearchConstants.CLASS,
+			SearchEngine.createJavaSearchScope(new IJavaElement[]{element}),
+			new Requestor(),
+			IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+			null);
+	}
+	
+	private static class Requestor extends TypeNameRequestor {
+	}
+	
 	protected final RefactoringStatus performRefactoring(Refactoring ref, boolean providesUndo,
 			boolean performOnFail) throws Exception {
-		//		performDummySearch(); //Why?
+		performDummySearch(); //Why?
 		IUndoManager undoManager= getUndoManager();
 		final CreateChangeOperation create= new CreateChangeOperation(
 				new CheckConditionsOperation(ref, CheckConditionsOperation.ALL_CONDITIONS),
@@ -229,6 +250,10 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 		return status;
 	}
 	
+	private void performDummySearch() throws Exception {
+		performDummySearch(JavaCore.create(project));
+	}
+
 	protected void undoLastRefactoring() throws CoreException {
 		assertNotNull("No undo found", undo);
 		undo.perform(new NullProgressMonitor());

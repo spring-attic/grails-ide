@@ -70,6 +70,8 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 				"	}\n" + 
 				"}\n");
 
+		StsTestUtil.assertNoErrors(project);
+		
 		String oldActionName = "list";
 		String newActionName = "catalog";
 		
@@ -155,6 +157,8 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 				"		<g:link controller=\"extra\" action=\"show\">blah</g:link>\n" + 
 				"	</body>\n" + 
 				"</html>\n");
+
+		StsTestUtil.assertNoErrors(project);
 		
 		IResource target = project.getFile(new Path("grails-app/views/extra/"+oldActionName+".gsp"));
 		RenameResourceProcessor processor = new RenameResourceProcessor(target);
