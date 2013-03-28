@@ -123,8 +123,8 @@ public class GrailsContentAssistTests extends CompletionTestCase {
                 "class MyDomain {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
                 "  def x = { MyDomain. }\n" +
         		"\n}";
@@ -132,10 +132,10 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         String strRegex = "MyDomain\\.";
         
         int offset = contents.indexOf(str)+str.length();
-        String expected = contents.replaceFirst(strRegex, "MyDomain.first");
-        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "first", false);
-        expected = contents.replaceFirst(strRegex, "MyDomain.second");
-        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "second", false);
+        String expected = contents.replaceFirst(strRegex, "MyDomain.firstQuery");
+        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "firstQuery", false);
+        expected = contents.replaceFirst(strRegex, "MyDomain.secondQuery");
+        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "secondQuery", false);
     }
     
     public void testNamedQuery2() throws Exception {
@@ -147,18 +147,18 @@ public class GrailsContentAssistTests extends CompletionTestCase {
                 "class MyDomain {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { MyDomain.first. }\n" +
+                "  def x = { MyDomain.firstQuery. }\n" +
                 "\n}";
-        String str = "first.";
-        String strRegex = "first\\.";
+        String str = "firstQuery.";
+        String strRegex = "firstQuery\\.";
         int offset = contents.indexOf(str)+str.length();
-        String expected = contents.replaceFirst(strRegex, "first.first");
-        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "first", false);
-        expected = contents.replaceFirst(strRegex, "first.second");
-        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "second", false);
+        String expected = contents.replaceFirst(strRegex, "firstQuery.firstQuery");
+        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "firstQuery", false);
+        expected = contents.replaceFirst(strRegex, "firstQuery.secondQuery");
+        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "secondQuery", false);
     }
     
     public void testNamedQuery3() throws Exception {
@@ -170,37 +170,37 @@ public class GrailsContentAssistTests extends CompletionTestCase {
                 "class MyDomain {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { MyDomain.first. }\n" +
+                "  def x = { MyDomain.firstQuery. }\n" +
                 "\n}";
-        String str = "first.";
-        String strRegex = "first\\.";
+        String str = "firstQuery.";
+        String strRegex = "firstQuery\\.";
         int offset = contents.indexOf(str)+str.length();
         String expected;
         
         GrailsVersion version = GrailsVersion.getDefault();
         if (GrailsVersion.V_2_1_0.compareTo(version)<=0) {
-            expected = contents.replaceFirst(strRegex, "first.list(parameterTypes) {");
+            expected = contents.replaceFirst(strRegex, "firstQuery.list(parameterTypes) {");
         } else {
-            expected = contents.replaceFirst(strRegex, "first.list(parameterTypes)");
+            expected = contents.replaceFirst(strRegex, "firstQuery.list(parameterTypes)");
         }
         checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "list", false);
         // seems to be a bit random whether the result is 'null' or 'this'
         // so try both ways
         try {
-            expected = contents.replaceFirst(strRegex, "first.get(null)");
+            expected = contents.replaceFirst(strRegex, "firstQuery.get(null)");
             checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "get", false);
         } catch (AssertionFailedError e) {
-            expected = contents.replaceFirst(strRegex, "first.get(this)");
+            expected = contents.replaceFirst(strRegex, "firstQuery.get(this)");
             checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "get", false);
         }
         try {
-            expected = contents.replaceFirst(strRegex, "first.findAllWhere");
+            expected = contents.replaceFirst(strRegex, "firstQuery.findAllWhere");
             checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "findAllWhere", false);
         } catch (AssertionFailedError e) {
-            expected = contents.replaceFirst(strRegex, "first.findAllWhere(null)");
+            expected = contents.replaceFirst(strRegex, "firstQuery.findAllWhere(null)");
             checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "findAllWhere", false);
         }
     }
@@ -209,14 +209,14 @@ public class GrailsContentAssistTests extends CompletionTestCase {
                 "class MyDomain {\n" +
                 "  String name\n" +
                 "  static namedQueries = {\n" +
-                "    first { }\n" +
-                "    second { }\n" +
+                "    firstQuery { }\n" +
+                "    secondQuery { }\n" +
                 "  }\n" +
-                "  def x = { MyDomain.first.findAllByName }\n" +
+                "  def x = { MyDomain.firstQuery.findAllByName }\n" +
                 "\n}";
-        String str = "first.findAllByName";
+        String str = "firstQuery.findAllByName";
         int offset = contents.indexOf(str)+str.length();
-        String expected = contents.replaceFirst(str, "first.findAllByNameBetween");
+        String expected = contents.replaceFirst(str, "firstQuery.findAllByNameBetween");
         checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "findAllByNameBetween", false);
     }
     protected void checkProposalApplication(String name, String contents, GrailsElementKind kind, 

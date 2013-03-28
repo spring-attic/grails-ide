@@ -86,7 +86,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	public static GrailsVersion PREVIOUS_PREVIOUS = V_1_3_7;
 	public static GrailsVersion PREVIOUS = V_2_0_4; 
-	public static GrailsVersion MOST_RECENT = V_2_1_0;
+	public static GrailsVersion MOST_RECENT = V_2_2_1;
 
 	private int[] numbers;
 	private String qualifier;
