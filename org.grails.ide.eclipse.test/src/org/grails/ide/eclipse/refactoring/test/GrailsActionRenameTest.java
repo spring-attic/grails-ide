@@ -25,6 +25,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * @author Kris De Volder
@@ -79,6 +80,8 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 					"	}\n" + 
 					"}\n");
 
+			StsTestUtil.assertNoErrors(project); // This forces a build as well...
+			
 			String oldActionName = "list";
 			String newActionName = "catalog";
 
@@ -154,6 +157,8 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 				"		redirect(action:\"list\", controller: \"song\")\n" + 
 				"	}\n" + 
 				"}\n");
+
+		StsTestUtil.assertNoErrors(project); // This forces a build as well...
 
 		String oldActionName = "list";
 		String newActionName = "catalog";
@@ -236,6 +241,8 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 				"		<g:link controller=\"extra\" action=\"show\">blah</g:link>\n" + 
 				"	</body>\n" + 
 				"</html>\n");
+		
+		StsTestUtil.assertNoErrors(project); // This forces a build as well...
 		
 		IType controller = getType("gtunez.ExtraController");
 		IField target = controller.getField(oldActionName);
