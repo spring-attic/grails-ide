@@ -995,7 +995,7 @@ public class ScannerUnitTests extends TestCase {
 		//TODO: Fix and re-enable this test
 		String text = "<a> <?import type=\"foo\">";
 		IStructuredDocumentRegionList nodes = setUpXML(text);
-		boolean sizeCheck = checkSimpleRegionCounts(nodes, new int[]{3, 1, 6});
+		boolean sizeCheck = checkSimpleRegionCounts(nodes, new int[]{3, 1, 3});
 		assertTrue("IStructuredDocumentRegion and ITextRegion count", sizeCheck);
 		boolean typeCheck = checkSimpleRegionTypes(nodes.item(0).getRegions(), new String[]{DOMRegionContext.XML_TAG_OPEN, DOMRegionContext.XML_TAG_NAME, DOMRegionContext.XML_TAG_CLOSE});
 		assertTrue("region context type check", typeCheck);
