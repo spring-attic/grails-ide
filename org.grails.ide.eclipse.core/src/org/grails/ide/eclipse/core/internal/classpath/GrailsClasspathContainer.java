@@ -111,13 +111,15 @@ public class GrailsClasspathContainer implements IClasspathContainer {
 	/**
 	 * Returns the {@link IClasspathEntry}s calculated by this class path container
 	 */
-	public synchronized IClasspathEntry[] getClasspathEntries() {
-		// make sure that the container is initialized on first access
-		if (!initialized) {
-			// refresh container before giving out the empty entries list
-			refreshClasspathEntries();
+	public IClasspathEntry[] getClasspathEntries() {
+		synchronized (GrailsCore.get().getLockForProject(javaProject.getProject())) {
+			// make sure that the container is initialized on first access
+			if (!initialized) {
+				// refresh container before giving out the empty entries list
+				refreshClasspathEntries();
+			}
+			return this.entries;
 		}
-		return this.entries;
 	}
 
 	/**
