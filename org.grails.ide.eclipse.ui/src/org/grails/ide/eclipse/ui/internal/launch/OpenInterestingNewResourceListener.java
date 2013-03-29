@@ -24,6 +24,7 @@ import org.springsource.ide.eclipse.commons.ui.SpringUIUtils;
  */
 public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 	
+	private static boolean testMode;
 	private IProject project;
 	private int greatestInterest = 0;
 	protected IResource interestingResource = null;
@@ -72,10 +73,9 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 
 	public void finish() {
 		GrailsCoreActivator.getDefault().removeGrailsCommandResourceListener(this);
-		if (interestingResource != null) {
+		if (interestingResource != null && !testMode) {
 			// Only open resource if is in any source folder
 			Display.getDefault().asyncExec(new Runnable() {
-
 				public void run() {
 					SpringUIUtils.openInEditor((IFile) interestingResource, -1);
 				}
@@ -85,6 +85,10 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 
 	public boolean supports(IProject project) {
 		return this.project.equals(project);
+	}
+
+	public static void testMode(boolean enable) {
+		testMode = enable;
 	}
 
 }

@@ -458,6 +458,16 @@ public class GrailsTest extends TestCase {
 	    JavaCore.setOptions(options);
 	}
 	
+	public static void setJava16Compliance() {
+		@SuppressWarnings("rawtypes")
+		Hashtable options = JavaCore.getDefaultOptions();
+	    options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
+	    options.put(JavaCore.COMPILER_SOURCE, "1.6");
+	    options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.6");
+	    JavaCore.setOptions(options);
+	}
+	
+	
 //	/**
 //	 * If Java compiler compliance is set below 1.5 will get Groovy compilation errors 
 //	 * having to do with generics. Solution: call this method in the test setup.

@@ -27,7 +27,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.junit.model.JUnitModel;
 import org.eclipse.jdt.internal.junit.model.TestCaseElement;
-import org.eclipse.jdt.internal.junit.model.TestElement;
 import org.eclipse.jdt.internal.junit.model.TestRoot;
 import org.eclipse.jdt.internal.junit.model.TestRunSession;
 import org.eclipse.jdt.internal.junit.model.TestSuiteElement;
@@ -49,7 +48,8 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
  * @created 2010-08-20
  */
 public final class GrailsRunAsTestAppTests extends GrailsTest {
-	private static final String G_TUNES = "gTunes";
+	private static final String G_TUNES = "bTunes"; //Use a different name for this 'gTunes' app to avoid confusing grails
+													// with lingering state of the other gTunes test app
 
 	//This class made final because at the oment it uses static fields in a way that
 	// would break subclasses.
@@ -62,18 +62,19 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		OpenInterestingNewResourceListener.testMode(true);
 		StsTestUtil.setAutoBuilding(false);
+		setJava16Compliance();
 		if (project==null) {
 			//Only first time when creating the project
-			clearGrailsState();
 			project = ResourcesPlugin.getWorkspace().getRoot().getProject(G_TUNES);
 			if (project.exists()) {
 				project.delete(true, true, new NullProgressMonitor());
 			}
 			project = ensureProject(G_TUNES);
 	
-			createResource(project, "grails-app/domain/gTunes/domain/Song.groovy",
-					"package gTunes.domain\n" + 
+			createResource(project, "grails-app/domain/"+G_TUNES+"/domain/Song.groovy",
+					"package "+G_TUNES+".domain\n" + 
 					"\n" + 
 					"class Song {\n" + 
 					"\n" + 
@@ -87,8 +88,8 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 					"	\n" + 
 					"}\n");
 			
-			createResource(project, "test/unit/gTunes/domain/SongTests.groovy",
-					"package gTunes.domain\n" + 
+			createResource(project, "test/unit/"+G_TUNES+"/domain/SongTests.groovy",
+					"package "+G_TUNES+".domain\n" + 
 					"\n" + 
 					"import grails.test.*\n" + 
 					"\n" + 
@@ -105,10 +106,10 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 					"    }\n" + 
 					"}\n");
 			
-			createResource(project, "test/integration/gTunes/SongITests.groovy",
-					"package gTunes\n" + 
+			createResource(project, "test/integration/"+G_TUNES+"/SongITests.groovy",
+					"package "+G_TUNES+"\n" + 
 					"\n" + 
-					"import gTunes.domain.Song;\n" + 
+					"import "+G_TUNES+".domain.Song;\n" + 
 					"import grails.test.*\n" + 
 					"\n" + 
 					"class SongITests extends GrailsUnitTestCase {\n" + 
@@ -137,6 +138,12 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		}
 		//Every test run:
 		deleteOldTestReports();
+	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		OpenInterestingNewResourceListener.testMode(false);
+		super.tearDown();
 	}
 
 	private void deleteOldTestReports() throws CoreException {
@@ -242,7 +249,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	 * Test that does nothing, we run this test just to ensure that all the setup / scaffolding code works.
 	 */
 	public void testScaffolding() {
-		assertTrue(project.getFile("test/unit/gTunes/domain/SongTests.groovy").exists());
+		assertTrue(project.getFile("test/unit/"+G_TUNES+"/domain/SongTests.groovy").exists());
 	}
 	
 	public void testTestAppOnProject() throws Exception {
@@ -257,8 +264,8 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		assertEquals(0, testResult.getErrorCount());
 		assertEquals(0, testResult.getFailureCount());
 		
-		assertNodeStartingWith(testResult, "gTunes.SongITests");
-		assertNodeStartingWith(testResult, "gTunes.domain.SongTests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".SongITests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".domain.SongTests");
 	}
 
 	private TestRunSession run(ILaunchConfiguration launchConf)
@@ -286,7 +293,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		assertEquals(0, testResult.getErrorCount());
 		assertEquals(0, testResult.getFailureCount());
 		
-		assertNodeStartingWith(testResult, "gTunes.SongITests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".SongITests");
 	}
 	
 	public void testTestAppOnUnitTestFolder() throws Exception {
@@ -300,44 +307,44 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		assertEquals(1, testResult.getStartedCount());
 		assertEquals(0, testResult.getFailureCount());
 		assertEquals(0, testResult.getErrorCount());
-		assertNodeStartingWith(testResult, "gTunes.domain.SongTests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".domain.SongTests");
 
 	}
 
 	public void testTestAppOnTestFile() throws Exception {
-		IFile target = project.getFile(new Path("test/integration/gTunes/SongITests.groovy"));
+		IFile target = project.getFile(new Path("test/integration/"+G_TUNES+"/SongITests.groovy"));
 		
 		ILaunchConfiguration launchConf = shortCut.findLaunchConfiguration(target);
-		assertEquals("test-app -integration gTunes.SongITests", getScript(launchConf));
+		assertEquals("test-app -integration "+G_TUNES+".SongITests", getScript(launchConf));
 		
 		TestRunSession testResult = run(launchConf);
 		
 		assertEquals(1, testResult.getStartedCount());
 		assertEquals(0, testResult.getFailureCount());
 		assertEquals(0, testResult.getErrorCount());
-		assertNodeStartingWith(testResult, "gTunes.SongITests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".SongITests");
 		
 	}
 	
 	public void testTestAppOnPackage() throws Exception {
-		IFolder target = project.getFolder(new Path("grails-app/domain/gTunes/domain"));
+		IFolder target = project.getFolder(new Path("grails-app/domain/"+G_TUNES+"/domain"));
 		
 		ILaunchConfiguration launchConf = shortCut.findLaunchConfiguration(target);
-		assertEquals("test-app gTunes.domain.*", getScript(launchConf));
+		assertEquals("test-app "+G_TUNES+".domain.*", getScript(launchConf));
 		
 		TestRunSession testResult = run(launchConf);
 		
 		assertEquals(1, testResult.getStartedCount());
 		assertEquals(0, testResult.getFailureCount());
 		assertEquals(0, testResult.getErrorCount());
-		assertNodeStartingWith(testResult, "gTunes.domain.SongTests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".domain.SongTests");
 	}
 	
 	public void testTestAppOnPackageInUnitTests() throws Exception {
-		IFolder target = project.getFolder(new Path("test/unit/gTunes/domain"));
+		IFolder target = project.getFolder(new Path("test/unit/"+G_TUNES+"/domain"));
 		
 		ILaunchConfiguration launchConf = shortCut.findLaunchConfiguration(target);
-		assertEquals("test-app -unit gTunes.domain.*", getScript(launchConf));
+		assertEquals("test-app -unit "+G_TUNES+".domain.*", getScript(launchConf));
 		
 		TestRunSession testResult = run(launchConf);
 		
@@ -345,21 +352,21 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		assertEquals(0, testResult.getFailureCount());
 		assertEquals(0, testResult.getErrorCount());
 		
-		assertNodeStartingWith(testResult, "gTunes.domain.SongTests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".domain.SongTests");
 	}
 	
 	public void testTestAppOnSourceFile() throws Exception {
-		IFile target = project.getFile(new Path("grails-app/domain/gTunes/domain/Song.groovy"));
+		IFile target = project.getFile(new Path("grails-app/domain/"+G_TUNES+"/domain/Song.groovy"));
 		
 		ILaunchConfiguration launchConf = shortCut.findLaunchConfiguration(target);
-		assertEquals("test-app gTunes.domain.Song", getScript(launchConf));
+		assertEquals("test-app "+G_TUNES+".domain.Song", getScript(launchConf));
 		
 		TestRunSession testResult = run(launchConf);
 		
 		assertEquals(1, testResult.getStartedCount());
 		assertEquals(0, testResult.getFailureCount());
 		assertEquals(0, testResult.getErrorCount());
-		assertNodeStartingWith(testResult, "gTunes.domain.SongTests");
+		assertNodeStartingWith(testResult, ""+G_TUNES+".domain.SongTests");
 		
 	}
 }
