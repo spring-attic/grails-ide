@@ -98,15 +98,7 @@ public class AllGrailsTests {
         suite.addTestSuite(GroovySanityTest.class);
         if (GroovySanityTest.isSane()) {
         	
-            //Heartbeat tests...
-        	if (StsTestUtil.isOnBuildSite()) {
-        		//Don't want to run this one locally, it will often fail depending
-        		//on local grails install location.
-        		//TODO: Renable after we have a way to ensure there's grails install on the
-        		// build server that can be auto-configured.
-        		
-        		//suite.addTestSuite(GrailsInstallWorkspaceConfiguratorTest.class);
-        	}
+    		suite.addTestSuite(GrailsRunAsTestAppTests.class);
         	suite.addTestSuite(ControllerCacheTests.class);
         	suite.addTestSuite(DefaultGrailsInstallTests.class);
         	suite.addTestSuite(StackFrameConsoleLineTrackerTests.class);
@@ -148,7 +140,7 @@ public class AllGrailsTests {
         			suite.addTest(BelongsToInferencingTests.suite());
         			suite.addTest(ControllerReturnTypeInferencingTests.suite());
         			suite.addTest(GrailsServiceInferencingTests.suite());
-        			suite.addTest(AllGroovyDebugTests.suite());
+ //       			suite.addTest(AllGroovyDebugTests.suite());
         			suite.addTestSuite(GrailsContentAssistTests.class);
         		}
         		suite.addTestSuite(DynamicFinderProposalsTests.class);
@@ -174,7 +166,6 @@ public class AllGrailsTests {
         		suite.addTestSuite(GrailsSourceCodeTest.class);
         		suite.addTestSuite(GSPHyperlinkTests.class);
         		suite.addTestSuite(NamedQueryInferencingTests.class);
-        		suite.addTestSuite(GrailsRunAsTestAppTests.class);
         		suite.addTestSuite(GrailsImportWizardCoreTests.class);
         	}
         }
