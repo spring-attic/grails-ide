@@ -23,7 +23,7 @@ import org.springsource.ide.eclipse.commons.ui.SpringUIUtils;
  * @author Kris De Volder
  */
 public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
-
+	
 	private IProject project;
 	private int greatestInterest = 0;
 	protected IResource interestingResource = null;
@@ -48,7 +48,6 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 			greatestInterest = interestValue;
 			interestingResource = resource;
 		}
-		System.out.println(resource);
 	}
 
 	/**
@@ -76,6 +75,7 @@ public class OpenInterestingNewResourceListener extends GrailsCommandAdapter {
 		if (interestingResource != null) {
 			// Only open resource if is in any source folder
 			Display.getDefault().asyncExec(new Runnable() {
+
 				public void run() {
 					SpringUIUtils.openInEditor((IFile) interestingResource, -1);
 				}

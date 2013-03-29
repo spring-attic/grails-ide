@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -48,10 +49,12 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
  * @created 2010-08-20
  */
 public final class GrailsRunAsTestAppTests extends GrailsTest {
+	private static final String G_TUNES = "gTunes";
+
 	//This class made final because at the oment it uses static fields in a way that
 	// would break subclasses.
 
-	public static final long TIMEOUT_TEST_APP = 60000;
+	public static final long TIMEOUT_TEST_APP = 180000;
 
 	private static IProject project;
 	GrailsTestLaunchShortcut shortCut = new GrailsTestLaunchShortcut();
@@ -59,9 +62,15 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		StsTestUtil.setAutoBuilding(false);
 		if (project==null) {
-			StsTestUtil.setAutoBuilding(false);
-			project = ensureProject("gTunes");
+			//Only first time when creating the project
+			clearGrailsState();
+			project = ResourcesPlugin.getWorkspace().getRoot().getProject(G_TUNES);
+			if (project.exists()) {
+				project.delete(true, true, new NullProgressMonitor());
+			}
+			project = ensureProject(G_TUNES);
 	
 			createResource(project, "grails-app/domain/gTunes/domain/Song.groovy",
 					"package gTunes.domain\n" + 
@@ -125,9 +134,9 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 					"	\n" + 
 					"}\n");
 			StsTestUtil.assertNoErrors(project);
-			
-			deleteOldTestReports();
 		}
+		//Every test run:
+		deleteOldTestReports();
 	}
 
 	private void deleteOldTestReports() throws CoreException {
@@ -172,6 +181,14 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		return null; //Don't know how to obtain a name for this kind of thing.
 	}
 
+	private void dump(TestRunSession testResult) {
+		new TestVisitor() {
+			protected void doit(ITestElement e) {
+				System.out.println("testNode: "+getName(e));
+			}
+		}.visit(testResult.getTestRoot());
+	}
+	
 	private void assertNodeStartingWith(TestRunSession testResult, final String prefix) {
 		TestRoot root = testResult.getTestRoot();
 		final StringBuilder summary = new StringBuilder();
@@ -195,6 +212,8 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 
 		TestRunSession getTestResults() throws CoreException {
 			if (interestingResource!=null) {
+				System.out.println("Most interesting report: "+interestingResource);
+				
 				File testReport = interestingResource.getLocation().toFile();
 				return JUnitModel.importTestRunSession(testReport);
 			}
@@ -209,9 +228,11 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	 */
 	private TestRunSession loadTestResult() throws Exception {
 		IFolder reportsFolder = getTestReportsFolder();
+		reportsFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		MockTestOpener opener = new MockTestOpener(project);
 		IResource[] reports = reportsFolder.members();
 		for (IResource r : reports) {
+			System.out.println("Found test report: "+r);
 			opener.newResource(r);
 		}
 		return opener.getTestResults();
@@ -249,6 +270,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 			}
 		}.waitFor(TIMEOUT_TEST_APP);
 		TestRunSession testResult = loadTestResult();
+		dump(testResult); //So we can see something interesting in the output.
 		return testResult;
 	}
 
