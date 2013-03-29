@@ -35,6 +35,7 @@ import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.launch.GrailsTestLaunchShortcut;
 import org.grails.ide.eclipse.ui.internal.launch.OpenInterestingNewResourceListener;
@@ -62,6 +63,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 		OpenInterestingNewResourceListener.testMode(true);
 		StsTestUtil.setAutoBuilding(false);
 		setJava16Compliance();
