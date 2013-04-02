@@ -21,8 +21,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -43,9 +47,12 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
+import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
+import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * @author Kris De Volder
@@ -113,6 +120,7 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 			new ACondition() {
 				@Override
 				public boolean test() throws Exception {
+					assertJobManagerIdle(); //Wait for jobs... like Refresh dependencies to all complete.
 					System.out.println("Checking project config...");
 					IJavaProject javaProject = JavaCore.create(project);
 					
@@ -168,7 +176,7 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 					return true;
 				}
 	
-			}.waitFor(120000);
+			}.waitFor(180000);
 		}
 
 	protected IType getType(String fqName) throws JavaModelException {
@@ -224,30 +232,70 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 	
 	private static class Requestor extends TypeNameRequestor {
 	}
-	
-	protected final RefactoringStatus performRefactoring(Refactoring ref, boolean providesUndo,
-			boolean performOnFail) throws Exception {
-		performDummySearch(); //Why?
-		IUndoManager undoManager= getUndoManager();
-		final CreateChangeOperation create= new CreateChangeOperation(
-				new CheckConditionsOperation(ref, CheckConditionsOperation.ALL_CONDITIONS),
-				RefactoringStatus.FATAL);
-		final PerformChangeOperation perform= new PerformChangeOperation(create);
-		perform.setUndoManager(undoManager, ref.getName());
-		IWorkspace workspace= ResourcesPlugin.getWorkspace();
-		executePerformOperation(perform, workspace);
-		RefactoringStatus status= create.getConditionCheckingStatus();
-		if (!status.hasError() && !performOnFail)
-			return status;
-		assertTrue("Change wasn't executed", perform.changeExecuted());
-		undo = perform.getUndoChange();
-		if (providesUndo) {
-			assertNotNull("Undo doesn't exist", undo);
-			assertTrue("Undo manager is empty", undoManager.anythingToUndo());
-		} else {
-			assertNull("Undo manager contains undo but shouldn't", undo);
+
+	public static abstract class RefactoringJob extends Job {
+		
+		public RefactoringJob(String name) {
+			super(name);
 		}
-		return status;
+
+		public RefactoringStatus refactoringStatus;
+
+		protected abstract RefactoringStatus perform(IProgressMonitor mon) throws Throwable;
+		
+		@Override
+		final protected IStatus run(IProgressMonitor mon) {
+			try {
+				this.refactoringStatus = perform(mon);
+			} catch (Throwable e) {
+				return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Problem performing refactoring", e);
+			}
+			if (this.refactoringStatus==null) {
+				return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Refactoring status was not set");
+			} else {
+				if (!this.refactoringStatus.isOK()) {
+					GrailsCoreActivator.log(refactoringStatus.toString());
+					return new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, refactoringStatus.toString());
+				}
+			}
+			return Status.OK_STATUS;
+		}
+
+	}
+
+	
+	protected final RefactoringStatus performRefactoring(final Refactoring ref, final boolean providesUndo,
+			final boolean performOnFail) throws Exception {
+		performDummySearch(); //Why?
+		RefactoringJob job = new RefactoringJob("Perform Refactoring") {
+
+			@Override
+			protected RefactoringStatus perform(IProgressMonitor monitor) throws Throwable {
+				IUndoManager undoManager= getUndoManager();
+				final CreateChangeOperation create= new CreateChangeOperation(
+						new CheckConditionsOperation(ref, CheckConditionsOperation.ALL_CONDITIONS),
+						RefactoringStatus.FATAL);
+				final PerformChangeOperation perform= new PerformChangeOperation(create);
+				perform.setUndoManager(undoManager, ref.getName());
+				IWorkspace workspace= ResourcesPlugin.getWorkspace();
+				executePerformOperation(perform, workspace);
+				RefactoringStatus status = create.getConditionCheckingStatus();
+				if (!status.hasError() && !performOnFail)
+					return status;
+				assertTrue("Change wasn't executed", perform.changeExecuted());
+				undo = perform.getUndoChange();
+				if (providesUndo) {
+					assertNotNull("Undo doesn't exist", undo);
+					assertTrue("Undo manager is empty", undoManager.anythingToUndo());
+				} else {
+					assertNull("Undo manager contains undo but shouldn't", undo);
+				}
+				return status;
+			}
+		};
+		waitForWorkspaceJob(job);
+		assertTrue(job.getResult().isOK());
+		return job.refactoringStatus;
 	}
 	
 	private void performDummySearch() throws Exception {

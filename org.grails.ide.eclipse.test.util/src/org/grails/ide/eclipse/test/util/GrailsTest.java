@@ -286,18 +286,7 @@ public class GrailsTest extends TestCase {
 					}
 				}
 			};
-			//This is an attempt to get rid of random problems refreshing external linked folders. Presumably this is because someone else
-			// is mucking in the workspace in parallel... and normally these kinds of operation modifying resources should exeuctue as jobs
-			// with proper rules. so :
-			job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
-			job.schedule();
-			new ACondition("Create project "+name) {
-				@Override
-				public boolean test() throws Exception {
-					return job.getResult()!=null;
-				}
-			}.waitFor(180000);
-			assertStatusOK(job.getResult());
+			waitForWorkspaceJob(job);
 			assertTrue(project.exists());
 			assertNoErrors(project);
 			assertTrue(project.hasNature(GrailsNature.NATURE_ID));
@@ -308,6 +297,22 @@ public class GrailsTest extends TestCase {
 		} catch (Throwable e) {
 			throw new Error(e);
 		}
+	}
+
+	/**
+	 * Helper method to Schedule a Job with a 'buildRule' and then wait for it to complete
+	 * while keeping the UI thread alive.
+	 */
+	public static void waitForWorkspaceJob(final Job job) throws Exception {
+		job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
+		job.schedule();
+		new ACondition(job.getName()) {
+			@Override
+			public boolean test() throws Exception {
+				return job.getResult()!=null;
+			}
+		}.waitFor(180000);
+		assertStatusOK(job.getResult());
 	}
 
 	public static void assertNoErrors(IProject project) throws CoreException {
