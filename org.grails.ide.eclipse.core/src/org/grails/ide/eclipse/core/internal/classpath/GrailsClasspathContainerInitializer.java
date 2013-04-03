@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 
 
 /**
@@ -32,7 +31,7 @@ public class GrailsClasspathContainerInitializer extends ClasspathContainerIniti
 	 */
 	@Override
 	public void initialize(IPath containerPath, IJavaProject javaProject) throws CoreException {
-		GroovyCompilerVersionCheck.check(javaProject);
+		//GroovyCompilerVersionCheck.check(javaProject);
 		// Only responsible for our own class path container
 		if (containerPath.equals(GrailsClasspathContainer.CLASSPATH_CONTAINER_PATH)) {
 
