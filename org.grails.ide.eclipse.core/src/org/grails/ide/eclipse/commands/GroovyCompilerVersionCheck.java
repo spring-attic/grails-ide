@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012-2013 VMWare, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,9 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
  */
 public class GroovyCompilerVersionCheck {
 	
-	private static boolean ignore = false;
+	//Make this setable by system prop. That's a back door just in case it misbehaves users
+	//can turn it off via 'secret' system prop. There shouldn't be a need to do this. But... 
+	private static boolean ignore = Boolean.getBoolean("org.grails.ide.groovy.compiler.version.check");
 	
 	/**
 	 * This method is only to be used in "test" mode and it supresses the compiler version
@@ -52,8 +54,14 @@ public class GroovyCompilerVersionCheck {
 	
 	private static SpecifiedVersion getRequiredGroovyVersion(IProject project) {
 		GrailsVersion gv = GrailsVersion.getEclipseGrailsVersion(project);
+		return getRequiredGroovyVersion(gv);
+	}
+
+	public static SpecifiedVersion getRequiredGroovyVersion(GrailsVersion gv) {
 		if (gv != null) {
-			if (GrailsVersion.V_2_2_.compareTo(gv)<=0) {
+			if (GrailsVersion.V_2_3_.compareTo(gv) <= 0) {
+				return SpecifiedVersion._21;
+			} else if (GrailsVersion.V_2_2_.compareTo(gv)<=0) {
 				return SpecifiedVersion._20;
 			} else if (GrailsVersion.V_2_0_.compareTo(gv) <= 0) {
 				return SpecifiedVersion._18;
@@ -62,7 +70,7 @@ public class GroovyCompilerVersionCheck {
 				return SpecifiedVersion._17;
 			}
 		}
-		return null;
+		return SpecifiedVersion.UNSPECIFIED;
 	}
 	
 

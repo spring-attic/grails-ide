@@ -97,7 +97,7 @@ public class AllGrailsTests {
 
         suite.addTestSuite(GroovySanityTest.class);
         if (GroovySanityTest.isSane()) {
-        	
+        	suite.addTestSuite(GroovyCompilerVersionCheckTest.class);
     		suite.addTestSuite(GrailsRunAsTestAppTests.class);
         	suite.addTestSuite(ControllerCacheTests.class);
         	suite.addTestSuite(DefaultGrailsInstallTests.class);
