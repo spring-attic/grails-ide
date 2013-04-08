@@ -96,7 +96,7 @@ public abstract class GrailsLaunchUtils {
 	 * @throws CoreException 
 	 */
 	public static void launch(IJavaProject javaProject, final String script) {
-		if (script!=null && script.contains("run-app")) {
+		if (script!=null && (script.contains("run-app") || script.contains("run-war"))) {
 			launchRunApp(javaProject, script);
 			return;
 		}
@@ -142,7 +142,9 @@ public abstract class GrailsLaunchUtils {
 	}
 
 	/**
-	 * Special handling for run-app, see https://issuetracker.springsource.com/browse/STS-3155
+	 * Special handling for run-app and run-war, see https://issuetracker.springsource.com/browse/STS-3155
+	 * https://issuetracker.springsource.com/browse/STS-3299
+	 * 
 	 * @throws CoreException 
 	 */
 	private static void launchRunApp(final IJavaProject javaProject, final String script) {
