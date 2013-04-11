@@ -20,7 +20,6 @@
    <requires>
       <import feature="org.codehaus.groovy.eclipse.feature" version="2.0.0" match="greaterOrEqual"/>
       <import feature="org.codehaus.groovy.jdt.patch"/>
-      <import feature="org.codehaus.groovy18.feature"/>
       <import feature="org.eclipse.jdt"/>
       <import feature="org.springsource.ide.eclipse.commons" version="3.3.0.qualifier"/>
       <import feature="org.eclipse.contribution.weaving"/>

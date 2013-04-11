@@ -84,7 +84,7 @@ public class GrailsGspEditorActivator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	   /**
+	/**
      * Returns the template store for the jsp editor templates.
      * 
      * @return the template store for the jsp editor templates
