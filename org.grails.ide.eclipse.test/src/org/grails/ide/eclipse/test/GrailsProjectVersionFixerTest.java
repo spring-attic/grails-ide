@@ -197,6 +197,10 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	 */
 	public void testImportBareBonesProjectWithMatchingVersion() throws Throwable {
 		GrailsVersion version = GrailsVersion.MOST_RECENT;
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run this for snapshot builds. Too much work to create test projects for moving target.
+			return;
+		}
 		ensureDefaultGrailsVersion(version);
 		final URL zipFileURL = getProjectZip("bareBonesProject", version);
 		final String projectName = "testProject";
@@ -220,6 +224,10 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	 * workspace.
 	 */
 	public void testImportBareBonesProjectWithOlderVersion() throws Throwable {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run this for snapshot builds. Too much work to create test projects for moving target.
+			return;
+		}
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 
 		final URL zipFileURL = getProjectZip("bareBonesProject", GrailsVersion.PREVIOUS);
@@ -418,6 +426,11 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	}
 	
 	public void testImportProjectWithSameNameAsDeletedProject() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run this for snapshot builds. Too much work to create test projects for moving target.
+			return;
+		}
+
 		//When a project is deleted, stale classpath data of this project should not end up in a new project that may have the same name.
 		final String projectName = "gTunes";
 
@@ -479,6 +492,11 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	}
 	
 	public void testImportProjectWithUnknownEclipseGrailsVersion() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run this for snapshot builds. Too much work to create test projects for moving target.
+			return;
+		}
+		
 		//The project being imported has following setup
 		//  - uses project specific Grails install
 		//  - Grails install name = 'Bogus X.X.X' 

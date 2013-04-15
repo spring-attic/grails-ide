@@ -73,10 +73,10 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 			//See http://jira.grails.org/browse/GRAILS-8955
 			return; 
 		}
-		//Note to Andrew: I put it back in Joint tests because in afterthought I realized that 
-		// it actually does a useful compatibility check between STS and
-		// Grails w.r.t. how spaces are being escaped on the commandline. If Grails & STS disagree on this, then windows users
-		// with folders like "Documents and Settings" will have issues.
+		if (GrailsVersion.MOST_RECENT==GrailsVersion.V_2_3_0_SNAPSHOT) {
+			//Yep still broken in 2.3 buildsnap
+			return; 
+		}
 		GrailsVersion version = GrailsVersion.MOST_RECENT;
 		doTestDownloadSources(File.createTempFile("a name with spaces", "xml"), version);
 		doTestDownloadSources(File.createTempFile("with \\ and space", "xml"), version);
@@ -90,6 +90,10 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
         if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
 			//This is known to be broken in Grails 2.0.3:
 			//See http://jira.grails.org/browse/GRAILS-8955
+			return; 
+		}
+		if (GrailsVersion.MOST_RECENT==GrailsVersion.V_2_3_0_SNAPSHOT) {
+			//Yep still broken in 2.3 buildsnap
 			return; 
 		}
 		GrailsVersion version = GrailsVersion.MOST_RECENT;

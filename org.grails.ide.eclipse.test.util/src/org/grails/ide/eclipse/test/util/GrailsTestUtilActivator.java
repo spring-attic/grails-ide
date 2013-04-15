@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test.util;
 
+import org.codehaus.groovy.eclipse.core.compiler.CompilerUtils;
+import org.codehaus.groovy.frameworkadapter.util.SpecifiedVersion;
 import org.eclipse.core.runtime.Platform;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.osgi.framework.Bundle;
@@ -80,48 +82,49 @@ public class GrailsTestUtilActivator implements BundleActivator {
 
 	public static void configureGrailsVersions() {
 		dumpGroovyBundles();
-		boolean useGrails200 = true;
-		//!CompilerUtils.isGroovyVersionDisabledOrMissing(SpecifiedVersion._18);
-        // Uncomment to force use of 1.3.7
-//      useGrails200 = false;
-		configureGrailsVersions(useGrails200);
-		
-//		String prop = System.getProperty("grails.version.most.recent");
-//		boolean useGrails200;
-//		if (prop!=null) {
-//			if (prop.equals("2.0.0")) {
-//				useGrails200 = true;
-//			} else if (prop.equals("1.3.7")) {
-//				useGrails200 = false;
-//			} else {
-//				throw new Error("1.3.7");
-//			}
-//		} else {
-//			useGrails200 = StsTestUtil.ECLIPSE_3_7_OR_LATER;
-//		}
-//		configureGrailsVersions(useGrails200);
+		configureGrailsVersions(CompilerUtils.getWorkspaceCompilerLevel());
 	}
 	
-	public static void configureGrailsVersions(boolean useGrails200) {
-		if (useGrails200) {
-			//Treats 2.0. as most recent Grails, runs majority of tests with 2.0:
-			GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_2_0_4;
-			GrailsVersion.PREVIOUS = GrailsVersion.V_2_1_0; 
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-			GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_1;
-			//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_0_RC1;
-		} else {
-			//Treats 1.3.7. as most recent Grails, runs majority of tests with 1.3.8:
-			GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_1_3_6;
-			GrailsVersion.PREVIOUS = GrailsVersion.V_1_3_7; 
-			GrailsVersion.MOST_RECENT = GrailsVersion.V_1_3_8;
+	public static void configureGrailsVersions(SpecifiedVersion groovyVersion) {
+		switch (groovyVersion) {
+		case _20:
+			System.out.println("Detected Groovy Workspace Version = 1.8");
+			configureGrails22();
+			break;
+		case _21:
+			System.out.println("Detected Groovy Workspace Version = 2.0");
+			configureGrails23();
+			break;
+		default:
+			//The groovy compiler level is probably wrong... but anyhoo...
+			configureGrails22();
+			break;
 		}
 		System.out.println("GrailsVersion.MOST_RECENT = "+GrailsVersion.MOST_RECENT);
+	}
+
+	private static void configureGrails23() {
+		GrailsVersion.PREVIOUS_PREVIOUS =  GrailsVersion.V_2_1_0;;
+		GrailsVersion.PREVIOUS = GrailsVersion.V_2_2_1; 
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_3_0_SNAPSHOT;
+	}
+
+	private static void configureGrails22() {
+		GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_2_0_4;
+		GrailsVersion.PREVIOUS = GrailsVersion.V_2_1_0; 
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
+		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_1;
 	}
 
 	public void stop(BundleContext context) throws Exception {

@@ -32,6 +32,21 @@
 		<test.skip>true</test.skip>
       </properties>
     </profile>
+    <profile>
+       <id>groovy20test</id>
+       <!--  profile that restricts Groovy compiler to 2.1 for test running -->
+       <properties>
+		    <groovy.compiler.version>[2.0.0,2.0.9]</groovy.compiler.version>
+       </properties>
+    </profile>
+    <profile>
+       <id>groovy21test</id>
+       <!--  profile that restricts Groovy compiler to 2.1 for test running -->
+       <properties>
+		    <groovy.compiler.version>[2.1.0,2.1.9]</groovy.compiler.version>
+       </properties>
+    </profile>
+    
   </profiles>
   <build>
 	<plugins>
