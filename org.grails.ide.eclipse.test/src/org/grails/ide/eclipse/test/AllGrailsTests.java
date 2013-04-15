@@ -16,7 +16,6 @@ import junit.framework.TestSuite;
 
 import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
 import org.grails.ide.eclipse.commands.test.DependencyFileFormatTest;
-import org.grails.ide.eclipse.commands.test.ExtraPluginInstallerTests;
 import org.grails.ide.eclipse.commands.test.GrailsCommandFactoryTest;
 import org.grails.ide.eclipse.commands.test.GrailsCommandTest;
 import org.grails.ide.eclipse.commands.test.GrailsCommandUtilTest;
@@ -26,8 +25,6 @@ import org.grails.ide.eclipse.commands.test.LaunchSystemPropertiesTest;
 import org.grails.ide.eclipse.commands.test.PluginInstallerTests;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
-import org.grails.ide.eclipse.core.wizard.GrailsImportWizardCore;
-import org.grails.ide.eclipse.groovy.debug.tests.AllGroovyDebugTests;
 import org.grails.ide.eclipse.longrunning.test.LongRunningGrailsTest;
 import org.grails.ide.eclipse.longrunning.test.PrefixedOutputStreamTest;
 import org.grails.ide.eclipse.test.gsp.ControllerCacheTests;
