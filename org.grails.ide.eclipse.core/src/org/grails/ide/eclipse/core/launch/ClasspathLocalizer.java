@@ -68,6 +68,7 @@ public class ClasspathLocalizer {
 	
 	private String localURL(EclipsePluginClasspathEntry jar) throws IOException, MalformedURLException {
 		Bundle bundle= Platform.getBundle(jar.getPluginId());
+		Assert.isNotNull(bundle, "Bundle not found: "+jar.getPluginId());
 		URL url;
 		if (jar.getPluginRelativePath() == null)
 			url= bundle.getEntry("/"); //$NON-NLS-1$

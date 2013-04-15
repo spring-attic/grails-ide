@@ -675,6 +675,42 @@
 				 <artifactId>org.eclipse.equinox.weaving.sdk.feature.group</artifactId>
 				 <version>0.0.0</version>
 			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.codehaus.groovy.headless.feature.feature.group</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.eclipse.jdt.feature.group</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.runtime.shared</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.runtime13</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.runtime22</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.aspectj.runtime</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.aspectj.weaver</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  
             </dependencies>
   			<explodedBundles>
 		  	  <explodedBundle>org.junit</explodedBundle>
