@@ -39,7 +39,9 @@
 	<module>org.grails.ide.eclipse.runonserver</module>
 	<module>org.grails.ide.eclipse.search</module>
 	<module>org.grails.ide.eclipse.test</module>
-	<module>org.grails.ide.eclipse.test.ui</module>
+<!-- nothing in here anymore that runs on the build server	
+	<module>org.grails.ide.eclipse.test.ui</module> 
+ -->
 	<module>org.grails.ide.eclipse.test.util</module>
 	<module>org.grails.ide.eclipse.tests</module>
 	<module>org.grails.ide.eclipse.ui</module>
@@ -660,31 +662,19 @@
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
             <dependencies>
+<!-- Shouldn't put this or it will drag in multiple groovy compuler features and we need to be able to pick just one compiler for
+   test builds.
                <dependency>
 			    <type>p2-installable-unit</type>
 			    <artifactId>org.grails.ide.eclipse.feature.group</artifactId>
 			    <version>0.0.0</version>
-			  </dependency>
+			  </dependency> 
+ -->
 			  <dependency>
 				 <type>p2-installable-unit</type>
 				 <artifactId>org.eclipse.equinox.weaving.sdk.feature.group</artifactId>
 				 <version>0.0.0</version>
 			  </dependency>
-<!-- 			  <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.wst.server_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency>
-              <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.jst.web_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency>
-              <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency> -->
             </dependencies>
   			<explodedBundles>
 		  	  <explodedBundle>org.junit</explodedBundle>

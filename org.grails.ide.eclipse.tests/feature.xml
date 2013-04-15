@@ -18,29 +18,11 @@
       %license
    </license>
 
-<!--   <requires>
-      <import feature="org.grails.ide.eclipse" version="3.3.0" match="equivalent"/>
-   </requires> -->
-
-<!--   <plugin
-         id="com.springsource.sts.server.tc.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/> -->
-
    <plugin
          id="org.grails.ide.eclipse.test"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.grails.ide.eclipse.test.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.grails.ide.eclipse.test.util"
