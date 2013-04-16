@@ -424,8 +424,8 @@ public class GrailsTest extends TestCase {
 						"tomcat", "hibernate", "jquery", "resources", "webxml" 
 				};
 			}
-		} else {
-			//Grails 2.1
+		} else if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_3_)<0) {
+			//Grails 2.1, 2.2
 			if (isPlugin) {
 				//Default plugins for plugin projects
 				return new String[] {
@@ -435,6 +435,19 @@ public class GrailsTest extends TestCase {
 				//Default plugins for regular projects
 				return new String[] {
 						"cache", "database-migration", "hibernate", "jquery", "resources", "tomcat", "webxml" 
+				};
+			}
+		} else {
+			//Grails 2.3
+			if (isPlugin) {
+				//Default plugins for plugin projects
+				return new String[] {
+						"tomcat", "release", "rest-client-builder"
+				};
+			} else {
+				//Default plugins for regular projects
+				return new String[] {
+						"scaffolding", "cache", "database-migration", "hibernate", "jquery", "resources", "tomcat", "webxml" 
 				};
 			}
 		}
