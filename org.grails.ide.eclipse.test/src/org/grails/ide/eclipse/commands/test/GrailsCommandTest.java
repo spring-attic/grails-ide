@@ -231,7 +231,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
 		cmd.synchExec();
 
-		checkDependencyFile(tmpFile);
+		checkDependencyFile(proj, tmpFile);
 	}
 
 	/**
@@ -253,7 +253,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
 		cmd.synchExec();
 
-		checkDependencyFile(tmpFile);
+		checkDependencyFile(proj, tmpFile);
 	}
 
 	/**
@@ -263,7 +263,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 	 * 
 	 * @throws IOException
 	 */
-	protected void checkDependencyFile(File file) throws IOException {
+	protected void checkDependencyFile(IProject project, File file) throws IOException {
 		// ///////////////////////////////////////
 		// Check the generated file...
 		assertTrue(file.exists());
@@ -275,8 +275,15 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
 		// Check plugins directory points where it should
 		String pluginsDirectory = depData.getPluginsDirectory();
-		assertEquals(dotGrailsFolder + "/projects/"+TEST_PROJECT_NAME+"/plugins",
-				pluginsDirectory);
+		if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) <=0) { 
+			//Grails 2.3 has moved the plugin area into the project area. It's no longer inside
+			// the .grails folder.
+			assertEquals(project.getLocation()+"/target/work/plugins",
+					pluginsDirectory);
+		} else {
+			assertEquals(dotGrailsFolder + "/projects/"+TEST_PROJECT_NAME+"/plugins",
+					pluginsDirectory);
+		}
 
 		Set<String> sources = depData.getSources();
 		for (String string : sources) {
@@ -299,19 +306,25 @@ public class GrailsCommandTest extends AbstractCommandTest {
 //		}
 
 		Set<String> pluginsXmls = depData.getPluginDescriptors();
-		// for (String string : pluginsXmls) {
-		// System.out.println(string);
-		// }
+		for (String string : pluginsXmls) {
+			System.out.println(string);
+		}
 		for (String pluginName : expectedPlugins) {
-			String expect = pluginsDirectory + "/" + pluginName + "-"
-					+ grailsVersion() + "/plugin.xml";
-			assertTrue("Missing plugin.xml file: " + expect,
-					pluginsXmls.contains(expect));
+			assertPluginXml(pluginName, pluginsXmls);
 		}
 
 		// TODO: KDV: (depend) add some more checks of the contents of the file
 		// (i.e. check for a few basic jar dependencies that should always be
 		// there.)
+	}
+
+	private void assertPluginXml(String pluginName, Set<String> pluginsXmls) {
+		for (String string : pluginsXmls) {
+			if (string.contains(pluginName) && string.endsWith("plugin.xml")) {
+				return; //OK, found a entry for that plugin
+			}
+		}
+		fail("No plugin.xml file found for plugin "+pluginName);
 	}
 
 	/**
