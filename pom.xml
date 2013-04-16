@@ -710,7 +710,71 @@
 				 <artifactId>org.aspectj.weaver</artifactId>
 				 <version>0.0.0</version>
 			  </dependency>
-			  
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.resources</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.maven</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.search</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.refactoring</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.groovy.debug.ui</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.groovy.debug.core</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.runonserver</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.explorer</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.editor.gsp</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.editor.gsp</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.editor.groovy</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.ui</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
+			  <dependency>
+				 <type>p2-installable-unit</type>
+				 <artifactId>org.grails.ide.eclipse.core</artifactId>
+				 <version>0.0.0</version>
+			  </dependency>
             </dependencies>
   			<explodedBundles>
 		  	  <explodedBundle>org.junit</explodedBundle>
