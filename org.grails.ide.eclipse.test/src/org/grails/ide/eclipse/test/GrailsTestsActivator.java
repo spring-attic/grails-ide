@@ -20,8 +20,10 @@ import java.util.List;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swtbot.swt.finder.utils.internal.Assert;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -76,7 +78,9 @@ public class GrailsTestsActivator implements BundleActivator {
     }
 
     public static File getGrailsDSLD() throws IOException {
-        URL entry = FileLocator.resolve(Platform.getBundle(GrailsCoreActivator.GRAILS_RESOURCES_PLUGIN_ID).getEntry("dsl-support"));
+        Bundle bundle = Platform.getBundle(GrailsCoreActivator.GRAILS_RESOURCES_PLUGIN_ID);
+        Assert.isNotNull(bundle, "Bundle not found: "+GrailsCoreActivator.GRAILS_RESOURCES_PLUGIN_ID);
+		URL entry = FileLocator.resolve(bundle.getEntry("dsl-support"));
         return new File(entry.getFile());
     }
     
