@@ -60,6 +60,10 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 //	}
 
 	public void testPerformRenameMethodRefactoring() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		if (GrailsVersion.getDefault().compareTo(GrailsVersion.V_2_0_0)>=0) {
 			//This test is only valid for Grails 2.0 where controller actions are methods 
 			
@@ -141,6 +145,10 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 	 * It is possible to have controller without associated views. This shouldn't break the refactoring.
 	 */
 	public void testPerformRenameActionWithoutViewRefactoring() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		importZippedProject("gTunez");
 		checkImportedProject();
 
@@ -201,6 +209,10 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 	 * visited and renamed properly.
 	 */
 	public void testPerformFieldActionRefactoring() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		importZippedProject("gTunez");
 		checkImportedProject();
 

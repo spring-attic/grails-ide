@@ -54,6 +54,10 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 //	}
 
 	public void testPerformRefactoring() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		importZippedProject("gTunez");
 		checkImportedProject();
 		createResource(project, "grails-app/controllers/gtunez/ExtraController.groovy", 
@@ -117,6 +121,10 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 	 * visited and renamed properly.
 	 */
 	public void testPerformFieldActionRefactoring() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		importZippedProject("gTunez");
 		checkImportedProject();
 
@@ -218,6 +226,10 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 	 * renamed.
 	 */
 	public void testSTS2032MethodReferencesRenamed() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_0)>=0) {
 			importZippedProject("gTunez");
 			checkImportedProject();
@@ -278,6 +290,10 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 	 * renamed.
 	 */
 	public void testSTS2032FieldReferencesRenamed() throws Exception {
+		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
+			//Don't run for snapshots, too much work to create test projects for moving target
+			return;
+		}
 		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_0)>=0) {
 			importZippedProject("gTunez");
 			checkImportedProject();
