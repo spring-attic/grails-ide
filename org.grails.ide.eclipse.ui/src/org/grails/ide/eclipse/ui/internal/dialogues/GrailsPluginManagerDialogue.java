@@ -21,8 +21,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.GrailsResourceUtil;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginsListManager;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
+import org.grails.ide.eclipse.core.util.GrailsNameUtils;
 import org.grails.ide.eclipse.ui.GrailsUiActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.Plugin;
 import org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins.PluginManagerDialog;
@@ -92,11 +95,27 @@ public class GrailsPluginManagerDialogue extends PluginManagerDialog {
 	@Override
 	protected Control createButtonBar(Composite parent) {
 	    Control c = super.createButtonBar(parent);
-        if (isM2EProject(getProjects())) {
+	    if (isGrails23Project(getProjects())) {
+	    	setErrorMessage("Since Grails 2.3 install-plugin command is not suppported. Edit " +
+	    			"BuildConfig.groovy to install/uninstall plugins");
+	    	this.getButton(IDialogConstants.OK_ID).setEnabled(false);
+	    } else if (isM2EProject(getProjects())) {
             setErrorMessage("Project uses maven. Use the pom.xml file to install/uninstall plugins.");
             this.getButton(IDialogConstants.OK_ID).setEnabled(false);
         }
         return c;
+	}
+
+	private boolean isGrails23Project(List<IProject> projects) {
+        for (IProject project : projects) {
+        	if (GrailsNature.isGrailsProject(project)) {
+        		GrailsVersion version = GrailsVersion.getEclipseGrailsVersion(project);
+        		if (GrailsVersion.V_2_3_.compareTo(version) <= 0) {
+        			return true;
+        		}
+        	}
+        }
+        return false;
 	}
 
 	private boolean isM2EProject(List<IProject> projects) {
