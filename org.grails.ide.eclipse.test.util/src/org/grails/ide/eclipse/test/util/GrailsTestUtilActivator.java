@@ -88,11 +88,11 @@ public class GrailsTestUtilActivator implements BundleActivator {
 	public static void configureGrailsVersions(SpecifiedVersion groovyVersion) {
 		switch (groovyVersion) {
 		case _20:
-			System.out.println("Detected Groovy Workspace Version = 1.8");
+			System.out.println("Detected Groovy Workspace Version = 2.0");
 			configureGrails22();
 			break;
 		case _21:
-			System.out.println("Detected Groovy Workspace Version = 2.0");
+			System.out.println("Detected Groovy Workspace Version = 2.1");
 			configureGrails23();
 			break;
 		default:
