@@ -334,6 +334,11 @@ public class GrailsCommandTest extends AbstractCommandTest {
 	 * @throws Exception
 	 */
 	public void testEditedApplicationProperties() throws Exception {
+	    // application.properties no longer supported in 2.3 and greater
+	    if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) <= 0) {
+	        return;
+	    }
+	    
 		IProject proj = ensureProject(TEST_PROJECT_NAME);
 		IFile eclipsePropFile = proj.getFile("application.properties");
 		File propFile = eclipsePropFile.getLocation().toFile();
@@ -410,6 +415,8 @@ public class GrailsCommandTest extends AbstractCommandTest {
 	
 	
 	public void testTagLibsFromPlugin() throws Exception {
+	    // TODO for 2.3 and later, must edit BuildConfig.groovy instead
+	    
 	    IProject proj = ensureProject(TEST_PROJECT_NAME);
 	    ensureDefaultGrailsVersion(GrailsVersion.getGrailsVersion(proj));
 	    

@@ -73,7 +73,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 			//See http://jira.grails.org/browse/GRAILS-8955
 			return; 
 		}
-		if (GrailsVersion.MOST_RECENT==GrailsVersion.V_2_3_0_SNAPSHOT) {
+		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0_SNAPSHOT)) {
 			//Yep still broken in 2.3 buildsnap
 			return; 
 		}
@@ -92,7 +92,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 			//See http://jira.grails.org/browse/GRAILS-8955
 			return; 
 		}
-		if (GrailsVersion.MOST_RECENT==GrailsVersion.V_2_3_0_SNAPSHOT) {
+        if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0_SNAPSHOT)) {
 			//Yep still broken in 2.3 buildsnap
 			return; 
 		}
