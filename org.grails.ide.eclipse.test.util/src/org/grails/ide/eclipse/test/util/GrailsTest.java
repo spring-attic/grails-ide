@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test.util;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -519,9 +521,13 @@ public class GrailsTest extends TestCase {
 		if (!file.exists()) {
 			file.create(new ByteArrayInputStream(contents.getBytes()), true, null);
 		} else {
-			file.setContents(new ByteArrayInputStream(contents.getBytes()), true, false, null);
+		    setContents(file, contents);
 		}
 		return file;
+	}
+	
+	public static void setContents(IFile file, String newContents) throws CoreException {
+	    file.setContents(new ByteArrayInputStream(newContents.getBytes()), true, false, null);
 	}
 
 	public static void assertRegexp(String regexpExpect, String actual) {
@@ -685,6 +691,20 @@ public class GrailsTest extends TestCase {
 	    is.close();
 	    return bytes;
 	}
+	
+    public static String getContents(IFile file) throws CoreException, IOException {
+        InputStream is = file.getContents();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        StringBuffer buffer= new StringBuffer();
+        char[] readBuffer= new char[2048];
+        int n= br.read(readBuffer);
+        while (n > 0) {
+            buffer.append(readBuffer, 0, n);
+            n= br.read(readBuffer);
+        }
+        return buffer.toString();
+    }
+
 	
 	/**
 	 * Set a bunch of preferences so that m2eclipse hopefully isn't doing a lot of time consuming stuff in the

@@ -47,6 +47,7 @@ import org.grails.ide.eclipse.runtime.shared.DependencyFileFormat;
 import org.grails.ide.eclipse.runtime.shared.SharedLaunchConstants;
 import org.grails.ide.eclipse.test.GrailsTestsActivator;
 import org.grails.ide.eclipse.test.util.GrailsTest;
+import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
@@ -403,28 +404,104 @@ public class GrailsCommandTest extends AbstractCommandTest {
 		assertAbsentPluginSourceFolder(proj, "feeds-1.4", "src", "groovy");
 		assertAbsentPluginSourceFolder(proj, "acegi-0.5.2", "src", "groovy");
 	}
+	
+   public void testEditedBuildConfig() throws Exception {
+        // only test in 2.3 and greater
+        if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
+            return;
+        }
+        ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+        
+        IProject proj = ensureProject(TEST_PROJECT_NAME);
+        IFile buildConfig = proj.getFile("grails-app/conf/BuildConfig.groovy");
+        String origContents = GrailsTest.getContents(buildConfig);
 
+        // Modify the props file add two plugins
+        // A bit of a hack, but this is a simple way to add plugins to the build
+        String newContents = origContents.replace("plugins {\n", "plugins {\n\t\tcompile \":feeds:1.5\"\n\t\tcompile \":acegi:0.5.3\"\n");
+        GrailsTest.setContents(buildConfig, newContents);
+        refreshDependencies(proj);
+
+        // Check that the plugins linked source folders are now there.
+        assertPluginSourceFolder(proj, "feeds-1.5", "src", "groovy");
+        assertPluginSourceFolder(proj, "acegi-0.5.3", "src", "groovy");
+
+        // /////////////////////////////////////////////////////////////
+        // Now modify the version of the plugins and try this again
+
+        String newContents2 = origContents.replace("plugins {\n", "plugins {\n\t\tcompile \":feeds:1.4\"\n\t\tcompile \":acegi:0.5.2\"\n");
+        GrailsTest.setContents(buildConfig, newContents2);
+        refreshDependencies(proj);
+
+        // Check that the linked source folders of the replaced version are no
+        // longer there.
+        assertAbsentPluginSourceFolder(proj, "feeds-1.5", "src", "groovy");
+        assertAbsentPluginSourceFolder(proj, "acegi-0.5.3", "src", "groovy");
+
+        // Check that the linked source folders of the new versions are there.
+        assertPluginSourceFolder(proj, "feeds-1.4", "src", "groovy");
+        assertPluginSourceFolder(proj, "acegi-0.5.2", "src", "groovy");
+        
+        // /////////////////////////////////////////////////////////////
+        // Now remove the plugins and try this again
+
+//	        props.remove("plugins.feeds");
+//	        props.remove("plugins.acegi");
+        GrailsTest.setContents(buildConfig, origContents);
+
+        // Refresh dependencies
+        refreshDependencies(proj);
+
+        // Check that the linked source folders of the replaced version are no
+        // longer there.
+        assertAbsentPluginSourceFolder(proj, "feeds-1.5", "src", "groovy");
+        assertAbsentPluginSourceFolder(proj, "acegi-0.5.3", "src", "groovy");
+
+        // Check that the linked source folders of the new versions are also no
+        // longer there.
+        assertAbsentPluginSourceFolder(proj, "feeds-1.4", "src", "groovy");
+        assertAbsentPluginSourceFolder(proj, "acegi-0.5.2", "src", "groovy");
+    }
+
+	   
+   // Oh my!  starting in 2.3, we sometimes need to do refresh dependencies 3 times before things get fixed
 	private void refreshDependencies(IProject proj) throws CoreException {
 		try {
 			GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
 		} catch (Exception e) {
 			//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
-			GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+	        try {
+	            GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+	        } catch (Exception e2) {
+	            //This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
+	            GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+	        }
 		}
 	}
 	
 	
 	public void testTagLibsFromPlugin() throws Exception {
-	    // TODO for 2.3 and later, must edit BuildConfig.groovy instead
 	    
 	    IProject proj = ensureProject(TEST_PROJECT_NAME);
 	    ensureDefaultGrailsVersion(GrailsVersion.getGrailsVersion(proj));
 	    
-	    GrailsCommand cmd = GrailsCommand.forTest(proj, "install-plugin")
-	    		.addArgument("feeds")
-	    		.addArgument("1.5");
-	    cmd.synchExec();
-		GrailsCommandUtils.refreshDependencies(JavaCore.create(proj), true);
+        if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
+            // below 2.3 install-plugin command works
+    	    GrailsCommand cmd = GrailsCommand.forTest(proj, "install-plugin")
+    	    		.addArgument("feeds")
+    	    		.addArgument("1.5");
+    	    cmd.synchExec();
+        } else {
+            // after 2.3, must edit build config
+            IFile buildConfig = proj.getFile("grails-app/conf/BuildConfig.groovy");
+            String origContents = GrailsTest.getContents(buildConfig);
+
+            // Modify the props file add two plugins
+            // A bit of a hack, but this is a simple way to add plugins to the build
+            String newContents = origContents.replace("plugins {\n", "plugins {\n\t\tcompile \":feeds:1.5\"\n\t\tcompile \":acegi:0.5.3\"\n");
+            GrailsTest.setContents(buildConfig, newContents);
+        }
+        refreshDependencies(proj);
 		
 	    assertPluginSourceFolder(proj, "feeds-1.5", "src", "groovy");
 	    
