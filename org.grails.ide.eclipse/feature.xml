@@ -17,6 +17,11 @@
       %license
    </license>
 
+   <includes
+         id="org.springsource.ide.eclipse.commons.quicksearch.feature"
+         version="0.0.0"
+         optional="true"/>
+
    <requires>
       <import feature="org.codehaus.groovy.eclipse.feature" version="2.0.0" match="greaterOrEqual"/>
       <import feature="org.codehaus.groovy.jdt.patch"/>
