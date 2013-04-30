@@ -68,6 +68,10 @@ public class CodeCompletionDelegate implements
                     }
                 };
             }
+            if (monitor == null) {
+                monitor = new NullProgressMonitor();
+            }
+            monitor.beginTask("Content assist", 1);
             List<ICompletionProposal> proposals = computer.computeCompletionProposals(context, monitor);
             for (ICompletionProposal proposal : proposals) {
                 CompletionProposal cp = null;
