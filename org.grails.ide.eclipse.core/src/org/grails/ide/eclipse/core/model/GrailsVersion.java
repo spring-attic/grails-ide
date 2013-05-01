@@ -61,6 +61,8 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_2_ = new GrailsVersion("2.2"); //Any '2.2' version *including* milestones is 'greater' than this one
 	public static final GrailsVersion V_2_2_0 = new GrailsVersion("2.2.0");
 	public static final GrailsVersion V_2_2_1 = new GrailsVersion("2.2.1");
+	public static final GrailsVersion V_2_2_2 = new GrailsVersion("2.2.2");
+
 	
 //	public static final GrailsVersion V_2_0_0_M1 = new GrailsVersion("2.0.0.M1");
 	public static final GrailsVersion V_2_0_0_M2 = new GrailsVersion("2.0.0.M2");
@@ -100,6 +102,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	private boolean parseError = false;
 	public static final GrailsVersion SMALLEST_SUPPORTED_VERSION = V_1_2;
+
 	
 	private URI downloadLocation = null;
 	

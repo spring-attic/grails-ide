@@ -124,7 +124,7 @@ public class GrailsTestUtilActivator implements BundleActivator {
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_1;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_2;
 	}
 
 	public void stop(BundleContext context) throws Exception {
