@@ -45,7 +45,7 @@ public class GroovyCompilerVersionCheck {
 		// Greclipse metadata to specify the desired Groovy compiler version. 
 		//This will cause Greclipse to show errors in the problems view.
 		if (ignore) {
-			CompilerUtils.setCompilerLevel(project, SpecifiedVersion.UNSPECIFIED);
+			CompilerUtils.setCompilerLevel(project, SpecifiedVersion.DONT_CARE);
 		} else {
 			SpecifiedVersion requiredVersion = getRequiredGroovyVersion(project);
 			CompilerUtils.setCompilerLevel(project, requiredVersion);
