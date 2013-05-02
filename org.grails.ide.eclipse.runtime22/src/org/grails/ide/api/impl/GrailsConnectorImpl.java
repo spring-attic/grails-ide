@@ -12,6 +12,7 @@ package org.grails.ide.api.impl;
 
 import grails.build.logging.GrailsConsole;
 import grails.util.BuildSettings;
+import grails.util.BuildSettingsHolder;
 import groovy.lang.ExpandoMetaClass;
 
 import java.io.File;
@@ -112,6 +113,12 @@ public class GrailsConnectorImpl implements GrailsConnector {
 	private void ensureInitialized() {
 		if (buildSettings==null) {
 			buildSettings = createBuildSettings();
+			BuildSettingsHolder.setSettings(buildSettings);  
+			//^^^ See https://issuetracker.springsource.com/browse/STS-3358
+			    //in Grails 2.2.2  "schema export" command
+				//will throw an NPE if buildSettings isn't explicitly set by us. I.e even though we pass 
+				//buildSettings to GrailsScriptRunner Grails 2.2.2 does not end up putting it 
+			    //into BuildSettingsHolder so we must do it ourselves.
 			scriptRunner = new GrailsScriptRunner(buildSettings);
 			GrailsConsole.getInstance().log("Loading Grails "+buildSettings.getGrailsVersion());
 			
