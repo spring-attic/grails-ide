@@ -113,12 +113,6 @@ public class GrailsConnectorImpl implements GrailsConnector {
 	private void ensureInitialized() {
 		if (buildSettings==null) {
 			buildSettings = createBuildSettings();
-			BuildSettingsHolder.setSettings(buildSettings);  
-			//^^^ See https://issuetracker.springsource.com/browse/STS-3358
-			    //in Grails 2.2.2  "schema export" command
-				//will throw an NPE if buildSettings isn't explicitly set by us. I.e even though we pass 
-				//buildSettings to GrailsScriptRunner Grails 2.2.2 does not end up putting it 
-			    //into BuildSettingsHolder so we must do it ourselves.
 			scriptRunner = new GrailsScriptRunner(buildSettings);
 			GrailsConsole.getInstance().log("Loading Grails "+buildSettings.getGrailsVersion());
 			
@@ -132,6 +126,17 @@ public class GrailsConnectorImpl implements GrailsConnector {
 			buildSettings.setModified(true);
 			//}
 			scriptRunner.initializeState();
+			if (BuildSettingsHolder.getSettings()==null) {
+				//^^^ See https://issuetracker.springsource.com/browse/STS-3358
+			    //in Grails 2.2.2  "schema export" command
+				//will throw an NPE if buildSettings isn't explicitly set by us. I.e even though we pass 
+				//buildSettings to GrailsScriptRunner Grails 2.2.2 does not end up putting it 
+			    //into BuildSettingsHolder so we must do it ourselves.
+				
+				//Note: do this as late as possible. If we do it too early things are going !@#$
+				// and a lot of other commands (not schema-export are breaking).
+				BuildSettingsHolder.setSettings(buildSettings);
+			}
 			//scriptRunner.setInteractive(false);
 		} else {
 			GrailsConsole.getInstance().log("Loading Grails "+buildSettings.getGrailsVersion());

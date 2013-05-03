@@ -31,8 +31,6 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.grails.ide.api.GrailsConnector;
 import org.grails.ide.api.GrailsToolingAPI;
