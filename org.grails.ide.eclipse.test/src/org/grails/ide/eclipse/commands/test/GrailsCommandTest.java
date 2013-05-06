@@ -361,7 +361,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 		// /////////////////////////////////////////////////////////////
 		// Now modify the version of the plugins and try this again
 
-		props.put("plugins.feeds", "1.4");
+		props.put("plugins.feeds", "1.6");
 		props.put("plugins.spring-security-core", "1.2.7.2");
 		props.store(new FileOutputStream(propFile), "#Grails metadata file");
 		eclipsePropFile.refreshLocal(IResource.DEPTH_ZERO,
