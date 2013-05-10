@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.core.internal.classpath;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -19,7 +21,6 @@ import java.util.Set;
 import org.codehaus.groovy.ast.ClassNode;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
-import org.objectweb.asm.Opcodes;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins.PluginVersion;
 
 

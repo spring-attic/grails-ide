@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.editor.groovy.elements;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
@@ -19,8 +21,6 @@ import org.eclipse.jdt.groovy.search.AbstractSimplifiedTypeLookup.TypeAndDeclara
 import org.eclipse.jdt.groovy.search.VariableScope;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
-import org.objectweb.asm.Opcodes;
-
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectTypeCache;
 
 /**

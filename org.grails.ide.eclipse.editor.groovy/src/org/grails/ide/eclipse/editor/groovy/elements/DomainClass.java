@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.editor.groovy.elements;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,8 +36,6 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
-import org.objectweb.asm.Opcodes;
-
 import org.grails.ide.eclipse.editor.groovy.types.DynamicFinderValidator;
 import org.grails.ide.eclipse.editor.groovy.types.FinderValidatorFactory;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectMemberCache;

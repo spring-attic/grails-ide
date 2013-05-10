@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.editor.groovy.elements;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,8 +41,6 @@ import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
 import org.grails.ide.eclipse.core.util.GrailsNameUtils;
-import org.objectweb.asm.Opcodes;
-
 import org.grails.ide.eclipse.editor.groovy.controllers.PerProjectControllerCache;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectMemberCache;
 

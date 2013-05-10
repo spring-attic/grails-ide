@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.editor.groovy.types;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,8 +35,6 @@ import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.eclipse.codeassist.ProposalUtils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.groovy.search.VariableScope;
-import org.objectweb.asm.Opcodes;
-
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass;
 
 /**

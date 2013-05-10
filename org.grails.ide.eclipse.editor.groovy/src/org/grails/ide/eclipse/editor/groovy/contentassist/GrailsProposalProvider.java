@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.editor.groovy.contentassist;
 
+import groovyjarjarasm.asm.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -38,8 +40,6 @@ import org.eclipse.jdt.groovy.search.VariableScope;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.model.ContributedMethod;
 import org.grails.ide.eclipse.core.model.ContributedProperty;
-import org.objectweb.asm.Opcodes;
-
 import org.grails.ide.eclipse.editor.groovy.elements.ControllerClass;
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass;
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass.NamedQueryClassNode;
