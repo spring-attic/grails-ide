@@ -191,7 +191,7 @@ public abstract class AbstractCommandTest extends GrailsTest {
 				assertStatusOK(status);
 				return true;
 			}
-		}.waitFor(120000);
+		}.waitFor(180000);
 		assertTrue(project.isAccessible());
 		assertTrue(project.getFolder("grails-app").exists());
 	}
