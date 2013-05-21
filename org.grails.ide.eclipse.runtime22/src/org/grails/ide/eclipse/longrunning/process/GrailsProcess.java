@@ -136,7 +136,7 @@ public class GrailsProcess extends SafeProcess {
 						e.printStackTrace(System.err);
 					} finally {
 						System.setIn(system_in);
-						println(END_COMMAND+code);
+						println("\n"+END_COMMAND+code);
 						cmdInput.terminate();
 					}
 				} else if (line.startsWith(CHANGE_DIR)) {
