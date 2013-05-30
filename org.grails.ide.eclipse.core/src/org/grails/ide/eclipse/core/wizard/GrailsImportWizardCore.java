@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.core.wizard;
 
-import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.OK;
 import static org.springsource.ide.eclipse.commons.livexp.core.ValidationResult.error;
 
 import java.io.File;
@@ -88,7 +87,7 @@ public class GrailsImportWizardCore {
 			} else if (existsInWorkspace(rf.getName())) {
 				return error("Project '"+rf.getName()+"' already exists in the workspace.");
 			}
-			return OK;
+			return ValidationResult.OK;
 		}
 
 	}
@@ -119,7 +118,7 @@ public class GrailsImportWizardCore {
 			if (targetLocation!=null && targetLocation.exists()) {
 				return error("Can not copy project into workspace because '"+targetLocation+"' already exists");
 			}
-			return OK;
+			return ValidationResult.OK;
 		}
 	}
 	.dependsOn(copyToWorkspace)
@@ -168,7 +167,7 @@ public class GrailsImportWizardCore {
 					return error("Mavenized project");
 				}
 			}
-			return OK;
+			return ValidationResult.OK;
 		}
 	}
 	.dependsOn(isMaven)
@@ -191,7 +190,7 @@ public class GrailsImportWizardCore {
 					return error("Project Grails version ("+projectVersion+ ") does not match install version ("+installVersion+")");
 				}
 			}
-			return OK;
+			return ValidationResult.OK;
 		};
 	}
 	.dependsOn(grailsInstall)
