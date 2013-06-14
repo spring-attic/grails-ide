@@ -226,7 +226,7 @@ public abstract class RunOnServerTestTemplate extends GrailsTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		setJava15Compliance();
+		setJava16Compliance();
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 
 		// On the build server all output to System.out is eaten, which is

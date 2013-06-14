@@ -469,7 +469,7 @@ public class GrailsTest extends TestCase {
 	 * If Java compiler compliance is set below 1.5 will get Groovy compilation errors 
 	 * having to do with generics. Solution: call this method in the test setup.
 	 */
-	public static void setJava15Compliance() {
+/*	public static void setJava15Compliance() {
 		@SuppressWarnings("rawtypes")
 		Hashtable options = JavaCore.getDefaultOptions();
 	    options.put(JavaCore.COMPILER_COMPLIANCE, "1.5");
@@ -477,7 +477,7 @@ public class GrailsTest extends TestCase {
 	    options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.5");
 	    JavaCore.setOptions(options);
 	}
-	
+ */	
 	public static void setJava16Compliance() {
 		@SuppressWarnings("rawtypes")
 		Hashtable options = JavaCore.getDefaultOptions();

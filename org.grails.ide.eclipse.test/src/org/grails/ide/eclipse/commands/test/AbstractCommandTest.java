@@ -22,8 +22,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -43,14 +41,12 @@ import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.launch.LaunchListenerManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
-import org.junit.Assert;
+import org.grails.ide.eclipse.test.GrailsTestsActivator;
+import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
-import org.grails.ide.eclipse.test.GrailsTestsActivator;
-import org.grails.ide.eclipse.test.util.GrailsTest;
 
 /**
  * @author Andrew Eisenberg
@@ -96,7 +92,7 @@ public abstract class AbstractCommandTest extends GrailsTest {
     	super.setUp();
     	
         //Ensure Java compliance level is set to something that supports generics
-        GrailsTest.setJava15Compliance();
+        GrailsTest.setJava16Compliance();
         
     	// Configuring Grails installs happens automatically (or it should!) but it runs
     	// in some Jobs, so it may take a while.
