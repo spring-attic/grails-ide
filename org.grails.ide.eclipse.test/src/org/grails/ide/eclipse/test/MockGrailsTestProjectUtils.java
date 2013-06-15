@@ -64,8 +64,8 @@ public class MockGrailsTestProjectUtils {
             //Ensure Java compliance level is set to something that supports generics
             @SuppressWarnings("rawtypes")
             Hashtable options = JavaCore.getDefaultOptions();
-            options.put(JavaCore.COMPILER_COMPLIANCE, "1.5");
-            options.put(JavaCore.COMPILER_SOURCE, "1.5");
+            options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
+            options.put(JavaCore.COMPILER_SOURCE, "1.6");
             JavaCore.setOptions(options);
         
             addGrailsNature(project);
