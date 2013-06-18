@@ -294,7 +294,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				for (File jarCandidate : files) {
 					if (jarCandidate.isFile()) {
 						String fileName = jarCandidate.getName();
-						if (fileName.startsWith("springloaded-core-") && fileName.endsWith(".jar")) {
+						if (fileName.startsWith("springloaded-core-") && fileName.endsWith(".jar") && fileName.indexOf("source")==-1) {
 							//Found a springloaded jar.
 							String versionString = fileName.substring(
 									"springloaded-core-".length(),
