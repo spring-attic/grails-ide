@@ -87,7 +87,13 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 //			addBootstrapJar(jars, new File(home, "lib/org.codehaus.groovy/groovy-all/jars"));
 			addBootstrapJar(jars, new File(home, "dist"));
 		}
-
+		if (jars.isEmpty()) {
+			//That's probably an issue. Rather than have this produce cryptic problems / errors much later.
+			//Throw an error now that includes 'home' dir. 
+			//May help diagnose problems like:
+			//http://forum.springsource.org/showthread.php?138848-Grails-2-2-2-problem-with-STS-2-9&p=449005#post449005
+			throw new Error("Couldn't find bootstrap classpath jars in Grails install at: '"+home+"'");
+		}
 		return jars.toArray(new File[jars.size()]);
 	}
 
@@ -192,18 +198,21 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	}
 
 	private void addBootstrapJar(Set<File> jars, File home) {
-		if (home.exists()) {
-			for (File file : home.listFiles()) {
-				String name = file.getName();
-				if (file.isDirectory()) {
-					addBootstrapJar(jars, file);
-				} else if (name.endsWith(".jar") 
-						&& (
-							name.startsWith("groovy-all") || name.startsWith("grails-bootstrap")
-						) && !(
-							name.endsWith("sources.jar") || name.endsWith("javadoc.jar")
-						)) {
-					jars.add(file);
+		if (home.isDirectory()) {
+			File[] files = home.listFiles();
+			if (files!=null) {
+				for (File file : home.listFiles()) {
+					String name = file.getName();
+					if (file.isDirectory()) {
+						addBootstrapJar(jars, file);
+					} else if (name.endsWith(".jar") 
+							&& (
+								name.startsWith("groovy-all") || name.startsWith("grails-bootstrap")
+							) && !(
+								name.endsWith("sources.jar") || name.endsWith("javadoc.jar")
+							)) {
+						jars.add(file);
+					}
 				}
 			}
 		}
