@@ -201,7 +201,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 		if (home.isDirectory()) {
 			File[] files = home.listFiles();
 			if (files!=null) {
-				for (File file : home.listFiles()) {
+				for (File file : files) {
 					String name = file.getName();
 					if (file.isDirectory()) {
 						addBootstrapJar(jars, file);
