@@ -62,7 +62,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_2_0 = new GrailsVersion("2.2.0");
 	public static final GrailsVersion V_2_2_1 = new GrailsVersion("2.2.1");
 	public static final GrailsVersion V_2_2_2 = new GrailsVersion("2.2.2");
-
+	public static final GrailsVersion V_2_2_3 = new GrailsVersion("2.2.3");
 	
 //	public static final GrailsVersion V_2_0_0_M1 = new GrailsVersion("2.0.0.M1");
 	public static final GrailsVersion V_2_0_0_M2 = new GrailsVersion("2.0.0.M2");
@@ -94,8 +94,8 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	// GrailsVersions
 	
 	public static GrailsVersion PREVIOUS_PREVIOUS = V_1_3_7;
-	public static GrailsVersion PREVIOUS = V_2_0_4; 
-	public static GrailsVersion MOST_RECENT = V_2_2_1;
+	public static GrailsVersion PREVIOUS = V_2_1_1; 
+	public static GrailsVersion MOST_RECENT = V_2_2_3;
 
 	private int[] numbers;
 	private String qualifier;
@@ -103,7 +103,6 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	private boolean parseError = false;
 	public static final GrailsVersion SMALLEST_SUPPORTED_VERSION = V_1_2;
 
-	
 	private URI downloadLocation = null;
 	
 	public GrailsVersion(String versionString) {
