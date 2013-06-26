@@ -96,8 +96,8 @@ public abstract class GrailsLaunchUtils {
 	 * @throws CoreException 
 	 */
 	public static void launch(IJavaProject javaProject, final String script) {
-		if (script!=null && (script.contains("run-app") || script.contains("run-war"))) {
-			launchRunApp(javaProject, script);
+		if (script!=null && (script.contains("run-app") || script.contains("run-war") || script.contains("console"))) {
+			launchNoTimeout(javaProject, script);
 			return;
 		}
 		//launch(javaProject, script, false);
@@ -147,7 +147,7 @@ public abstract class GrailsLaunchUtils {
 	 * 
 	 * @throws CoreException 
 	 */
-	private static void launchRunApp(final IJavaProject javaProject, final String script) {
+	private static void launchNoTimeout(final IJavaProject javaProject, final String script) {
 		final String title = "Launching "+javaProject.getElementName() + ": " + script;
 		new Job(title) {
 			@Override
