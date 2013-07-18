@@ -270,13 +270,19 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 	}
 
 	private static String windowsEscape(String argument) {
-		// There appears to be a bug(?)
-		// http://bugs.sun.com/view_bug.do?bug_id=6468220
-		// in Windows ProcessBuilder implementation that incorrectly
-		// escapes program arguments that contain both spaces and quotes.
-		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-			return winQuote(argument);
-		}
+		//Note: this code removed to fix bug: 
+		// https://issuetracker.springsource.com/browse/STS-3468
+		//
+		// I don't see any problems removing this code. Suspect that
+		// it only affects win XP but have not been able to verify.
+		
+//		// There appears to be a bug(?)
+//		// http://bugs.sun.com/view_bug.do?bug_id=6468220
+//		// in Windows ProcessBuilder implementation that incorrectly
+//		// escapes program arguments that contain both spaces and quotes.
+//		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+//			return winQuote(argument);
+//		}
 		return argument;
 	}
 
