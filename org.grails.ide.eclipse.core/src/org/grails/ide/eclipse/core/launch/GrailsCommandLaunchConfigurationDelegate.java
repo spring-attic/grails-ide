@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -38,6 +39,9 @@ import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+import org.osgi.framework.VersionRange;
 
 /**
  * LaunchConfigurationDelegate used by the {@link GrailsCommand} class. It
@@ -270,19 +274,29 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 	}
 
 	private static String windowsEscape(String argument) {
-		//Note: this code removed to fix bug: 
-		// https://issuetracker.springsource.com/browse/STS-3468
-		//
-		// I don't see any problems removing this code. Suspect that
-		// it only affects win XP but have not been able to verify.
-		
-//		// There appears to be a bug(?)
-//		// http://bugs.sun.com/view_bug.do?bug_id=6468220
-//		// in Windows ProcessBuilder implementation that incorrectly
-//		// escapes program arguments that contain both spaces and quotes.
-//		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-//			return winQuote(argument);
-//		}
+		// There appears to be a bug(?)
+		// http://bugs.sun.com/view_bug.do?bug_id=6468220
+		// in Windows ProcessBuilder implementation that incorrectly
+		// escapes program arguments that contain both spaces and quotes.
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+			//In Eclipse 4.3 the launching code in Eclipse itself has a similar workaround
+			// for the bug. If we apply our own fix also this creates problems:
+			// https://issuetracker.springsource.com/browse/STS-3468
+			
+			//To avoid we must check the version of the jdt.launching bundle where the
+			//fix resides. (In this method: org.eclipse.jdt.launching.AbstractVMRunner.quoteWindowsArgs(String[])
+			
+			Bundle jdtLaunching = Platform.getBundle("org.eclipse.jdt.launching");
+			if (jdtLaunching!=null) {
+				Version version = jdtLaunching.getVersion();
+				//The version of jdtLaunching with 4.3 eclipse is 3.7.0...
+				VersionRange newEnough = new VersionRange("3.7.0");
+				if (!newEnough.includes(version)) {
+					//not new enough means Eclipse doesn't have the fix so apply our fix.
+					return winQuote(argument);
+				}
+			}
+		}
 		return argument;
 	}
 
