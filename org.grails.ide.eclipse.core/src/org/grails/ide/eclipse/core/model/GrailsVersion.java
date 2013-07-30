@@ -63,6 +63,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_2_1 = new GrailsVersion("2.2.1");
 	public static final GrailsVersion V_2_2_2 = new GrailsVersion("2.2.2");
 	public static final GrailsVersion V_2_2_3 = new GrailsVersion("2.2.3");
+	public static final GrailsVersion V_2_2_4 = new GrailsVersion("2.2.4");
 	
 //	public static final GrailsVersion V_2_0_0_M1 = new GrailsVersion("2.0.0.M1");
 	public static final GrailsVersion V_2_0_0_M2 = new GrailsVersion("2.0.0.M2");
@@ -95,7 +96,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	public static GrailsVersion PREVIOUS_PREVIOUS = V_1_3_7;
 	public static GrailsVersion PREVIOUS = V_2_1_1; 
-	public static GrailsVersion MOST_RECENT = V_2_2_3;
+	public static GrailsVersion MOST_RECENT = V_2_2_4;
 
 	private int[] numbers;
 	private String qualifier;
