@@ -232,7 +232,7 @@
 		<dist.platform.id>juno</dist.platform.id>		
 		<dist.platform.version>4.2</dist.platform.version>		
 		<package.qualifierPrefix>e42</package.qualifierPrefix>
-		<version.weaving>1.0.200.I20120427-0800</version.weaving>
+		<version.weaving>1.0.200.I20130319-1000</version.weaving>
 	  </properties>
 	  <repositories>
 		<repository>
