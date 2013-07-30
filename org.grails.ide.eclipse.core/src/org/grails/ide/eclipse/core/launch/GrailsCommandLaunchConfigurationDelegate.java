@@ -41,7 +41,6 @@ import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
-import org.osgi.framework.VersionRange;
 
 /**
  * LaunchConfigurationDelegate used by the {@link GrailsCommand} class. It
@@ -278,7 +277,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		// http://bugs.sun.com/view_bug.do?bug_id=6468220
 		// in Windows ProcessBuilder implementation that incorrectly
 		// escapes program arguments that contain both spaces and quotes.
-		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+		//if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
 			//In Eclipse 4.3 the launching code in Eclipse itself has a similar workaround
 			// for the bug. If we apply our own fix also this creates problems:
 			// https://issuetracker.springsource.com/browse/STS-3468
@@ -290,13 +289,16 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 			if (jdtLaunching!=null) {
 				Version version = jdtLaunching.getVersion();
 				//The version of jdtLaunching with 4.3 eclipse is 3.7.0...
-				VersionRange newEnough = new VersionRange("3.7.0");
-				if (!newEnough.includes(version)) {
-					//not new enough means Eclipse doesn't have the fix so apply our fix.
+				Version newEnough = new Version("3.7.0");
+				if (newEnough.compareTo(version)<=0) {
+					//new enough means Eclipse already has the fix.
+					//MUST NOT apply our own fix
+				} else {
+					//Eclipse 4.2 or 3.7 doesn't have fix so apply ours.
 					return winQuote(argument);
 				}
 			}
-		}
+		//}
 		return argument;
 	}
 
