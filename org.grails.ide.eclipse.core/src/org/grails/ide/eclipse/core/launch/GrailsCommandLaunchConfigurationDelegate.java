@@ -277,7 +277,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 		// http://bugs.sun.com/view_bug.do?bug_id=6468220
 		// in Windows ProcessBuilder implementation that incorrectly
 		// escapes program arguments that contain both spaces and quotes.
-		//if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
 			//In Eclipse 4.3 the launching code in Eclipse itself has a similar workaround
 			// for the bug. If we apply our own fix also this creates problems:
 			// https://issuetracker.springsource.com/browse/STS-3468
@@ -298,7 +298,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 					return winQuote(argument);
 				}
 			}
-		//}
+		}
 		return argument;
 	}
 
