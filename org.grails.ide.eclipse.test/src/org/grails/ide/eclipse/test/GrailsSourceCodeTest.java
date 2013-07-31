@@ -112,9 +112,9 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	}
 	
 	public void testGrails20SourceAttachements() throws Exception {
-		// Diabled for now: not working in Grails 2.2.1 *and* Grails 2.2.2 and 2.2.3
+		// Disabled for now: not working in Grails 2.2.1 *and* Grails 2.2.2 and 2.2.3 and 2.2.4
 		// See http://jira.grails.org/browse/GRAILS-9940
-		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_3)>0) {
+		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_4)>0) {
 			try {
 				doTestType(GrailsVersion.MOST_RECENT, "org.springframework.uaa.client.UaaService", "@author Ben Alex");
 				fail("Source code already available beforehand? That's not a good test then!");
