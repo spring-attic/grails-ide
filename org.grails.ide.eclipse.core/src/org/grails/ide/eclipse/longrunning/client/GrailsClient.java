@@ -90,7 +90,8 @@ public class GrailsClient {
 	 * When this flag is set to true, the client will produce some debugging output onto system
 	 * out.
 	 */
-	private static final boolean DEBUG_CLIENT = true;
+	private static final boolean DEBUG_CLIENT = 
+		(""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
 
 	/**
 	 * Polling interval used to check for data coming from the process.
