@@ -112,7 +112,7 @@ public class GrailsTestUtilActivator implements BundleActivator {
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
 		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_3_0_SNAPSHOT;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_3_0_RC1;
 	}
 
 	private static void configureGrails22() {

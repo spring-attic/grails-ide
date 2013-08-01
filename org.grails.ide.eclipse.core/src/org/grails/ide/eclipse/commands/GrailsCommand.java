@@ -48,7 +48,9 @@ public class GrailsCommand {
 	 * Timeout value used for grails commands if the preference is not set in the
 	 * preferences page.
 	 */
-	public static final int DEFAULT_TIMEOUT = 60000;
+	public static final int DEFAULT_TIMEOUT = 180000; //bumped for Grails 2.3
+	                                                  // resolving dependencies some large stuff downloads
+	                                                  // and may take a while before it prints more progress info
 	
 	private String command;
 	private IProject project;

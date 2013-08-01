@@ -76,6 +76,8 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 
     public static final GrailsVersion V_2_3_ = new GrailsVersion("2.3"); //Any '2.3' version *including* milestones is 'greater' than this one
 	public static final GrailsVersion V_2_3_0 = new GrailsVersion("2.3.0");
+	public static final GrailsVersion V_2_3_0_RC1 = new GrailsVersion("2.3.0.RC1");
+
 	public static final GrailsVersion V_2_3_0_SNAPSHOT = new GrailsVersion("2.3.0.BUILD-SNAPSHOT", 
 			"http://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
     
@@ -327,7 +329,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	public boolean isSnapshot() {
 		if (!parseError && qualifier!=null) {
-			return qualifier.contains("SNAPSHOT");
+			return qualifier.contains("SNAPSHOT") || qualifier.contains("RC1");
 		}
 		return false;
 	}
