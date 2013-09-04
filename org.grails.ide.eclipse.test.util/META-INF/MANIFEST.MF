@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: STS Grails Test Related code to be shared between ui and core test plugins
 Bundle-SymbolicName: org.grails.ide.eclipse.test.util;singleton:=true
 Bundle-Version: 3.4.0.qualifier
-Bundle-Vendor: SpringSource
+Bundle-Vendor: GoPivotal, Inc.
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  org.eclipse.core.resources,

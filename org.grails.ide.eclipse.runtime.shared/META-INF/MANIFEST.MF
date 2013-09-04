@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Grails Extra Classpath Shared
 Bundle-SymbolicName: org.grails.ide.eclipse.runtime.shared
 Bundle-Version: 3.4.0.qualifier
-Bundle-Vendor: SpringSource
+Bundle-Vendor: GoPivotal, Inc.
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.grails.ide.eclipse.runtime.shared,
  org.grails.ide.eclipse.runtime.shared.longrunning
