@@ -25,9 +25,9 @@
      </pluginRepository>
   </pluginRepositories>
 
+<!--  convenient profile so user kdvolder can run 'deploy' build from his own machine
    <profiles>
 	   <profile>
-	      <!-- convenient profile so user kdvolder can run 'deploy' build from his own machine -->
 	      <id>kdvolder</id>
 	      <activation>
 	      	<file><exists>/home/kdvolder/s3.properties</exists></file>
@@ -56,7 +56,7 @@
 		  </build>
 	   </profile>
    </profiles>
-   
+ -->  
 
   <build>
     <plugins>
@@ -115,7 +115,8 @@
 								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
 								
 								<echo message="Uploading composite sites to s3"/>
-								<echo message="accessKey = ${accessKey}"/>					
+								<echo message="accessKey = ${accessKey}"/>
+								<echo message="dist.accessKet = ${dist.accessKey}"/>
 								<echo message="dist.path = ${dist.path}"/>
 								<echo message="dist.bucket = ${dist.bucket}"/>
 
