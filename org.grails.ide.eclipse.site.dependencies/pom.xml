@@ -25,10 +25,6 @@
      </pluginRepository>
   </pluginRepositories>
 
-   <properties>
-      <tycho-version>0.18.1</tycho-version>
-   </properties>
-   
    <profiles>
 	   <profile>
 	      <!-- convenient profile so user kdvolder can run 'deploy' build from his own machine -->
