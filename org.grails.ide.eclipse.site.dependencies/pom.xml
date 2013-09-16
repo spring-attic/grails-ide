@@ -115,6 +115,7 @@
 								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
 								
 								<echo message="Uploading composite sites to s3"/>
+								<echo message="accessKey = ${accessKey}"/>					
 								<echo message="dist.path = ${dist.path}"/>
 								<echo message="dist.bucket = ${dist.bucket}"/>
 
