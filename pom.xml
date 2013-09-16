@@ -50,6 +50,7 @@
 	<module>org.grails.ide.eclipse.groovy.debug.ui</module>
 	
 	<module>org.grails.ide.eclipse.site</module>
+	<module>org.grails.ide.eclipse.site.dependencies</module>
   </modules>
 
   <!-- Common Configuration -->
