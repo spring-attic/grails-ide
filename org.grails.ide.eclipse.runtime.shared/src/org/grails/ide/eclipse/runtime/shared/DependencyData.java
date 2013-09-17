@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012, 2013 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     VMWare, Inc. - initial API and implementation
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.grails.ide.eclipse.runtime.shared;
 
@@ -22,16 +22,22 @@ import java.util.Set;
  */
 public class DependencyData {
 
+	/**
+	 * For versions of Grails prior to 2.2 we don't determine the server port. This value is used instead.
+	 */
+	public static final int UNKNOWN_PORT = -1;
+	
 	private Set<String> sources = null;
 	private Set<String> dependencies = null;
 	private String pluginsDirectory = null;
 	private Set<String> pluginDescriptors = null;
 	private String workDir = null;
 	private String pluginClassesDirectory;
+	private int serverPort = 8080;
 
 	public DependencyData(Set<String> sources, Set<String> dependencies,
 			String workDir, String pluginsDirectory, Set<String> pluginDescriptors,
-			String pluginClassesDir) {
+			String pluginClassesDir, int serverPort) {
 		super();
 		this.sources = notNull(sources);
 		this.dependencies = notNull(dependencies);
@@ -39,6 +45,7 @@ public class DependencyData {
 		this.pluginsDirectory = pluginsDirectory;
 		this.pluginDescriptors = notNull(pluginDescriptors);
 		this.pluginClassesDirectory= pluginClassesDir;
+		this.serverPort = serverPort;
 	}
 
 	private static Set<String> notNull(Set<String> aSetOrNull) {
@@ -49,14 +56,16 @@ public class DependencyData {
 		}
 	}
 
-	public DependencyData(Set<File> pluginSourceFolders, Set<File> dependencies, File workDirFile, File pluginsDirectoryFile, Set<File> pluginXmlFiles, File pluginClassesDir) {
+	public DependencyData(Set<File> pluginSourceFolders, Set<File> dependencies, File workDirFile, 
+			File pluginsDirectoryFile, Set<File> pluginXmlFiles, File pluginClassesDir, int serverPort) {
 		this(
 				file2string(pluginSourceFolders), 
 				file2string(dependencies), 
 				file2string(workDirFile), 
 				file2string(pluginsDirectoryFile),
 				file2string(pluginXmlFiles),
-				file2string(pluginClassesDir)
+				file2string(pluginClassesDir),
+				serverPort
 		);
 	}
 
@@ -169,6 +178,8 @@ public class DependencyData {
 		return null;
 	}
 	
-	
+	public int getServerPort() {
+		return serverPort;
+	}
 
 }

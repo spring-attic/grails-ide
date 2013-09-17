@@ -214,7 +214,9 @@ public class GrailsBuildSettingsDependencyExtractor {
 				//pluginDescriptors
 				getPluginXmlFiles(),
 				//pluginClassesDir
-				getPluginClassesDir()
+				getPluginClassesDir(),
+				//serverPort
+				DependencyData.UNKNOWN_PORT
 		);
 	}
 

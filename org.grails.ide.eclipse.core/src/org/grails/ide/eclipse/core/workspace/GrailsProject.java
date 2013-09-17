@@ -19,7 +19,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
+import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
+import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.workspace.internal.GrailsProjectUtil;
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 
 
 /**
@@ -127,6 +130,15 @@ public class GrailsProject {
 	
 	public void setClassPath(GrailsClassPath rawClasspath, IProgressMonitor mon) throws JavaModelException {
 		getJavaProject().setRawClasspath(rawClasspath.toArray(), mon);
+	}
+
+
+	public int getServerPort() {
+		PerProjectDependencyDataCache data = GrailsCore.get().connect(project, PerProjectDependencyDataCache.class);
+		if (data!=null) {
+			return data.getData().getServerPort();
+		}
+		return DependencyData.UNKNOWN_PORT;
 	}
 	
 }

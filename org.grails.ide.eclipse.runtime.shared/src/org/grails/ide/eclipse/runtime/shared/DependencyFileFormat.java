@@ -60,6 +60,10 @@ public class DependencyFileFormat {
 			println(header);
 			println(entry);
 		}
+		
+		public void write(String header, int entry) throws IOException {
+			write(header, ""+entry);
+		}
 
 		public void close() {
 			try {
@@ -86,6 +90,7 @@ public class DependencyFileFormat {
 			out.flush();
 		}
 
+
 	}
 
 	public static void write(File file, DependencyData data) throws IOException {
@@ -98,6 +103,7 @@ public class DependencyFileFormat {
 			w.write("#plugin descriptors", data.getPluginDescriptors());
 			w.write("#plugins directory", data.getPluginsDirectory());
 			w.write("#plugin classes dir", data.getPluginClassesDirectory());
+			w.write("#port", data.getServerPort());
 		} finally {
 			if (w!=null) {
 				w.close();
@@ -167,6 +173,12 @@ public class DependencyFileFormat {
 			readHeader(expectHeader);
 			return readln();
 		}
+		
+		public int readInteger(String expectHeader) throws IOException {
+			readHeader(expectHeader);
+			String str = readln();
+			return Integer.parseInt(str);
+		}
 
 		public void close() {
 			try {
@@ -187,7 +199,9 @@ public class DependencyFileFormat {
 			Set<String> pluginXmlFiles = r.readSet("#plugin descriptors");
 			String pluginsDirectoryFile = r.readString("#plugins directory");
 			String pluginClassesDir = r.readString("#plugin classes dir");
-			return new DependencyData(pluginSourceFolders, dependencies, workDirFile, pluginsDirectoryFile, pluginXmlFiles, pluginClassesDir);
+			int serverPort = r.readInteger("#port");
+			return new DependencyData(pluginSourceFolders, dependencies, workDirFile, pluginsDirectoryFile, 
+					pluginXmlFiles, pluginClassesDir, serverPort);
 		} finally {
 			if (r!=null) {
 				r.close();

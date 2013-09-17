@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.codehaus.groovy.grails.cli.api.BaseSettingsApi;
+import org.codehaus.groovy.grails.cli.support.BuildSettingsAware;
 import org.codehaus.groovy.grails.io.support.Resource;
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils;
 import org.grails.ide.eclipse.runtime.shared.DependencyData;
@@ -41,6 +43,7 @@ import org.grails.ide.eclipse.runtime.shared.DependencyFileFormat;
 public class GrailsBuildSettingsDependencyExtractor {
 
 	private BuildSettings settings = null;
+	private BaseSettingsApi settingsApi = null;
 	
 	private boolean initialized = false;
 
@@ -54,6 +57,7 @@ public class GrailsBuildSettingsDependencyExtractor {
 	
 	public GrailsBuildSettingsDependencyExtractor(BuildSettings settings) {
 		this.settings = settings;
+		this.settingsApi = new BaseSettingsApi(settings, false);
 	}
 
 	private File getWorkDir() {
@@ -215,8 +219,19 @@ public class GrailsBuildSettingsDependencyExtractor {
 				//pluginDescriptors
 				getPluginXmlFiles(),
 				//pluginClassesDir
-				getPluginClassesDir()
+				getPluginClassesDir(),
+				//server port
+				getServerPort()
 		);
 	}
 
+	private int getServerPort() {
+		try {
+			return settingsApi.getServerPort();
+		} catch (Throwable e) {
+			return 8080;
+		}
+	}
+
+	
 }
