@@ -205,7 +205,8 @@ public class DependencyFileFormatTest extends TestCase {
 				workDirFile, 
 				pluginsDirectoryFile, 
 				toSet(pluginXmlFiles),
-				pluginClassesDir
+				pluginClassesDir,
+				DependencyData.UNKNOWN_PORT
 		);
 	}
 
