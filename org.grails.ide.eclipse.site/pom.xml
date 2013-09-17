@@ -51,8 +51,6 @@
 							<target>
 
 								<echo message="Uploading main update site to s3..."/>
-								<echo message="accessKey = ${accessKey}"/>
-								<echo message="dist.accessKet = ${dist.accessKey}"/>
 
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />

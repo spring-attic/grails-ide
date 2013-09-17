@@ -25,13 +25,42 @@
      </pluginRepository>
   </pluginRepositories>
 
-<!--  convenient profile so user kdvolder can run 'deploy' build from his own machine
+<!--  convenient profile so user kdvolder can run 'deploy' build from his own machine -->
    <profiles>
+		<profile>
+		  <id>bamboo-s3</id>
+		  <activation>
+		     <property><name>env.bamboo_s3_properties</name></property>
+		  </activation>
+		        <build>
+		       <plugins>
+		         <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>properties-maven-plugin</artifactId>
+		        <version>1.0-alpha-2</version>
+		        <executions>
+		          <execution>
+			        <phase>initialize</phase>
+			        <goals>
+			          <goal>read-project-properties</goal>
+			        </goals>
+			        <configuration>
+			          <quiet>true</quiet>
+			          <files>
+				        <file>${env.bamboo_s3_properties}</file>
+			          </files>
+			        </configuration>
+		          </execution>
+		        </executions>
+		         </plugin>
+		       </plugins>
+		     </build>
+		</profile>
 	   <profile>
-	      <id>kdvolder</id>
-	      <activation>
-	      	<file><exists>/home/kdvolder/s3.properties</exists></file>
-	      </activation>
+	      <id>local-s3</id>
+		  <activation>
+		     <file><exists>${env.HOME}/s3.properties</exists></file>
+		  </activation>
 		  <build>
 		    <plugins>
 		      <plugin>
@@ -56,7 +85,6 @@
 		  </build>
 	   </profile>
    </profiles>
- -->  
 
   <build>
     <plugins>
@@ -115,8 +143,6 @@
 								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
 								
 								<echo message="Uploading composite sites to s3"/>
-								<echo message="accessKey = ${accessKey}"/>
-								<echo message="dist.accessKet = ${dist.accessKey}"/>
 								<echo message="dist.path = ${dist.path}"/>
 								<echo message="dist.bucket = ${dist.bucket}"/>
 
