@@ -156,9 +156,13 @@ public class AllGrailsTests {
         			suite.addTestSuite(LongRunningGrailsTest.class);
         		}
         		suite.addTestSuite(GrailsCommandWizardExpressionTest.class);
-        		suite.addTestSuite(PluginInstallerTests.class);
-// Next test disabled: see https://issuetracker.springsource.com/browse/STS-3266
-//        		suite.addTestSuite(ExtraPluginInstallerTests.class);
+        		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_3_)<0) {
+        			//These tests don't work after Grails 2.3 becuase install plugin command no longer supported
+        			// in grails.
+        			suite.addTestSuite(PluginInstallerTests.class);
+        			// Next test disabled: see https://issuetracker.springsource.com/browse/STS-3266
+//            		suite.addTestSuite(ExtraPluginInstallerTests.class);
+        		}
         		suite.addTest(AllGrailsRefactoringTests.suite());
         		suite.addTestSuite(GrailsSourceCodeTest.class);
         		suite.addTestSuite(GSPHyperlinkTests.class);
