@@ -197,17 +197,14 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 	 */
 	private void assertBareBonesProjectUserPluginSourceFolders(
 			GrailsVersion version) throws JavaModelException {
-//		if (GrailsVersion.BUILDSNAPHOT.equals(version)) {
-//			//Temporarily replaces this, some problem installing feeds plugin presently so test project is
-//			//a bit different in the build snapshot version
-//			assertPluginSourceFolder(project, "spring-security-core-1.1.3", "grails-app", "conf");
-//			assertPluginSourceFolder(project, "spring-security-core-1.1.3", "src", "java");
-//			assertPluginSourceFolder(project, "spring-security-core-1.1.3", "src", "groovy");
-//		} else {
-			assertPluginSourceFolder(project, "feeds-1.5", "grails-app", "taglib");
-			assertPluginSourceFolder(project, "feeds-1.5", "grails-app", "i18n");
-			assertPluginSourceFolder(project, "feeds-1.5", "src", "groovy");
-//		}
+		String feedsVersion;
+		if (GrailsVersion.V_2_3_.compareTo(version)<=0) {
+			feedsVersion = "1.6";
+		} else {
+			feedsVersion = "1.5";
+		}
+		assertPluginSourceFolder(project, "feeds-"+feedsVersion, "grails-app", "taglib");
+		assertPluginSourceFolder(project, "feeds-"+feedsVersion, "src", "groovy");
 	}
 
 	/**
