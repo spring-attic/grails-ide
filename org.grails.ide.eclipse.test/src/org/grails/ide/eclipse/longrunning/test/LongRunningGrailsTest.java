@@ -97,13 +97,15 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		//GrailsProcessManager.getInstance().shutDown();
 		//GrailsClient.DEBUG_PROCESS = "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005";
 
+		String testPostFix = (GrailsVersion.V_2_3_.compareTo(GrailsVersion.getEclipseGrailsVersion(proj))<=0)
+				? "Spec" : "Tests";
 		expectedInteraction(
 				new QuestionAnswer(
 						"Bong.groovy already exists. Overwrite?[y,n]",
 						"y"
 				),
 				new QuestionAnswer(
-						"BongTests.groovy already exists. Overwrite?[y,n]",
+						"Bong"+testPostFix+".groovy already exists. Overwrite?[y,n]",
 						"y"
 				)
 		);
@@ -124,7 +126,7 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 						"y"
 				),
 				new QuestionAnswer(
-						"BongTests.groovy already exists. Overwrite?[y,n]",
+						"Bong"+testPostFix+".groovy already exists. Overwrite?[y,n]",
 						"y"
 				)
 		);
