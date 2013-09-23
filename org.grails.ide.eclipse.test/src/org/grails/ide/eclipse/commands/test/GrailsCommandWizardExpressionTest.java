@@ -210,6 +210,7 @@ public class GrailsCommandWizardExpressionTest extends
 	public void test_GENERATEALL_expression() throws Exception {
 	    project.getFile("grails-app/controllers/bart/StoreController.groovy").delete(true, null);
 	    project.getFile("test/unit/bart/StoreControllerTests.groovy").delete(true, null);
+	    project.getFile("test/unit/bart/StoreControllerSpec.groovy").delete(true, null);
 	    project.getFolder("grails-app/views/store").delete(true, null);
 		IFrameworkCommand instance = createCommandInstance(GrailsCommandFactory.GENERATE_ALL);
 		assertCommandDefinition(instance, "generate-all", 1);
@@ -223,6 +224,7 @@ public class GrailsCommandWizardExpressionTest extends
 
 	public void test_GENERATECONTROLLER_expression() throws Exception {
 	    project.getFile("grails-app/controllers/bart/StoreController.groovy").delete(true, null);
+	    project.getFile("test/unit/bart/StoreControllerTests.groovy").delete(true, null);
 	    project.getFile("test/unit/bart/StoreControllerTests.groovy").delete(true, null);
 		IFrameworkCommand instance = createCommandInstance(GrailsCommandFactory.GENERATE_CONTROLLER);
 		assertCommandDefinition(instance, "generate-controller", 1);
