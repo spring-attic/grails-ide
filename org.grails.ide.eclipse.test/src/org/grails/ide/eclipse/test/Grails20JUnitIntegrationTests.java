@@ -42,7 +42,6 @@ import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.osgi.framework.Bundle;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
 import org.grails.ide.eclipse.test.util.AbstractGrailsJUnitIntegrationsTest;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 
@@ -65,6 +64,7 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 	private String domainClassName; // name of the single domain class present in the 'base-line' test application.
 	private String testDomainClassName; // name of the test class containing tests for the domain class.
 	private String domainClassBaseName;
+	private String generatedTestMethodName;
 
 	private static boolean domainClassCreated = false;
 	
@@ -91,7 +91,37 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 			domainClassCreated = true;
 		}
 		
-		testDomainClassName = domainClassName + "Tests";
+		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_3_)>=0) {
+			testDomainClassName = domainClassName + "Spec";
+			generatedTestMethodName = "test something";
+			//Replace generated 2.3.0 spock test with a test that actually has some test code in it.
+			createResource(project, "test/unit/grails20junitintegrationtests/SongSpec.groovy", 
+					"package grails20junitintegrationtests\n" + 
+					"\n" + 
+					"import grails.test.mixin.TestFor\n" + 
+					"import spock.lang.Specification\n" + 
+					"\n" + 
+					"/**\n" + 
+					" * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions\n" + 
+					" */\n" + 
+					"@TestFor(Song)\n" + 
+					"class SongSpec extends Specification {\n" + 
+					"\n" + 
+					"    def setup() {\n" + 
+					"    }\n" + 
+					"\n" + 
+					"    def cleanup() {\n" + 
+					"    }\n" + 
+					"\n" + 
+					"    void \"test something\"() {\n" + 
+					"		expect: \"Implement me\"==\"not implemented\"\n" + 
+					"    }\n" + 
+					"}\n"
+			);
+		} else {
+			testDomainClassName = domainClassName + "Tests";
+			generatedTestMethodName = "testSomething";
+		}
 	}
 	
 	@Override
@@ -385,7 +415,7 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 		
 		URLClassLoader classLoader = getRuntimeClassLoader(javaProject);
 		Class testClass = Class.forName(testDomainClassName, false, classLoader);
-		Method m = getMethod(testClass, "testSomething"); 
+		Method m = getMethod(testClass, generatedTestMethodName); 
 		assertAnnotation(m, "org.junit.Test");
 	}
 
@@ -396,7 +426,7 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 	 */
 	public void testSimpleRun() throws Exception {
 		TestRunSession session = runAsJUnit(javaProject);
-		assertTestFailure(session, "Implement me", testDomainClassName, "testSomething");
+		assertTestFailure(session, "Implement me", testDomainClassName, generatedTestMethodName);
 		
 		//Also check the numbers of test run, failed etc.
 		assertEquals(1, session.getStartedCount());
