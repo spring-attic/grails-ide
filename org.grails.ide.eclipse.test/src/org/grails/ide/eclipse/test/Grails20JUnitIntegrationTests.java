@@ -700,6 +700,9 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 			StsTestUtil.waitForAutoBuild();
 			StsTestUtil.assertNoErrors(project);
 
+			//Using the locally created one instead of the generated one (which is a Spock test for Grails 2.3).
+			String testDomainClassName = packageName+"."+domainClassBaseName+"Tests";
+			
 			//Is it a test?
 			IType type = javaProject.findType(testDomainClassName);
 			ITestFinder testFinder = getJUnit4TestFinder();
@@ -708,9 +711,19 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 			//Can we find the test?
 			HashSet<Object> result = new HashSet<Object>();
 			testFinder.findTestsInContainer(javaProject, result, new NullProgressMonitor());
-			assertElements(result, 
-					javaProject.findType(testDomainClassName)
-					);
+			int numTests;
+			if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_3_)>=0) {
+				assertElements(result, 
+						javaProject.findType(testDomainClassName),    
+						javaProject.findType(this.testDomainClassName) //generated 'Spec' test in 2.3
+				);
+				numTests = 2;
+			} else {
+				numTests = 1;
+				assertElements(result, 
+						javaProject.findType(testDomainClassName)
+				);
+			}
 
 			//Did the transform run?
 			URLClassLoader classLoader = getRuntimeClassLoader(javaProject);
@@ -724,10 +737,9 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 			assertTestFailure(session, "Testing JUnit3 compatibility", testDomainClassName, "testSomething");
 
 			//Also check the numbers of test run, failed etc.
-			assertEquals(1, session.getStartedCount());
-			assertEquals(0, session.getErrorCount());
-			assertEquals(1, session.getFailureCount());
-			assertEquals(1, session.getTotalCount());
+			assertEquals(numTests, session.getStartedCount());
+			assertEquals(numTests, session.getFailureCount() + session.getErrorCount());
+			assertEquals(numTests, session.getTotalCount());
 		} finally {
 //			Grails20TestSupport.DEBUG = false;
 		}

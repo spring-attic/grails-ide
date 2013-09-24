@@ -363,13 +363,18 @@ public class GrailsTest extends TestCase {
 	protected void tmpReplaceResource(final IProject project, final String path, String newContents) throws IOException, CoreException {
 		final IFile file = project.getFile(new Path(path));
 		File realFile = file.getLocation().toFile();
-		assertTrue(file.exists());
-		final byte[] oldContents = getBytesFromFile(realFile);
+		final byte[] oldContents = file.exists() ? getBytesFromFile(realFile) : null;
 		createResource(project, path, newContents);
 		tearDownActions.add(new TearDownAction() {
 			@Override
 			public void doit() throws CoreException {
-				createResource(project, path, new String(oldContents));
+				if (oldContents!=null) {
+					//File existed before:
+					createResource(project, path, new String(oldContents));
+				} else {
+					//File didn't exist before:
+					file.delete(true, new NullProgressMonitor());
+				}
 			}
 		});
 	}
