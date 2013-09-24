@@ -118,6 +118,8 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 					"    }\n" + 
 					"}\n"
 			);
+			//Ensure project gets built with new SongSpec class.
+			StsTestUtil.assertNoErrors(project);
 		} else {
 			testDomainClassName = domainClassName + "Tests";
 			generatedTestMethodName = "testSomething";
@@ -413,9 +415,29 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 		//byte code... We do this by creating a URLClassLoader from the projects resolved runtime classpath and then loading
 		//up the test class.
 		
+		//This test only applies to 'regular' tests with the @TestFor annotation on the class. 
+		// It doesn't apply to the spock test generated in Grails 2.3 so we create a old style test
+		// here to verify this still works.
+		
+		createTmpResource(project, "test/unit/"+packageName+"/FoobarTests.groovy", 
+				"package grails20junitintegrationtests\n" + 
+				"\n" + 
+				"import grails.test.mixin.*\n" + 
+				"\n" + 
+				"@TestFor("+domainClassBaseName+")\n" + 
+				"class FoobarTests {\n" + 
+				"\n" + 
+				"	void testThisAndThat() {\n" + 
+				"		assertEquals 4, 4\n" + 
+				"	}\n" + 
+				"	\n" + 
+				"}");
+		//Build project is required for the new code to be compiled by Eclipse:
+		StsTestUtil.assertNoErrors(project);
+		
 		URLClassLoader classLoader = getRuntimeClassLoader(javaProject);
-		Class testClass = Class.forName(testDomainClassName, false, classLoader);
-		Method m = getMethod(testClass, generatedTestMethodName); 
+		Class testClass = Class.forName(packageName+".FoobarTests", false, classLoader);
+		Method m = getMethod(testClass, "testThisAndThat"); 
 		assertAnnotation(m, "org.junit.Test");
 	}
 
