@@ -71,14 +71,18 @@ public class PerProjectTypeCache implements IGrailsProjectInfo {
     public void projectChanged(GrailsElementKind[] changeKinds,
             IResourceDelta change) {
         synchronized (GrailsCore.get().getLockForProject(project)) {
-        	boolean foundRelevantChange = false;
-        	for (GrailsElementKind changeKind : changeKinds) {
-        		if (changeKind == GrailsElementKind.PROJECT || 
-        				changeKind == GrailsElementKind.CLASSPATH) {
-        			foundRelevantChange = true;
-        			break;
-        		}
-            }
+        	boolean foundRelevantChange = changeKinds.length>0;
+        	//TODO: might be more precise than the code above, but the commented code below is buggy: 
+        	//  it misses the creation of new types and packages and that
+        	//  leads to problems with those types and packages not being resolvable
+        	//  from some of the grails support infrastucture because of cache staleness.
+//        	for (GrailsElementKind changeKind : changeKinds) {
+//        		if (changeKind == GrailsElementKind.PROJECT || 
+//        				changeKind == GrailsElementKind.CLASSPATH) {
+//        			foundRelevantChange = true;
+//        			break;
+//        		}
+//            }
         	if (foundRelevantChange) {
         		classNodeCache.clear();
         		// force resetting of the snippet compiler
