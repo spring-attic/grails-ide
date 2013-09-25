@@ -41,6 +41,7 @@ import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.launch.LaunchListenerManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
+import org.grails.ide.eclipse.longrunning.LongRunningProcessGrailsExecutor;
 import org.grails.ide.eclipse.test.GrailsTestsActivator;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
@@ -159,6 +160,10 @@ public abstract class AbstractCommandTest extends GrailsTest {
 					IProject existing = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 					if (existing.exists()) {
 						existing.delete(true, true, new NullProgressMonitor());
+						//Added as a workaround for: https://issuetracker.springsource.com/browse/STS-3575
+						// when a test fixture is imported leaving the longrunning process running causes
+						//test failures.
+						LongRunningProcessGrailsExecutor.shutDownIfNeeded();
 					}
 					// Create project from zip file
 					IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
