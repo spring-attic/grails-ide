@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.codehaus.jdt.groovy.model.GroovyNature;
 import org.eclipse.core.resources.IFile;
@@ -85,7 +87,7 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 	 * @param actual the actual value
 	 */
 	public static void assertEqualLines(String expected, String actual) {
-		assertEquals("", expected.trim(), actual.trim());
+		assertEquals("", lineStrip(expected.trim()), lineStrip(actual.trim()));
 	}
 
 //	/**
@@ -103,6 +105,16 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 ////		String actual2= (actualLines == null ? null : Strings.concatenate(actualLines, "\n"));
 //		assertEquals(message, expected., actual2);
 //	}
+
+	/** 
+	 * Remove trailing white space from all lines in 'content'.
+	 * Also removes lines that only contain whitespace.
+	 **/
+	private static String lineStrip(String content) {
+		Pattern trailingWhiteSpace = Pattern.compile("(\\s)+$", Pattern.MULTILINE);
+		Matcher matcher = trailingWhiteSpace.matcher(content);
+		return matcher.replaceAll("");
+	}
 
 	protected Change undo = null; //Will be set by 'performRefactoring' if an undo is available.
 
