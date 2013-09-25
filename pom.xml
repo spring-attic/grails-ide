@@ -118,7 +118,7 @@
     <test.useUIThread>true</test.useUIThread>
     <test.skip>${maven.test.skip}</test.skip>
 
-    <tycho-version>0.15.0</tycho-version>
+    <tycho-version>0.18.1</tycho-version>
 
     <maven.test.error.ignore>true</maven.test.error.ignore>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -274,7 +274,7 @@
       <id>e43</id>
 	  <properties>
 		<p2.repository.name>SpringSource Tool Suite for Eclipse 4.3</p2.repository.name>
-		<dist.target>e4.2</dist.target>
+		<dist.target>e4.3</dist.target>
 		<dist.platform.name>Kepler</dist.platform.name>
 		<dist.platform.id>kepler</dist.platform.id>		
 		<dist.platform.version>4.3</dist.platform.version>		
@@ -301,7 +301,7 @@
 		<repository>
 		  <id>ajdt</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/tools/ajdt/43/milestone/</url>
+		  <url>http://download.eclipse.org/tools/ajdt/43/update</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
