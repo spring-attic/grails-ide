@@ -227,7 +227,7 @@
     <profile>
       <id>e42</id>
 	  <properties>
-		<p2.repository.name>SpringSource Tool Suite for Eclipse 3.7</p2.repository.name>
+		<p2.repository.name>SpringSource Tool Suite for Eclipse 4.2</p2.repository.name>
 		<dist.target>e4.2</dist.target>
 		<dist.platform.name>Juno</dist.platform.name>
 		<dist.platform.id>juno</dist.platform.id>		
@@ -266,6 +266,52 @@
 		  <id>groovy</id>
 		  <layout>p2</layout>
 		  <url>http://dist.springsource.org/snapshot/GRECLIPSE/e4.2/</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
+      <id>e43</id>
+	  <properties>
+		<p2.repository.name>SpringSource Tool Suite for Eclipse 4.3</p2.repository.name>
+		<dist.target>e4.2</dist.target>
+		<dist.platform.name>Kepler</dist.platform.name>
+		<dist.platform.id>kepler</dist.platform.id>		
+		<dist.platform.version>4.3</dist.platform.version>		
+		<package.qualifierPrefix>e43</package.qualifierPrefix>
+		<version.weaving>1.0.200.I20130319-1000</version.weaving>
+	  </properties>
+	  <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.3/</url>
+		</repository>
+		<!-- this does not make sense, but without this site tycho can't find the 'SWT fragment bundles' -->
+		<!-- <repository>
+			<id>indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo/</url>
+		</repository> -->
+		<repository>
+		  <id>juno</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/kepler/</url>
+		</repository>
+		<repository>
+		  <id>ajdt</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/tools/ajdt/43/milestone/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
+		</repository>
+		<repository>
+		  <id>groovy</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.org/snapshot/GRECLIPSE/e4.3/</url>
 		</repository>
 	  </repositories>
     </profile>
