@@ -228,6 +228,11 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 			//Don't run this for snapshot builds. Too much work to create test projects for moving target.
 			return;
 		}
+		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0)) {
+			//test failing because of bug in grails: 
+			//http://jira.grails.org/browse/GRAILS-10531
+			return;
+		}
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 
 		final URL zipFileURL = getProjectZip("bareBonesProject", GrailsVersion.PREVIOUS);
