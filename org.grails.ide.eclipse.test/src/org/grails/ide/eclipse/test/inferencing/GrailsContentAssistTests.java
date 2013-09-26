@@ -180,13 +180,16 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         int offset = contents.indexOf(str)+str.length();
         String expected;
         
-        GrailsVersion version = GrailsVersion.getDefault();
-        if (GrailsVersion.V_2_1_0.compareTo(version)<=0) {
+        // seems to be a bit random whether the result has a closure as a last param or not
+        // so try both ways
+        try {
             expected = contents.replaceFirst(strRegex, "firstQuery.list(parameterTypes) {");
-        } else {
+            checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "list", false);
+        } catch (AssertionFailedError e) {
             expected = contents.replaceFirst(strRegex, "firstQuery.list(parameterTypes)");
+            checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "list", false);
         }
-        checkProposalApplication("MyDomain", contents, GrailsElementKind.DOMAIN_CLASS, expected, offset, "list", false);
+        
         // seems to be a bit random whether the result is 'null' or 'this'
         // so try both ways
         try {
