@@ -111,7 +111,8 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 		doTestType(GrailsVersion.MOST_RECENT, "grails.util.GrailsNameUtils", "Licensed under the Apache License");
 	}
 	
-	public void testGrails20SourceAttachements() throws Exception {
+	//permanently disabled (maybe re-enable if we hear it actually got fixed)
+	public void _testGrails20SourceAttachements() throws Exception {
 		// Disabled for now: not working in Grails 2.2.1 *and* Grails 2.2.2 and 2.2.3 and 2.2.4
 		// See http://jira.grails.org/browse/GRAILS-9940
 		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_4)>0) {
