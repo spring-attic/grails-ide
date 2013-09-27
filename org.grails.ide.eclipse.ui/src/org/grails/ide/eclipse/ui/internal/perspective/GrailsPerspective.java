@@ -79,10 +79,6 @@ public class GrailsPerspective implements IPerspectiveFactory {
 		layout.addActionSet(JavaUI.ID_ELEMENT_CREATION_ACTION_SET);
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
-		// actions - add AJDT actions
-//		layout.addActionSet("ajnavigation");
-//		layout.addActionSet("ajelementCreation");
-
 		// views - java
 		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
 		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);
