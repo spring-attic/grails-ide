@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.grails.ide.eclipse.editor.gsp;singleton:=true
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.5.0.qualifier
 Bundle-Activator: org.grails.ide.eclipse.editor.gsp.GrailsGspEditorActivator
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.ui,

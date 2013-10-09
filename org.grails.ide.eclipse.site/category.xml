@@ -17,35 +17,35 @@
 
 	<!-- UAA -->
 	<feature
-		url="org.springframework.ide.eclipse.uaa.feature_3.4.0.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature" version="3.4.0.qualifier">
+		url="org.springframework.ide.eclipse.uaa.feature_3.5.0.qualifier.jar"
+		id="org.springframework.ide.eclipse.uaa.feature" version="3.5.0.qualifier">
 		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
 	
 	<!-- Dashboard -->
 	<feature 
-		url="features/org.springsource.ide.eclipse.dashboard_3.4.0.qualifier.jar" 
-		id="org.springsource.ide.eclipse.dashboard" version="3.4.0.qualifier">
+		url="features/org.springsource.ide.eclipse.dashboard_3.5.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.dashboard" version="3.5.0.qualifier">
 		<category name="Core / Grails IDE for Eclipse"/>
 	</feature>
 
 	<feature 
-		url="features/org.springsource.ide.eclipse.commons_3.4.0.qualifier.jar" 
-		id="org.springsource.ide.eclipse.commons" version="3.4.0.qualifier">
+		url="features/org.springsource.ide.eclipse.commons_3.5.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.commons" version="3.5.0.qualifier">
 	</feature>
 
 	<!-- Grails IDE features -->
 	<feature
-		url="org.grails.ide.eclipse_3.4.0.qualifier.jar"
-		id="org.grails.ide.eclipse" version="3.4.0.qualifier">
+		url="org.grails.ide.eclipse_3.5.0.qualifier.jar"
+		id="org.grails.ide.eclipse" version="3.5.0.qualifier">
 		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
 	
 	<!-- Test Feature(s) (uncategorised) -->
     <feature 
-    	url="features/org.grails.ide.eclipse.tests_3.4.0.qualifier.jar" 
+    	url="features/org.grails.ide.eclipse.tests_3.5.0.qualifier.jar" 
     	id="org.grails.ide.eclipse.tests" 
-    	version="3.4.0.qualifier">
+    	version="3.5.0.qualifier">
     </feature>
 
 	<!-- third-party dependencies -->
