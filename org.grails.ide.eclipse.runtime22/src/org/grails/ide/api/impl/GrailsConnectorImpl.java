@@ -148,7 +148,11 @@ public class GrailsConnectorImpl implements GrailsConnector {
 		ReflectionHacks.GrailsConsole_setInstance(console);
 		CommandLine command =  parser.parseString(cmdString);
 		if (command.hasOption(CommandLine.REFRESH_DEPENDENCIES_ARGUMENT)) {
-			buildSettings = null;  //force complete(?) reinitialization
+			if (buildSettings!=null) {
+				buildSettings.setModified(true);
+			}
+//			buildSettings.setIn
+			//buildSettings = null;  //force complete(?) reinitialization
 		}
 		ensureInitialized();
 		scriptRunner.setInteractive(!command.hasOption(CommandLine.NON_INTERACTIVE_ARGUMENT));
@@ -156,6 +160,7 @@ public class GrailsConnectorImpl implements GrailsConnector {
 		return scriptRunner.executeScriptWithCaching(command);
 	}
 
+	
 	public BuildSettings getBuildSettings() {
 		return buildSettings;
 	}
