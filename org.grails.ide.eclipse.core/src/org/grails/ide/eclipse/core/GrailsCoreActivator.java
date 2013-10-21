@@ -226,8 +226,17 @@ public class GrailsCoreActivator extends Plugin {
 	public static void testMode(boolean onBuildSite) {
 		// test flag used by Grails stuff to know if we are in test mode.
 		testMode = true;
+		useFakeUserHome = true;
 		isOnBuildSite = onBuildSite;
 	}
+	
+	public static void testMode(boolean onBuildSite, boolean fakeUserHome) {
+		// test flag used by Grails stuff to know if we are in test mode.
+		testMode = true;
+		isOnBuildSite = onBuildSite;
+		useFakeUserHome = fakeUserHome;
+	}
+	
 
 	public static void trace(String message) {
 		if (logger != null) {
@@ -253,6 +262,8 @@ public class GrailsCoreActivator extends Plugin {
 	 * During testing, we use a 'fake' home for grails command execution to avoid state sharing with concurrent test builds.
 	 */
 	private File fakeUserHome;
+	private static boolean useFakeUserHome = false;
+	
     public static final String GRAILS_RESOURCES_PLUGIN_ID = "org.grails.ide.eclipse.resources";
 
 	public void addGrailsCommandListener(IGrailsCommandListener listener) {
@@ -356,7 +367,7 @@ public class GrailsCoreActivator extends Plugin {
 	 * Get the 'fake' 'user.home' used by grails commands during testing.
 	 */
 	public File getUserHome() {
-		if (!testMode) {
+		if (!useFakeUserHome) {
 			return new File(System.getProperty("user.home")); 
 		} else {
 			try {
