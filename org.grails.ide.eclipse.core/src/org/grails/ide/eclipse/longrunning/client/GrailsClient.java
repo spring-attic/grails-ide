@@ -84,14 +84,18 @@ public class GrailsClient {
 	 * or vice versa onto System.out.
 	 */
 	private static final boolean DEBUG_PROTOCOL =
-			(""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
+			(""+Platform.getLocation()).contains("kdvolder") || 
+			(""+Platform.getLocation()).contains("bamboo") ||
+			(""+Platform.getLocation()).contains("hudson");
 	
 	/**
 	 * When this flag is set to true, the client will produce some debugging output onto system
 	 * out.
 	 */
 	private static final boolean DEBUG_CLIENT = 
-		(""+Platform.getLocation()).contains("kdvolder") || (""+Platform.getLocation()).contains("bamboo");
+			(""+Platform.getLocation()).contains("kdvolder") || 
+			(""+Platform.getLocation()).contains("bamboo") ||
+			(""+Platform.getLocation()).contains("hudson");
 
 	/**
 	 * Polling interval used to check for data coming from the process.
