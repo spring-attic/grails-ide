@@ -279,7 +279,13 @@ public class SynchLaunch {
 						"\n" +
 						"See menu Windows >> Preferences >> Grails >> Launch";
 			} else if (e!=null) {
-				shortSummary = "Command terminated with an exception: "+e+" (see details for partial output)";
+				String exceptionText = e.toString();
+				//Avoid very long error messages in 'short sumary' because it will be blow up the popup error dialog
+				if (exceptionText.length()<200) {
+					shortSummary = "Command terminated with an exception: "+e+" (see details for partial output)";
+				} else {
+					shortSummary = "Command terminated with an exception: "+e.getClass().getName()+" (see details for partial output)";
+				}
 			} else {
 				shortSummary = "Command terminated with an error code (see details for output)";
 			}
