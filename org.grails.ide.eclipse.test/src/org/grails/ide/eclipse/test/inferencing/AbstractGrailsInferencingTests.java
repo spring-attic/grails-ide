@@ -8,10 +8,12 @@
 package org.grails.ide.eclipse.test.inferencing;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.internal.jobs.JobManager;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -33,7 +35,9 @@ import org.grails.ide.eclipse.editor.groovy.elements.GrailsProject;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectServiceCache;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.util.GrailsTest;
+import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 
 /**
@@ -324,6 +328,19 @@ public abstract class AbstractGrailsInferencingTests extends
     @Override
     protected void setUp() throws Exception {
         GrailsProjectVersionFixer.testMode();
+        
+//        Map<String, String> e = System.getenv();
+//      for (String var : e.keySet()) {
+//			System.out.println(var + " = "+e.get(var));
+//		}
+   
+        //Warning Race condtion: if the grails.test.util bundle is not activated yet then
+        //  it will be activated by referencing the GrailsTest class but...
+        //  unfortunately this may be after the expression GrailsVersion.MOST_RECENT was
+        //  exeucted. In that case GrailsVersion.MOST_RECENT will not yey have been seet to
+        //  to the correct value by GrailsTestUtilActivator!
+        //  So solve this reference the class once
+        System.out.println(GrailsTest.class);
         GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
         
         final Job setupJob = new Job("grails test setup job") {
@@ -347,10 +364,23 @@ public abstract class AbstractGrailsInferencingTests extends
             public boolean test() throws Exception {
                 return setupJob.getResult()!=null;
             }
-        }.waitFor(120000);
+        }.waitFor(10*60000); // Had to bump this up again for Grails 2.3 as takes much longer to create projects 
+                           // (maven downloading the internet)
+        assertJobOk(setupJob);
     }
 
-    @Override
+    private void assertJobOk(Job job) throws CoreException {
+    	IStatus status = job.getResult();
+    	if (status==null) {
+    		fail("Job not finished: "+job.getName());
+    	} else {
+    		if (!status.isOK()) {
+    			throw ExceptionUtil.coreException(status);
+    		}
+    	}
+	}
+
+	@Override
     protected void tearDown() throws Exception {
         ICompilationUnit[] units = JavaModelManager.getJavaModelManager()
                 .getWorkingCopies(DefaultWorkingCopyOwner.PRIMARY, true);

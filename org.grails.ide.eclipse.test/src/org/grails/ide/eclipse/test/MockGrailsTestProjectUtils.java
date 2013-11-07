@@ -57,6 +57,8 @@ public class MockGrailsTestProjectUtils {
      * @throws Exception
      */
     public static void mockGrailsProject(IProject project) throws Exception {
+    	IClasspathEntry[] classpath = JavaCore.create(project).getRawClasspath();
+
         boolean wasAutobuilding = isAutoBuilding();
         try {
             setAutoBuilding(false);
@@ -72,16 +74,19 @@ public class MockGrailsTestProjectUtils {
             
             Set<String> dependencies = findDependencies();
             for (String file : dependencies) {
-                if (new File(file).exists()) {
+                if (new File(file).isFile()) {
                     // adding the xalan jar also adds another jar to 
                     // to classpath.  so just ignore this jar
-                    if (file.indexOf("xalan") < 0) {
+                    if (!(file.contains("xalan") || file.contains("lowagie/itext"))) {
                         addExternalLibrary(project, file);
+//                        System.out.println(file);
                     }
+                    
                 } else {
                     System.out.println("Warning file does not exist, but was returned by refresh dependencies: " + file);
                 }
             }
+//            System.out.println("=== mocking grails dependencies ====");
             
             GroovyRuntime.addGroovyClasspathContainer(JavaCore.create(project));
             
