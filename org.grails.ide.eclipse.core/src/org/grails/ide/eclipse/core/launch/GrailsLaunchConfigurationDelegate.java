@@ -240,7 +240,9 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 	
 			// add manual configured vm options to the argument list
 			String existingVmArgs = getVMArguments(configuration);
+			boolean launchConfHasVMArgs = false;
 			if (existingVmArgs != null  && existingVmArgs.length() > 0) {
+				launchConfHasVMArgs = true;
 				StringTokenizer additionalArguments = new StringTokenizer(existingVmArgs, " ");
 				while (additionalArguments.hasMoreTokens()) {
 					vmArgs.add(additionalArguments.nextToken());
@@ -256,6 +258,11 @@ public class GrailsLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
 			int forkedProcessDebugPort = addForkedModeDebuggingArgs(configuration, mode, vmArgs);
 			ArrayList<Integer> killPorts = addKillPortArg(project, vmArgs);
 	
+			if (!launchConfHasVMArgs) {
+				//If the user added their own vmargs to the launch config then the 'default' from global prefs should
+				// not be used.
+				GrailsLaunchArgumentUtils.addUserDefinedJVMArgs(vmArgs);
+			}
 			// Grails uses some default memory settings that we want to use as well if no others have been configured
 			vmArgs = GrailsLaunchArgumentUtils.addMemorySettings(vmArgs);
 			vmArgs = GrailsLaunchArgumentUtils.addSpringLoadedArgs(configuration, vmArgs);

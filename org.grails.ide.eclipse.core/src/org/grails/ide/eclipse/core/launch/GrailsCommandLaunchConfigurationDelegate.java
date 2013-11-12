@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
@@ -179,7 +181,9 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 
 		// add manual configured vm options to the argument list
 		String existingVmArgs = getVMArguments(configuration);
+		boolean launchConfHasVMArgs = false;
 		if (existingVmArgs != null && existingVmArgs.length() > 0) {
+			launchConfHasVMArgs = true;
 			StringTokenizer additionalArguments = new StringTokenizer(
 					existingVmArgs, " ");
 			while (additionalArguments.hasMoreTokens()) {
@@ -197,8 +201,14 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 			}
 		}
 
+		if (!launchConfHasVMArgs) {
+			//If the user added their own vmargs to the launch config then the 'default' from global prefs should
+			// not be used.
+			GrailsLaunchArgumentUtils.addUserDefinedJVMArgs(vmArgs);
+		}
+		GrailsLaunchArgumentUtils.addUserDefinedJVMArgs(vmArgs);
 		// Grails uses some default memory settings that we want to use as well
-		// if on others have been configured
+		// if no others have been configured yet
 		vmArgs = GrailsLaunchArgumentUtils.addMemorySettings(vmArgs);
 
 		String[] envp = getEnvironment(configuration);
@@ -354,6 +364,15 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 				nameAndScript);
 		GrailsLaunchArgumentUtils.prepareLaunchConfiguration(project, script,
 				install, baseDirectory, wc);
+
+//		System.out.println("===================");
+//		Map attribs = wc.getAttributes();
+//		for (Object k : attribs.keySet()) {
+//			System.out.println(k +" = "+attribs.get(k));
+//		}
+//		System.out.println("===================");
+		
+		
 		return wc;
 	}
 

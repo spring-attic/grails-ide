@@ -45,6 +45,7 @@ import org.grails.ide.eclipse.core.internal.model.DefaultGrailsInstall;
 import org.grails.ide.eclipse.core.model.GrailsInstallManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.core.util.CommandLineUtil;
 
 
 /**
@@ -304,13 +305,20 @@ public class GrailsLaunchArgumentUtils {
 		return -1;
 	}
 
+	/**
+	 * Add default -Xmx and -XX:MaxPermSize arguments. These arguments will only be added if they aren't already
+	 * present.
+	 * 
+	 * Note: Grails 2.3 uses these as default:
+	 *   -server -Xmx768M -Xms64M -XX:PermSize=32m -XX:MaxPermSize=256m
+	 */
 	public static List<String> addMemorySettings(List<String> args) {
 		boolean mxFound = false;
 		boolean permSizeFound = false;
 		for (String arg : args) {
 			if (arg.startsWith("-Xmx")) {
 				mxFound = true;
-			} else if (arg.startsWith("-XX:MaxPermSize=")) {
+			} else if (arg.startsWith("-XX:MaxPermSize=") || arg.startsWith("-XX:PermSize=")) {
 				permSizeFound = true;
 			}
 		}
@@ -794,6 +802,25 @@ public class GrailsLaunchArgumentUtils {
 			return install.getVersion();
 		}
 		return GrailsVersion.UNKNOWN;
+	}
+
+	/**
+	 * Adds JVM arguments supplied by user in grails launch preferences page.
+	 */
+	public static void addUserDefinedJVMArgs(List<String> args) {
+		try {
+			String argsString = GrailsCoreActivator.getDefault().getJVMArgs();
+			if (argsString!=null) {
+				String[] extraArgs = CommandLineUtil.translateCommandline(argsString);
+				if (extraArgs!=null && extraArgs.length>0) {
+					for (String arg : extraArgs) {
+						args.add(arg);
+					}
+				}
+			}
+		} catch (CoreException e) {
+			GrailsCoreActivator.log(e);
+		}
 	}
 
 }

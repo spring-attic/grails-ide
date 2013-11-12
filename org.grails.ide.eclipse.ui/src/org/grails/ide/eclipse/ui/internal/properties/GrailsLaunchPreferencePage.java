@@ -61,7 +61,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-
 import org.grails.ide.eclipse.ui.GrailsUiImages;
 
 /**
@@ -234,6 +233,7 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
     private Button keepGrailsRunning;
     
     private Button cleanGrails20output;
+	private Text jvmArgs;
 
     /**
      * Attempts to add the given variable. Returns whether the variable
@@ -289,28 +289,55 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
 
     @SuppressWarnings("restriction")
 	@Override
-    protected Control createContents(Composite parent) {
+    protected Control createContents(Composite _parent) {
+    	GridDataFactory grabHor = GridDataFactory.fillDefaults().grab(true, false);
+    	GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);
+    	Composite parent = SWTFactory.createComposite(_parent, 1, 1, GridData.FILL_HORIZONTAL);
+    	
         // Create main composite
         Composite mainComposite = SWTFactory.createComposite(parent, 2, 1, GridData.FILL_HORIZONTAL);
+        
+        grab.applyTo(parent);
+        grab.applyTo(mainComposite);
         
         createEnvironmentTable(mainComposite);
         createTableButtons(mainComposite);
         environmentTable.setInput(GrailsCoreActivator.getDefault().getUserSupliedLaunchSystemProperties());
+        grab.applyTo(environmentTable.getControl());
         
         keepGrailsRunning = SWTFactory.createCheckButton(mainComposite, "Keep external Grails running",
                 null, GrailsCoreActivator.getDefault().getKeepRunning(), 2);
         
         keepGrailsRunning.setToolTipText(
                 "Try to reuse an existing Grails process to execute multiple commands.\n" +
-                "This speeds up execution of Grails commands.\n" +
-                "Warning: experimental feature!");
-        
+                "This speeds up execution of Grails commands.");
         cleanGrails20output = SWTFactory.createCheckButton(mainComposite, "Cleanup Grails 2.0 Output", null, 
         		GrailsCoreActivator.getDefault().getCleanOutput(), 2);
         
-        Composite morePrefs = SWTFactory.createComposite(mainComposite, 2, 2, SWT.NONE);
+        Composite morePrefs = SWTFactory.createComposite(parent, 2, 1, SWT.NONE);
+        grabHor.applyTo(morePrefs);
+        
+        SWTFactory.createLabel(morePrefs, "Default JVM Args", 1);
+        jvmArgs = SWTFactory.createText(morePrefs, SWT.BORDER, 1);
+        jvmArgs.setToolTipText("Default arguments to pass to the JVM used for running Grails."
+        		+ "Note that if an individual launch configuration "
+        		+ "defines its own JVM arguments than these defaults will be ignored."
+        );
+        grabHor.applyTo(jvmArgs);
+        String jvmArgsStr = GrailsCoreActivator.getDefault().getJVMArgs();
+        if (jvmArgsStr!=null) {
+        	jvmArgs.setText(jvmArgsStr);
+        }
+        jvmArgs.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                boolean valid = validate();
+                setValid(valid);
+            }
+        });
+        
         SWTFactory.createLabel(morePrefs, "Grails Command Timeout [ms]:", 1);
         commandTimeOut = SWTFactory.createText(morePrefs, SWT.BORDER, 1);
+        grabHor.applyTo(commandTimeOut);
         commandTimeOut.setText(""+GrailsCoreActivator.getDefault().getGrailsCommandTimeOut());
         commandTimeOut.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -318,10 +345,11 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
                 setValid(valid);
             }
         });
-        GridDataFactory.fillDefaults().grab(false, false).hint(150,SWT.DEFAULT).applyTo(commandTimeOut);
+        //GridDataFactory.fillDefaults().grab(false, false).hint(150,SWT.DEFAULT).applyTo(commandTimeOut);
         
         SWTFactory.createLabel(morePrefs, "Grails Command Output Limit [chars]:", 1);
         commandOutputLimit = SWTFactory.createText(morePrefs, SWT.BORDER, 1);
+        grabHor.applyTo(commandOutputLimit);
         commandOutputLimit.setText(""+GrailsCoreActivator.getDefault().getGrailsCommandOutputLimit());
         commandOutputLimit.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -329,9 +357,10 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
                 setValid(valid);
             }
         });
-        GridDataFactory.fillDefaults().grab(false, false).hint(150,SWT.DEFAULT).applyTo(commandTimeOut);
+        //GridDataFactory.fillDefaults().grab(false, false).hint(150,SWT.DEFAULT).applyTo(commandTimeOut);
         
-        return mainComposite;
+        
+        return parent;
     }
 
     
@@ -588,7 +617,8 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
     protected void performDefaults() {
         super.performDefaults();
         GrailsCoreActivator.getDefault().setUserSupliedLaunchSystemProperties(Collections.EMPTY_MAP);
-        GrailsCoreActivator.getDefault().setKeepGrailsRunning(false);
+        GrailsCoreActivator.getDefault().setKeepGrailsRunning(GrailsCoreActivator.DEFAULT_KEEP_RUNNING_PREFERENCE);
+        GrailsCoreActivator.getDefault().setJVMArgs(GrailsCoreActivator.DEFAULT_JVM_ARGS_PREFERENCE);
         environmentTable.setInput(GrailsCoreActivator.getDefault().getUserSupliedLaunchSystemProperties());
         cleanGrails20output.setSelection(GrailsCoreActivator.DEFAULT_CLEAN_OUTPUT_PREFERENCE);
     }
@@ -607,8 +637,19 @@ public class GrailsLaunchPreferencePage extends PreferencePage implements IWorkb
         grailsCore.setGrailsCommandTimeOut(getTimeOutValue());
         grailsCore.setGrailsCommandOutputLimit(getOutputLimit());
         grailsCore.setCleanOutput(getCleanOutput());
+        grailsCore.setJVMArgs(getJVMArgs());
         return true;
     }
+
+	private String getJVMArgs() {
+		if (jvmArgs!=null && !jvmArgs.isDisposed()) {
+			String args = jvmArgs.getText().trim();
+			if (!"".equals(args)) {
+				return args;
+			}
+		}
+		return null;
+	}
 
 	private boolean getCleanOutput() {
 		return cleanGrails20output.getSelection();

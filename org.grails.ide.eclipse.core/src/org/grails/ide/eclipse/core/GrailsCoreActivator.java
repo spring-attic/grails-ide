@@ -163,8 +163,9 @@ public class GrailsCoreActivator extends Plugin {
 
 	public static final String PATH_VARIABLE_NAME = "GRAILS_ROOT";
 	private static final String KEEP_RUNNING_PREFERENCE = PLUGIN_ID + ".KEEP_RUNNING";
+	private static final String JVM_ARGS_PREFERENCE = PLUGIN_ID + ".JVM_ARGS";
 	
-	public static final boolean DEFAULT_KEEP_RUNNING_PREFERENCE = true; //From now on this will be on by default
+	public static final boolean DEFAULT_KEEP_RUNNING_PREFERENCE = true;
 	private static final String GRAILS_COMMAND_OUTPUT_LIMIT_PREFERENCE = PLUGIN_ID+".OUTPUT_LIMIT";
 
 	private static final int DEFAULT_GRAILS_COMMAND_OUTPUT_LIMIT_PREFERENCE = 200000;;
@@ -265,6 +266,7 @@ public class GrailsCoreActivator extends Plugin {
 	private static boolean useFakeUserHome = false;
 	
     public static final String GRAILS_RESOURCES_PLUGIN_ID = "org.grails.ide.eclipse.resources";
+	public static final String DEFAULT_JVM_ARGS_PREFERENCE = null;
 
 	public void addGrailsCommandListener(IGrailsCommandListener listener) {
 		commandListeners.add(listener);
@@ -330,6 +332,11 @@ public class GrailsCoreActivator extends Plugin {
 		return getPreferences().getBoolean(KEEP_RUNNING_PREFERENCE, DEFAULT_KEEP_RUNNING_PREFERENCE);
 	}
 
+	
+	public String getJVMArgs() {
+		return getPreferences().get(JVM_ARGS_PREFERENCE, DEFAULT_JVM_ARGS_PREFERENCE);
+	}
+	
 	/**
 	 * Get system properties that should be passed to any Grails command. This includes all the
 	 * user supplied props plus some additional ones that may need to be added automatically.
@@ -437,6 +444,22 @@ public class GrailsCoreActivator extends Plugin {
 			}
 		}
 	}
+
+	
+	private void putStringPref(String key, String value) {
+		IEclipsePreferences prefs = getPreferences();
+		if (value==null) {
+			prefs.remove(key);
+		} else {
+			prefs.put(key, value);
+		}
+		try {
+			prefs.flush();
+		} catch (BackingStoreException e) {
+			GrailsCoreActivator.log(e);
+		}
+	}
+	
 	
 	private void putBooleanPref(String key, boolean value) {
 		IEclipsePreferences prefs = getPreferences();
@@ -489,7 +512,22 @@ public class GrailsCoreActivator extends Plugin {
 			GrailsExecutor.shutDownIfNeeded(); //force new executor creation next time
 		}
 	}
-    
+
+	public void setJVMArgs(String newValue) {
+		String orgValue = getJVMArgs();
+		if (!equals(newValue, orgValue)) {
+			putStringPref(JVM_ARGS_PREFERENCE, newValue);
+			GrailsExecutor.shutDownIfNeeded(); //force new executor creation next time
+		}
+	}
+
+	private boolean equals(String a, String b) {
+		if (a==null) {
+			return a==b;
+		} else {
+			return a.equals(b);
+		}
+	}
 
 	/**
 	 * Set the system properties required for launching of a grails command, as set

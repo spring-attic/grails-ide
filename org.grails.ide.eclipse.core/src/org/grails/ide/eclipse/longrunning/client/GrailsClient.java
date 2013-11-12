@@ -165,8 +165,10 @@ public class GrailsClient {
 		}
 
 		//VM ARGS
-		args.add("-Xmx512M");
-		args.add("-XX:MaxPermSize=192m");
+		GrailsLaunchArgumentUtils.addUserDefinedJVMArgs(args);
+		GrailsLaunchArgumentUtils.addMemorySettings(args);
+//		args.add("-Xmx512M");
+//		args.add("-XX:MaxPermSize=192m");
 		args.add("-classpath");
 		args.add(bootstrapClassPath(install));
 		
@@ -441,6 +443,11 @@ public class GrailsClient {
 				println(toConsoleOut, line.substring(GrailsProcessConstants.PROTOCOL_HEADER_LEN));
 			} else if (line.startsWith(GrailsProcessConstants.CONSOLE_ERR)) {
 				println(toConsoleErr, line.substring(GrailsProcessConstants.PROTOCOL_HEADER_LEN));
+			} else {
+				//anything else... not explicitly tagged as 'out' or 'err' output. This may be some error messages 
+				// produced while trying to start the JVM. E.g. when illegal JVM args are passed etc.
+				//We'll just pretend this output is going to system.err.
+				println(toConsoleErr, line);
 			}
 			line = fromProcess.readLine(timeOut);
 		}
