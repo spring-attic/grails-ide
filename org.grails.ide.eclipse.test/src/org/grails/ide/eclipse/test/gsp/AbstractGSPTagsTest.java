@@ -29,6 +29,7 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.TestLogger;
 import org.grails.ide.eclipse.test.util.GrailsTest;
+import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
@@ -51,6 +52,10 @@ public abstract class AbstractGSPTagsTest extends EclipseTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        GrailsTest.assertEquals(true, true); 
+        	// forces GrailsTestUtilActivator. Otherwise GrailsVersion.MOST_RECENT might not get initialized on time.
+        	// This is because evaluation of args to the call below may fetch the value of GrailsVersion.MOST_RECENT
+        	// before the activation happens as triggered by classloading the GrailsTest class.
         GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
         GrailsProjectVersionFixer.testMode();
         MockGrailsTestProjectUtils.mockGrailsProject(testProject.getProject());
