@@ -124,7 +124,10 @@ public class GrailsServiceInferencingTests extends AbstractGrailsInferencingTest
     // 3 create grails project
     // 4 install spring security and grails plugin project from above
     // 5 test that each of these services are recognized as such
-    public void testPluginService() throws Exception {
+    public void _testPluginService() throws Exception {
+    	//This test is diabled because grails no longer supports install-plugin command which 
+    	// this test uses.
+    	
 //		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_0_0_RC1)) {
 //			//This test is known to fail in RC1:
 //			//http://jira.grails.org/browse/GRAILS-8200
