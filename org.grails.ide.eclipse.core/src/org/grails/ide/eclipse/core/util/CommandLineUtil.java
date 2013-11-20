@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
-import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one or more

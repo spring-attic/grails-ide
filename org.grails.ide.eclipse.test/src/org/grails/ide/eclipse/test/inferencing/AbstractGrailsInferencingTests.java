@@ -7,12 +7,7 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.test.inferencing;
 
-import java.util.Hashtable;
-import java.util.Map;
-
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
-import org.eclipse.core.internal.jobs.JobManager;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,7 +18,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.groovy.tests.search.AbstractInferencingTest;
-import org.eclipse.jdt.groovy.core.util.ReflectionUtils;
 import org.eclipse.jdt.groovy.search.TypeInferencingVisitorWithRequestor;
 import org.eclipse.jdt.groovy.search.TypeLookupResult.TypeConfidence;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
@@ -35,9 +29,8 @@ import org.grails.ide.eclipse.editor.groovy.elements.GrailsProject;
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectServiceCache;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.util.GrailsTest;
-import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
-import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 
 /**
