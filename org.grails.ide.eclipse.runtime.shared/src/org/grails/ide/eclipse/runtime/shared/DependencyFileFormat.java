@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -38,6 +39,12 @@ import java.util.Set;
  */
 public class DependencyFileFormat {
 
+	/**
+	 * Everybody reading / writing the dependency file should use the same encoding.
+	 * don't leave it up to the environment to decide.
+	 */
+	private static final String ENCODING = "UTF-8";
+	
 	//////////////// Writing //////////////////////////////////////////////////////////////////////////////
 
 	private static class DepWriter {
@@ -79,7 +86,7 @@ public class DependencyFileFormat {
 		 * We only use '\n' as line terminator, regardless of platform.
 		 */
 		private void println(String line) throws IOException {
-			byte[] bytes = line.getBytes();
+			byte[] bytes = line.getBytes(ENCODING);
 			for (byte b : bytes) {
 				if (b=='\n' || b=='\\') {
 					out.write('\\');
@@ -242,12 +249,18 @@ public class DependencyFileFormat {
 		}
 
 		/**
-		 * Convert current contents of byte buffer to String using default character encoding.
+		 * Convert current contents of byte buffer to String using ENCODODIN.
+		 * @throws UnsupportedEncodingException 
 		 */
 		public String getString() {
-			return new String(bytes, 0, i);
+			try {
+				return new String(bytes, 0, i, ENCODING);
+			} catch (UnsupportedEncodingException e) {
+				//Unless we put something exotic/bad for ENCODING constant this should never
+				// happen.
+				throw new RuntimeException(e);
+			}
 		}
-		
 
 		/**
 		 * For easier debugging
