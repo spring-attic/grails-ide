@@ -48,8 +48,4 @@
     	version="3.5.0.qualifier">
     </feature>
 
-	<!-- third-party dependencies -->
-	<bundle id="org.apache.httpcomponents.httpclient" version="4.2.5"/>
-
-
 </site>
