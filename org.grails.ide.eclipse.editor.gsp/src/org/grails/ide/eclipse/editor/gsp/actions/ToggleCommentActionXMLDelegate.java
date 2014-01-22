@@ -8,7 +8,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     GoPivotal, Inc.    - augmented for use with Grails
+ *     Pivotal Software, Inc.    - augmented for use with Grails
  *******************************************************************************/
 
 package org.grails.ide.eclipse.editor.gsp.actions;
