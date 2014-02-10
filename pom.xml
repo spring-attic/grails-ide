@@ -203,6 +203,11 @@
 		  <layout>p2</layout>
 		  <url>http://dist.springsource.com/release/TOOLS/patches/bug367669</url>
 		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e3.7/</url>
+		</repository>
 	  </repositories>
 <!--       <build>
 	    <plugins>
@@ -267,6 +272,11 @@
 		  <layout>p2</layout>
 		  <url>http://dist.springsource.org/snapshot/GRECLIPSE/e4.2/</url>
 		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e3.7/</url>
+		</repository>
 	  </repositories>
     </profile>
 
@@ -313,6 +323,11 @@
 		  <layout>p2</layout>
 		  <url>http://dist.springsource.org/snapshot/GRECLIPSE/e4.3/</url>
 		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e3.7/</url>
+		</repository>
 	  </repositories>
     </profile>
 
@@ -353,11 +368,6 @@
   </profiles>
   
   <repositories>
-	<repository>
-	  <id>eclipse-integration-commons</id>
-	  <layout>p2</layout>
-	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
-	</repository>
  	<repository>
 	  <id>orbit</id>
 	  <layout>p2</layout>
