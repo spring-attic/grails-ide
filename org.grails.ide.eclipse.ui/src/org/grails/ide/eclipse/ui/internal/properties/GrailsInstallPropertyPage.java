@@ -70,32 +70,10 @@ public class GrailsInstallPropertyPage extends ProjectAndPreferencePage {
 
 		Label notes = new Label(composite, SWT.WRAP);
 		notes
-				.setText("If no project specific Grails installation is selected, the workspace default installation will be used.\n\nThe project is configured to use '"
-						+ currentInstallName + "'.");
+				.setText("Obsolete. This page was removed!");
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 2;
 		notes.setLayoutData(gd);
-
-		// Label spacer = new Label(composite, SWT.NONE);
-		// spacer.setLayoutData(gd);
-
-		Label options = new Label(composite, SWT.WRAP);
-		options.setText("Grails Installation: ");
-		options.setLayoutData(new GridData(GridData.BEGINNING));
-
-		grailsInstallCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		grailsInstallCombo.setItems(GrailsCoreActivator.getDefault().getInstallManager().getAllInstallNames());
-		grailsInstallCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		String installName = SpringCorePreferences.getProjectPreferences(getProject(), GrailsCoreActivator.PLUGIN_ID)
-				.getString(GrailsCoreActivator.GRAILS_INSTALL_PROPERTY, null);
-		String[] names = grailsInstallCombo.getItems();
-		for (int i = 0; i < names.length; i++) {
-			if (names[i].equals(installName)) {
-				grailsInstallCombo.select(i);
-				break;
-			}
-		}
 
 		Dialog.applyDialogFont(composite);
 
@@ -111,35 +89,36 @@ public class GrailsInstallPropertyPage extends ProjectAndPreferencePage {
 	}
 
 	protected boolean hasProjectSpecificOptions(IProject project) {
-		return SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID).getBoolean(
-				GrailsCoreActivator.PROJECT_PROPERTY_ID, false);
+		return false;
+//		return SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID).getBoolean(
+//				GrailsCoreActivator.PROJECT_PROPERTY_ID, false);
 	}
 
 	public boolean performOk() {
-		setInstall(getProject(), useProjectSettings(), grailsInstallCombo.getText());
+//		setInstall(getProject(), useProjectSettings(), grailsInstallCombo.getText());
 		return super.performOk();
 	}
 
-	/**
-	 * This method does the work that happens on "performOK" it is exposed as a public method to ease test creation
-	 * (so we can call this functionality without actually using all the UI widgetry in the test).
-	 */
-	@SuppressWarnings("deprecation")
-	public static void setInstall(IProject project, boolean useProjectSettings, String installName) {
-		final SpringCorePreferences projectPreferences = SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID);
-		if (useProjectSettings) {
-			projectPreferences.putBoolean(
-					GrailsCoreActivator.PROJECT_PROPERTY_ID, useProjectSettings);
-			projectPreferences.putString(
-					GrailsCoreActivator.GRAILS_INSTALL_PROPERTY, installName);
-		} else {
-			projectPreferences.putBoolean(
-					GrailsCoreActivator.PROJECT_PROPERTY_ID, useProjectSettings);
-		}
-		GrailsCoreActivator.getDefault().savePluginPreferences();
-//		GrailsClasspathContainerUpdateJob.scheduleClasspathContainerUpdateJob(project, true); => Counting on GrailsProjectVersionFixer. Avoid doing this twice!
-		notifyInstallListeners(project, !useProjectSettings, installName);
-	}
+//	/**
+//	 * This method does the work that happens on "performOK" it is exposed as a public method to ease test creation
+//	 * (so we can call this functionality without actually using all the UI widgetry in the test).
+//	 */
+//	@SuppressWarnings("deprecation")
+//	public static void setInstall(IProject project, boolean useProjectSettings, String installName) {
+//		final SpringCorePreferences projectPreferences = SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID);
+//		if (useProjectSettings) {
+//			projectPreferences.putBoolean(
+//					GrailsCoreActivator.PROJECT_PROPERTY_ID, useProjectSettings);
+//			projectPreferences.putString(
+//					GrailsCoreActivator.GRAILS_INSTALL_PROPERTY, installName);
+//		} else {
+//			projectPreferences.putBoolean(
+//					GrailsCoreActivator.PROJECT_PROPERTY_ID, useProjectSettings);
+//		}
+//		GrailsCoreActivator.getDefault().savePluginPreferences();
+////		GrailsClasspathContainerUpdateJob.scheduleClasspathContainerUpdateJob(project, true); => Counting on GrailsProjectVersionFixer. Avoid doing this twice!
+//		notifyInstallListeners(project, !useProjectSettings, installName);
+//	}
 	
 	private static void notifyInstallListeners(IProject project, boolean useDefault, String installName) {
 		if (projectInstallListener!=null) {

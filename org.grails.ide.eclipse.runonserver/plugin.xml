@@ -83,10 +83,9 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            category="org.grails.ide.eclipse.ui.projectPropertyPage"
             class="org.grails.ide.eclipse.runonserver.ui.RunOnServerPropertyPage"
             id="org.grails.ide.eclipse.runonserver.propertyPage"
-            name="Run On Server">
+            name="Grails Run On Server">
          <enabledWhen>
             <adapt
                   type="org.eclipse.core.resources.IProject">

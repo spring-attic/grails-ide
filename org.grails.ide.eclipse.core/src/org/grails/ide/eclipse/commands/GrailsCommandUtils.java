@@ -192,7 +192,7 @@ public class GrailsCommandUtils {
 			project.setDescription(desc, new NullProgressMonitor());
 			
 			// save selected grails install
-			GrailsInstallManager.setGrailsInstall(project, isDefault, grailsInstallName);
+			//GrailsInstallManager.setGrailsInstall(project, isDefault, grailsInstallName);
 			
 			GrailsClassPath entries = new GrailsClassPath();
 			IJavaProject javaProject = JavaCore.create(project);
@@ -298,9 +298,9 @@ public class GrailsCommandUtils {
 		return addJavaNature;
 	}
 
-	private static void setGrailsInstall(IProject project, IGrailsInstall grailsInstall) {
-		GrailsInstallManager.setGrailsInstall(project, grailsInstall.isDefault() && GrailsInstallManager.inheritsDefaultInstall(project), grailsInstall.getName());
-	}
+//	private static void setGrailsInstall(IProject project, IGrailsInstall grailsInstall) {
+//		GrailsInstallManager.setGrailsInstall(project, grailsInstall.isDefault() && GrailsInstallManager.inheritsDefaultInstall(project), grailsInstall.getName());
+//	}
 
 	/**
 	 * Newly created Grails projects (created by create-app / create-plugin)
@@ -478,12 +478,12 @@ public class GrailsCommandUtils {
 	 */
 	public static void upgradeProject(IProject project, IGrailsInstall install) throws CoreException {
 		debug("upgrade "+project+" ...");
-		setGrailsInstall(project, install);
+		//setGrailsInstall(project, install);
 		ensureNaturesAndBuilders(project);  // This is needed to avoid upgrade from crashing in the 'old style'
 		   // executor when imported project is missing Java nature.
 		CoreException error = null;
 		try {
-			ILaunchResult result = GrailsCommandFactory.upgrade(project).synchExec();
+			ILaunchResult result = GrailsCommandFactory.upgrade(project, install).synchExec();
 			debug(""+result);
 			debug("upgrade "+project+" DONE");
 		} catch (CoreException e) {

@@ -58,16 +58,8 @@ public class GrailsInstallManager {
 		if (project == null) {
 			return getDefaultGrailsInstall();
 		}
-		if (!SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID).getBoolean(
-				GrailsCoreActivator.PROJECT_PROPERTY_ID, false)) {
-			return getDefaultGrailsInstall();
-		}
-		else if (SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID).getString(
-				GrailsCoreActivator.GRAILS_INSTALL_PROPERTY, null) != null) {
-			return getGrailsInstall(SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID)
-					.getString(GrailsCoreActivator.GRAILS_INSTALL_PROPERTY, null));
-		}
-		return null;
+		GrailsVersion version = GrailsVersion.getGrailsVersion(project);
+		return getInstallFor(version);
 	}
 
 	public IGrailsInstall getGrailsInstall(String name) {
@@ -262,23 +254,10 @@ public class GrailsInstallManager {
 		}
 		return null;
 	}
-
-	public static void setGrailsInstall(IProject project, boolean isDefault,
-			String grailsInstallName) {
-		SpringCorePreferences.getProjectPreferences(project,
-				GrailsCoreActivator.PLUGIN_ID).putBoolean(
-				GrailsCoreActivator.PROJECT_PROPERTY_ID, !isDefault);
-		if (grailsInstallName != null) {
-			SpringCorePreferences.getProjectPreferences(project,
-					GrailsCoreActivator.PLUGIN_ID).putString(
-					GrailsCoreActivator.GRAILS_INSTALL_PROPERTY,
-					grailsInstallName);
-		}
-	}
 	
-	public static boolean inheritsDefaultInstall(IProject project) {
-		return !SpringCorePreferences.getProjectPreferences(project, GrailsCoreActivator.PLUGIN_ID)
-			.getBoolean(GrailsCoreActivator.PROJECT_PROPERTY_ID, false);
+	public static boolean inheritsDefaultInstall(IProject project) { 
+		//TODO: this method is obsolete. remove it and rework all callers.
+		return false;
 	}
 
 }

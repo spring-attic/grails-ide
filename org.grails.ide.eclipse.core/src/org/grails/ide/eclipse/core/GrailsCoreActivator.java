@@ -152,12 +152,12 @@ public class GrailsCoreActivator extends Plugin {
 
 	private static GrailsCoreActivator plugin;
 	
-	public static final String GRAILS_INSTALL_PROPERTY = PLUGIN_ID + ".install.name";
+	//public static final String GRAILS_INSTALL_PROPERTY = PLUGIN_ID + ".install.name";
 
 	public static final String GRAILS_LAUNCH_SYSTEM_PROPERTIES = PLUGIN_ID + ".launch.properties";
 
 	/** The identifier for enablement of project versus workspace settings */
-	public static final String PROJECT_PROPERTY_ID = "use.default.install";
+	//public static final String PROJECT_PROPERTY_ID = "use.default.install";
 
 	private static final String GRAILS_COMMAND_TIMEOUT_PREFERENCE = PLUGIN_ID + ".COMMAND_TIMEOUT";
 

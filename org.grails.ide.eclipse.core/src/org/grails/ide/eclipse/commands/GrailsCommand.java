@@ -83,11 +83,11 @@ public class GrailsCommand {
 	}
 
 	/** 
-	 * This constructor is private and shouldn't be called by clients. However it should
+	 * This constructor is package private and shouldn't be called by clients. However it should
 	 * be called by all other constructors because it contains some work that should
 	 * always be done regardless of the parameters.
 	 */
-	private GrailsCommand(IGrailsInstall install, IProject project, String command) {
+	GrailsCommand(IGrailsInstall install, IProject project, String command) {
 		this(install, project, command, false);
 	}
 

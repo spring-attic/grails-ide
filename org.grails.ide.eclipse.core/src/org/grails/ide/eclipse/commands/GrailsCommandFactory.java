@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Assert;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsDependencyParser;
+import org.grails.ide.eclipse.core.launch.SynchLaunch;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.springsource.ide.eclipse.commons.frameworks.core.internal.commands.BooleanParameterDescriptor;
@@ -684,12 +685,12 @@ public abstract class GrailsCommandFactory {
 			return cmd;
 		}
 	}
-
+	
 	/**
-	 * A Grails command that upgrades a given project to whatever grails install this project is associated with.
+	 * A Grails command that upgrades a given project to a given grails install.
 	 */
-	public static GrailsCommand upgrade(IProject project) {
-		return new GrailsCommand(project, "upgrade")
+	public static GrailsCommand upgrade(IProject project, IGrailsInstall install) {
+		return new GrailsCommand(install, project, "upgrade")
 			.addArgument(nonInteractiveOption(project));
 	}
 	

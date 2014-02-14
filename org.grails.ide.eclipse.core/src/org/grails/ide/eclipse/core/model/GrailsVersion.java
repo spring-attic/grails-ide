@@ -261,6 +261,9 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	/**
 	 * Retrieve the grails version, according to the project's aplication.properties file (i.e. what does grails think
 	 * the grails version is for this project).
+	 * 
+	 * @return GrailsVersion, never null. Instead of null, it returns {@link GrailsVersion}.UNKNOWN if grails version
+	 * can not be determined.
 	 */
 	public static GrailsVersion getGrailsVersion(IProject project) {
 		if (project!=null) {

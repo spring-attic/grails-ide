@@ -520,7 +520,7 @@
 	
 	
 	
-	<extension
+<!--	<extension
          point="org.eclipse.ui.propertyPages">
       <page
             adaptable="true"
@@ -536,7 +536,7 @@
                id="org.grails.ide.eclipse.ui.keywords">
          </keywordReference>
       </page>
-   </extension>
+   </extension> -->
    
      <extension point="org.eclipse.ui.keywords">
          <keyword id="org.grails.ide.eclipse.ui.keywords"
