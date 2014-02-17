@@ -178,24 +178,16 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 		assertEquals(fromVersion, GrailsVersion.getEclipseGrailsVersion(project));
 		assertEquals(fromVersion, GrailsVersion.getGrailsVersion(project));
 		
-		//Change install in eclipse, brings Eclipse / Grails version out of synch
-		IGrailsInstall install = toVersion.getInstall();
-		GrailsInstallManager.setGrailsInstall(project, false, install.getName());
-		
-		//Verify expected project version state (i.e. out of synch)
-		assertEquals(toVersion, GrailsVersion.getEclipseGrailsVersion(project));
-		assertEquals(fromVersion, GrailsVersion.getGrailsVersion(project));
-
 		//Run upgrade command
-		GrailsCommand upgrade = GrailsCommandFactory.upgrade(project);
+		GrailsCommand upgrade = GrailsCommandFactory.upgrade(project, toVersion.getInstall());
 		ILaunchResult result = upgrade.synchExec();
 		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		
 		// Check whether correct version of Grails was used...
 		String welcome = (GrailsVersion.V_2_0_.compareTo(toVersion)<=0) ? "Loading Grails ": "Welcome to Grails ";
-		assertContains(welcome+toVersion, result.getOutput());; 
+		assertContains(welcome+toVersion, result.getOutput());
 		
-		//Verify expected project version state (i.e. back in synch)
+		//Verify expected project version state
 		assertEquals(toVersion, GrailsVersion.getEclipseGrailsVersion(project));
 		assertEquals(toVersion, GrailsVersion.getGrailsVersion(project));
 		

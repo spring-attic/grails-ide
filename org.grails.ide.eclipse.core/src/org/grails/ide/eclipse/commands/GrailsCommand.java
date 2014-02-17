@@ -212,11 +212,11 @@ public class GrailsCommand {
 	}
 
 	public IGrailsInstall getGrailsInstall() {
-		if (project != null) {
+		if (install != null) {
+			return install;
+		} else if (project != null) {
 			return GrailsCoreActivator.getDefault().getInstallManager()
 					.getGrailsInstall(project);
-		} else if (install != null) {
-			return install;
 		} else {
 			return GrailsCoreActivator.getDefault().getInstallManager()
 					.getDefaultGrailsInstall();

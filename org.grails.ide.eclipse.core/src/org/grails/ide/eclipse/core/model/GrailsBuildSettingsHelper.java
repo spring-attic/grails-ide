@@ -15,10 +15,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 
 /**
@@ -56,6 +59,24 @@ public class GrailsBuildSettingsHelper {
 		IFile eclipsePropFile = project.getFile("application.properties");
 		File propFile = eclipsePropFile.getLocation().toFile();
 		return getProps(propFile);
+	}
+
+	/**
+	 * Save application.properties for a given Grails project
+	 */
+	public static void saveApplicationProperties(IProject project, Properties props) throws Exception {
+		IFile eclipsePropFile = project.getFile("application.properties");
+		File propFile = eclipsePropFile.getLocation().toFile();
+		OutputStream out = new FileOutputStream(propFile);
+		eclipsePropFile.refreshLocal(IResource.DEPTH_ZERO, null);
+		try {
+			props.store(out, null);
+		} finally {
+			try {
+				out.close();
+			} catch (Throwable e) {
+			}
+		}
 	}
 
 	/**

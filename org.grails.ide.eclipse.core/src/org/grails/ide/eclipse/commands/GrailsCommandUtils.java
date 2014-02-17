@@ -421,8 +421,9 @@ public class GrailsCommandUtils {
 	public static void deleteOutOfSynchPlugins(IProject project) {
 		IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(project);
 		if (install == null || GrailsVersion.UNKNOWN.equals(install.getVersion())) {
-		    throw new IllegalArgumentException("Could not find a grails install for '"+project.getName()+"'. " +
-		    		"Please configure an install from the Grails preferences page.");
+			GrailsVersion needsVersion = GrailsVersion.getGrailsVersion(project);
+		    throw new IllegalArgumentException("Could not find a grails install (needed version = "+ needsVersion + ") for '"+project.getName()+"'. " +
+		    		"Please configure a Grails "+needsVersion+" install from the Grails preferences page.");
 		}
 		if (true/*GrailsVersion.V_1_3_5.compareTo(grailsVersion)<=0*/) {
 			//This workaround is only required for grails 1.3.5 (until the bug that requires it is fixed)

@@ -109,7 +109,7 @@ public class GrailsCommandFactoryTest extends AbstractCommandTest {
 	
 	public void testUpgrade() throws Exception {
 		project = ensureProject("bork");
-		GrailsCommand cmd = GrailsCommandFactory.upgrade(project);
+		GrailsCommand cmd = GrailsCommandFactory.upgrade(project, GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(project));
 		assertEquals("upgrade --non-interactive", cmd.getCommand());
 	}
 	

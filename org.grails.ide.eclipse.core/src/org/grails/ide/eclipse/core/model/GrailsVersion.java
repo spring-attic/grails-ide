@@ -280,6 +280,17 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 		}
 		return UNKNOWN;
 	}
+	
+	/**
+	 * Change given project's application.properties file so it is specified to 
+	 * use this GrailsVersion
+	 */
+	public void setOn(IProject project) throws Exception {
+		Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
+		props.put("app.grails.version", this.getVersionString());
+		GrailsBuildSettingsHelper.saveApplicationProperties(project, props);
+	}
+	
 
 	public static GrailsVersion getGrailsVersion(File project) {
 		if (project!=null && GrailsNature.looksLikeGrailsProject(project)) {
@@ -341,5 +352,6 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 		}
 		return false;
 	}
+
 	
 }

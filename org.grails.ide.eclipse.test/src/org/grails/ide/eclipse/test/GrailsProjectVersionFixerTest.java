@@ -18,6 +18,7 @@ import java.util.Collection;
 import junit.framework.AssertionFailedError;
 
 import org.codehaus.jdt.groovy.model.GroovyNature;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -44,7 +45,6 @@ import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
 import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage;
@@ -458,8 +458,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				GrailsVersion.getGrailsVersion(project));
 		checkImportedProject();
 
-		GrailsInstallPropertyPage.setInstall(project, true,
-				GrailsVersion.MOST_RECENT.getInstall().getName());
+		setGrailsVersion(project, GrailsVersion.MOST_RECENT);
 
 		new ACondition() {
 			@Override
@@ -475,6 +474,10 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		checkImportedProject();
 		System.out
 				.println("<<<<<<<<<<<<<<<<<<<<<<<<<<testSTS1604UserChangesProjectSpecificGrailsInstall");
+	}
+
+	private void setGrailsVersion(IProject project, GrailsVersion version) throws Exception {
+		version.setOn(project);
 	}
 
 	public void testChangeDefaultGrails() throws Exception {
