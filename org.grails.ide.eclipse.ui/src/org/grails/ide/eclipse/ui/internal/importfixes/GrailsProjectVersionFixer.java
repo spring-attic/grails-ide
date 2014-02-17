@@ -82,7 +82,6 @@ public class GrailsProjectVersionFixer {
 	 * For testing purposes. If the value is set to a non-null value this value will be
 	 * used to automatically answer questions rather than popup a dialog.
 	 */
-	public static Boolean globalAskToUpgradeAnswer = null;
 	public static Boolean globalAskToConfigureAnswer = null;
 	public static Boolean globalAskToConvertToGrailsProjectAnswer = null;
 	
@@ -183,25 +182,7 @@ public class GrailsProjectVersionFixer {
 	}
 	
 	private class ProjectChangeHandler {
-		
-		/**
-		 * When set will to non-null value will answer any subsequent "upgrade?" questions automatically without
-		 * popping up a dialog. This variable's 'scope' is the handling of a single resource change event.
-		 * <p>
-		 * Thus it will help when user does a "bulk" import of many projects, but will reset at the end of
-		 * the import.
-		 */
-		private Answer<Boolean> askToUpgradeAnswer = new Answer<Boolean>(globalAskToUpgradeAnswer);
-		
-		/**
-		 * When set will to non-null value will answer any subsequent "downgrade?" questions automatically without
-		 * popping up a dialog. This variable's 'scope' is the handling of a single resource change event.
-		 * <p>
-		 * Thus it will help when user does a "bulk" import of many projects, but will reset at the end of
-		 * the import.
-		 */
-		private Answer<Boolean> askToDowngradeAnswer = new Answer<Boolean>(globalAskToUpgradeAnswer);
-		
+				
 		/**
 		 * To avoid asking the user multiple times to install some version of Grails, remember the answers
 		 * they gave for a particular install and don't ask them again about the same install.
@@ -492,48 +473,20 @@ public class GrailsProjectVersionFixer {
 		}
 
 		private boolean askToUpgradeFromUnsupported(IProject project, GrailsVersion oldVersion, IGrailsInstall newInstall) {
-			Assert.isLegal(oldVersion.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)<0);
-			return yesNoAllQuestion("Unsupported Grails version "+oldVersion.getVersionString(), 
-					"The project "+project.getName()+" is defined as using Grails "+oldVersion.getVersionString()+".\n"+
-					"The STS Grails tools require use of at least version "+GrailsVersion.SMALLEST_SUPPORTED_VERSION.getVersionString()+".\n" +
-					"Running a 'grails upgrade' will upgrade the project to use Grails "+newInstall.getVersion()+"\n" +
-					"Without an upgrade, the Grails tools will not work very well.\n\n"+
-					"Run 'grails upgrade' on project '"+project.getName()+"' now?",
-					askToUpgradeAnswer);
+			//TODO: remove this method and any code that is invoked when it returns true.
+			return false;
 		}
 
 		private boolean askToUpgradeFromSupportedNotInstalled(IProject project,
 				GrailsVersion oldVersion, IGrailsInstall newInstall) {
-			Assert.isLegal(oldVersion.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)>=0);
-			return yesNoAllQuestion("Grails version "+oldVersion.getVersionString()+" not installed.", 
-					"The project "+project.getName()+" is defined as using Grails "+oldVersion.getVersionString()+".\n"+
-					"No Grails install matching that version is configured in your workspace.\n"+
-					"Running a 'grails upgrade' will upgrade the project to use Grails "+newInstall.getVersion()+"\n" +
-					"Without an upgrade, you can still use the project if you install Grails "+oldVersion+"\n\n" +
-					"Run 'grails upgrade' on project '"+project.getName()+"' now?",
-					askToUpgradeAnswer);
+			//TODO: remove this method and any code that is invoked when it returns true.
+			return false;
 		}
 
 		private boolean askToUpgradeFromSupportedInstalled(IProject project,
 				GrailsVersion oldVersion, IGrailsInstall newInstall) {
-			Assert.isLegal(oldVersion.compareTo(GrailsVersion.SMALLEST_SUPPORTED_VERSION)>=0);
-			GrailsVersion newVersion = newInstall.getVersion();
-			boolean isDownGrade = oldVersion.compareTo(newVersion)>0;
-			String upgradeString = isDownGrade ? "DOWNGRADE" : "upgrade";
-			
-			boolean usingDefault = newInstall!=null && newInstall.isDefault();
-			final String newVersionMsg = 
-				usingDefault 
-					? "Your workspace default Grails install is version "+newVersion+".\n" 
-					: "The install associated with the project is version "+newVersion+".\n";
-			
-			return yesNoAllQuestion("Grails version mismatch detected.", 
-						"The project " + project.getName() + " is defined as using Grails " + oldVersion.getVersionString() + ".\n" + 
-						newVersionMsg + 
-						"Running a 'grails upgrade' will " + upgradeString + " the project to use " + newVersion + "\n" + 
-						"Alternatively, we can configure your project to use Grails " + oldVersion + "\n\n" + 
-						"Run 'grails upgrade' on project '" + project.getName() + "' now?", 
-						isDownGrade ? askToDowngradeAnswer : askToUpgradeAnswer);
+			//TODO: remove this method and any code that is invoked when it returns true.
+			return false;
 		}
 
 		private boolean askConvertToGrailsProject(IProject project, GrailsVersion grailsVersion) {
@@ -683,7 +636,6 @@ public class GrailsProjectVersionFixer {
 	 * method instead.
 	 */
 	public static void testMode() {
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = false;
 		GrailsProjectVersionFixer.globalAskToConvertToGrailsProjectAnswer = false;
 		GrailsProjectVersionFixer.globalAskToConfigureAnswer = false;
 	}

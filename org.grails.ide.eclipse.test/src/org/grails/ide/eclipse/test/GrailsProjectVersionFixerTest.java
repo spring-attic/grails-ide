@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.regex.Pattern;
 
 import junit.framework.AssertionFailedError;
 
@@ -36,20 +35,17 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.commands.GroovyCompilerVersionCheck;
+import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.classpath.SourceFolderJob;
-import org.grails.ide.eclipse.core.model.GrailsInstallManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
-import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
-import org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage;
-import org.eclipse.jdt.core.JavaCore;
 
 /**
  * @author Kris De Volder
@@ -65,7 +61,6 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 
 		GroovyCompilerVersionCheck.testMode();
 		// GrailsCoreActivator.getDefault().setKeepGrailsRunning(true);
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = true;
 		GrailsProjectVersionFixer.globalAskToConvertToGrailsProjectAnswer = true;
 		StsTestUtil.setAutoBuilding(true);
 		System.out.println("Waiting for autobuild...");
@@ -496,73 +491,6 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 
 	private void setGrailsVersion(IProject project, GrailsVersion version) throws Exception {
 		version.setOn(project);
-	}
-
-	/**
-	 * This test is now obsolete. Changing workspace default grails install does'nt have
-	 * any more impact on existing projects only on new projects.
-	 */
-	public void obsoleteTestChangeDefaultGrails() throws Exception {
-		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0)) {
-			// upgrade command broken in Grails 2.3 (from 2.2.x)
-			// It produce project with broken/unresolvable dependencies
-			return;
-		}
-		System.out.println("Testing project upgrade: " + GrailsVersion.PREVIOUS
-				+ " => " + GrailsVersion.MOST_RECENT);
-		ensureDefaultGrailsVersion(GrailsVersion.PREVIOUS);
-		final String projectName = "testChangeDefaultGrails";
-		project = ensureProject(projectName);
-
-		// Double check that project was created ok with correct version numbers
-		// in both eclipse settings and application.properties
-		assertEquals(GrailsVersion.PREVIOUS,
-				GrailsVersion.getEclipseGrailsVersion(project));
-		assertEquals(GrailsVersion.PREVIOUS,
-				GrailsVersion.getGrailsVersion(project));
-
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = true;
-		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
-
-		// Project should get upgraded... eventually
-		new ACondition("Project upgraded") {
-			public boolean test() throws Exception {
-				ACondition.assertJobManagerIdle();
-				assertEquals("Eclipse Grails version",
-						GrailsVersion.MOST_RECENT,
-						GrailsVersion.getEclipseGrailsVersion(project));
-				assertEquals("application.properties Grails version",
-						GrailsVersion.MOST_RECENT,
-						GrailsVersion.getGrailsVersion(project));
-				assertTrue("Project should inherit default install",
-						GrailsInstallManager.inheritsDefaultInstall(project));
-
-				return true;
-			}
-		}.waitFor(180000);
-
-		ensureDefaultGrailsVersion(GrailsVersion.PREVIOUS);
-
-		// Project should get downgraded... eventually
-		new ACondition() {
-			public boolean test() throws Exception {
-				ACondition.assertJobManagerIdle();
-				assertEquals("Eclipse Grails version", GrailsVersion.PREVIOUS,
-						GrailsVersion.getEclipseGrailsVersion(project));
-				assertEquals("application.properties Grails version",
-						GrailsVersion.PREVIOUS,
-						GrailsVersion.getGrailsVersion(project));
-				assertTrue("Project should inherit default install",
-						GrailsInstallManager.inheritsDefaultInstall(project));
-
-				return true;
-			}
-		}.waitFor(180000);
-
-		assertTrue(
-				"Test project for this test should be configured to inherit the default install",
-				GrailsInstallManager.inheritsDefaultInstall(project));
-
 	}
 
 	public void testImportProjectWithSameNameAsDeletedProject()

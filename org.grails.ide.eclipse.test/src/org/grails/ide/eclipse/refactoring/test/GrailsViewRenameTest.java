@@ -33,7 +33,6 @@ public class GrailsViewRenameTest extends GrailsRefactoringTest {
 		//clearGrailsState();
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 		GrailsProjectVersionFixer.globalAskToConvertToGrailsProjectAnswer = true;
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = false;
 	}
 	
 	@Override

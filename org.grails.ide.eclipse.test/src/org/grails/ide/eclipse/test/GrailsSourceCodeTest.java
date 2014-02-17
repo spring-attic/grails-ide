@@ -42,7 +42,6 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		GroovyCompilerVersionCheck.testMode();
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = false;
 		GrailsProjectVersionFixer.globalAskToConfigureAnswer = true;
 	}
 	

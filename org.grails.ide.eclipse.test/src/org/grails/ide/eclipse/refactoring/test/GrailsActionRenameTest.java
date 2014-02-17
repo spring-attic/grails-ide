@@ -38,7 +38,6 @@ public class GrailsActionRenameTest extends GrailsRefactoringTest {
 		super.setUp();
 		//clearGrailsState();
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
-		GrailsProjectVersionFixer.globalAskToUpgradeAnswer = false;
 		GrailsProjectVersionFixer.globalAskToConvertToGrailsProjectAnswer = true;
 	}
 	
