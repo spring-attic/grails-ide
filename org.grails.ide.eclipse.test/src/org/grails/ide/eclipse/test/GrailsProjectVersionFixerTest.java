@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import junit.framework.AssertionFailedError;
 
@@ -48,6 +49,7 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 import org.grails.ide.eclipse.commands.test.AbstractCommandTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 import org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage;
+import org.eclipse.jdt.core.JavaCore;
 
 /**
  * @author Kris De Volder
@@ -434,6 +436,17 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				"No linked resources found in project. Expected a link called: "
 						+ SourceFolderJob.PLUGINS_FOLDER_LINK, seenALink);
 	}
+	
+	/**
+	 * Assert that the grails version as apparant from libs on resolved project classpath matches
+	 * a given version.
+	 */
+	private void assertClasspathVersion(GrailsVersion version) throws Exception {
+		IClasspathEntry[] classpath = JavaCore.create(project).getResolvedClasspath(true);
+		String expectedLib = "grails-core-"+version;
+		assertClassPathEntry(IClasspathEntry.CPE_LIBRARY, expectedLib, classpath);
+	}
+	
 
 	public void testSTS1604UserChangesProjectSpecificGrailsInstall()
 			throws Throwable {
@@ -457,9 +470,10 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		assertEquals(GrailsVersion.PREVIOUS,
 				GrailsVersion.getGrailsVersion(project));
 		checkImportedProject();
+		assertClasspathVersion(GrailsVersion.PREVIOUS);
 
 		setGrailsVersion(project, GrailsVersion.MOST_RECENT);
-
+		
 		new ACondition() {
 			@Override
 			public boolean test() throws Exception {
@@ -468,9 +482,13 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 						GrailsVersion.getEclipseGrailsVersion(project));
 				assertEquals("Project not upgraded", GrailsVersion.MOST_RECENT,
 						GrailsVersion.getGrailsVersion(project));
+				
+				assertClasspathVersion(GrailsVersion.MOST_RECENT);
 				return true;
 			}
+
 		}.waitFor(180000);
+		
 		checkImportedProject();
 		System.out
 				.println("<<<<<<<<<<<<<<<<<<<<<<<<<<testSTS1604UserChangesProjectSpecificGrailsInstall");
@@ -480,7 +498,11 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		version.setOn(project);
 	}
 
-	public void testChangeDefaultGrails() throws Exception {
+	/**
+	 * This test is now obsolete. Changing workspace default grails install does'nt have
+	 * any more impact on existing projects only on new projects.
+	 */
+	public void obsoleteTestChangeDefaultGrails() throws Exception {
 		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0)) {
 			// upgrade command broken in Grails 2.3 (from 2.2.x)
 			// It produce project with broken/unresolvable dependencies

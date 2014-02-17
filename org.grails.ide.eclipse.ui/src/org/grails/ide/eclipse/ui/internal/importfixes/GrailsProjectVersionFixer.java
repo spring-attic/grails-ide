@@ -259,6 +259,7 @@ public class GrailsProjectVersionFixer {
 					if (0 != (kind & (IResourceDelta.ADDED | IResourceDelta.CHANGED))) {
 						IProject project = (IProject) projectDelta.getResource();
 						IResourceDelta[] children = projectDelta.getAffectedChildren(IResourceDelta.ADDED);
+						//Check for added grails-app folder:
 						for (IResourceDelta child : children) {
 							if (child.getResource().getName().equals("grails-app")) {
 								debug("Seeing a new 'grails-app' folder in '"+project+"'");
@@ -266,6 +267,15 @@ public class GrailsProjectVersionFixer {
 								fix(project);
 							}
 						}
+						//Check for modified 'application.properties' file:
+						children = projectDelta.getAffectedChildren(IResourceDelta.CHANGED);
+						for (IResourceDelta child : children) {
+							if (child.getResource().getName().equals("application.properties")) {
+								debug("Seeing a changed 'application.properties' file in '"+project+"'");
+								fix(project);
+							}
+						}
+						
 					}
 				}
 			} finally {
