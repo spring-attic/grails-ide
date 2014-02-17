@@ -44,8 +44,6 @@ import org.grails.ide.eclipse.core.internal.model.GrailsInstallWorkspaceConfigur
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.core.model.IGrailsInstallListener;
-import org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage;
-import org.grails.ide.eclipse.ui.internal.properties.GrailsInstallPropertyPage.IProjectInstallListener;
 import org.grails.ide.eclipse.ui.internal.utils.Answer;
 import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.LegacyProjectConverter;
 
@@ -140,15 +138,6 @@ public class GrailsProjectVersionFixer {
 	};
 	
 	/**
-	 * Listener that reacts to changes to project specific settings.
-	 */
-	private IProjectInstallListener projectInstallListener = new IProjectInstallListener() {
-		public void projectInstallChanged(IProject project, boolean useDefault, String installName) {
-			new ProjectChangeHandler().fix(project);
-		}
-	};
-	
-	/**
 	 * To avoid funny interactions between the two listeners, we disable the installListener while processing 
 	 * in response to the newProjectListener (reason for the interactions is that newProjectListener may
 	 * ask user to configure a grails install which tends to change the default Grails install).
@@ -165,7 +154,6 @@ public class GrailsProjectVersionFixer {
 		GrailsCoreActivator.getDefault().getInstallManager().addGrailsInstallListener(installListener);
 		debug("Added resource change listener: "+newProjectListener);
 		
-		GrailsInstallPropertyPage.addProjectInstallListener(projectInstallListener);
 	}
 
 	public void dispose() {
