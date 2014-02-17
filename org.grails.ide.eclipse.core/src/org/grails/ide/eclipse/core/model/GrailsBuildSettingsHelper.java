@@ -68,14 +68,14 @@ public class GrailsBuildSettingsHelper {
 		IFile eclipsePropFile = project.getFile("application.properties");
 		File propFile = eclipsePropFile.getLocation().toFile();
 		OutputStream out = new FileOutputStream(propFile);
-		eclipsePropFile.refreshLocal(IResource.DEPTH_ZERO, null);
 		try {
-			props.store(out, null);
+			props.store(out, "Modified by GGTS");
 		} finally {
 			try {
 				out.close();
 			} catch (Throwable e) {
 			}
+			eclipsePropFile.refreshLocal(IResource.DEPTH_ZERO, null);
 		}
 	}
 
