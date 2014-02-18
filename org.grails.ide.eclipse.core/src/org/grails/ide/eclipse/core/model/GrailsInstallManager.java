@@ -255,9 +255,4 @@ public class GrailsInstallManager {
 		return null;
 	}
 	
-	public static boolean inheritsDefaultInstall(IProject project) { 
-		//TODO: this method is obsolete. remove it and rework all callers.
-		return false;
-	}
-
 }

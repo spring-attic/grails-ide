@@ -163,17 +163,15 @@ public class GrailsProjectVersionFixer {
 	}
 
 	/**
-	 * Change project settings to make project use a specific grails install.
-	 * <p>
-	 * Warning to allow this to be called in contexts where workspace locked, this doesn't actually
-	 * set the install now, but schedules a job to set it later on.
+	 * Called after a new installation with the correct version has been provided for a project.
+	 * Ensures eclipse metadatas set up correctly etc.
 	 */
-	public static void setInstall(final IProject project, final IGrailsInstall install) {
+	public static void eclipsify(final IProject project, final IGrailsInstall install) {
 		WorkspaceJob job = new WorkspaceJob("Configure project '"+project.getName()+"' to use Grails "+install.getVersionString()) {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor)
 			throws CoreException {
-				GrailsCommandUtils.eclipsifyProject(install, install.isDefault(), project);
+				GrailsCommandUtils.eclipsifyProject(install, project);
 				return Status.OK_STATUS;
 			}
 		};
@@ -313,7 +311,7 @@ public class GrailsProjectVersionFixer {
 						monitor.beginTask("Converting to Grails project", 2);
 						try {
 							performLegacyConversion(project, new SubProgressMonitor(monitor, 1));
-							GrailsCommandUtils.eclipsifyProject(install, install.isDefault(), project);
+							GrailsCommandUtils.eclipsifyProject(install, project);
 							monitor.worked(1);
 							return Status.OK_STATUS;
 						} finally {
@@ -350,7 +348,7 @@ public class GrailsProjectVersionFixer {
 		        WorkspaceJob job = new WorkspaceJob("Removing legacy Grails nature on project '"+project.getName()+"'") {
 		            @Override
 		            public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-		                GrailsCommandUtils.eclipsifyProject(install, install.isDefault(), project);
+		                GrailsCommandUtils.eclipsifyProject(install, project);
 		                return Status.OK_STATUS;
 		            }
 		        };
@@ -370,7 +368,7 @@ public class GrailsProjectVersionFixer {
 					upgradeProject(project, grailsVersion, eclipseGrailsVersion.getInstall());
 				} else {
 					debug("Configuring project to use older version");
-					setInstall(project, matchingInstall);
+					eclipsify(project, matchingInstall);
 				}
 			} else {
 				// No matching grails install for this project's grails version
@@ -397,7 +395,7 @@ public class GrailsProjectVersionFixer {
 			IGrailsInstall install = grailsVersion.getInstall();
 			if (install!=null) {
 				//Silently try to use the install configured in application.properties
-				setInstall(project, install);
+				eclipsify(project, install);
 			} else {
 				GrailsVersion defaultVersion = GrailsVersion.getDefault();
 				handleMismatchingVersions(project, grailsVersion, defaultVersion);
@@ -418,7 +416,7 @@ public class GrailsProjectVersionFixer {
 					configured = configureGrails(grailsVersion);
 				}
 				if (configured!=null) {
-					setInstall(project, grailsVersion.getInstall());
+					eclipsify(project, grailsVersion.getInstall());
 				}
 			}
 		}

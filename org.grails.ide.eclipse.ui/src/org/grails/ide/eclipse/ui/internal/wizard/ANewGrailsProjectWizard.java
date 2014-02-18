@@ -203,8 +203,7 @@ public abstract class ANewGrailsProjectWizard extends NewElementWizard
 						.getWorkspace().getRoot()
 						.getProject(projectName);
 						
-						GrailsCommandUtils.eclipsifyProject(install,
-								useDefault, project);
+						GrailsCommandUtils.eclipsifyProject(install, project);
 					}
 
 					monitor.worked(1);

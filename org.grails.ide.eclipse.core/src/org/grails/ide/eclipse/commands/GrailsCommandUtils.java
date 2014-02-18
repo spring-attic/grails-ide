@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +55,7 @@ import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.grails.ide.eclipse.core.workspace.GrailsClassPath;
 import org.grails.ide.eclipse.core.workspace.GrailsProject;
 import org.grails.ide.eclipse.core.workspace.GrailsWorkspace;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 
 
 /**
@@ -107,7 +109,7 @@ public class GrailsCommandUtils {
 	 */
 	public static IProject eclipsifyProject(IGrailsInstall grailsInstall,
 			boolean isDefault, IPath projectAbsolutePath) throws CoreException {
-		return eclipsifyProject(grailsInstall, isDefault, projectAbsolutePath,
+		return eclipsifyProject(grailsInstall, projectAbsolutePath,
 				null);
 	}
 
@@ -135,7 +137,7 @@ public class GrailsCommandUtils {
 	 * @throws CoreException
 	 */
 	private static IProject eclipsifyProject(IGrailsInstall grailsInstall,
-			boolean isDefault, IPath projectAbsolutePath, IProject project)
+			IPath projectAbsolutePath, IProject project)
 			throws CoreException {
 
 		if (grailsInstall == null) {
@@ -319,9 +321,8 @@ public class GrailsCommandUtils {
 	 *            The project to configure. Cannot be null
 	 * @throws CoreException
 	 */
-	public static IProject eclipsifyProject(IGrailsInstall grailsInstall,
-			boolean isDefault, IProject project) throws CoreException {
-		return eclipsifyProject(grailsInstall, isDefault, null, project);
+	public static IProject eclipsifyProject(IGrailsInstall grailsInstall, IProject project) throws CoreException {
+		return eclipsifyProject(grailsInstall, null, project);
 	}
 
 	/**
@@ -493,7 +494,7 @@ public class GrailsCommandUtils {
 		}
 		//Even if above command exec had some error, we can try to proceed...
 		try {
-			eclipsifyProject(install, install.isDefault() && GrailsInstallManager.inheritsDefaultInstall(project), project);
+			eclipsifyProject(install, project);
 		} catch (CoreException e) {
 			if (error==null) {
 				error = e;
@@ -541,6 +542,14 @@ public class GrailsCommandUtils {
 
 	private static void refreshDependencies(GrailsProject gp, boolean showOutput) throws CoreException {
 		refreshDependencies(gp.getJavaProject(), showOutput);
+	}
+
+	public static void eclipsifyProject(IProject project) throws CoreException {
+		IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(project);
+		if (install==null) {
+			GrailsVersion version = GrailsVersion.getGrailsVersion(project);
+			throw ExceptionUtil.coreException("No matching Grails Install (required "+version+") for project '"+project.getName()+"'");
+		}
 	}
 
 }

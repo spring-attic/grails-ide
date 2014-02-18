@@ -56,7 +56,7 @@ public class MigrateGrailsProjectContainerActionDelegate implements IObjectActio
 					try {
 						for (IProject project: selected) {
 							monitor.setTaskName("Converting project "+project.getName()+" to Grails");
-							GrailsCommandUtils.eclipsifyProject(null, true, project);
+							GrailsCommandUtils.eclipsifyProject(project);
 							monitor.worked(1);
 							if (monitor.isCanceled()) {
 								return Status.CANCEL_STATUS;

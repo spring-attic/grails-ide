@@ -123,7 +123,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 		assertTrue(project.isAccessible());
 		assertTrue(project.getFolder("grails-app").exists());
 		
-		GrailsCommandUtils.eclipsifyProject(null, true, project);
+		GrailsCommandUtils.eclipsifyProject(project);
 		
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//Check a few things about this test project
@@ -237,7 +237,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 		assertTrue(project.isAccessible());
 		assertTrue(project.getFolder("grails-app").exists());
 		
-		GrailsCommandUtils.eclipsifyProject(null, true, project);
+		GrailsCommandUtils.eclipsifyProject(project);
 		
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//Check a few things about this test project
