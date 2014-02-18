@@ -73,7 +73,7 @@ public class MockGrailsTestProjectUtils {
             JavaCore.setOptions(options);
         
             addGrailsNature(project);
-            grailsVersion.setOn(project);
+            grailsVersion.setOn(project, true); //create mock application.properties file
             
             Set<String> dependencies = findDependencies();
             for (String file : dependencies) {

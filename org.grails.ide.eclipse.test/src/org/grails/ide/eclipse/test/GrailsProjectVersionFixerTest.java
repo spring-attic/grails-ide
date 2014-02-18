@@ -490,7 +490,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 	}
 
 	private void setGrailsVersion(IProject project, GrailsVersion version) throws Exception {
-		version.setOn(project);
+		version.setOn(project, false);
 	}
 
 	public void testImportProjectWithSameNameAsDeletedProject()

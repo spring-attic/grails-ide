@@ -11,6 +11,7 @@
 package org.grails.ide.eclipse.core.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -285,8 +286,13 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	 * Change given project's application.properties file so it is specified to 
 	 * use this GrailsVersion
 	 */
-	public void setOn(IProject project) throws Exception {
-		Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
+	public void setOn(IProject project, boolean create) throws Exception {
+		Properties props;
+		if (create) {
+			props = new Properties();
+		} else {
+			props = GrailsBuildSettingsHelper.getApplicationProperties(project);
+		}
 		props.put("app.grails.version", this.getVersionString());
 		GrailsBuildSettingsHelper.saveApplicationProperties(project, props);
 	}

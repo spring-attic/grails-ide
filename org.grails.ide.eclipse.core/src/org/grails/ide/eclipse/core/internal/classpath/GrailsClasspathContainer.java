@@ -478,9 +478,17 @@ public class GrailsClasspathContainer implements IClasspathContainer {
 
 	public static boolean isVersionSynched(IProject project) {
 		GrailsClasspathContainer container = GrailsClasspathUtils.getClasspathContainer(JavaCore.create(project));
-		GrailsVersion oldVersion = container.getGrailsVersion();
-		GrailsVersion newVersion = GrailsVersion.getGrailsVersion(project);
-		return oldVersion.equals(newVersion);
+		if (container!=null) {
+			GrailsVersion oldVersion = container.getGrailsVersion();
+			if (oldVersion!=null) {
+				GrailsVersion newVersion = GrailsVersion.getGrailsVersion(project);
+				return oldVersion.equals(newVersion);
+			}
+			return false;
+		}
+		//treat as version synched the project doesn't even seem like a real/valid grails project... so this will avoid doing refresh dependencies on it.
+		// that's a good idea because it makes not much sense to refresh it anyway unless its a correctly setup grails project.
+		return true; 
 	}
 
 	private GrailsVersion getGrailsVersion() {
