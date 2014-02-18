@@ -39,6 +39,7 @@ import org.grails.ide.eclipse.commands.GrailsCommandUtils;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.IgnoredProjectsList;
+import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainer;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathContainerUpdateJob;
 import org.grails.ide.eclipse.core.internal.model.GrailsInstallWorkspaceConfigurator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
@@ -283,7 +284,8 @@ public class GrailsProjectVersionFixer {
 				} else if (GrailsNature.hasOldGrailsNature(project)) {
 				    // has both the new nature and the old nature
 				    handleHasOldGrailsNature(project, grailsVersion);
-				} else {
+				} else if (!GrailsClasspathContainer.isVersionSynched(project)){
+					// classpath currently has libs of a different Grails version... so must refresh
 					GrailsClasspathContainerUpdateJob.scheduleClasspathContainerUpdateJob(project, true);
 				}
 			}

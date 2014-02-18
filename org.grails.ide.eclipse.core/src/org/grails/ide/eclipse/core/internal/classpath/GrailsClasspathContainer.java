@@ -87,6 +87,8 @@ public class GrailsClasspathContainer implements IClasspathContainer {
 	/** Set of full file paths to plugin.xml files */
 	private Set<String> pluginDescriptors;
 
+	private GrailsVersion grailsVersion = GrailsVersion.UNKNOWN;
+
 	/**
 	 * Constructor to create a new class path container
 	 * 
@@ -168,83 +170,89 @@ public class GrailsClasspathContainer implements IClasspathContainer {
 			PerProjectAttachementsCache attachements = PerProjectAttachementsCache.get(project);
 			IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager()
 					.getGrailsInstall(javaProject.getProject());
-			if (install != null) {
-				description = " [" + install.getName() + "]";
-			}
-			// info can null if classpath container is a on project without the nature; so be extra careful
-			if (info != null && info.getData() != null) {
-				DependencyData data = info.getData();
-
-				// These are the paths to the source folders
-				// Class path entries are created from this data
-				Set<String> dependencies = data.getDependencies();
-
-				// These are the locations for the plugin.xml files, but
-				// are NOT used to create class path entries. They are simply
-				// parsed at the same time as the dependencies to ensure
-				// that whoever requests descriptors will be getting them
-				// from the same class path container that also created the
-				// class path entries, since both pieces of information
-				// are obtained from the same dependency parser
-				this.pluginDescriptors = data.getPluginDescriptors();
-
-				for (String fileDescriptor : dependencies) {
-					// don't link in .svn and CVS folders; would eventually make
-					// sense to not link in folders starting
-					// with '.'; see STS-745
-					File file = new File(fileDescriptor);
-					String name = file.getName();
-					if (name.startsWith(".svn") || name.equals("CVS")) {
-						continue;
-					}
-					if (!(file.exists() && file.canRead())) {
-						continue;
-					}
-
-					IPath sourceFile = getSourceAttachement(project, attachements,  file);
-
-					IClasspathAttribute[] attributes = NO_EXTRA_ATTRIBUTES;
-					String javaDocPath = GrailsClasspathContainer.getJavaDocLocation(project, file);
-					if (javaDocPath != null) {
-						attributes = new IClasspathAttribute[] { JavaCore.newClasspathAttribute(
-								IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME, javaDocPath) };
-					}
-
-					entries.add(JavaCore.newLibraryEntry(new Path(file.getAbsolutePath()), sourceFile, null,
-							NO_ACCESS_RULES, attributes, false));
-				}
-				
-				//STS-2084: temporary workaround, revisit after M2 is no longer interesting
-				//Note: still a problem in build snapshot since M2 but should reevaluate on each milestone release
-				if (install != null && GrailsVersion.V_1_3_7.compareTo(install.getVersion())<=0
-						&& GrailsVersion.V_2_0_3.compareTo(install.getVersion())>0) {
-					//if (GrailsNature.isGrailsPluginProject(project)) {
-						File ivyLib = getIvyLib(install);
-						if (ivyLib!=null) {
-							entries.add(JavaCore.newLibraryEntry(new Path(ivyLib.getAbsolutePath()), null, null,
-									NO_ACCESS_RULES, NO_EXTRA_ATTRIBUTES, false));
+			try {
+				// info can null if classpath container is a on project without the nature; so be extra careful
+				if (info != null && info.getData() != null) {
+					DependencyData data = info.getData();
+	
+					// These are the paths to the source folders
+					// Class path entries are created from this data
+					Set<String> dependencies = data.getDependencies();
+	
+					// These are the locations for the plugin.xml files, but
+					// are NOT used to create class path entries. They are simply
+					// parsed at the same time as the dependencies to ensure
+					// that whoever requests descriptors will be getting them
+					// from the same class path container that also created the
+					// class path entries, since both pieces of information
+					// are obtained from the same dependency parser
+					this.pluginDescriptors = data.getPluginDescriptors();
+	
+					for (String fileDescriptor : dependencies) {
+						// don't link in .svn and CVS folders; would eventually make
+						// sense to not link in folders starting
+						// with '.'; see STS-745
+						File file = new File(fileDescriptor);
+						String name = file.getName();
+						if (name.startsWith(".svn") || name.equals("CVS")) {
+							continue;
 						}
-					//}
-				}
-				
-				//At the very end at the 'plugin-classes' directory as a library
-				String pluginClassesStr = data.getPluginClassesDirectory();
-				if (pluginClassesStr!=null) {
-					File pluginClassesDir = new File(pluginClassesStr);
-					if (pluginClassesDir.exists()) {
-						entries.add(JavaCore.newLibraryEntry(Path.fromOSString(pluginClassesStr), null, null));
+						if (!(file.exists() && file.canRead())) {
+							continue;
+						}
+	
+						IPath sourceFile = getSourceAttachement(project, attachements,  file);
+	
+						IClasspathAttribute[] attributes = NO_EXTRA_ATTRIBUTES;
+						String javaDocPath = GrailsClasspathContainer.getJavaDocLocation(project, file);
+						if (javaDocPath != null) {
+							attributes = new IClasspathAttribute[] { JavaCore.newClasspathAttribute(
+									IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME, javaDocPath) };
+						}
+	
+						entries.add(JavaCore.newLibraryEntry(new Path(file.getAbsolutePath()), sourceFile, null,
+								NO_ACCESS_RULES, attributes, false));
+					}
+					
+					//STS-2084: temporary workaround, revisit after M2 is no longer interesting
+					//Note: still a problem in build snapshot since M2 but should reevaluate on each milestone release
+					if (install != null && GrailsVersion.V_1_3_7.compareTo(install.getVersion())<=0
+							&& GrailsVersion.V_2_0_3.compareTo(install.getVersion())>0) {
+						//if (GrailsNature.isGrailsPluginProject(project)) {
+							File ivyLib = getIvyLib(install);
+							if (ivyLib!=null) {
+								entries.add(JavaCore.newLibraryEntry(new Path(ivyLib.getAbsolutePath()), null, null,
+										NO_ACCESS_RULES, NO_EXTRA_ATTRIBUTES, false));
+							}
+						//}
+					}
+					
+					//At the very end at the 'plugin-classes' directory as a library
+					String pluginClassesStr = data.getPluginClassesDirectory();
+					if (pluginClassesStr!=null) {
+						File pluginClassesDir = new File(pluginClassesStr);
+						if (pluginClassesDir.exists()) {
+							entries.add(JavaCore.newLibraryEntry(Path.fromOSString(pluginClassesStr), null, null));
+						}
 					}
 				}
-			}
-			else {
-				//Dependency file doesn't exist and we cannot build it now, since that takes too long.
-				description += " (uninitialized)";
-				//The project will get compiled by JDT with errors. See STS-1347
-				//We must make sure that sometime soon the dependencies are going to be refreshed:
-				if (!isInWonkyState(javaProject)) {
-					//Don't auto-refresh projects that are in a 'wonky' state. This will probably just cause spurious errors
-					//in the error log, as well work that need not be done at all.
-					GrailsClasspathContainerUpdateJob.scheduleClasspathContainerUpdateJob(javaProject, false);
+				else {
+					//Dependency file doesn't exist and we cannot build it now, since that takes too long.
+					description += " (uninitialized)";
+					//The project will get compiled by JDT with errors. See STS-1347
+					//We must make sure that sometime soon the dependencies are going to be refreshed:
+					if (!isInWonkyState(javaProject)) {
+						//Don't auto-refresh projects that are in a 'wonky' state. This will probably just cause spurious errors
+						//in the error log, as well work that need not be done at all.
+						GrailsClasspathContainerUpdateJob.scheduleClasspathContainerUpdateJob(javaProject, false);
+					}
+				}
+			} finally {
+				if (install != null) {
+					description = " [" + install.getName() + "]";
+					this.grailsVersion = install.getVersion();
+				} else {
+					this.grailsVersion = GrailsVersion.UNKNOWN;
 				}
 			}
 		}
@@ -466,5 +474,16 @@ public class GrailsClasspathContainer implements IClasspathContainer {
 			return entry.getPath().equals(CLASSPATH_CONTAINER_PATH);
 		}
 		return false;
+	}
+
+	public static boolean isVersionSynched(IProject project) {
+		GrailsClasspathContainer container = GrailsClasspathUtils.getClasspathContainer(JavaCore.create(project));
+		GrailsVersion oldVersion = container.getGrailsVersion();
+		GrailsVersion newVersion = GrailsVersion.getGrailsVersion(project);
+		return oldVersion.equals(newVersion);
+	}
+
+	private GrailsVersion getGrailsVersion() {
+		return this.grailsVersion;
 	}
 }
