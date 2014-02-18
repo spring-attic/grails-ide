@@ -56,9 +56,10 @@ public abstract class AbstractGSPTagsTest extends EclipseTestCase {
         	// forces GrailsTestUtilActivator. Otherwise GrailsVersion.MOST_RECENT might not get initialized on time.
         	// This is because evaluation of args to the call below may fetch the value of GrailsVersion.MOST_RECENT
         	// before the activation happens as triggered by classloading the GrailsTest class.
-        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+        GrailsVersion grailsVersion = GrailsVersion.MOST_RECENT;
+		GrailsTest.ensureDefaultGrailsVersion(grailsVersion);
         GrailsProjectVersionFixer.testMode();
-        MockGrailsTestProjectUtils.mockGrailsProject(testProject.getProject());
+        MockGrailsTestProjectUtils.mockGrailsProject(testProject.getProject(), grailsVersion);
         models = new ArrayList<IStructuredModel>();
         logger = new TestLogger();
         GrailsCoreActivator.setLogger(logger);

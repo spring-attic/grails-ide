@@ -40,6 +40,8 @@ import org.eclipse.jdt.internal.core.JavaProject;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
+import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
+import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 
 /**
@@ -56,7 +58,7 @@ public class MockGrailsTestProjectUtils {
      * @param project
      * @throws Exception
      */
-    public static void mockGrailsProject(IProject project) throws Exception {
+    public static void mockGrailsProject(IProject project, GrailsVersion grailsVersion) throws Exception {
     	IClasspathEntry[] classpath = JavaCore.create(project).getRawClasspath();
 
         boolean wasAutobuilding = isAutoBuilding();
@@ -71,6 +73,7 @@ public class MockGrailsTestProjectUtils {
             JavaCore.setOptions(options);
         
             addGrailsNature(project);
+            grailsVersion.setOn(project);
             
             Set<String> dependencies = findDependencies();
             for (String file : dependencies) {

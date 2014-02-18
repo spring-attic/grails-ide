@@ -334,7 +334,8 @@ public abstract class AbstractGrailsInferencingTests extends
         //  to the correct value by GrailsTestUtilActivator!
         //  So solve this reference the class once
         System.out.println(GrailsTest.class);
-        GrailsTest.ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+        final GrailsVersion grailsVersion = GrailsVersion.MOST_RECENT;
+		GrailsTest.ensureDefaultGrailsVersion(grailsVersion);
         
         final Job setupJob = new Job("grails test setup job") {
             
@@ -342,7 +343,7 @@ public abstract class AbstractGrailsInferencingTests extends
             protected IStatus run(IProgressMonitor monitor) {
                 try {
                     superSetup();
-                    MockGrailsTestProjectUtils.mockGrailsProject(project);
+                    MockGrailsTestProjectUtils.mockGrailsProject(project, grailsVersion);
                     return Status.OK_STATUS;
                 } catch (Exception e) {
                     return new Status(IStatus.ERROR, "", "", e);

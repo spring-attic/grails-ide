@@ -39,13 +39,16 @@ import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
  */
 public class GrailsContentAssistTests extends CompletionTestCase {
 
-    public GrailsContentAssistTests(String name) {
+    private GrailsVersion grailsVersion;
+
+	public GrailsContentAssistTests(String name) {
         super(name);
     }
     
     @Override
     protected void setUp() throws Exception {
         GrailsProjectVersionFixer.testMode();
+        grailsVersion = GrailsVersion.MOST_RECENT;
         super.setUp();
     }
     
@@ -233,13 +236,14 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         applyProposalAndCheck(new Document(contents), firstProposal, expected);
     }
     
+    @Override
     protected IPath createGenericProject() throws Exception {
         if (genericProjectExists()) {
             return env.getProject("Project").getFullPath();
         }
         IPath projectPath = super.createGenericProject();
         IProject project = env.getProject(projectPath);
-        MockGrailsTestProjectUtils.mockGrailsProject(project);
+        MockGrailsTestProjectUtils.mockGrailsProject(project, grailsVersion);
         
         fullBuild(projectPath);
         env.addPackageFragmentRoot(projectPath, "grails-app/services"); //$NON-NLS-1$
