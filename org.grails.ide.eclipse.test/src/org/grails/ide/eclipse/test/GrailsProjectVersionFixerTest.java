@@ -570,40 +570,4 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 		StsTestUtil.assertNoErrors(project);
 	}
 
-	public void testImportProjectWithUnknownEclipseGrailsVersion()
-			throws Exception {
-		if (GrailsVersion.MOST_RECENT.isSnapshot()) {
-			// Don't run this for snapshot builds. Too much work to create test
-			// projects for moving target.
-			return;
-		}
-
-		// The project being imported has following setup
-		// - uses project specific Grails install
-		// - Grails install name = 'Bogus X.X.X'
-		// This will cause GrailsVersion.getEclipseGrailsVersion() to return an
-		// 'unknown' Grails install.
-		final GrailsVersion version = GrailsVersion.MOST_RECENT;
-		String projectName = "BogusEclipseVersion";
-
-		ensureDefaultGrailsVersion(version);
-
-		URL zipFileURL = getProjectZip(projectName, version);
-		importProject(zipFileURL, projectName);
-		new ACondition() {
-			@Override
-			public boolean test() throws Exception {
-				assertEquals(version,
-						GrailsVersion.getEclipseGrailsVersion(project));
-				return true;
-			}
-		}.waitFor(3000);
-		assertEquals(version, GrailsVersion.getGrailsVersion(project));
-		checkImportedProject();
-		StsTestUtil.assertNoErrors(project);
-	}
-
-	// TODO: add a test for case "user changes global default" with multiple
-	// projects in workspace using global default
-
 }
