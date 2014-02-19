@@ -92,31 +92,6 @@ public class GrailsCommandUtils {
 	 * Newly created Grails projects (created by create-app / create-plugin)
 	 * have a number of issues with their setup (classpath, project natures
 	 * etc.). This method fixes those issues.
-	 *  
-	 * @param grailsInstall
-	 *            The grails install that should be stored in the configuration
-	 *            of the project, can be null, if null the default Grails
-	 *            install will be used.
-	 * @param isDefault
-	 *            Configures whether this project uses a global default grails
-	 *            install or uses a project specific Grails install. Is true,
-	 *            the grailsInstall parameter will be ignored.
-	 * @param path
-	 *            absolute location of the project (where the .project file is
-	 *            located). Must not be null and must point to a physical
-	 *            location in the file system
-	 * @throws CoreException
-	 */
-	public static IProject eclipsifyProject(IGrailsInstall grailsInstall,
-			boolean isDefault, IPath projectAbsolutePath) throws CoreException {
-		return eclipsifyProject(grailsInstall, projectAbsolutePath,
-				null);
-	}
-
-	/**
-	 * Newly created Grails projects (created by create-app / create-plugin)
-	 * have a number of issues with their setup (classpath, project natures
-	 * etc.). This method fixes those issues.
 	 * 
 	 * @param grailsInstall
 	 *            The grails install that should be stored in the configuration
@@ -323,6 +298,11 @@ public class GrailsCommandUtils {
 	 */
 	public static IProject eclipsifyProject(IGrailsInstall grailsInstall, IProject project) throws CoreException {
 		return eclipsifyProject(grailsInstall, null, project);
+	}
+	
+
+	public static IProject eclipsifyProject(IGrailsInstall install, IPath projectPath) throws CoreException {
+		return eclipsifyProject(install,projectPath, null);
 	}
 
 	/**
@@ -550,6 +530,6 @@ public class GrailsCommandUtils {
 			GrailsVersion version = GrailsVersion.getGrailsVersion(project);
 			throw ExceptionUtil.coreException("No matching Grails Install (required "+version+") for project '"+project.getName()+"'");
 		}
+		eclipsifyProject(install, project);
 	}
-
 }

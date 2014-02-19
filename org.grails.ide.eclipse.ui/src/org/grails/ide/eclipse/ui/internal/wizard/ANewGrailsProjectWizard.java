@@ -187,8 +187,7 @@ public abstract class ANewGrailsProjectWizard extends NewElementWizard
 						}
 						monitor.worked(1);
 						
-						project = GrailsCommandUtils.eclipsifyProject(install,
-								useDefault, projectPath);
+						project = GrailsCommandUtils.eclipsifyProject(install, projectPath);
 						
 					} else { //location == null 
 						File commandLocation = new File(command.getPath());
