@@ -257,7 +257,7 @@ public class GrailsImportWizardCore {
 				File projectAbsoluteFile = location.getValue();
 				if (projectAbsoluteFile!=null) {
 					IPath projectAbsolutePath = new Path(projectAbsoluteFile.toString());
-					GrailsCommandUtils.eclipsifyProject(grailsInstall.getValue(), false, projectAbsolutePath);
+					GrailsCommandUtils.eclipsifyProject(grailsInstall.getValue(), projectAbsolutePath);
 					return true;
 				}
 			}

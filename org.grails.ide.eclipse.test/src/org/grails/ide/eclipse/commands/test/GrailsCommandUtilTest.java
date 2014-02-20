@@ -286,7 +286,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 		final File projectLoc = new File(StsTestUtil.createTempDirectory(), projName);
 		createApp.setPath(projectLoc.getParent());
 		createApp.synchExec();
-		GrailsCommandUtils.eclipsifyProject(null, true, new Path(projectLoc.getAbsolutePath()));
+		GrailsCommandUtils.eclipsifyProject(null, new Path(projectLoc.getAbsolutePath()));
 		
 		project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 		
