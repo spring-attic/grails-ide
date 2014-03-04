@@ -135,7 +135,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
             assertTrue(jar.exists());
             assertTrue(jar.isAbsolute());
             assertTrue(jar.getName().endsWith(".jar"));
-            assertTrue(jar.getName().startsWith("springloaded-core-"));
+            assertTrue(jar.getName().startsWith("springloaded-"));
         }
     }
 

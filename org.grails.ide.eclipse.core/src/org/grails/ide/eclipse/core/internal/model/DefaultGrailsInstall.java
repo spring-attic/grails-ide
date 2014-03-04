@@ -273,9 +273,22 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 	
 	private class SpringloadedJarFinder {
 		
+		/**
+		 * Maven artifact-ids plus trailing dash. These are the strings that we look for to
+		 * recognize a spring-loaded jar file name.
+		 */
+		private final String[] LOADED_ARTIFACT_IDS_WITH_DASH = {
+			//Careful... one is a prefix of the other. Make sure the longer name is first. 
+			//  The names are checked in the order given. Matching on the short name
+			//  inadvertently will cause a problem extracting the version string.
+			"springloaded-core-", //prior to Grails 2.3.7
+			"springloaded-" 		 //Grails 2.3.7 and up
+		};
+
 		private final String[] searchIn = { 
 				"lib/com.springsource.springloaded/springloaded-core",
-				"lib/org.springsource.springloaded/springloaded-core"
+				"lib/org.springsource.springloaded/springloaded-core",
+				"lib/org.springframework/springloaded"
 		};
 		
 		private File foundJar = null;
@@ -303,10 +316,14 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 				for (File jarCandidate : files) {
 					if (jarCandidate.isFile()) {
 						String fileName = jarCandidate.getName();
-						if (fileName.startsWith("springloaded-core-") && fileName.endsWith(".jar") && fileName.indexOf("source")==-1) {
+						//String jarArtifactId = "springloaded-core-";
+						String jarArtifactId = determineAID(fileName);
+						if (jarArtifactId!=null && fileName.startsWith(jarArtifactId) && fileName.endsWith(".jar") 
+									//ignore javadoc and source jars
+									&& fileName.indexOf("source")==-1 && fileName.indexOf("javadoc")==-1) {
 							//Found a springloaded jar.
 							String versionString = fileName.substring(
-									"springloaded-core-".length(),
+									jarArtifactId.length(),
 									fileName.length()-4/*".jar".length()*/);
 							Version version = new Version(versionString); //Not really an OSGi bundle, but this should work anyway.
 							if (foundVersion==null || foundVersion.compareTo(version)<0) {
@@ -321,6 +338,15 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 					}
 				}
 			}
+		}
+
+		private String determineAID(String fileName) {
+			for (String aid : LOADED_ARTIFACT_IDS_WITH_DASH) {
+				if (fileName.startsWith(aid)) {
+					return aid;
+				}
+			}
+			return null;
 		}
 	}
 
