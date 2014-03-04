@@ -95,6 +95,9 @@ public class GrailsBuildSettingsHelper {
 		try {
 			props.load(input = new FileInputStream(propFile));
 			return props;
+		} catch (FileNotFoundException e) {
+			//Ignore... happens more or less expectedly when called on non-grails projects.
+			return props;
 		} catch (Exception e) {
 			GrailsCoreActivator.log(e);
 			return props; // Note this props is probably empty or only partially read.
