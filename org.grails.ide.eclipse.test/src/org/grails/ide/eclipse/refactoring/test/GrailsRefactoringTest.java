@@ -188,7 +188,7 @@ public abstract class GrailsRefactoringTest extends AbstractCommandTest {
 					return true;
 				}
 	
-			}.waitFor(180000);
+			}.waitFor(4*60000);
 		}
 
 	protected IType getType(String fqName) throws JavaModelException {
