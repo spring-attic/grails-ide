@@ -59,7 +59,9 @@ public class GroovyCompilerVersionCheck {
 
 	public static SpecifiedVersion getRequiredGroovyVersion(GrailsVersion gv) {
 		if (gv != null) {
-			if (GrailsVersion.V_2_3_.compareTo(gv) <= 0) {
+			if (GrailsVersion.V_2_4_.compareTo(gv) <= 0) {
+				return SpecifiedVersion._22;
+			} else if (GrailsVersion.V_2_3_.compareTo(gv) <= 0) {
 				return SpecifiedVersion._21;
 			} else if (GrailsVersion.V_2_2_.compareTo(gv)<=0) {
 				return SpecifiedVersion._20;
