@@ -203,6 +203,8 @@ public class GrailsProjectVersionFixer {
 		private Answer<Boolean> askToConvertToGrailsProjectAnswer = new Answer<Boolean>(globalAskToConvertToGrailsProjectAnswer);
 
 		public void defaultGrailsVersionChanged() {
+			//TODO: obsolete? Project now no longer follow the default install (only used on project creation).
+			//  So projects are no longer affected by changes to the default install?
 			GrailsVersion defaultVersion = GrailsVersion.getDefault();
 			if (defaultVersion!=null) {
 				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
