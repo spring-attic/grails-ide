@@ -298,9 +298,9 @@ public class GrailsProjectVersionFixer {
 		private void handleNoGrailsNature(final IProject project, GrailsVersion grailsVersion) {
 			debug("Grails project without grails nature detected: "+project);
 			
-			final IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getDefaultGrailsInstall();
-			// We are relying on the normal fixer to run upgrade etc. when the workspace default install doesn't match the declared version.
-			// This means we should only be getting here if the following assert is true.
+			final IGrailsInstall install = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(project);
+			// We are relying on previouse logic to check for matching installs etc. This means we should only be getting 
+			// here if the following assert is true.
 			Assert.isTrue(install.getVersion().equals(grailsVersion));
 			boolean convert = askConvertToGrailsProject(project, grailsVersion);
 			if (convert) {
