@@ -83,6 +83,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_3_2 = new GrailsVersion("2.3.2");
 	public static final GrailsVersion V_2_3_4 = new GrailsVersion("2.3.4");
 	public static final GrailsVersion V_2_3_5 = new GrailsVersion("2.3.5");
+	public static final GrailsVersion V_2_3_7 = new GrailsVersion("2.3.7");
 	
 //	public static final GrailsVersion V_2_3_2_SNAPSHOT = new GrailsVersion("2.3.2.BUILD-SNAPSHOT", 
 //			"http://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
