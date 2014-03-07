@@ -11,7 +11,6 @@
 package org.grails.ide.eclipse.core.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
