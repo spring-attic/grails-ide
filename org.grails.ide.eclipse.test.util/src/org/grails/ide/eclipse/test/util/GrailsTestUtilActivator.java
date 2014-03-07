@@ -95,37 +95,33 @@ public class GrailsTestUtilActivator implements BundleActivator {
 			System.out.println("Detected Groovy Workspace Version = 2.1");
 			configureGrails23();
 			break;
+		case _22:
+			System.out.println("Detected Groovy Workspace Version = 2.2");
+			configureGrails24();
+			break;
 		default:
 			//The groovy compiler level is probably wrong... but anyhoo...
-			configureGrails22();
+			configureGrails23();
 			break;
 		}
 		System.out.println("GrailsVersion.MOST_RECENT = "+GrailsVersion.MOST_RECENT);
 	}
 
+	private static void configureGrails24() {
+		GrailsVersion.PREVIOUS_PREVIOUS =  GrailsVersion.V_2_3_5;
+		GrailsVersion.PREVIOUS = GrailsVersion.V_2_3_7;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_4_0_M1;
+	}
+	
 	private static void configureGrails23() {
 		GrailsVersion.PREVIOUS_PREVIOUS =  GrailsVersion.V_2_2_4;
 		GrailsVersion.PREVIOUS = GrailsVersion.V_2_3_5;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_3_5;
 		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_3_7;
 	}
 
 	private static void configureGrails22() {
 		GrailsVersion.PREVIOUS_PREVIOUS = GrailsVersion.V_2_0_4;
 		GrailsVersion.PREVIOUS = GrailsVersion.V_2_1_0; 
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M1;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_0_M2;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.BUILDSNAPHOT_2_0_2;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_1;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_0_3;
-		//GrailsVersion.MOST_RECENT = GrailsVersion.V_2_1_0;
-//		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_3;
 		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_2_4;
 	}
 
