@@ -1,9 +1,9 @@
 open_source_license.txt
 
-Grails-IDE 3.4.0 GA
+Grails-IDE 3.5.0 GA
 
 =================================================================
-GoPivotal makes available all content in this download ("Content"). 
+Pivotal makes available all content in this download ("Content"). 
 Unless otherwise indicated below, the Content is provided to you under 
 the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). 
 A copy of the EPL is available in the file called license.txt. For 
@@ -23,7 +23,6 @@ license associated with each component.
 
 
 
-
 SECTION 1: Apache License, V2.0
 
    >>> org.apache.commons.logging-1.1.1
@@ -33,18 +32,24 @@ SECTION 1: Apache License, V2.0
 SECTION 2: Eclipse Public License, V1.0
 
    >>> org.apache.commons.io-2.0.1
-   >>> org.springframework.ide.eclipse.uaa-3.4.0
-   >>> org.springsource.ide.eclipse.commons.configurator-3.4.0
-   >>> org.springsource.ide.eclipse.commons.content.core-3.4.0
-   >>> org.springsource.ide.eclipse.commons.core-3.4.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.core-3.4.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.4.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.ui-3.4.0
-   >>> org.springsource.ide.eclipse.commons.gettingstarted-3.4.0
-   >>> org.springsource.ide.eclipse.commons.livexp-3.4.0
-   >>> org.springsource.ide.eclipse.commons.tests.util-3.4.0
-   >>> org.springsource.ide.eclipse.commons.ui-3.4.0
-   >>> org.springsource.ide.eclipse.dashboard.ui-3.4.0
+   >>> org.eclipse.fx.core-0.9.0
+   >>> org.eclipse.fx.javafx-2.2.0
+   >>> org.eclipse.fx.osgi-0.9.0
+   >>> org.eclipse.fx.osgi.util-0.9.0
+   >>> org.springframework.ide.eclipse.uaa-3.5.0
+   >>> org.springsource.ide.eclipse.commons.browser-3.5.0
+   >>> org.springsource.ide.eclipse.commons.completions-3.5.0
+   >>> org.springsource.ide.eclipse.commons.configurator-3.5.0
+   >>> org.springsource.ide.eclipse.commons.content.core-3.5.0
+   >>> org.springsource.ide.eclipse.commons.core-3.5.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.core-3.5.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.5.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.ui-3.5.0
+   >>> org.springsource.ide.eclipse.commons.gettingstarted-3.5.0
+   >>> org.springsource.ide.eclipse.commons.livexp-3.5.0
+   >>> org.springsource.ide.eclipse.commons.tests.util-3.5.0
+   >>> org.springsource.ide.eclipse.commons.ui-3.5.0
+   >>> org.springsource.ide.eclipse.dashboard.ui-3.5.0
 
 
 
@@ -123,158 +128,240 @@ http://commons.apache.org/io/
 .
 
 
->>> org.springframework.ide.eclipse.uaa-3.4.0
+>>> org.eclipse.fx.core-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.javafx-2.2.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi.util-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.springframework.ide.eclipse.uaa-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.configurator-3.4.0
+>>> org.springsource.ide.eclipse.commons.browser-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.content.core-3.4.0
+>>> org.springsource.ide.eclipse.commons.completions-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.core-3.4.0
+>>> org.springsource.ide.eclipse.commons.configurator-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.core-3.4.0
+>>> org.springsource.ide.eclipse.commons.content.core-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.4.0
+>>> org.springsource.ide.eclipse.commons.core-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.ui-3.4.0
+>>> org.springsource.ide.eclipse.commons.frameworks.core-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.gettingstarted-3.4.0
+>>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.livexp-3.4.0
+>>> org.springsource.ide.eclipse.commons.frameworks.ui-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.tests.util-3.4.0
+>>> org.springsource.ide.eclipse.commons.gettingstarted-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.ui-3.4.0
+>>> org.springsource.ide.eclipse.commons.livexp-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.dashboard.ui-3.4.0
+>>> org.springsource.ide.eclipse.commons.tests.util-3.5.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
-October 2, 2013
+March 12, 2014
 Abstract
 The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
 License
-GoPivotal makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
+
+
+>>> org.springsource.ide.eclipse.commons.ui-3.5.0
+
+About Eclipse Integration Commons
+About Eclipse Integration Commons
+March 12, 2014
+Abstract
+The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
+
+
+>>> org.springsource.ide.eclipse.dashboard.ui-3.5.0
+
+About Eclipse Integration Commons
+About Eclipse Integration Commons
+March 12, 2014
+Abstract
+The Eclipse Integration Commons project provides components that help other projects to implement Eclipse-based tooling.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
 Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
@@ -689,8 +776,8 @@ END OF TERMS AND CONDITIONS
 
 
 
-===========================================================================
 
+===========================================================================
 
 To the extent any open source components are licensed under the
 GPL and/or LGPL, or other similar licenses that require the
@@ -698,15 +785,15 @@ source code and/or modifications to source code to be made
 available (as would be noted above), you may obtain a copy of
 the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
-"Source Files"), by downloading the Source Files from VMware's website at
-http://www.vmware.com/download/open_source.html, or by sending a request, 
-with your name and address to: GoPivotal, Inc., 1900 S. Norfolk Street #125, 
-San Mateo, CA 94403, Attention: General Counsel. All such requests should 
-clearly specify: OPEN SOURCE FILES REQUEST,
-Attention General Counsel. GoPivotal shall mail a copy of the
+"Source Files"), by downloading the Source Files from Pivotal website at
+(http://www.gopivotal.com/open-source),or by sending a request, 
+with your name and address to: Pivotal Software Inc.3496 Deer Creek Rd, 
+Palo Alto, CA 94304,Attention: General Counsel. 
+All such requests should clearly specify: OPEN SOURCE FILES REQUEST,
+Attention General Counsel. Pivotal shall mail a copy of the
 Source Files to you on a CD or equivalent physical medium. This
 offer to obtain a copy of the Source Files is valid for three
 years from the date you acquired this Software product. 
-Alternatively, the Source Files may accompany the GoPivotal product.
+Alternatively, the Source Files may accompany the Pivotal product.
 
-[GRAILSIDE340GASS092513]
+[GRAILSIDE350GASS030714]
