@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012-2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.osgi.framework.internal.core.FrameworkProperties;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 
@@ -50,7 +49,7 @@ public class GrailsClasspathUtils {
 	public static void createPathVariableIfRequired() throws CoreException {
 		IPathVariableManager variableManager = ResourcesPlugin.getWorkspace().getPathVariableManager();
 		if (variableManager.getValue(GrailsCoreActivator.PATH_VARIABLE_NAME) == null) {
-			String userHomeProperty = FrameworkProperties.getProperty("user.home");
+			String userHomeProperty = System.getProperty("user.home");
             IPath userHome = new Path(userHomeProperty).append(".grails");
 			try {
                 variableManager.setValue(GrailsCoreActivator.PATH_VARIABLE_NAME, userHome);
