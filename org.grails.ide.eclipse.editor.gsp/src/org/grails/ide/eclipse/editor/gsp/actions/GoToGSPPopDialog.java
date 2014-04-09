@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012-2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
@@ -148,7 +148,7 @@ public class GoToGSPPopDialog extends PopupDialog {
         NewGSPWizard wizard = new NewGSPWizard();
         IFolder gspFolder = elt.getGSPFolder();
         if (gspFolder != null) {
-            wizard.init(Workbench.getInstance(), new StructuredSelection(gspFolder));
+            wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(gspFolder));
             WizardDialog dialog = new WizardDialog(getParentShell(), wizard);
             close();
             dialog.open();
