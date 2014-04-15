@@ -15,26 +15,18 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.progress.UIJob;
 import org.grails.ide.eclipse.commands.GrailsCommand;
 import org.grails.ide.eclipse.commands.GrailsCommandFactory;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.launch.GrailsLaunchConfigurationDelegate;
-import org.grails.ide.eclipse.core.model.IGrailsInstall;
-
-import org.grails.ide.eclipse.ui.GrailsUiActivator;
 import org.grails.ide.eclipse.ui.internal.utils.OpenNewResourcesCommandListener;
 import org.grails.ide.eclipse.ui.internal.utils.RefreshDependenciesCommandListener;
 
@@ -46,47 +38,48 @@ import org.grails.ide.eclipse.ui.internal.utils.RefreshDependenciesCommandListen
  */
 public abstract class GrailsLaunchUtils {
 
-	/**
-	 * Launch a grails command.
-	 * 
-	 * @param javaProject Context for launching
-	 * @param script      Text of grails command to launch
-	 * @param persist     Controls whether created launch configuration is persisted in Eclipse launch history.
-	 */
-	public static void launch(IJavaProject javaProject, String script, boolean persist) {
-
-		IGrailsInstall grailsHome = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(
-				javaProject.getProject());
-		if (grailsHome == null) {
-			MessageDialog
-					.openInformation(
-							Display.getDefault().getActiveShell(),
-							"Grails Installation",
-							"The Grails installation directory has not been configured or is invalid.\\n\\nCheck the Grails project or workspace preference page.");
-		}
-
-		// Register the command listener
-		GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
-				new OpenNewResourcesCommandListener(javaProject.getProject()));
-
-		if (script != null && script.contains("install-plugin") || script.contains("s2-create-acl-domains")) {
-			GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
-					new RefreshDependenciesCommandListener(javaProject.getProject()));
-		}
-		if (script!=null)
-
-		try {
-			ILaunchConfiguration launchConf = GrailsLaunchConfigurationDelegate.getLaunchConfiguration(javaProject.getProject(),
-					script, persist);
-			DebugUITools.launch(launchConf, ILaunchManager.RUN_MODE);
-		}
-		catch (CoreException e) {
-			GrailsCoreActivator.log(e);
-			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Error running Grails command",
-					"An error occured running Grails command", new Status(IStatus.ERROR, GrailsUiActivator.PLUGIN_ID,
-							0, e.getMessage(), e));
-		}
-	}
+// DEAD code? If yes, remove, looks buggy to boot!
+//	/**
+//	 * Launch a grails command.
+//	 * 
+//	 * @param javaProject Context for launching
+//	 * @param script      Text of grails command to launch
+//	 * @param persist     Controls whether created launch configuration is persisted in Eclipse launch history.
+//	 */
+//	public static void launch(IJavaProject javaProject, String script, boolean persist) {
+//
+//		IGrailsInstall grailsHome = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(
+//				javaProject.getProject());
+//		if (grailsHome == null) {
+//			MessageDialog
+//					.openInformation(
+//							Display.getDefault().getActiveShell(),
+//							"Grails Installation",
+//							"The Grails installation directory has not been configured or is invalid.\\n\\nCheck the Grails project or workspace preference page.");
+//		}
+//
+//		// Register the command listener
+//		GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
+//				new OpenNewResourcesCommandListener(javaProject.getProject()));
+//
+//		if (script != null && script.contains("install-plugin") || script.contains("s2-create-acl-domains")) {
+//			GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
+//					new RefreshDependenciesCommandListener(javaProject.getProject()));
+//		}
+//		if (script!=null)
+//
+//		try {
+//			ILaunchConfiguration launchConf = GrailsLaunchConfigurationDelegate.getLaunchConfiguration(javaProject.getProject(),
+//					script, persist);
+//			DebugUITools.launch(launchConf, ILaunchManager.RUN_MODE);
+//		}
+//		catch (CoreException e) {
+//			GrailsCoreActivator.log(e);
+//			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Error running Grails command",
+//					"An error occured running Grails command", new Status(IStatus.ERROR, GrailsUiActivator.PLUGIN_ID,
+//							0, e.getMessage(), e));
+//		}
+//	}
 
 	/**
 	 * Launch a grails command. The launch configuration created for the launch is not persisted.
@@ -149,9 +142,9 @@ public abstract class GrailsLaunchUtils {
 	 */
 	private static void launchNoTimeout(final IJavaProject javaProject, final String script) {
 		final String title = "Launching "+javaProject.getElementName() + ": " + script;
-		new Job(title) {
+		new UIJob(title) {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
 				monitor.beginTask(title, 3);
 				try {
 					try {
