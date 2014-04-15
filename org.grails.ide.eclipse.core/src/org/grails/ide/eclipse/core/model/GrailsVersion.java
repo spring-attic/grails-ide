@@ -358,7 +358,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	public boolean isSnapshot() {
 		if (!parseError && qualifier!=null) {
-			return qualifier.contains("SNAPSHOT") || qualifier.contains("RC1");
+			return qualifier.contains("SNAPSHOT") || qualifier.startsWith("RC1") || qualifier.startsWith("M1");
 		}
 		return false;
 	}
