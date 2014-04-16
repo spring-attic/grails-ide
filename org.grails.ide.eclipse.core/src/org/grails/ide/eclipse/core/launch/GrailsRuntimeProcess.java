@@ -13,6 +13,7 @@ package org.grails.ide.eclipse.core.launch;
 import java.io.IOException;
 import java.util.Map;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
@@ -77,6 +78,22 @@ public class GrailsRuntimeProcess extends RuntimeProcess {
 		//This won't happen automatically because our StreamsProxy, which wraps it doesn't extend the 
 		//org.eclipse.debug.internal.core.StreamsProxy class.
 		return removeDuplicates(mustCloseStreamProxy);
+	}
+	
+	@Override
+	public void terminate() throws DebugException {
+		if (!isTerminated()) {
+			//If we don't forcibly destroy the StreamsProxy then, on Windows the
+			// 'terminated()' method may hang when it tries to close the streams
+			// nicely. This will stop it from properly closing resources
+			// and firing a termination event. Visibly to the user: 'Stop' button 
+			// won't work.
+			//See https://issuetracker.springsource.com/browse/STS-3800
+			if (mustCloseStreamProxy instanceof org.eclipse.debug.internal.core.StreamsProxy) {
+				((org.eclipse.debug.internal.core.StreamsProxy) mustCloseStreamProxy).kill();
+			}
+		}
+		super.terminate();
 	}
 	
 	@Override
