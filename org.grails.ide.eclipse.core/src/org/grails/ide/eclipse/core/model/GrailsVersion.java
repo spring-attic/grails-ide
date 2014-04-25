@@ -83,6 +83,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_3_4 = new GrailsVersion("2.3.4");
 	public static final GrailsVersion V_2_3_5 = new GrailsVersion("2.3.5");
 	public static final GrailsVersion V_2_3_7 = new GrailsVersion("2.3.7");
+	public static final GrailsVersion V_2_3_8 = new GrailsVersion("2.3.8");
 	
 	public static final GrailsVersion V_2_4_ = new GrailsVersion("2.4");
 	public static final GrailsVersion V_2_4_0_M1 = new GrailsVersion("2.4.0.M1");
@@ -114,7 +115,6 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	private boolean parseError = false;
 	public static final GrailsVersion SMALLEST_SUPPORTED_VERSION = V_1_2;
-
 
 	private URI downloadLocation = null;
 	
