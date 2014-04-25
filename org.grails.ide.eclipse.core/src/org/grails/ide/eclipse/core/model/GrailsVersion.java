@@ -87,6 +87,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	public static final GrailsVersion V_2_4_ = new GrailsVersion("2.4");
 	public static final GrailsVersion V_2_4_0_M1 = new GrailsVersion("2.4.0.M1");
+	public static final GrailsVersion V_2_4_0_M2 = new GrailsVersion("2.4.0.M2");
 	
 //	public static final GrailsVersion V_2_3_2_SNAPSHOT = new GrailsVersion("2.3.2.BUILD-SNAPSHOT", 
 //			"http://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
@@ -115,6 +116,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	private boolean parseError = false;
 	public static final GrailsVersion SMALLEST_SUPPORTED_VERSION = V_1_2;
+
 
 	private URI downloadLocation = null;
 	
