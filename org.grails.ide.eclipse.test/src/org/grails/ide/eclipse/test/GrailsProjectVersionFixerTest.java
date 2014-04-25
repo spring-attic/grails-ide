@@ -382,7 +382,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 				return true;
 			}
 
-		}.waitFor(180000);
+		}.waitFor(4*60000);
 	}
 
 	/**
