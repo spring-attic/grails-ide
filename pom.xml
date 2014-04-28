@@ -346,6 +346,29 @@
     </profile>
 
     <profile>
+       <id>groovy21test</id>
+       <!--  profile that restricts Groovy compiler to 2.1 for test running -->
+       <properties>
+		    <groovy.compiler.version>[2.1.0,2.1.9]</groovy.compiler.version>
+       </properties>
+    </profile>
+    <profile>
+       <id>groovy22test</id>
+       <!--  profile that restricts Groovy compiler to 2.2 for test running -->
+       <properties>
+		    <groovy.compiler.version>[2.2.0,2.2.9]</groovy.compiler.version>
+       </properties>
+    </profile>
+    <profile>
+       <id>groovy23test</id>
+       <!--  profile that restricts Groovy compiler to 2.2 for test running -->
+       <properties>
+		    <groovy.compiler.version>[2.3.0,2.3.99]</groovy.compiler.version>
+       </properties>
+    </profile>
+
+
+    <profile>
       <id>osx</id>
       <activation>
         <property>

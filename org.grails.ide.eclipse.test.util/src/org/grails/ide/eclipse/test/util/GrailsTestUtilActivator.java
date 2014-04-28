@@ -95,8 +95,8 @@ public class GrailsTestUtilActivator implements BundleActivator {
 			System.out.println("Detected Groovy Workspace Version = 2.1");
 			configureGrails23();
 			break;
-		case _22:
-			System.out.println("Detected Groovy Workspace Version = 2.2");
+		case _23:
+			System.out.println("Detected Groovy Workspace Version = 2.3");
 			configureGrails24();
 			break;
 		default:
