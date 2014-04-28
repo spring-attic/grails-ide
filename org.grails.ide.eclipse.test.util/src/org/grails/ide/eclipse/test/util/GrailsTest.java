@@ -484,15 +484,23 @@ public class GrailsTest extends TestCase {
 	    JavaCore.setOptions(options);
 	}
  */	
-	public static void setJava16Compliance() {
+//	public static void setJava16Compliance() {
+//		@SuppressWarnings("rawtypes")
+//		Hashtable options = JavaCore.getDefaultOptions();
+//	    options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
+//	    options.put(JavaCore.COMPILER_SOURCE, "1.6");
+//	    options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.6");
+//	    JavaCore.setOptions(options);
+//	}
+
+	public static void setJava17Compliance() {
 		@SuppressWarnings("rawtypes")
 		Hashtable options = JavaCore.getDefaultOptions();
-	    options.put(JavaCore.COMPILER_COMPLIANCE, "1.6");
-	    options.put(JavaCore.COMPILER_SOURCE, "1.6");
-	    options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.6");
+	    options.put(JavaCore.COMPILER_COMPLIANCE, "1.7");
+	    options.put(JavaCore.COMPILER_SOURCE, "1.7");
+	    options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.7");
 	    JavaCore.setOptions(options);
 	}
-	
 	
 //	/**
 //	 * If Java compiler compliance is set below 1.5 will get Groovy compilation errors 

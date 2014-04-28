@@ -93,7 +93,7 @@ public abstract class AbstractCommandTest extends GrailsTest {
     	super.setUp();
     	
         //Ensure Java compliance level is set to something that supports generics
-        GrailsTest.setJava16Compliance();
+        GrailsTest.setJava17Compliance();
         
     	// Configuring Grails installs happens automatically (or it should!) but it runs
     	// in some Jobs, so it may take a while.

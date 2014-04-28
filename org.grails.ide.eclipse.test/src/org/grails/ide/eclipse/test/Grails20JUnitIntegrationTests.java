@@ -74,7 +74,7 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 		assertTrue("This test assumes Grails 20 but most recent Grails version is "+GrailsVersion.MOST_RECENT, 
 				GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_0_0)>=0);
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
-		setJava16Compliance();
+		setJava17Compliance();
 		
 		project = ensureProject(TEST_PROJECT_NAME);
 		javaProject = JavaCore.create(project);

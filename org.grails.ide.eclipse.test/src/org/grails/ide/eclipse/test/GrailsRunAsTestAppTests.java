@@ -66,7 +66,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 		OpenInterestingNewResourceListener.testMode(true);
 		StsTestUtil.setAutoBuilding(false);
-		setJava16Compliance();
+		setJava17Compliance();
 		if (project==null) {
 			//Only first time when creating the project
 			project = ResourcesPlugin.getWorkspace().getRoot().getProject(G_TUNES);
