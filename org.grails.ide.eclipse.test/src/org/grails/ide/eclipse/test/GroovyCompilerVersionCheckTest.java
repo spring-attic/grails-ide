@@ -39,6 +39,8 @@ public class GroovyCompilerVersionCheckTest extends GrailsTest {
 		doTest(V_2_2_1, _20);
 		
 		doTest(V_2_3_0, _21);
+		doTest(V_2_4_0_M2, _23);
+		
 	}
 
 	private void doTest(GrailsVersion grailsv, SpecifiedVersion groovyv) {
