@@ -411,7 +411,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
         }
         ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
         
-        IProject proj = ensureProject(TEST_PROJECT_NAME);
+        final IProject proj = ensureProject(TEST_PROJECT_NAME);
         IFile buildConfig = proj.getFile("grails-app/conf/BuildConfig.groovy");
         String origContents = GrailsTest.getContents(buildConfig);
 
@@ -422,8 +422,14 @@ public class GrailsCommandTest extends AbstractCommandTest {
         refreshDependencies(proj);
 
         // Check that the plugins linked source folders are now there.
-        assertPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
-        assertPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
+        new ACondition("installed feeds-1.6 and spring-security-core-1.2.7.3") {
+			@Override
+			public boolean test() throws Exception {
+		        assertPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
+		        assertPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
+				return true;
+			}
+		}.waitFor(10000);
 
         // /////////////////////////////////////////////////////////////
         // Now modify the version of the plugins and try this again
@@ -434,11 +440,17 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
         // Check that the linked source folders of the replaced version are no
         // longer there.
-        assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
+        new ACondition("changed spring-security-core-1.2.7.3 to ...7.2") {
+        	@Override
+        	public boolean test() throws Exception {
+        		assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
 
-        // Check that the linked source folders of the new versions are there.
-        assertPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
-        assertPluginSourceFolder(proj, "spring-security-core-1.2.7.2", "src", "groovy");
+        		// Check that the linked source folders of the new versions are there.
+        		assertPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
+        		assertPluginSourceFolder(proj, "spring-security-core-1.2.7.2", "src", "groovy");
+        		return true;
+        	}
+        }.waitFor(10000);
         
         // /////////////////////////////////////////////////////////////
         // Now remove the plugins and try this again
@@ -452,13 +464,22 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
         // Check that the linked source folders of the replaced version are no
         // longer there.
-        assertAbsentPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
-        assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
+        new ACondition("removed spring-security-core and feeds") {
+        	@Override
+        	public boolean test() throws Exception {
+        		// Check that the linked source folders of the replaced version are no
+        		// longer there.
+        		assertAbsentPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
+        		assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
 
-        // Check that the linked source folders of the new versions are also no
-        // longer there.
-        assertAbsentPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
-        assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.2", "src", "groovy");
+        		// Check that the linked source folders of the new versions are also no
+        		// longer there.
+        		assertAbsentPluginSourceFolder(proj, "feeds-1.6", "src", "groovy");
+        		assertAbsentPluginSourceFolder(proj, "spring-security-core-1.2.7.2", "src", "groovy");
+        		return true;
+        	}
+        }.waitFor(10000);
+
     }
 
 	   
