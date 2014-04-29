@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012, 2014 VMWare, Inc. and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
+ *     Pivotal Software Inc.
  *******************************************************************************/
 package org.grails.ide.eclipse.ui.internal.inplace;
 
@@ -38,49 +39,6 @@ import org.grails.ide.eclipse.ui.internal.utils.RefreshDependenciesCommandListen
  */
 public abstract class GrailsLaunchUtils {
 
-// DEAD code? If yes, remove, looks buggy to boot!
-//	/**
-//	 * Launch a grails command.
-//	 * 
-//	 * @param javaProject Context for launching
-//	 * @param script      Text of grails command to launch
-//	 * @param persist     Controls whether created launch configuration is persisted in Eclipse launch history.
-//	 */
-//	public static void launch(IJavaProject javaProject, String script, boolean persist) {
-//
-//		IGrailsInstall grailsHome = GrailsCoreActivator.getDefault().getInstallManager().getGrailsInstall(
-//				javaProject.getProject());
-//		if (grailsHome == null) {
-//			MessageDialog
-//					.openInformation(
-//							Display.getDefault().getActiveShell(),
-//							"Grails Installation",
-//							"The Grails installation directory has not been configured or is invalid.\\n\\nCheck the Grails project or workspace preference page.");
-//		}
-//
-//		// Register the command listener
-//		GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
-//				new OpenNewResourcesCommandListener(javaProject.getProject()));
-//
-//		if (script != null && script.contains("install-plugin") || script.contains("s2-create-acl-domains")) {
-//			GrailsCoreActivator.getDefault().addGrailsCommandResourceListener(
-//					new RefreshDependenciesCommandListener(javaProject.getProject()));
-//		}
-//		if (script!=null)
-//
-//		try {
-//			ILaunchConfiguration launchConf = GrailsLaunchConfigurationDelegate.getLaunchConfiguration(javaProject.getProject(),
-//					script, persist);
-//			DebugUITools.launch(launchConf, ILaunchManager.RUN_MODE);
-//		}
-//		catch (CoreException e) {
-//			GrailsCoreActivator.log(e);
-//			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Error running Grails command",
-//					"An error occured running Grails command", new Status(IStatus.ERROR, GrailsUiActivator.PLUGIN_ID,
-//							0, e.getMessage(), e));
-//		}
-//	}
-
 	/**
 	 * Launch a grails command. The launch configuration created for the launch is not persisted.
 	 * 
@@ -89,7 +47,7 @@ public abstract class GrailsLaunchUtils {
 	 * @throws CoreException 
 	 */
 	public static void launch(IJavaProject javaProject, final String script) {
-		if (script!=null && (script.contains("run-app") || script.contains("run-war") || script.contains("console"))) {
+		if (script!=null && (script.contains("run-app") || script.contains("test-app") || script.contains("run-war") || script.contains("console"))) {
 			launchNoTimeout(javaProject, script);
 			return;
 		}
