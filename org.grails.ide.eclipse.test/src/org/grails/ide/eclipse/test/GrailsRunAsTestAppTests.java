@@ -39,6 +39,7 @@ import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.launch.GrailsTestLaunchShortcut;
 import org.grails.ide.eclipse.ui.internal.launch.OpenInterestingNewResourceListener;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
@@ -58,85 +59,97 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	public static final long TIMEOUT_TEST_APP = 180000;
 
 	private static IProject project;
+	private static Throwable projectInitError = null;
+	
 	GrailsTestLaunchShortcut shortCut = new GrailsTestLaunchShortcut();
 	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		if (projectInitError!=null) {
+			//Project setup failed in another test. No point continuing with broken project.
+			//So fail quickly with the same error.
+			throw ExceptionUtil.exception(projectInitError);
+		}
 		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
 		OpenInterestingNewResourceListener.testMode(true);
 		StsTestUtil.setAutoBuilding(false);
 		setJava17Compliance();
 		if (project==null) {
-			//Only first time when creating the project
-			project = ResourcesPlugin.getWorkspace().getRoot().getProject(G_TUNES);
-			if (project.exists()) {
-				project.delete(true, true, new NullProgressMonitor());
+			try { 
+				//Only first time when creating the project
+				project = ResourcesPlugin.getWorkspace().getRoot().getProject(G_TUNES);
+				if (project.exists()) {
+					project.delete(true, true, new NullProgressMonitor());
+				}
+				project = ensureProject(G_TUNES);
+		
+				createResource(project, "grails-app/domain/"+G_TUNES+"/domain/Song.groovy",
+						"package "+G_TUNES+".domain\n" + 
+						"\n" + 
+						"class Song {\n" + 
+						"\n" + 
+						"    static constraints = {\n" + 
+						"		title(blank:false)\n" + 
+						"		artist(blank:false)\n" + 
+						"    }\n" + 
+						"	\n" + 
+						"	String title\n" + 
+						"	String artist\n" + 
+						"	\n" + 
+						"}\n");
+				
+				createResource(project, "test/unit/"+G_TUNES+"/domain/SongTests.groovy",
+						"package "+G_TUNES+".domain\n" + 
+						"\n" + 
+						"import grails.test.*\n" + 
+						"\n" + 
+						"class SongTests extends GrailsUnitTestCase {\n" + 
+						"    protected void setUp() {\n" + 
+						"        super.setUp()\n" + 
+						"    }\n" + 
+						"\n" + 
+						"    protected void tearDown() {\n" + 
+						"        super.tearDown()\n" + 
+						"    }\n" + 
+						"\n" + 
+						"    void testSomething() {\n" + 
+						"    }\n" + 
+						"}\n");
+				
+				createResource(project, "test/integration/"+G_TUNES+"/SongITests.groovy",
+						"package "+G_TUNES+"\n" + 
+						"\n" + 
+						"import "+G_TUNES+".domain.Song;\n" + 
+						"import grails.test.*\n" + 
+						"\n" + 
+						"class SongITests extends GrailsUnitTestCase {\n" + 
+						"    protected void setUp() {\n" + 
+						"        super.setUp()\n" + 
+						"    }\n" + 
+						"\n" + 
+						"    protected void tearDown() {\n" + 
+						"        super.tearDown()\n" + 
+						"    }\n" + 
+						"\n" + 
+						"    void testSomething() {\n" + 
+						"		Song song = new Song()\n" + 
+						"		song.title = \"foo\"\n" + 
+						"		song.artist = \"Kung\"\n" + 
+						"		if (song.validate()) {\n" + 
+						"			//OK\n" + 
+						"		}\n" + 
+						"		else {\n" + 
+						"			fail \"Validation should be ok!\"\n" + 
+						"		}\n" + 
+						"    }\n" + 
+						"	\n" + 
+						"}\n");
+				StsTestUtil.assertNoErrors(project);
+			} catch (Throwable e) {
+				projectInitError = e;
+				throw ExceptionUtil.exception(e);
 			}
-			project = ensureProject(G_TUNES);
-	
-			createResource(project, "grails-app/domain/"+G_TUNES+"/domain/Song.groovy",
-					"package "+G_TUNES+".domain\n" + 
-					"\n" + 
-					"class Song {\n" + 
-					"\n" + 
-					"    static constraints = {\n" + 
-					"		title(blank:false)\n" + 
-					"		artist(blank:false)\n" + 
-					"    }\n" + 
-					"	\n" + 
-					"	String title\n" + 
-					"	String artist\n" + 
-					"	\n" + 
-					"}\n");
-			
-			createResource(project, "test/unit/"+G_TUNES+"/domain/SongTests.groovy",
-					"package "+G_TUNES+".domain\n" + 
-					"\n" + 
-					"import grails.test.*\n" + 
-					"\n" + 
-					"class SongTests extends GrailsUnitTestCase {\n" + 
-					"    protected void setUp() {\n" + 
-					"        super.setUp()\n" + 
-					"    }\n" + 
-					"\n" + 
-					"    protected void tearDown() {\n" + 
-					"        super.tearDown()\n" + 
-					"    }\n" + 
-					"\n" + 
-					"    void testSomething() {\n" + 
-					"    }\n" + 
-					"}\n");
-			
-			createResource(project, "test/integration/"+G_TUNES+"/SongITests.groovy",
-					"package "+G_TUNES+"\n" + 
-					"\n" + 
-					"import "+G_TUNES+".domain.Song;\n" + 
-					"import grails.test.*\n" + 
-					"\n" + 
-					"class SongITests extends GrailsUnitTestCase {\n" + 
-					"    protected void setUp() {\n" + 
-					"        super.setUp()\n" + 
-					"    }\n" + 
-					"\n" + 
-					"    protected void tearDown() {\n" + 
-					"        super.tearDown()\n" + 
-					"    }\n" + 
-					"\n" + 
-					"    void testSomething() {\n" + 
-					"		Song song = new Song()\n" + 
-					"		song.title = \"foo\"\n" + 
-					"		song.artist = \"Kung\"\n" + 
-					"		if (song.validate()) {\n" + 
-					"			//OK\n" + 
-					"		}\n" + 
-					"		else {\n" + 
-					"			fail \"Validation should be ok!\"\n" + 
-					"		}\n" + 
-					"    }\n" + 
-					"	\n" + 
-					"}\n");
-			StsTestUtil.assertNoErrors(project);
 		}
 		//Every test run:
 		deleteOldTestReports();
