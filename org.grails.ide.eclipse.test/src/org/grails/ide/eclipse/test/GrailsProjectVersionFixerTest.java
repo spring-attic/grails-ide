@@ -258,7 +258,7 @@ public class GrailsProjectVersionFixerTest extends AbstractCommandTest {
 			// http://jira.grails.org/browse/GRAILS-10531
 			return;
 		}
-		ensureDefaultGrailsVersion(GrailsVersion.MOST_RECENT);
+		ensureDefaultGrailsVersion(GrailsVersion.PREVIOUS);
 
 		final URL zipFileURL = getProjectZip("bareBonesProject",
 				GrailsVersion.PREVIOUS);
