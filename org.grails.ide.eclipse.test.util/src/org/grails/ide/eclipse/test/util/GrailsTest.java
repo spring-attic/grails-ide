@@ -380,6 +380,9 @@ public class GrailsTest extends TestCase {
 		});
 	}
 
+	/**
+	 * Check that a set contains exactly the expected elements, no more no less.
+	 */
 	public static void assertElements(Set<Object> actualSet, Object... expecteds) {
 		HashSet<Object> expectedSet = new HashSet<Object>(Arrays.asList(expecteds));
 		StringBuilder msg = new StringBuilder();
@@ -397,6 +400,35 @@ public class GrailsTest extends TestCase {
 			fail(msg.toString());
 		}
 	}
+
+	/**
+	 * Check that some expected elements are in a set. Extra elements in the set are tolerated.
+	 */
+	public static void assertExpectedElements(Set<Object> actualSet, Object... expecteds) {
+		HashSet<Object> expectedSet = new HashSet<Object>(Arrays.asList(expecteds));
+		StringBuilder msg = new StringBuilder();
+		for (Object expected : expectedSet) {
+			if (!actualSet.contains(expected)) {
+				msg.append("Expected but not found: '"+expected+"'\n");
+			}
+		}
+		if (!"".equals(msg.toString())) {
+			//Better message. E.g. could be something missing because spelled wrong. So include elements 
+			//that were found but not expected in the message.
+			for (Object actual : actualSet) {
+				if (!expectedSet.contains(actual)) {
+					msg.append("Found but not expected: '"+actual+"'\n");
+				}
+			}
+			fail(msg.toString());
+		}
+	}
+	
+	public static void assertExpectedElements(Object[] actualElements, Object... expecteds) {
+		assertExpectedElements(new HashSet<Object>(Arrays.asList(actualElements)), expecteds);
+	}
+
+	
 
 	public static String[] join(String[] base, String... extra) {
 		String[] result = new String[base.length + extra.length];

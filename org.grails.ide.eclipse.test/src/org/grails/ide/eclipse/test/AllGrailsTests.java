@@ -53,6 +53,7 @@ import org.grails.ide.eclipse.test.inferencing.PluginInferencingTests;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.test.util.GroovySanityTest;
 import org.grails.ide.eclipse.test.util.ZipFileUtilTest;
+import org.grails.ide.eclipse.ui.test.CommandPromptProposalProviderTest;
 import org.grails.ide.eclipse.ui.test.GrailsConsoleLineTrackerTests;
 import org.grails.ide.eclipse.ui.test.StackFrameConsoleLineTrackerTests;
 import org.springsource.ide.eclipse.commons.tests.util.ManagedTestSuite;
@@ -168,6 +169,7 @@ public class AllGrailsTests {
         		suite.addTestSuite(GSPHyperlinkTests.class);
         		suite.addTestSuite(NamedQueryInferencingTests.class);
         		suite.addTestSuite(GrailsImportWizardCoreTests.class);
+        		suite.addTestSuite(CommandPromptProposalProviderTest.class);
         	}
         }
 		suite.addTestSuite(ThreadLeakTest.class);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012 VMWare, Inc. and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
+ *     Pivotal Software, Inc - bugfix STS-3820, open up for regression testing
  *******************************************************************************/
 package org.grails.ide.eclipse.ui.internal.inplace;
 
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
+import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
 import org.springframework.core.io.Resource;
@@ -47,10 +49,11 @@ import org.springframework.util.StringUtils;
 import org.springsource.ide.eclipse.commons.frameworks.ui.internal.contentassist.ContentProposalAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
+import org.grails.ide.eclipse.runtime.shared.DependencyData;
 import org.grails.ide.eclipse.ui.contentassist.ClassContentAssistCalculator;
 import org.grails.ide.eclipse.ui.contentassist.IContentAssistContext;
 import org.grails.ide.eclipse.ui.contentassist.IContentAssistProposalRecorder;
+import org.grails.ide.eclipse.ui.internal.inplace.GrailsCompletionUtils.ITextWidget;
 
 /**
  * @author Christian Dupuis
@@ -60,6 +63,41 @@ import org.grails.ide.eclipse.ui.contentassist.IContentAssistProposalRecorder;
  * @since 2.2.0
  */
 public abstract class GrailsCompletionUtils {
+
+	public static class SWTTextWidget implements ITextWidget {
+
+		private Text text;
+
+		public SWTTextWidget(Text text) {
+			this.text = text;
+		}
+
+		public void setText(String content) {
+			text.setText(content);
+		}
+
+		public String getText() {
+			return text.getText();
+		}
+
+		public void setSelection(int start) {
+			text.setSelection(start);
+		}
+
+	}
+
+	public interface ITextWidget {
+
+		void setText(String content);
+
+		String getText();
+
+		/** 
+		 * Sets position of the cursor (i.e. selection of length 0 at given position).
+		 */
+		void setSelection(int length);
+
+	}
 
 	public static String getScriptName(String name) {
 		if (name == null)
@@ -206,13 +244,17 @@ public abstract class GrailsCompletionUtils {
 
 		private volatile List<String> proposals = null;
 
-		private final Text text;
+		private final ITextWidget text;
 		private IProject project;
 
 		public GrailsProposalProvider(final IProject project,
 				Text text) {
-			this.text = text;
-			setProject(project);
+			this(project, new SWTTextWidget(text));
+		}
+
+		public GrailsProposalProvider(IProject project, ITextWidget textWidget) {
+			this.text = textWidget;
+			this.setProject(project);
 		}
 
 		/**
@@ -242,10 +284,18 @@ public abstract class GrailsCompletionUtils {
 					String globalScripts = "file:" + userHome + "/.grails/scripts/*.groovy";
 					scanForScripts(globalScripts, proposals);
 					if (monitor.isCanceled()) return Status.CANCEL_STATUS;
-					
-					String pluginScripts = "file:" + install.getPluginHome(project) + "/**/scripts/*.groovy";
-					scanForScripts(pluginScripts, proposals);
-					if (monitor.isCanceled()) return Status.CANCEL_STATUS;
+
+					DependencyData data = PerProjectDependencyDataCache.get(project);
+					if (data!=null) {
+						String pluginsDir = data.getPluginsDirectory();
+						System.out.println("pluginsDir: "+pluginsDir);
+						if (pluginsDir!=null) {
+							String pluginScripts = "file:" + pluginsDir + "/**/scripts/*.groovy";
+							System.out.println("looking for plugin scripts: "+pluginScripts);
+							scanForScripts(pluginScripts, proposals);
+						}
+						if (monitor.isCanceled()) return Status.CANCEL_STATUS;
+					}
 
 					GrailsProposalProvider.this.proposals = proposals;
 					gatherProposalsJob=null;
