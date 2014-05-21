@@ -110,7 +110,7 @@ public class GrailsTestUtilActivator implements BundleActivator {
 	private static void configureGrails24() {
 		GrailsVersion.PREVIOUS_PREVIOUS =  GrailsVersion.V_2_3_7;
 		GrailsVersion.PREVIOUS = GrailsVersion.V_2_3_8;
-		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_4_0_M2;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_2_4_0;
 	}
 	
 	private static void configureGrails23() {
