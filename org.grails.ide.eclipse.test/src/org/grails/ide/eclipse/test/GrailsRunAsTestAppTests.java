@@ -56,7 +56,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	//This class made final because at the oment it uses static fields in a way that
 	// would break subclasses.
 
-	public static final long TIMEOUT_TEST_APP = 180000;
+	public static final long TIMEOUT_TEST_APP = 5 * 60 * 1000;
 
 	private static IProject project;
 	private static Throwable projectInitError = null;
@@ -286,7 +286,7 @@ public final class GrailsRunAsTestAppTests extends GrailsTest {
 	private TestRunSession run(ILaunchConfiguration launchConf)
 			throws CoreException, Exception {
 		final ILaunch launch = launchConf.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
-		new ACondition() {
+		new ACondition("test process terminated") {
 			public boolean test() throws Exception {
 				return launch.isTerminated();
 			}
