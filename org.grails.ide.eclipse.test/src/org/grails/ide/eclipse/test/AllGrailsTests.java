@@ -150,11 +150,13 @@ public class AllGrailsTests {
         		suite.addTestSuite(GSPContentAssistTests.class);
         		suite.addTestSuite(PluginDataTests.class);
         		suite.addTestSuite(GSPValidationTests.class);
-        		suite.addTestSuite(GrailsCommandTest.class);
         		suite.addTestSuite(GrailsCommandFactoryTest.class);
         		suite.addTestSuite(LaunchSystemPropertiesTest.class);
         		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_)>=0) {
         			suite.addTestSuite(LongRunningGrailsTest.class);
+        		} else {
+        			//LongRunningGrailsTest already includes these tests so don't run it if we running LongRunningGrailsTest
+            		suite.addTestSuite(GrailsCommandTest.class);
         		}
         		suite.addTestSuite(GrailsCommandWizardExpressionTest.class);
         		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_3_)<0) {
