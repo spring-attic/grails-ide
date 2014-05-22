@@ -98,7 +98,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
                         assertEquals("hello world\n", page);
                         return true;
                     }
-                }.waitFor(120000);
+                }.waitFor(5*60*1000);
 
                 createResource(project, "grails-app/controllers/ReloadableController.groovy", 
                         "class ReloadableController\n" + 
