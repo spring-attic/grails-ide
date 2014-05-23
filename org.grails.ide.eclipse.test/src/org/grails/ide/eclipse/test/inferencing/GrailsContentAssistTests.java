@@ -30,6 +30,7 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
+import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
 
 /**
@@ -47,8 +48,11 @@ public class GrailsContentAssistTests extends CompletionTestCase {
     
     @Override
     protected void setUp() throws Exception {
+    	GrailsTest.assertEquals(true, true); //touch the GrailsTest class force GTUA to get started. This matters mostly when running
+    											// these test in isolation where otherwise GrailsVersions may not yet be configured when test starts.
         GrailsProjectVersionFixer.testMode();
         grailsVersion = GrailsVersion.MOST_RECENT;
+        GrailsTest.ensureDefaultGrailsVersion(grailsVersion);
         super.setUp();
     }
     
