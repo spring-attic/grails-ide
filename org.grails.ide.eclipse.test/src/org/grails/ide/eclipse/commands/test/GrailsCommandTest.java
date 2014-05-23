@@ -433,7 +433,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 		        assertPluginSourceFolder(proj, "spring-security-core-1.2.7.3", "src", "groovy");
 				return true;
 			}
-		}.waitFor(10000);
+		}.waitFor(60000);
 
         // /////////////////////////////////////////////////////////////
         // Now modify the version of the plugins and try this again
@@ -454,7 +454,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
         		assertPluginSourceFolder(proj, "spring-security-core-1.2.7.2", "src", "groovy");
         		return true;
         	}
-        }.waitFor(10000);
+        }.waitFor(60000);
         
         // /////////////////////////////////////////////////////////////
         // Now remove the plugins and try this again
