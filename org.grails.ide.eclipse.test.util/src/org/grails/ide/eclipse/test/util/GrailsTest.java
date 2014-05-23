@@ -314,7 +314,7 @@ public class GrailsTest extends TestCase {
 			public boolean test() throws Exception {
 				return job.getResult()!=null;
 			}
-		}.waitFor(400000);
+		}.waitFor(600000);
 		assertStatusOK(job.getResult());
 	}
 
