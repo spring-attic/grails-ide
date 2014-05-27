@@ -18,7 +18,6 @@ import junit.framework.Test;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginVersion;
 import org.grails.ide.eclipse.core.internal.classpath.PluginDescriptorParser;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
@@ -34,18 +33,18 @@ import org.grails.ide.eclipse.test.GrailsTestsActivator;
  */
 public class PluginInferencingTests extends AbstractGrailsInferencingTests {
     
-    static {
-        ClassLoader l = PluginInferencingTests.class.getClassLoader();
-        if (l instanceof DefaultClassLoader) {
-            DefaultClassLoader dcl = (DefaultClassLoader) l;
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println("" + PluginInferencingTests.class + " getting loaded by: " + dcl.getBundle());
-        } else {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println("" + PluginInferencingTests.class + " getting loaded by: " + l);
-        }
-    }
-    
+//    static {
+//        ClassLoader l = PluginInferencingTests.class.getClassLoader();
+//        if (l instanceof DefaultClassLoader) {
+//            DefaultClassLoader dcl = (DefaultClassLoader) l;
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println("" + PluginInferencingTests.class + " getting loaded by: " + dcl.getBundle());
+//        } else {
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println("" + PluginInferencingTests.class + " getting loaded by: " + l);
+//        }
+//    }
+//    
     public static Test suite() {
         return buildTestSuite(PluginInferencingTests.class);
     }
