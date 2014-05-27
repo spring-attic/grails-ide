@@ -332,6 +332,59 @@
     </profile>
 
     <profile>
+      <id>e44</id>
+	  <properties>
+		<p2.repository.name>SpringSource Tool Suite for Eclipse 4.4</p2.repository.name>
+		<dist.target>e4.3</dist.target>
+		<dist.platform.name>Luna</dist.platform.name>
+		<dist.platform.id>luna</dist.platform.id>		
+		<dist.platform.version>4.4</dist.platform.version>		
+		<package.qualifierPrefix>e44</package.qualifierPrefix>
+		<version.weaving>1.0.200.I20130319-1000</version.weaving>
+	  </properties>
+	  <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.4milestones</url>
+		</repository>
+<!--   Should be using this, but it doesn't exist yet...
+       <repository>
+		  <id>luna</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/kepler/</url>
+		</repository> 
+		So we use this instead: -->
+		<repository>
+		  <id>kepler</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/kepler/</url>
+		</repository>
+		<repository>
+		  <id>ajdt</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/tools/ajdt/43/dev/update</url>
+		  <!--  when available should use release: http://download.eclipse.org/tools/ajdt/44/update -->
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>groovy</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.org/snapshot/GRECLIPSE/e4.4/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e4.4/</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
       <id>build.springsource.com</id>
       <activation>
         <property>
@@ -396,16 +449,14 @@
 	  <layout>p2</layout>
 	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url>
 	</repository>
+
+<!--  can remove? Should be able to get this from juno / kepler / luna site no?
     <repository>
       <id>m2e</id>
 	  <layout>p2</layout>
-<!--  Eclipse.org deleted this one 'for legal reasons' nice aye?
-      <url>http://download.eclipse.org/technology/m2e/releases/1.1/1.1.0.20120530-0009</url> 
-      The next available release appears to be 1.4
-      -->
       <url>http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317</url>
-<!--       <url>http://download.eclipse.org/technology/m2e/releases/</url> -->
     </repository>
+ -->
 	<repository>
 	  <id>mylyn</id>
 	  <layout>p2</layout>
