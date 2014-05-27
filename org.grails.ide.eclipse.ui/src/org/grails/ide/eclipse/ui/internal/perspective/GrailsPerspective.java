@@ -52,14 +52,10 @@ public class GrailsPerspective implements IPerspectiveFactory {
 //		IFolderLayout serverFolder = layout.createFolder("server", IPageLayout.BOTTOM, (float) 0.80, "left");
 //		serverFolder.addView("org.eclipse.wst.server.ui.ServersView");
 
-		IFolderLayout tasklistFolder = layout.createFolder("topright", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
-		tasklistFolder.addView("org.eclipse.mylyn.tasks.ui.views.tasks");
+//		IFolderLayout tasklistFolder = layout.createFolder("topright", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
+//		tasklistFolder.addView("org.eclipse.mylyn.tasks.ui.views.tasks");
 //		IFolderLayout springFolder = layout.createFolder("spring", IPageLayout.BOTTOM, (float) 0.50, "topright");
 //		springFolder.addView("org.springframework.ide.eclipse.ui.navigator.springExplorer");
-
-		IFolderLayout outlineFolder = layout.createFolder("middleright", IPageLayout.BOTTOM, (float) 0.55, "topright"); //$NON-NLS-1$
-		outlineFolder.addView(IPageLayout.ID_OUTLINE);
-		outlineFolder.addPlaceholder("org.eclipse.ui.texteditor.TemplatesView");
 
 		IFolderLayout outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.80, editorArea); //$NON-NLS-1$
 		outputfolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
@@ -71,8 +67,13 @@ public class GrailsPerspective implements IPerspectiveFactory {
 		outputfolder.addPlaceholder(JavaUI.ID_SOURCE_VIEW);
 		outputfolder.addPlaceholder("org.eclipse.search.ui.views.SearchView");
 		outputfolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
-
 		outputfolder.addPlaceholder("*");
+		
+		IFolderLayout outlineFolder = layout.createFolder("middleright", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
+		outlineFolder.addView(IPageLayout.ID_OUTLINE);
+		outlineFolder.addPlaceholder("org.eclipse.ui.texteditor.TemplatesView");
+
+		
 
 		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 		layout.addActionSet(JavaUI.ID_ACTION_SET);
