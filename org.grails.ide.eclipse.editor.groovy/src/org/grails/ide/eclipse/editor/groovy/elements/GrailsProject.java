@@ -592,26 +592,16 @@ public class GrailsProject {
         List<TagLibClass> taglibs = new ArrayList<TagLibClass>();
         try {
             IPackageFragment[] frags = javaProject.getPackageFragments();
-            IPackageFragment tagLibFrag = null;
             for (IPackageFragment frag : frags) {
                 if (frag.getElementName().equals("org.codehaus.groovy.grails.plugins.web.taglib") && frag.exists()) {
-                    tagLibFrag = frag;
-                    break;
-                }
-            }
-            if (tagLibFrag != null) {
-                IClassFile[] classes = tagLibFrag.getClassFiles();
-                for (IClassFile classFile : classes) {
-                    if (classFile.getType().getElementName().endsWith("TagLib")) {
-                        taglibs.add(new BinaryTagLibClass((ClassFile) classFile));
+                    // STS-3841: Actually not only one fragment can be found
+                    IClassFile[] classes = frag.getClassFiles();
+                    for (IClassFile classFile : classes) {
+                        if (classFile.getType().getElementName().endsWith("TagLib")) {
+                            taglibs.add(new BinaryTagLibClass((ClassFile) classFile));
+                        }
                     }
                 }
-            } else {
-                // no longer show this error.  If the grails version is not yet set up,
-                // you will be seeing this all the time
-//                GrailsCoreActivator.log("Could not find any standard Grails tag libaries.  " +
-//                		"They typically reside in the package 'org.codehaus.groovy.grails.plugins.web.taglib'.",
-//                		new RuntimeException());
             }
         } catch (JavaModelException e) {
             GrailsCoreActivator.log("Exception raised when looking for Grails tag libaries.  " +
