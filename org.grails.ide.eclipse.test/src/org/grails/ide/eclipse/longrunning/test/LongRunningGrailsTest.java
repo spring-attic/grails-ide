@@ -153,6 +153,10 @@ public class LongRunningGrailsTest extends GrailsCommandTest {
 			//upgrade command is broken from 2.2.x to to 2.3
 			return;
 		}
+		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_4_)>=0) {
+			//upgrade command discontinued in Grails 2.4
+			return;
+		}
 		//Note: It is important that this test use a differently named test project from the other tests
 		// because up-and-down grades and uses different grails versions from the other tests.
 		
