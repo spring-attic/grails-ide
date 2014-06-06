@@ -498,7 +498,7 @@ public class GrailsCommandTest extends AbstractCommandTest {
 
             // Modify the props file add two plugins
             // A bit of a hack, but this is a simple way to add plugins to the build
-            String newContents = origContents.replace("plugins {\n", "plugins {\n\t\tcompile \":feeds:1.6\"\n\t\tcompile \":spring-security-core:1.2.7.3\"\n");
+            String newContents = origContents.replace("plugins {\n", "plugins {\n\t\tcompile \":feeds:1.6\"\n");
             GrailsTest.setContents(buildConfig, newContents);
         }
         refreshDependencies(proj);
