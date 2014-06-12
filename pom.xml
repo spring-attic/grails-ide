@@ -209,24 +209,6 @@
 		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e3.7/</url>
 		</repository>
 	  </repositories>
-<!--       <build>
-	    <plugins>
-	      <plugin>
-	          <groupId>org.eclipse.tycho</groupId>
-	          <artifactId>tycho-surefire-plugin</artifactId>
-	          <version>${tycho-version}</version>
-	          <configuration>
-	            <dependencies>
-	              <dependency>
-				    <type>p2-installable-unit</type>
-					<artifactId>org.eclipse.core.resources.bug367669.patch.feature.group</artifactId>
-				    <version>0.0.0</version>
-				  </dependency>
-				</dependencies>
-	          </configuration>
-	      </plugin>
-	    </plugins>
-	  </build> -->
     </profile>
 
     <profile>
