@@ -471,7 +471,7 @@ public class PerProjectTagProvider implements IGrailsProjectInfo {
      */
     public CMDocument getCorrespondingCMDocument(Node node) {
         ensureInitialized();
-        CMDocument doc = node instanceof ElementImplForJSP ? tagNameToDocument.get(node.getNodeName()) : null;
+        CMDocument doc = (node instanceof ElementImplForJSP && tagNameToDocument!=null) ? tagNameToDocument.get(node.getNodeName()) : null;
         return doc;
     }
     
