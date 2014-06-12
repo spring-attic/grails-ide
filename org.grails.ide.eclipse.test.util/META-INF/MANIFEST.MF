@@ -18,7 +18,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.jdt.launching,
  org.springsource.ide.eclipse.commons.frameworks.test.util,
- org.grails.ide.eclipse.ui
+ org.grails.ide.eclipse.ui,
+ org.eclipse.equinox.ds,
+ org.eclipse.equinox.event
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.grails.ide.eclipse.test.util
 Bundle-Activator: org.grails.ide.eclipse.test.util.GrailsTestUtilActivator
