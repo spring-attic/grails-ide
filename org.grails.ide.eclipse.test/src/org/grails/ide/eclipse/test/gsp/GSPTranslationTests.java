@@ -13,6 +13,7 @@ package org.grails.ide.eclipse.test.gsp;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 
 import org.eclipse.core.resources.IFile;
@@ -29,7 +30,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
-
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationAdapter;
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationAdapterFactory;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
@@ -135,11 +135,7 @@ public class GSPTranslationTests extends AbstractInferencingTest {
         // slight difference on 35 vs 36 +
         String expected35 = "\nwhile(true) { // <g:if>\nflash.message\nflash.message\n} // </g:if>\n";
         String expected36 = "\nif(true) { // <g:if>\nflash.message\nflash.message\n} // </g:if>\n";
-        if (EclipseVersion.getVersion().getVersionNumber() >= EclipseVersion.E36.getVersionNumber()) {
-            checkUserCode(translated, expected36);
-        } else {
-            checkUserCode(translated, expected35);
-        }
+        checkUserCode(translated, expected35, expected36);
     }
     
     // Hmmm...how do I check for compile problems?
@@ -163,6 +159,25 @@ public class GSPTranslationTests extends AbstractInferencingTest {
     public void testSTS1489() throws Exception {
         checkUserCode(translateText(
                 "<img src=\"${ }\" />"), " ");
+    }
+
+    /**
+     * Like 'checkUserCode(String, String), but accepts multiple alternate 'expectedUserCodes'.
+     * Either one of the alternates are considered acceptable.
+     */
+    private void checkUserCode(String actualJavaContents, String... expectedUserCode) {
+    	for (int i = 0; i < expectedUserCode.length; i++) {
+    		try {
+    			checkUserCode(actualJavaContents, expectedUserCode[i]);
+    			return; //no need to check others, we have an acceptable match
+    		} catch (AssertionFailedError e) {
+    			if (i+1<expectedUserCode.length) {
+    				//try next alternative
+    			} else {
+    				throw e;
+    			}
+    		}
+		}
     }
     
     /**
