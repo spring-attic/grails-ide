@@ -68,7 +68,9 @@ Require-Bundle:
  org.codehaus.groovy.eclipse.dsl.tests;bundle-version="2.6.1",
  org.eclipse.ui,
  javax.el;bundle-version="2.2.0",
- javax.servlet;bundle-version="3.0.0"
+ javax.servlet;bundle-version="3.0.0",
+ org.eclipse.equinox.ds,
+ org.eclipse.equinox.event
 Export-Package: org.grails.ide.eclipse.commands.test;x-internal:=true,
  org.grails.ide.eclipse.longrunning.test;x-internal:=true,
  org.grails.ide.eclipse.test;x-internal:=true,
