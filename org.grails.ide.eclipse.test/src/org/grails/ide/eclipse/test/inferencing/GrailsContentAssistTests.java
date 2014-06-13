@@ -262,6 +262,7 @@ public class GrailsContentAssistTests extends CompletionTestCase {
             fail("Expected at least one proposal, but found none");
         }
         applyProposalAndCheck(new Document(contents), firstProposal, expected);
+        avoidUIThreadStarvation();
     }
     
     @Override
