@@ -81,6 +81,7 @@ public class GrailsTestUtilActivator implements BundleActivator {
 	}
 
 	public static void configureGrailsVersions() {
+		System.out.println("user.dir = '"+System.getProperty("user.dir")+"'");
 		dumpGroovyBundles();
 		configureGrailsVersions(CompilerUtils.getWorkspaceCompilerLevel());
 	}
