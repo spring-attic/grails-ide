@@ -22,8 +22,8 @@ import org.eclipse.wst.validation.internal.ValOperation;
 import org.eclipse.wst.validation.internal.ValType;
 import org.eclipse.wst.validation.internal.ValidationRunner;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
-
 import org.grails.ide.eclipse.editor.gsp.tags.PerProjectTagProvider;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * Tests on gsps that validate content
@@ -67,13 +67,18 @@ public class GSPValidationTests extends AbstractGSPTagsTest {
     
     public void testValidationContentEncoding() throws Exception {
         String contents = "<%@ page contentType=\"text/html;charset=ISO-8859-1\" >";
-        if (EclipseVersion.getVersion().getVersionNumber() <= EclipseVersion.E36.getVersionNumber()) {
-            validate(contents, "Start tag (<jsp:directive.page>) not closed.");
-        } else {
-        	validate(contents, 
-        			"Start tag (<jsp:directive.page>) not closed properly, expected >.",
-        			"Invalid location of text (>) in tag (<jsp:directive.page>).");
-        }
+        //Eclipse 4.4
+        validate(contents, 
+        		"Start tag (<jsp:directive.page>) not closed properly, expected '>'.",
+        		"Invalid location of text (>) in tag (<jsp:directive.page>)."
+        );
+//        if (StsTestUtil.ECLIPSE_3_6_OR_LATER) {
+//            validate(contents, "Start tag (<jsp:directive.page>) not closed.");
+//        } else {
+//        	validate(contents, 
+//        			"Start tag (<jsp:directive.page>) not closed properly, expected >.",
+//        			"Invalid location of text (>) in tag (<jsp:directive.page>).");
+//        }
     }
     
     public void testValidationNoPage() throws Exception {
