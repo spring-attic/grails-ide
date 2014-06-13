@@ -26,12 +26,17 @@ import org.eclipse.jdt.core.tests.util.GroovyUtils;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.ui.internal.Workbench;
+import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.editor.groovy.elements.DomainClass;
 import org.grails.ide.eclipse.test.MockGrailsTestProjectUtils;
 import org.grails.ide.eclipse.test.util.GrailsTest;
+import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
+import org.springsource.ide.eclipse.commons.frameworks.test.util.ACondition;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * Tests content assist in grails artifact files
@@ -56,7 +61,8 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         super.setUp();
     }
     
-    @Override
+
+	@Override
     protected void tearDown() throws Exception {
         // be sure to close all editors now
         try {
@@ -64,10 +70,28 @@ public class GrailsContentAssistTests extends CompletionTestCase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        avoidUIThreadStarvation();
         super.tearDown();
     }
 
-    public void testDomainClassFields1() throws Exception {
+    private void avoidUIThreadStarvation() {
+    	try {
+	    	//Suspect that this test suite is completely 'owning' the UI thread. This leads to things that need to run on it
+	    	// piling up and eventually crashing the JVM with OME exception.
+	    	new ACondition("Wait for Jobs") {
+				@Override
+				public boolean test() throws Exception {
+					assertJobManagerIdle();
+					return true;
+				}
+			}.waitFor(3 * 60 * 1000);
+    	} catch (Throwable e) {
+    		//Log exception but don't fail tests because of it
+    		FrameworkCoreActivator.log(e);
+    	}
+	}
+
+	public void testDomainClassFields1() throws Exception {
         for (String fieldName : DomainClass.staticFields) {
             checkDomainField1(fieldName);
         }
