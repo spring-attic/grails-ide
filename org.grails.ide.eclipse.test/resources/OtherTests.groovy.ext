@@ -10,7 +10,7 @@ class OtherTests {
 	applicationContext
 	flash
 	grailsApplication
-	loadedCodecs
+	// loadedCodecs not working in Grails 2.4 but that seems correct, it is also a runtime error so this thing doesn't exist.
 	modelAndView
 	// OK cheating here...we should be inferring stuff that matters, but it just doesn't seem to be working right now
 	/*!I:!*/9/*!*/
