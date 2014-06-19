@@ -22,12 +22,13 @@
 		<category name="Core / Grails IDE for Eclipse" />
 	</feature>
 	
-	<!-- Dashboard -->
+	<!-- Dashboard removed: should only be consumed from commons because it is 
+	     eclipse-version specific (JavaFX dependency)
 	<feature 
 		url="features/org.springsource.ide.eclipse.dashboard_3.6.0.qualifier.jar" 
 		id="org.springsource.ide.eclipse.dashboard" version="3.6.0.qualifier">
 		<category name="Core / Grails IDE for Eclipse"/>
-	</feature>
+	</feature> -->
 
 	<feature 
 		url="features/org.springsource.ide.eclipse.commons_3.6.0.qualifier.jar" 
