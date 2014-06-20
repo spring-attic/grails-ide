@@ -345,7 +345,7 @@
 		<repository>
 		  <id>ajdt</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/tools/ajdt/43/dev/update</url>
+		  <url>http://download.eclipse.org/tools/ajdt/44/dev/update</url>
 		  <!--  when available should use release: http://download.eclipse.org/tools/ajdt/44/update -->
 		</repository>
 		<repository>
