@@ -175,6 +175,7 @@ public class AllGrailsTests {
         	}
         }
 		suite.addTestSuite(ThreadLeakTest.class);
+		suite.addTestSuite(HeapDumpTest.class);
         return suite;
 	}
 
