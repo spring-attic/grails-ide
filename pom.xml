@@ -317,12 +317,13 @@
       <id>e44</id>
 	  <properties>
 		<p2.repository.name>SpringSource Tool Suite for Eclipse 4.4</p2.repository.name>
-		<dist.target>e4.3</dist.target>
+		<dist.target>e4.4</dist.target>
 		<dist.platform.name>Luna</dist.platform.name>
 		<dist.platform.id>luna</dist.platform.id>		
 		<dist.platform.version>4.4</dist.platform.version>		
 		<package.qualifierPrefix>e44</package.qualifierPrefix>
-		<version.weaving>1.0.200.I20130319-1000</version.weaving>
+		<version.weaving>1.1.0.I20140501-0200</version.weaving>
+		<!-- <version.weaving>1.0.200.I20130319-1000</version.weaving> -->
 	  </properties>
 	  <repositories>
 		<repository>
@@ -773,7 +774,7 @@
             <testSuite>${project.artifactId}</testSuite>
             <testClass>${test.class}</testClass>
             <!-- -XX:MaxPermSize=382m -XX:HeapDumpPath=${project.build.directory}/heapdumps -->
-            <argLine>-Dorg.eclipse.ecf.provider.filetransfer.httpclient.browse.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.readTimeout=1200000 -Dorg.eclipse.equinox.p2.transport.ecf.retry=20 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${project.build.directory} -Xmx1536m -Dcom.springsource.sts.tests.cache=${sts.test.cache} -XX:MaxPermSize=512m -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}</argLine>
+            <argLine>-Dorg.eclipse.ecf.provider.filetransfer.httpclient.browse.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.connectTimeout=120000 -Dorg.eclipse.ecf.provider.filetransfer.httpclient.retrieve.readTimeout=1200000 -Dorg.eclipse.equinox.p2.transport.ecf.retry=20 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${project.build.directory} -Xmx1024m -Dcom.springsource.sts.tests.cache=${sts.test.cache} -XX:MaxPermSize=384m -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}</argLine>
             <appArgLine>
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
