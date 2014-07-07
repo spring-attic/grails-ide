@@ -26,7 +26,7 @@ public class ThreadLeakTest extends GrailsTest {
 	/**
 	 * This number is 20% more than what we typically see running in the Eclipse debugger, running STS.
 	 */
-	private static final int REASONABLE_NUMBER_OF_THREADS = (int)(35 * 1.2); 
+	private static final int REASONABLE_NUMBER_OF_THREADS = (int)(45 * 1.2); 
 
 	public void testThreadLeaks() {
 		Thread[] threads = StsTestUtil.getAllThreads();
