@@ -1,6 +1,6 @@
 open_source_license.txt
 
-Grails-IDE 3.5.0 GA
+Grails-IDE 3.6.0 GA
 
 =================================================================
 Pivotal makes available all content in this download ("Content"). 
@@ -16,10 +16,9 @@ this Content.
 =================================================================
 TABLE OF CONTENTS
 =================================================================
-The following is a listing of the open source components detailed in this 
-document. This list is provided for your convenience; please read further 
-if you wish to review the copyright notice(s) and the full text of the 
-license associated with each component.
+The following is a listing of the open source components detailed in this document. 
+This list is provided for your convenience; please read further if you wish to review 
+the copyright notice(s) and the full text of the license associated with each component.
 
 
 
@@ -36,20 +35,20 @@ SECTION 2: Eclipse Public License, V1.0
    >>> org.eclipse.fx.javafx-2.2.0
    >>> org.eclipse.fx.osgi-0.9.0
    >>> org.eclipse.fx.osgi.util-0.9.0
-   >>> org.springframework.ide.eclipse.uaa-3.5.0
-   >>> org.springsource.ide.eclipse.commons.browser-3.5.0
-   >>> org.springsource.ide.eclipse.commons.completions-3.5.0
-   >>> org.springsource.ide.eclipse.commons.configurator-3.5.0
-   >>> org.springsource.ide.eclipse.commons.content.core-3.5.0
-   >>> org.springsource.ide.eclipse.commons.core-3.5.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.core-3.5.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.5.0
-   >>> org.springsource.ide.eclipse.commons.frameworks.ui-3.5.0
-   >>> org.springsource.ide.eclipse.commons.gettingstarted-3.5.0
-   >>> org.springsource.ide.eclipse.commons.livexp-3.5.0
-   >>> org.springsource.ide.eclipse.commons.tests.util-3.5.0
-   >>> org.springsource.ide.eclipse.commons.ui-3.5.0
-   >>> org.springsource.ide.eclipse.dashboard.ui-3.5.0
+   >>> org.springframework.ide.eclipse.uaa-3.6.0
+   >>> org.springsource.ide.eclipse.commons.browser-3.6.0
+   >>> org.springsource.ide.eclipse.commons.completions-3.6.0
+   >>> org.springsource.ide.eclipse.commons.configurator-3.6.0
+   >>> org.springsource.ide.eclipse.commons.content.core-3.6.0
+   >>> org.springsource.ide.eclipse.commons.core-3.6.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.core-3.6.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.6.0
+   >>> org.springsource.ide.eclipse.commons.frameworks.ui-3.6.0
+   >>> org.springsource.ide.eclipse.commons.gettingstarted-3.6.0
+   >>> org.springsource.ide.eclipse.commons.livexp-3.6.0
+   >>> org.springsource.ide.eclipse.commons.tests.util-3.6.0
+   >>> org.springsource.ide.eclipse.commons.ui-3.6.0
+   >>> org.springsource.ide.eclipse.dashboard.ui-3.6.0
 
 
 
@@ -58,6 +57,7 @@ APPENDIX. Standard License Files
    >>> Eclipse Public License, V1.0
 
    >>> Apache License, V2.0
+
 
 
 
@@ -184,7 +184,7 @@ http://www.eclipse.org
 .
 
 
->>> org.springframework.ide.eclipse.uaa-3.5.0
+>>> org.springframework.ide.eclipse.uaa-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -197,7 +197,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.browser-3.5.0
+>>> org.springsource.ide.eclipse.commons.browser-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -210,7 +210,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.completions-3.5.0
+>>> org.springsource.ide.eclipse.commons.completions-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -223,7 +223,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.configurator-3.5.0
+>>> org.springsource.ide.eclipse.commons.configurator-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -236,7 +236,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.content.core-3.5.0
+>>> org.springsource.ide.eclipse.commons.content.core-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -249,7 +249,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.core-3.5.0
+>>> org.springsource.ide.eclipse.commons.core-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -262,7 +262,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.core-3.5.0
+>>> org.springsource.ide.eclipse.commons.frameworks.core-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -275,7 +275,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.5.0
+>>> org.springsource.ide.eclipse.commons.frameworks.test.util-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -288,7 +288,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.frameworks.ui-3.5.0
+>>> org.springsource.ide.eclipse.commons.frameworks.ui-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -301,7 +301,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.gettingstarted-3.5.0
+>>> org.springsource.ide.eclipse.commons.gettingstarted-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -314,7 +314,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.livexp-3.5.0
+>>> org.springsource.ide.eclipse.commons.livexp-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -327,7 +327,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.tests.util-3.5.0
+>>> org.springsource.ide.eclipse.commons.tests.util-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -340,7 +340,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.commons.ui-3.5.0
+>>> org.springsource.ide.eclipse.commons.ui-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -353,7 +353,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties, as set out in the file called open_source_licenses.txt, located in the feature components of this project.
 
 
->>> org.springsource.ide.eclipse.dashboard.ui-3.5.0
+>>> org.springsource.ide.eclipse.dashboard.ui-3.6.0
 
 About Eclipse Integration Commons
 About Eclipse Integration Commons
@@ -776,7 +776,6 @@ END OF TERMS AND CONDITIONS
 
 
 
-
 ===========================================================================
 
 To the extent any open source components are licensed under the
@@ -785,15 +784,15 @@ source code and/or modifications to source code to be made
 available (as would be noted above), you may obtain a copy of
 the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
-"Source Files"), by downloading the Source Files from Pivotal website at
-(http://www.gopivotal.com/open-source),or by sending a request, 
-with your name and address to: Pivotal Software Inc.3496 Deer Creek Rd, 
-Palo Alto, CA 94304,Attention: General Counsel. 
-All such requests should clearly specify: OPEN SOURCE FILES REQUEST,
-Attention General Counsel. Pivotal shall mail a copy of the
-Source Files to you on a CD or equivalent physical medium. This
-offer to obtain a copy of the Source Files is valid for three
+"Source Files"), by downloading the Source Files from Pivotal's website at
+http://www.gopivotal.com/open-source, or by sending a request, 
+with your name and address to: Pivotal Software, Inc., 3496 Deer Creek Rd, 
+Palo Alto, CA 94304, Attention: General Counsel. All such requests should 
+clearly specify: OPEN SOURCE FILES REQUEST, Attention General Counsel. 
+Pivotal shall mail a copy of the Source Files to you on a CD or equivalent physical medium. 
+This offer to obtain a copy of the Source Files is valid for three
 years from the date you acquired this Software product. 
 Alternatively, the Source Files may accompany the Pivotal product.
 
-[GRAILSIDE350GASS030714]
+
+[GRAILSIDE360GASS070714]
