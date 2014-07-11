@@ -839,7 +839,7 @@ public class GrailsInplaceDialog {
 					return;
 				}
 
-				if (e.doit && e.keyCode == 0x0D && isDeactivateListenerActive) { // return
+				if (e.doit && (e.keyCode == 0x0D || e.keyCode == SWT.KEYPAD_CR) && isDeactivateListenerActive) { // return
 					e.doit = false;
 					IProject project = getSelectedProject();
 					if (!isValidProject(project)) {
