@@ -29,6 +29,7 @@ import org.codehaus.groovy.ast.PropertyNode;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -179,38 +180,22 @@ public class ControllerClass extends AbstractGrailsElement implements INavigable
             return cachedDomainClass;
         }
         String origName = unit.getElementName();
-        int controllerIndex = origName.lastIndexOf(CONTROLLER);
-        String domainName = origName.substring(0, controllerIndex) + ".groovy";
-        String packageName = unit.getParent().getElementName();
-
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = new GrailsProject(javaProject);
-        cachedDomainClass = gp.getDomainClass(packageName, domainName);
-        return cachedDomainClass;
+        return DomainClass.getDomainClassForElement(unit, origName.substring(0,origName.lastIndexOf(CONTROLLER)));
     }
 
     public TagLibClass getTagLibClass() {
-        String origName = unit.getElementName();
-        int controllerIndex = origName.lastIndexOf(CONTROLLER);
-        String tagLibName = origName.substring(0, controllerIndex) + "TagLib.groovy";
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getTagLibClass(packageName, tagLibName);
+    	String origName = unit.getElementName();
+        return TagLibClass.getTagLibClassForElement(unit, origName.substring(0,origName.lastIndexOf(CONTROLLER)));
     }
     
     public ServiceClass getServiceClass() {
-        String origName = unit.getElementName();
-        int controllerIndex = origName.lastIndexOf(CONTROLLER);
-        String serviceName = origName.substring(0, controllerIndex) + "Service.groovy";
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getServiceClass(packageName, serviceName);
+    	String origName = unit.getElementName();
+        return ServiceClass.getServiceClassForElement(unit, origName.substring(0,origName.lastIndexOf(CONTROLLER)));
     }
     
+    public TestClass getTestClass() {
+    	return TestClass.getTestClassForElement(this, unit, getPrimaryTypeName());
+    }
 
     public ControllerClass getControllerClass() {
         return this;
@@ -358,5 +343,20 @@ public class ControllerClass extends AbstractGrailsElement implements INavigable
 	
 	public boolean isControllerAction(String name) {
 	    return getControllerAction(name) != null;
+	}
+	
+	/**
+     * Finds a corresponding Controller class for the given type name
+     * @param unit {@link ICompilationUnit} of the original class
+     * @param typeName simple name of the original class
+     * @return a corresponding Controller class
+     */
+	public static ControllerClass getControllerClassForElement(ICompilationUnit unit, String typeName) {
+		String controllerName = typeName + "Controller.groovy"; //$NON-NLS-1$
+		String packageName = unit.getParent().getElementName();
+
+		IJavaProject javaProject = unit.getJavaProject();
+		GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
+		return gp.getControllerClass(packageName, controllerName);
 	}
 }

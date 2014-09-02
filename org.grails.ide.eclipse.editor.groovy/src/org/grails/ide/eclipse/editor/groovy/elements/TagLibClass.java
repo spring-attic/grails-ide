@@ -43,6 +43,7 @@ import org.codehaus.groovy.syntax.Types;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -175,24 +176,16 @@ public class TagLibClass extends AbstractGrailsElement implements INavigableGrai
 
     public ControllerClass getControllerClass() {
         String origName = unit.getElementName();
-        int controllerIndex = origName.lastIndexOf("TagLib"); //$NON-NLS-1$
-        String controllerName = origName.substring(0, controllerIndex) + "Controller.groovy"; //$NON-NLS-1$
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getControllerClass(packageName, controllerName);
+        return ControllerClass.getControllerClassForElement(unit, origName.substring(0,origName.lastIndexOf("TagLib")));
     }
     
     public ServiceClass getServiceClass() {
-        String origName = unit.getElementName();
-        int tagLibIndex = origName.lastIndexOf("TagLib"); //$NON-NLS-1$
-        String serviceName = origName.substring(0, tagLibIndex) + "Service.groovy"; //$NON-NLS-1$
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getServiceClass(packageName, serviceName);
+    	String origName = unit.getElementName();
+        return ServiceClass.getServiceClassForElement(unit, origName.substring(0,origName.lastIndexOf("TagLib")));
+    }
+    
+    public TestClass getTestClass() {
+    	return TestClass.getTestClassForElement(this, unit, getPrimaryTypeName());
     }
     
     public TagLibClass getTagLibClass() {
@@ -401,6 +394,18 @@ public class TagLibClass extends AbstractGrailsElement implements INavigableGrai
         return className;
     }
     
-    
+    /**
+     * Finds a corresponding TagLib class for the given type name
+     * @param unit {@link ICompilationUnit} of the original class
+     * @param typeName simple name of the original class
+     * @return a corresponding TagLib class
+     */
+    public static TagLibClass getTagLibClassForElement(ICompilationUnit unit, String typeName) {
+		String controllerName = typeName + "TagLib.groovy"; //$NON-NLS-1$
+		String packageName = unit.getParent().getElementName();
 
+		IJavaProject javaProject = unit.getJavaProject();
+		GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
+		return gp.getTagLibClass(packageName, controllerName);
+	}
 }

@@ -16,6 +16,7 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.groovy.search.AbstractSimplifiedTypeLookup.TypeAndDeclaration;
 import org.eclipse.jdt.groovy.search.VariableScope;
@@ -31,6 +32,8 @@ import org.grails.ide.eclipse.editor.groovy.types.PerProjectTypeCache;
  */
 public class ServiceClass extends AbstractGrailsElement implements INavigableGrailsElement {
 
+    private DomainClass cachedDomainClass;
+	
     public ServiceClass(GroovyCompilationUnit unit) {
         super(unit);
     }
@@ -62,36 +65,25 @@ public class ServiceClass extends AbstractGrailsElement implements INavigableGra
     }
     
     public DomainClass getDomainClass() {
-        String origName = unit.getElementName();
-        int tagLibIndex = origName.lastIndexOf("Service"); //$NON-NLS-1$
-        String domainName = origName.substring(0, tagLibIndex) + ".groovy"; //$NON-NLS-1$
-        String packageName = unit.getParent().getElementName();
-
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = new GrailsProject(javaProject);
-        return gp.getDomainClass(packageName, domainName);
+    	if (cachedDomainClass != null) {
+            return cachedDomainClass;
+        }
+    	String origName = unit.getElementName();
+        return DomainClass.getDomainClassForElement(unit, origName.substring(0,origName.lastIndexOf("Service")));
     }
 
     public ControllerClass getControllerClass() {
-        String origName = unit.getElementName();
-        int controllerIndex = origName.lastIndexOf("Service"); //$NON-NLS-1$
-        String controllerName = origName.substring(0, controllerIndex) + "Controller.groovy"; //$NON-NLS-1$
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getControllerClass(packageName, controllerName);
+    	String origName = unit.getElementName();
+        return ControllerClass.getControllerClassForElement(unit, origName.substring(0,origName.lastIndexOf("Service")));
     }
     
     public TagLibClass getTagLibClass() {
-        String origName = unit.getElementName();
-        int serviceIndex = origName.lastIndexOf("Service"); //$NON-NLS-1$
-        String serviceName = origName.substring(0, serviceIndex) + "TagLib.groovy"; //$NON-NLS-1$
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getTagLibClass(packageName, serviceName);
+    	String origName = unit.getElementName();
+        return TagLibClass.getTagLibClassForElement(unit, origName.substring(0,origName.lastIndexOf("Service")));
+    }
+    
+    public TestClass getTestClass() {
+    	return TestClass.getTestClassForElement(this, unit, getPrimaryTypeName());
     }
 
     public ServiceClass getServiceClass() {
@@ -109,5 +101,19 @@ public class ServiceClass extends AbstractGrailsElement implements INavigableGra
         className = className.substring(0, cIndex);
         return className;
     }
+    
+    /**
+     * Finds a corresponding Service class for the given type name
+     * @param unit {@link ICompilationUnit} of the original class
+     * @param typeName simple name of the original class
+     * @return a corresponding Service class
+     */
+    public static ServiceClass getServiceClassForElement(ICompilationUnit unit, String typeName) {
+		String controllerName = typeName + "Service.groovy"; //$NON-NLS-1$
+		String packageName = unit.getParent().getElementName();
 
+		IJavaProject javaProject = unit.getJavaProject();
+		GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
+		return gp.getServiceClass(packageName, controllerName);
+	}
 }

@@ -38,6 +38,16 @@
              id="org.grails.ide.eclipse.editor.editorAction.navigation"
              targetID="org.codehaus.groovy.eclipse.editor.GroovyEditor">
           <action
+                class="org.grails.ide.eclipse.editor.actions.GoToTestClass"
+                definitionId="org.grails.ide.eclipse.editor.groovy.testCommand"
+                icon="icons/full/obj16/test_obj.png"
+                id="org.grails.ide.eclipse.editor.navigateToTestAction"
+                label="To Test"
+                style="push"
+                toolbarPath="Normal/grails"
+                tooltip="Open the corresponding Test class if one exists">
+          </action>
+          <action
                 class="org.grails.ide.eclipse.editor.actions.GoToControllerClass"
                 definitionId="org.grails.ide.eclipse.editor.groovy.controllerCommand"
                 icon="icons/full/obj16/controller_obj.png"
@@ -173,6 +183,12 @@
              description="Open the corresponding TagLib class if one exists"
              id="org.grails.ide.eclipse.editor.groovy.tagLibCommand"
              name="Go to TagLib Class">
+       </command>
+       <command
+             categoryId="org.grails.ide.eclipse.ui.commands"
+             description="Open the corresponding Test class if one exists"
+             id="org.grails.ide.eclipse.editor.groovy.testCommand"
+             name="Go to Unit Test Class">
        </command>
     </extension>
     <extension

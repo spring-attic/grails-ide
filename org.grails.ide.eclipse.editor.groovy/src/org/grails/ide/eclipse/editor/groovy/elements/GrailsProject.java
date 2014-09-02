@@ -48,7 +48,6 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.workspace.internal.GrailsProjectUtil;
-
 import org.grails.ide.eclipse.editor.groovy.types.PerProjectTypeCache;
 
 /**
@@ -141,14 +140,18 @@ public class GrailsProject {
             } else {
                 return GrailsElementKind.OTHER;
             }
-        } else if (GrailsElementKind.UNIT_TEST.getSourceFolder().equals(rootName)) {
+        } else if (GrailsElementKind.UNIT_TEST.getSourceFolder().endsWith(rootName)) {
             if (primaryTypeExists(unit)) {
                 return GrailsElementKind.UNIT_TEST;
             } else {
                 return GrailsElementKind.OTHER;
             }
-            
-            
+        } else if (GrailsElementKind.INTEGRATION_TEST.getSourceFolder().endsWith(rootName)) {
+            if (primaryTypeExists(unit)) {
+                return GrailsElementKind.INTEGRATION_TEST;
+            } else {
+                return GrailsElementKind.OTHER;
+            }   
         } else if (rootName.equals(GrailsElementKind.CONF_FOLDER)) {
             String elementName = unit.getElementName();
             if (GrailsElementKind.BOOT_STRAP.getNameSuffix().equals(elementName)) {
@@ -205,6 +208,15 @@ public class GrailsProject {
         }
         return null;
     }
+    
+    public TestClass getTestClass(IType target) {
+        IJavaElement cu = target.getAncestor(IJavaElement.COMPILATION_UNIT);
+        if (cu instanceof GroovyCompilationUnit) {
+            GroovyCompilationUnit gcu = (GroovyCompilationUnit) cu;
+            return getTestClass(gcu);
+        }
+        return null;
+    }
 
 	public ControllerClass getControllerClass(IType target) {
         IJavaElement cu = target.getAncestor(IJavaElement.COMPILATION_UNIT);
@@ -221,6 +233,14 @@ public class GrailsProject {
     
     public ServiceClass getServiceClass(String packageName, String serviceName) {
         return (ServiceClass) getGrailsElement(packageName, serviceName, GrailsElementKind.SERVICE_CLASS.getSourceFolder(), GrailsElementKind.SERVICE_CLASS);
+    }
+    
+    public TestClass getTestClass(String packageName, String testName) {
+    	TestClass result = (TestClass) getGrailsElement(packageName, testName, GrailsElementKind.UNIT_TEST.getSourceFolder(), GrailsElementKind.UNIT_TEST);
+    	if (result == null) {
+    		result = (TestClass) getGrailsElement(packageName, testName, GrailsElementKind.INTEGRATION_TEST.getSourceFolder(), GrailsElementKind.INTEGRATION_TEST);
+    	}
+    	return result;
     }
     
     public ControllerClass getControllerClass(String packageName, String controllerName) {
@@ -250,6 +270,10 @@ public class GrailsProject {
                     return getServiceClass((GroovyCompilationUnit) cUnit);
                 case TAGLIB_CLASS:
                     return getTagLibClass((GroovyCompilationUnit) cUnit);
+                case UNIT_TEST:
+                    return getTestClass((GroovyCompilationUnit) cUnit);
+                case INTEGRATION_TEST:
+                    return getTestClass((GroovyCompilationUnit) cUnit);
             }
         }
         return null;
@@ -324,6 +348,14 @@ public class GrailsProject {
         return null;
     }
     
+    public TestClass getTestClass(GroovyCompilationUnit unit) {
+        if (getElementKind(unit) == GrailsElementKind.UNIT_TEST ||
+        		getElementKind(unit) == GrailsElementKind.INTEGRATION_TEST) {
+            return new TestClass(unit);
+        }
+        return null;
+    }
+    
     public IGrailsElement getGrailsElement(ICompilationUnit unit) {
         GrailsElementKind kind = getElementKind(unit);
         switch (kind) {
@@ -335,6 +367,10 @@ public class GrailsProject {
                 return new TagLibClass((GroovyCompilationUnit) unit);
             case SERVICE_CLASS:
                 return new ServiceClass((GroovyCompilationUnit) unit);
+            case UNIT_TEST:
+            	return new TestClass((GroovyCompilationUnit) unit);
+            case INTEGRATION_TEST:
+            	return new TestClass((GroovyCompilationUnit) unit);
             case BUILD_CONFIG:
             case BOOT_STRAP:
             case CONFIG:

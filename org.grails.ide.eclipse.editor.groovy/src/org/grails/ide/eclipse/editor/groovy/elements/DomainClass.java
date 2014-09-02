@@ -28,6 +28,7 @@ import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.groovy.search.AbstractSimplifiedTypeLookup.TypeAndDeclaration;
 import org.eclipse.jdt.groovy.search.VariableScope;
@@ -150,30 +151,19 @@ public class DomainClass extends AbstractGrailsElement implements INavigableGrai
     }
     
     public ControllerClass getControllerClass() {
-        String controllerName = getPrimaryTypeName() + "Controller.groovy";
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getControllerClass(packageName, controllerName);
+        return ControllerClass.getControllerClassForElement(unit, getPrimaryTypeName());
     }
     
     public TagLibClass getTagLibClass() {
-        String tagLibName = getPrimaryTypeName() + "TagLib.groovy";
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getTagLibClass(packageName, tagLibName);
+    	return TagLibClass.getTagLibClassForElement(unit, getPrimaryTypeName());
     }
     
     public ServiceClass getServiceClass() {
-        String serviceName = getPrimaryTypeName() + "Service.groovy";
-        String packageName = unit.getParent().getElementName();
-        
-        IJavaProject javaProject = unit.getJavaProject();
-        GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
-        return gp.getServiceClass(packageName, serviceName);
+    	return ServiceClass.getServiceClassForElement(unit, getPrimaryTypeName());
+    }
+    
+    public TestClass getTestClass() {
+    	return TestClass.getTestClassForElement(this, unit, getPrimaryTypeName());
     }
     
     public DomainClass getDomainClass() {
@@ -483,4 +473,13 @@ public class DomainClass extends AbstractGrailsElement implements INavigableGrai
         }
         return finderValidator;
     }
+    
+    public static DomainClass getDomainClassForElement(ICompilationUnit unit, String typeName) {
+		String controllerName = typeName + ".groovy"; //$NON-NLS-1$
+		String packageName = unit.getParent().getElementName();
+
+		IJavaProject javaProject = unit.getJavaProject();
+		GrailsProject gp = GrailsWorkspaceCore.get().create(javaProject);
+		return gp.getDomainClass(packageName, controllerName);
+	}
 }

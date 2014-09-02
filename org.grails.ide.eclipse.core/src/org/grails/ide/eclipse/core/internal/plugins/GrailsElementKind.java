@@ -20,8 +20,8 @@ public enum GrailsElementKind {
     URL_MAPPINGS("conf", "UrlMappings.groovy", true),
     DOMAIN_CLASS("domain", ".groovy", false),
     CONTROLLER_CLASS("controllers", "Controller.groovy", false),
-    UNIT_TEST("unit", "Tests.groovy", false),
-    INTEGRATION_TEST("integration", "Tests.groovy", false),
+    UNIT_TEST("../test/unit", "Spec.groovy", false),
+    INTEGRATION_TEST("../test/integration", "Spec.groovy", false),
     SERVICE_CLASS("services", "Service.groovy", false),
     TAGLIB_CLASS("taglib", "TagLib.groovy", false),
     GSP("views", "", false),
@@ -73,6 +73,8 @@ public enum GrailsElementKind {
             case CONTROLLER_CLASS:
             case SERVICE_CLASS:
             case TAGLIB_CLASS:
+            case UNIT_TEST:
+            case INTEGRATION_TEST:
                 return true;
         }
         return false;
@@ -84,6 +86,8 @@ public enum GrailsElementKind {
             case SERVICE_CLASS:
             case TAGLIB_CLASS:
             case GSP:
+            case UNIT_TEST:
+            case INTEGRATION_TEST:
                 return true;
         }
         return false;
@@ -95,6 +99,8 @@ public enum GrailsElementKind {
             case SERVICE_CLASS:
             case CONTROLLER_CLASS:
             case TAGLIB_CLASS:
+            case UNIT_TEST:
+            case INTEGRATION_TEST:
                 return true;
         }
         return false;
@@ -107,6 +113,8 @@ public enum GrailsElementKind {
             case DOMAIN_CLASS:
             case CONTROLLER_CLASS:
             case SERVICE_CLASS:
+            case UNIT_TEST:
+            case INTEGRATION_TEST:
                 return true;
         }
         return false;
@@ -117,9 +125,21 @@ public enum GrailsElementKind {
             case DOMAIN_CLASS:
             case TAGLIB_CLASS:
             case CONTROLLER_CLASS:
+            case UNIT_TEST:
+            case INTEGRATION_TEST:
                 return true;
         }
         return false;
     }
     
+    public boolean hasRelatedTestClass() {
+    	switch (this) {
+	        case DOMAIN_CLASS:
+	        case TAGLIB_CLASS:
+	        case CONTROLLER_CLASS:
+	        case SERVICE_CLASS:
+	            return true;
+    	}
+    	return false;
+    }
 }

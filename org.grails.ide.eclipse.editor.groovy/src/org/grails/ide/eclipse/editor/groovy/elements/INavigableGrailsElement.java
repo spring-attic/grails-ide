@@ -23,6 +23,7 @@ public interface INavigableGrailsElement extends IGrailsArtifact {
     public TagLibClass getTagLibClass();
     public ControllerClass getControllerClass();
     public DomainClass getDomainClass();
+    public TestClass getTestClass();
     public IFolder getGSPFolder();
     public String getAssociatedDomainClassName();
 }
