@@ -30,7 +30,6 @@ import org.grails.ide.eclipse.core.internal.plugins.GrailsElementKind;
  * @created Nov 23, 2009
  */
 public final class GrailsWorkspaceCore  {
-    
     // The singleton instance
     private final static GrailsWorkspaceCore INSTANCE = new GrailsWorkspaceCore();
     
@@ -87,6 +86,10 @@ public final class GrailsWorkspaceCore  {
         return hasRelatedInternal(unit, GrailsElementKind.TAGLIB_CLASS);
     }
     
+    public static boolean hasRelatedTestClass(GroovyCompilationUnit unit) {
+        return hasRelatedInternal(unit, GrailsElementKind.UNIT_TEST);
+    }
+    
     public static boolean hasRelatedGSP(GroovyCompilationUnit unit) {
         return hasRelatedInternal(unit, GrailsElementKind.GSP);
     }
@@ -109,6 +112,10 @@ public final class GrailsWorkspaceCore  {
                 return GrailsWorkspaceCore.get().getGrailsProjectFor(unit).getElementKind(unit).hasRelatedServiceClass();
             case TAGLIB_CLASS:
                 return GrailsWorkspaceCore.get().getGrailsProjectFor(unit).getElementKind(unit).hasRelatedTagLibClass();
+            case UNIT_TEST:
+                return GrailsWorkspaceCore.get().getGrailsProjectFor(unit).getElementKind(unit).hasRelatedTestClass();
+            case INTEGRATION_TEST:
+                return GrailsWorkspaceCore.get().getGrailsProjectFor(unit).getElementKind(unit).hasRelatedTestClass();
             case GSP:
                 return GrailsWorkspaceCore.get().getGrailsProjectFor(unit).getElementKind(unit).hasRelatedGSP();
             default:
