@@ -322,7 +322,8 @@
 		<dist.platform.id>luna</dist.platform.id>		
 		<dist.platform.version>4.4</dist.platform.version>		
 		<package.qualifierPrefix>e44</package.qualifierPrefix>
-		<version.weaving>1.1.0.I20140501-0200</version.weaving>
+		<version.weaving>1.1.100.weaving-hook-20140821</version.weaving>
+		<!-- <version.weaving>1.1.0.I20140501-0200</version.weaving>  -->
 		<!-- <version.weaving>1.0.200.I20130319-1000</version.weaving> -->
 	  </properties>
 	  <repositories>
