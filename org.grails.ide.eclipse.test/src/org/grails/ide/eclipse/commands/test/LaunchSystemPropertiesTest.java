@@ -108,7 +108,7 @@ public class LaunchSystemPropertiesTest extends AbstractCommandTest {
 			setProperty("grails.env", propVal);
 			ILaunchConfiguration launchConf = GrailsLaunchConfigurationDelegate.getLaunchConfiguration(project,
 					"help", false);
-			ILaunchResult result = new SynchLaunch(launchConf, 10000, 100000).synchExec();
+			ILaunchResult result = new SynchLaunch(launchConf, 30000, 100000).synchExec();
 			assertContains("Environment set to "+propVal, result.getOutput());
 		}
 	}
