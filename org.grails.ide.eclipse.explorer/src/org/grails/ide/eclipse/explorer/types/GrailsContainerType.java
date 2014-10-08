@@ -36,6 +36,8 @@ public enum GrailsContainerType implements IIcon {
 			"platform:/plugin/org.grails.ide.eclipse.explorer/icons/full/obj16/services.gif"), 
 	VIEWS(GrailsProjectStructureTypes.VIEWS,
 			"platform:/plugin/org.grails.ide.eclipse.explorer/icons/full/obj16/views.gif"), 
+	ASSETS(GrailsProjectStructureTypes.ASSETS,
+					"platform:/plugin/org.grails.ide.eclipse.explorer/icons/full/obj16/assets.png"), 
 	I18N(GrailsProjectStructureTypes.I18N,
 			"platform:/plugin/org.grails.ide.eclipse.explorer/icons/full/obj16/i18n.gif"), 
 	UTILS(GrailsProjectStructureTypes.UTILS,

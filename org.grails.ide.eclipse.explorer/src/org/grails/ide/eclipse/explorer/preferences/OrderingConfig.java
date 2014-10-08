@@ -22,6 +22,7 @@ import static org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructur
 import static org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructureTypes.TEST_REPORTS;
 import static org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructureTypes.UTILS;
 import static org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructureTypes.VIEWS;
+import static org.grails.ide.eclipse.core.internal.plugins.GrailsProjectStructureTypes.ASSETS;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,6 +92,7 @@ public class OrderingConfig {
 		DOMAIN,
 		CONTROLLERS,
 		VIEWS,
+		ASSETS,
 		TAGLIB,
 		SERVICES,
 		UTILS,

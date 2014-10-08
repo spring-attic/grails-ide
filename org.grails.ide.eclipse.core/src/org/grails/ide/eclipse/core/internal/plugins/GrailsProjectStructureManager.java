@@ -65,6 +65,7 @@ public class GrailsProjectStructureManager {
 		fileFolders.add(GrailsProjectStructureTypes.I18N);
 		fileFolders.add(GrailsProjectStructureTypes.SCRIPTS);
 		fileFolders.add(GrailsProjectStructureTypes.VIEWS);
+		fileFolders.add(GrailsProjectStructureTypes.ASSETS);
 		fileFolders.add(GrailsProjectStructureTypes.TEST_REPORTS);
 		return fileFolders;
 	}
