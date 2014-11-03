@@ -31,6 +31,7 @@ import org.grails.ide.eclipse.test.TestLogger;
 import org.grails.ide.eclipse.test.util.GrailsTest;
 import org.grails.ide.eclipse.test.util.GrailsTestUtilActivator;
 import org.grails.ide.eclipse.ui.internal.importfixes.GrailsProjectVersionFixer;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 /**
  * @author Andrew Eisenberg
@@ -63,6 +64,7 @@ public abstract class AbstractGSPTagsTest extends EclipseTestCase {
         models = new ArrayList<IStructuredModel>();
         logger = new TestLogger();
         GrailsCoreActivator.setLogger(logger);
+        StsTestUtil.closeAllEditors(); //Seen evidence of open editors hanging these tests by poping-up 'editor contents changed' dialogs.
     }
 
     protected void tearDown() throws Exception {
