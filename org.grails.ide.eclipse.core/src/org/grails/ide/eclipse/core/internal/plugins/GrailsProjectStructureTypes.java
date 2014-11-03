@@ -18,6 +18,7 @@ public enum GrailsProjectStructureTypes {
 	TAGLIB("taglib","grails-app/taglib"), 
 	SERVICES("services", "grails-app/services"), 
 	VIEWS("views", "grails-app/views"), 
+	ASSETS("assets", "grails-app/assets"),
 	I18N("i18n", "grails-app/i18n"), 
 	UTILS("utils", "grails-app/utils"),
 	
