@@ -90,6 +90,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_4_1 = new GrailsVersion("2.4.1");
 	public static final GrailsVersion V_2_4_2 = new GrailsVersion("2.4.2");
 	public static final GrailsVersion V_2_4_3 = new GrailsVersion("2.4.3");
+	public static final GrailsVersion V_2_4_4 = new GrailsVersion("2.4.4");
 	
 	public static final GrailsVersion V_2_4_0_M1 = new GrailsVersion("2.4.0.M1");
 	public static final GrailsVersion V_2_4_0_M2 = new GrailsVersion("2.4.0.M2");
