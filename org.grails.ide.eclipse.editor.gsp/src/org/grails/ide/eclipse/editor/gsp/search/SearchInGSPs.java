@@ -12,6 +12,8 @@ package org.grails.ide.eclipse.editor.gsp.search;
 
 import java.util.List;
 
+import org.codehaus.groovy.eclipse.GroovyLogManager;
+import org.codehaus.groovy.eclipse.TraceCategory;
 import org.codehaus.jdt.groovy.model.GroovyCompilationUnit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -36,7 +38,6 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
-
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationAdapter;
 import org.grails.ide.eclipse.editor.gsp.translation.GSPTranslationExtension;
 
@@ -173,11 +174,15 @@ public class SearchInGSPs {
     }
     
     private IStructuredModel getModel(IFile file) {
+    	GroovyLogManager.manager.log(TraceCategory.REFACTORING, "ENTER getModel("+file.getFullPath()+")");
         try {
             return StructuredModelManager.getModelManager().getModelForRead(file);
         } catch (Exception e) {
-            GrailsCoreActivator.log(e);
+            GrailsCoreActivator.log("Error reading GSP file '"+file.getFullPath()+"'",e);
             return null;
+        }
+        finally {
+        	GroovyLogManager.manager.log(TraceCategory.REFACTORING, "EXIT getModel("+file.getFullPath()+")");
         }
     }
     
