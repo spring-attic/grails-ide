@@ -216,7 +216,7 @@ public class AbstractGrailsJUnitIntegrationsTest extends GrailsTest {
 				public boolean test() throws Exception {
 					return listener.session!=null && launch.isTerminated();
 				}
-			}.waitFor(40000);
+			}.waitFor(80000);
 			assertEquals(0, launch.getProcesses()[0].getExitValue());
 
 		} finally {
