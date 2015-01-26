@@ -250,7 +250,8 @@ public class GrailsCommandWizardExpressionTest extends
         assertCommandExecution(instance, project);
 	}
 
-	public void test_LISTPLUGINS_expression() throws Exception {
+	public void _test_LISTPLUGINS_expression() throws Exception {
+		//Test disabled, often hangs on network access on CI builds.
 		IFrameworkCommand instance = createCommandInstance(GrailsCommandFactory.LIST_PLUGINS);
 		assertCommandDefinition(instance, "list-plugins", 2);
         // ignore non-mandatory fields
