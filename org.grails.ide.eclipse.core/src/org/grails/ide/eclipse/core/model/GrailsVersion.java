@@ -19,6 +19,8 @@ import java.util.StringTokenizer;
 import org.eclipse.core.resources.IProject;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.internal.GrailsNature;
+import org.grails.ide.eclipse.core.internal.model.Grails3ProjectConfigurator;
+import org.springframework.util.StringUtils;
 
 
 /**
@@ -95,6 +97,10 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_4_0_M1 = new GrailsVersion("2.4.0.M1");
 	public static final GrailsVersion V_2_4_0_M2 = new GrailsVersion("2.4.0.M2");
 	
+	public static final GrailsVersion V_3_0_ = new GrailsVersion("3.0");
+	public static final GrailsVersion V_3_0_0_M1 = new GrailsVersion("3.0.0.M1", 
+			"https://github.com/grails/grails-core/releases/download/v3.0.0.M1/grails-3.0.0.M1.zip");
+			
 //	public static final GrailsVersion V_2_3_2_SNAPSHOT = new GrailsVersion("2.3.2.BUILD-SNAPSHOT", 
 //			"http://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
     
@@ -122,6 +128,8 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	
 	private boolean parseError = false;
 	public static final GrailsVersion SMALLEST_SUPPORTED_VERSION = V_1_2;
+
+
 
 	private URI downloadLocation = null;
 	
@@ -283,9 +291,11 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 				Properties props = GrailsBuildSettingsHelper.getApplicationProperties(project);
 				if (props!=null) {
 					String versionString = (String) props.get("app.grails.version");
-					return new GrailsVersion(versionString);
+					if (StringUtils.hasText(versionString)) {
+						return new GrailsVersion(versionString);
+					}
 				}
-				return UNKNOWN;
+				return Grails3ProjectConfigurator.getGrailsVersion(project);
 			} catch (Throwable e) {
 				GrailsCoreActivator.log("Couldn't determine grails version for project "+project, e);
 			}

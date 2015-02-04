@@ -339,9 +339,18 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(
 			IGrailsInstall install, IProject project, String script,
 			String baseDirectory) throws CoreException {
+		String launchConfigurationTypeId = getLaunchConfigurationTypeId();
+		return getLaunchConfiguration(install, project, script, baseDirectory,
+				launchConfigurationTypeId);
+	}
+
+	public static ILaunchConfigurationWorkingCopy getLaunchConfiguration(
+			IGrailsInstall install, IProject project, String script,
+			String baseDirectory, String launchConfigurationTypeId)
+			throws CoreException {
 		ILaunchConfigurationType configType = DebugPlugin.getDefault()
 				.getLaunchManager()
-				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
+				.getLaunchConfigurationType(launchConfigurationTypeId);
 		if (install == null) {
 			install = GrailsCoreActivator.getDefault().getInstallManager()
 					.getGrailsInstall(project);

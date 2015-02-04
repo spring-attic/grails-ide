@@ -30,6 +30,7 @@ import org.eclipse.jdt.launching.IVMInstall2;
 import org.grails.ide.eclipse.core.GrailsCoreActivator;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.core.model.IProjectConfigurator;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 
@@ -383,6 +384,13 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 		File cacheDir = new File(wsMetadata, getVersionString());
 		cacheDir.mkdirs();
 		return cacheDir;
+	}
+
+	public IProjectConfigurator getProjectConfigurator() {
+		if (GrailsVersion.V_3_0_.isSatisfiedBy(getVersionString())) {
+			return Grails3ProjectConfigurator.INSTANCE;
+		}
+		return null;
 	}
 
 }

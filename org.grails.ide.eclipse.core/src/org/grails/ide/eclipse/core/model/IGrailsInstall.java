@@ -84,4 +84,6 @@ public interface IGrailsInstall {
 	 * A safe place where springloaded in grails can keep cache data.
 	 */
 	File getSpringLoadedCacheDir();
+
+	IProjectConfigurator getProjectConfigurator();
 }

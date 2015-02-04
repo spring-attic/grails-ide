@@ -35,8 +35,17 @@
 		<launchConfigurationType
 	        delegate="org.grails.ide.eclipse.core.launch.GrailsCommandLaunchConfigurationDelegate"
 	        delegateDescription="Grails Command"
-	        delegateName="Grails Command"
+	        delegateName="Grails  Command"
 	        id="org.grails.ide.eclipse.core.launchCommandConfig"
+	        modes="run"
+	        name="Grails Command"
+	        public="false">
+		</launchConfigurationType>
+		<launchConfigurationType
+	        delegate="org.grails.ide.eclipse.core.launch.grails3.Grails3CommandLaunchConfigurationDelegate"
+	        delegateDescription="Grails 3 Command"
+	        delegateName="Grails 3 Command"
+	        id="org.grails.ide.eclipse.core.launchCommandConfig3"
 	        modes="run"
 	        name="Grails Command"
 	        public="false">

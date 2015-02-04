@@ -135,7 +135,7 @@ public class GrailsProject {
 
 	public int getServerPort() {
 		PerProjectDependencyDataCache data = GrailsCore.get().connect(project, PerProjectDependencyDataCache.class);
-		if (data!=null) {
+		if (data!=null && data.getData()!=null) {
 			return data.getData().getServerPort();
 		}
 		return DependencyData.UNKNOWN_PORT;

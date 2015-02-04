@@ -28,7 +28,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,13 +44,14 @@ import org.grails.ide.eclipse.core.internal.classpath.GrailsClasspathUtils;
 import org.grails.ide.eclipse.core.internal.classpath.GrailsPluginVersion;
 import org.grails.ide.eclipse.core.internal.classpath.PerProjectDependencyDataCache;
 import org.grails.ide.eclipse.core.internal.classpath.SourceFolderJob;
+import org.grails.ide.eclipse.core.internal.model.Grails3ProjectConfigurator;
 import org.grails.ide.eclipse.core.internal.plugins.GrailsCore;
 import org.grails.ide.eclipse.core.internal.plugins.PerProjectPluginCache;
 import org.grails.ide.eclipse.core.launch.SynchLaunch.ILaunchResult;
 import org.grails.ide.eclipse.core.model.GrailsBuildSettingsHelper;
-import org.grails.ide.eclipse.core.model.GrailsInstallManager;
 import org.grails.ide.eclipse.core.model.GrailsVersion;
 import org.grails.ide.eclipse.core.model.IGrailsInstall;
+import org.grails.ide.eclipse.core.model.IProjectConfigurator;
 import org.grails.ide.eclipse.core.workspace.GrailsClassPath;
 import org.grails.ide.eclipse.core.workspace.GrailsProject;
 import org.grails.ide.eclipse.core.workspace.GrailsWorkspace;
@@ -126,9 +126,6 @@ public class GrailsCommandUtils {
 			}
 		}
 		
-		
-		String grailsInstallName = grailsInstall.getName();
-
 		IPath projectDescPath = projectAbsolutePath;
 
 		// The project has higher priority than the path argument.
@@ -244,7 +241,7 @@ public class GrailsCommandUtils {
 	 * @param desc
 	 * @return true if a Java nature was added, false if Java nature was already present.
 	 */
-	private static boolean addNaturesAndBuilders(IProjectDescription desc) {
+	public static boolean addNaturesAndBuilders(IProjectDescription desc) {
 		// prepare natures
 		Set<String> natures = new LinkedHashSet<String>();
 		natures.add(GrailsNature.NATURE_ID);
@@ -297,6 +294,12 @@ public class GrailsCommandUtils {
 	 * @throws CoreException
 	 */
 	public static IProject eclipsifyProject(IGrailsInstall grailsInstall, IProject project) throws CoreException {
+		if (grailsInstall!=null) {
+			IProjectConfigurator configurator = grailsInstall.getProjectConfigurator();
+			if (configurator!=null) {
+				return configurator.configureNewlyCreatedProject(grailsInstall, project);
+			}
+		}
 		return eclipsifyProject(grailsInstall, null, project);
 	}
 	
@@ -318,7 +321,7 @@ public class GrailsCommandUtils {
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" ...");
 		
         // This job is a no-op for maven projects since maven handles the source folders
-		if (isMavenProject(javaProject)) {
+		if (isMavenProject(javaProject) || isGradleProject(javaProject)) {
 		    // don't do refresh dependencies on maven projects.  This is handled by project configurator
 		    debug("Not refreshing dependencies because this is a maven project.");
 		    return;
@@ -383,8 +386,8 @@ public class GrailsCommandUtils {
 		}, new NullProgressMonitor());
 		debug("Refreshing dependencies for "+javaProject.getElementName()+" DONE");
 	}
-	
-    protected static boolean isMavenProject(IJavaProject javaProject) throws CoreException {
+
+	protected static boolean isMavenProject(IJavaProject javaProject) throws CoreException {
         try {
             return javaProject.getProject().hasNature(M2E_NATURE);
         } catch (CoreException e) {
@@ -392,6 +395,16 @@ public class GrailsCommandUtils {
             return false;
         }
     }
+	
+    protected static boolean isGradleProject(IJavaProject javaProject) {
+        try {
+            return javaProject.getProject().hasNature(Grails3ProjectConfigurator.GRADLE_NATURE);
+        } catch (CoreException e) {
+            GrailsCoreActivator.log(e);
+            return false;
+        }
+	}
+	
 	/**
 	 * Grails 1.3.5 and 1.3.6 won't update plugin versions during grails compile when the update is
 	 * a "downgrade" to an older version. To remedy this, a workaround is to delete the

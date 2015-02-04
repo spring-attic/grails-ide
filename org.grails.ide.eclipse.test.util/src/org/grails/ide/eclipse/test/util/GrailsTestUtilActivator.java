@@ -100,12 +100,22 @@ public class GrailsTestUtilActivator implements BundleActivator {
 			System.out.println("Detected Groovy Workspace Version = 2.3");
 			configureGrails24();
 			break;
+		case _24:
+			System.out.println("Detected Groovy Workspace Version = 2.4");
+			configureGrails30();
+			break;
 		default:
 			//The groovy compiler level is probably wrong... but anyhoo...
 			configureGrails23();
 			break;
 		}
 		System.out.println("GrailsVersion.MOST_RECENT = "+GrailsVersion.MOST_RECENT);
+	}
+
+	private static void configureGrails30() {
+		GrailsVersion.PREVIOUS_PREVIOUS =  GrailsVersion.V_2_4_3;
+		GrailsVersion.PREVIOUS = GrailsVersion.V_2_4_4;
+		GrailsVersion.MOST_RECENT = GrailsVersion.V_3_0_0_M1;
 	}
 
 	private static void configureGrails24() {

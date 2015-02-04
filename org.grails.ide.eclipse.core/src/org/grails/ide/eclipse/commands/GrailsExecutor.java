@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.grails.ide.eclipse.commands;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,65 +46,23 @@ public class GrailsExecutor {
 	
 	private static Map<GrailsVersion, GrailsExecutor> instances = new HashMap<GrailsVersion, GrailsExecutor>();
 	
-// The code that is commented out below, related to listener is used by run on server tests which are currently disabled.
-// When those tests are re-enabled we may need this code back, and it will then need some work, since it
-// assumes only a single executor is exists... but we now have a map of executors per grails version.
-	
-//	/**
-//	 * At present this only used for testing purposes, to monitor whether the expected commands get executed, and if
-//	 * they produce the expected results.
-//	 */
-//	public static GrailsExecutorListener listener = null;
-//	
-//	public static synchronized void setListener(GrailsExecutorListener newListener) {
-//		shutDownIfNeeded(); // Force new executor creation to ensure listener will be installed in it.
-//		listener = newListener; 
-//	}
-	
 	public static synchronized GrailsExecutor getInstance(GrailsVersion version) {
 		GrailsExecutor instance = instances.get(version);
 		if (instance==null) {
-			boolean keepRunning = GrailsCoreActivator.getDefault().getKeepRunning();
-			if (keepRunning && LongRunningProcessGrailsExecutor.canHandleVersion(version)) {
-				instance = LongRunningProcessGrailsExecutor.INSTANCE;
+			if (GrailsVersion.V_3_0_.compareTo(version)<=0) {
+				instance = new Grails3Executor(version);
 			} else {
-				instance = new GrailsExecutor();
+				boolean keepRunning = GrailsCoreActivator.getDefault().getKeepRunning();
+				if (keepRunning && LongRunningProcessGrailsExecutor.canHandleVersion(version)) {
+					instance = LongRunningProcessGrailsExecutor.INSTANCE;
+				} else {
+					instance = new GrailsExecutor();
+				}
+				instances.put(version, instance);
 			}
-			instances.put(version, instance);
 		}
-//		if (listener!=null) {
-//			//copy listener to local, final variable used by the instance. Don't want to have access
-//			//listener variable, which is mutable, outside of this synchronized method.
-//			final GrailsExecutorListener wrappedListener = listener;
-//			final GrailsExecutor wrapped = instance;
-//			instance = new GrailsExecutor() {
-//				public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
-//					try {
-//						ILaunchResult result = wrapped.synchExec(cmd);
-//						wrappedListener.commandExecuted(cmd, result);
-//						return result;
-//					} catch (CoreException e) {
-//						wrappedListener.commandExecuted(cmd, e);
-//						throw e;
-//					} catch (RuntimeException e) {
-//						wrappedListener.commandExecuted(cmd, e);
-//						throw e;
-//					}
-//				}
-//				public void shutDown() {
-//					wrapped.shutDown();
-//				}
-//			};
-//		}
 		return instance;
 	}
-
-//	private static boolean canHandleVersion(GrailsExecutor instance, GrailsVersion version) {
-//		if (instance instanceof LongRunningProcessGrailsExecutor) {
-//			return LongRunningProcessGrailsExecutor.canHandleVersion(version);
-//		}
-//		return true; // default executor handles all versions.
-//	}
 
 	public ILaunchResult synchExec(GrailsCommand cmd) throws CoreException {
 		try {
@@ -117,7 +76,7 @@ public class GrailsExecutor {
 								"The Grails installation directory has not been configured or is invalid.\n"
 								+ "Check the Grails project or workspace preference page."));
 			}
-			ILaunchConfigurationWorkingCopy launchConf = GrailsCommandLaunchConfigurationDelegate.getLaunchConfiguration(grailsHome, cmd.getProject(), cmd.getCommand(), cmd.getPath());
+			ILaunchConfigurationWorkingCopy launchConf = createLaunchConfiguration(cmd, grailsHome);
 			String buildListener = cmd.getBuildListener();
 			if (buildListener!=null) {
 				GrailsLaunchArgumentUtils.setGrailsBuildListener(launchConf, buildListener);
@@ -138,6 +97,12 @@ public class GrailsExecutor {
 		} catch (Throwable e) {
 			throw new CoreException(new Status(IStatus.ERROR, GrailsCoreActivator.PLUGIN_ID, "Problem executing grails command", e));
 		}
+	}
+
+	protected ILaunchConfigurationWorkingCopy createLaunchConfiguration(
+			GrailsCommand cmd, IGrailsInstall grailsHome) throws CoreException,
+			IOException {
+		return GrailsCommandLaunchConfigurationDelegate.getLaunchConfiguration(grailsHome, cmd.getProject(), cmd.getCommand(), cmd.getPath());
 	}
 
 	/**

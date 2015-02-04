@@ -267,16 +267,9 @@ public class GrailsTest extends TestCase {
 						}
 						ILaunchResult result = cmd.synchExec();
 						IGrailsInstall install = cmd.getGrailsInstall();
-						try {
-			                GrailsCommandUtils.eclipsifyProject(install, project);
-			            } catch (Exception e) {
-			                System.err.println("Ugh...tried to Eclipsify project, but failed.  Maybe a network error.  Retrying");
-			                System.err.println("Project is: " + project.getName());
-			                // try again maybe something from the server
-			                GrailsCommandUtils.eclipsifyProject(install, project);
-			            }
+		                GrailsCommandUtils.eclipsifyProject(install, project);
 						if (!isPluginProject) {
-							assertContains("Created Grails Application at "+workspacePath()+"/"+name, result.getOutput());
+							assertContains("at "+workspacePath()+"/"+name, result.getOutput());
 						} else {
 							String pluginName = GrailsNature.createPluginName(name);
 							String projectName = pluginName.substring(0, pluginName.indexOf("GrailsPlugin.groovy"));
