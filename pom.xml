@@ -308,7 +308,7 @@
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/e3.7/</url>
+		  <url>http://dist.springsource.com/release/TOOLS/eclipse-integration-commons/3.6.4.RELEASE/e3.7/</url>
 		</repository>
 	  </repositories>
     </profile>
