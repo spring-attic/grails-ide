@@ -17,7 +17,7 @@
      <pluginRepository>
        <id>plugins-snapshot-local</id>
        <name>plugins-snapshot-local</name>
-       <url>http://repo.spring.io/plugins-snapshot-local</url>
+       <url>https://repo.spring.io/plugins-snapshot-local</url>
        <snapshots>
          <enabled>true</enabled>
        </snapshots>
@@ -106,11 +106,11 @@
             	 <name>Grails IDE Composite Site for Eclipse 4.3</name>
             	 <target>${project.build.directory}/site/e4.3</target>
 		         <sites>
-				   <param>http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly</param>         
-		           <param>http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
-		           <param>http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
-		           <param>http://dist.springsource.org/snapshot/GRECLIPSE/e4.3/</param>
-		           <param>http://download.eclipse.org/tools/ajdt/43/milestone/</param>
+				   <param>https://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly</param>         
+		           <param>https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
+		           <param>https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
+		           <param>https://dist.springsource.org/snapshot/GRECLIPSE/e4.3/</param>
+		           <param>https://download.eclipse.org/tools/ajdt/43/milestone/</param>
 		         </sites>
             </configuration>
           </execution>
@@ -120,11 +120,11 @@
             	 <name>Grails IDE Composite Site for Eclipse 4.2</name>
             	 <target>${project.build.directory}/site/e4.2</target>
 		         <sites>
-				   <param>http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly</param>         
-		           <param>http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
-		           <param>http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
-		           <param>http://dist.springsource.org/snapshot/GRECLIPSE/e4.2/</param>
-		           <param>http://download.eclipse.org/tools/ajdt/42/milestone/</param>
+				   <param>https://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly</param>         
+		           <param>https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
+		           <param>https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/</param>
+		           <param>https://dist.springsource.org/snapshot/GRECLIPSE/e4.2/</param>
+		           <param>https://download.eclipse.org/tools/ajdt/42/milestone/</param>
 		         </sites>
             </configuration>
           </execution>
@@ -192,12 +192,12 @@
     <pluginRepository> 
       <id>spring-maven-release</id>
       <name>Spring Maven Release Repository</name>
-      <url>http://maven.springframework.org/release</url>
+      <url>https://maven.springframework.org/release</url>
     </pluginRepository>
     <pluginRepository>
       <id>springsource-maven-release</id>
       <name>SpringSource Maven Release Repository</name>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
+      <url>https://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
   </pluginRepositories>
 	-->
