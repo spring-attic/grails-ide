@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -91,7 +91,7 @@ public class DefaultGrailsInstall implements IGrailsInstall {
 			//That's probably an issue. Rather than have this produce cryptic problems / errors much later.
 			//Throw an error now that includes 'home' dir. 
 			//May help diagnose problems like:
-			//http://forum.springsource.org/showthread.php?138848-Grails-2-2-2-problem-with-STS-2-9&p=449005#post449005
+			//https://forum.spring.io/#post449005
 			throw new Error("Couldn't find bootstrap classpath jars in Grails install at: '"+home+"'");
 		}
 		return jars.toArray(new File[jars.size()]);

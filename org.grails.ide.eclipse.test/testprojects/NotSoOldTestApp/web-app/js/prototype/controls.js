@@ -3,23 +3,23 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
  *******************************************************************************/
 // script.aculo.us controls.js v1.8.3, Thu Oct 08 11:23:33 +0200 2009
 
-// Copyright (c) 2005-2009 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-//           (c) 2005-2009 Ivan Krstic (http://blogs.law.harvard.edu/ivan)
-//           (c) 2005-2009 Jon Tirsen (http://www.tirsen.com)
+// Copyright (c) 2005-2009 Thomas Fuchs (https://script.aculo.us, https://mir.aculo.us)
+//           (c) 2005-2009 Ivan Krstic (https://blogs.law.harvard.edu/ivan)
+//           (c) 2005-2009 Jon Tirsen (https://tirsen.com)
 // Contributors:
 //  Richard Livsey
 //  Rahul Bhargava
 //  Rob Wills
 //
 // script.aculo.us is freely distributable under the terms of an MIT-style license.
-// For details, see the script.aculo.us web site: http://script.aculo.us/
+// For details, see the script.aculo.us web site: https://script.aculo.us/
 
 // Autocompleter.Base handles all the autocompletion functionality
 // that's independent of the data source for autocompletion. This

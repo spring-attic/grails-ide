@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -113,7 +113,6 @@ public class JDKCheck {
 		try {
 			if (os!=null) {
 				if (os.startsWith("Windows") || os.equals("Linux")) {
-					//Note: See http://lopica.sourceforge.net/os.html (list of OS names)
 					//Only consider OS's where we are relatively confident that the check is valid
 					IVMInstall jvm = getVM(project);
 					if (jvm!=null) {

@@ -25,7 +25,7 @@ import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
  */
 
 /**
- * Bits of code copied from http://svn.apache.org/repos/asf/ant/core/trunk/src/main/org/apache/tools/ant/types/Commandline.java.
+ * Bits of code copied from https://svn.apache.org/repos/asf/ant/core/trunk/src/main/org/apache/tools/ant/types/Commandline.java.
  * Original copyright header retained. Code has been slightly modified to make it compile here. 
  */
 public class CommandLineUtil {

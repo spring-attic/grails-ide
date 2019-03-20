@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -74,7 +74,7 @@ public class PluginDataTests extends EclipseTestCase {
                   "<author>Mr. Foo Bar</author>" + 
                   "<title>Nothing, really</title>" + 
                   "<description>A plugin that provides nothing</description>" + 
-                  "<documentation>http://nowhere.org</documentation>" + 
+                  "<documentation>https://nowhere.org</documentation>" + 
                 "</plugin>");
           PluginDescriptorParser parser = new PluginDescriptorParser(file.getLocation().toOSString());
           GrailsPluginVersion data = parser.parse();
@@ -89,7 +89,7 @@ public class PluginDataTests extends EclipseTestCase {
                 "<author>Mr. Foo Bar</author>" + 
                 "<title>Nothing, really</title>" + 
                 "<description>A plugin that provides nothing</description>" + 
-                "<documentation>http://nowhere.org</documentation>" + 
+                "<documentation>https://nowhere.org</documentation>" + 
               "</plugin>");
         PluginDescriptorParser parser = new PluginDescriptorParser(file.getLocation().toOSString());
         // no exception should be thrown.

@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -34,7 +34,7 @@ import org.grails.ide.eclipse.search.action.ControllerActionSearch;
  */
 public class GSPControllerActionSearchTest extends AbstractGrailsSearchParticipantTest {
 	
-	//Examples from the Grails docs relevant to the tests in this class (from http://www.grails.org/doc/latest/ref/Tags/link.html)
+	//Examples from the Grails docs relevant to the tests in this class (from https://www.grails.org/doc/latest/ref/Tags/link.html)
 //	<g:link action="show" id="1">Book 1</g:link>
 //	<g:link action="show" id="${currentBook.id}">${currentBook.name}</g:link>
 //	<g:link controller="book">Book Home</g:link>
@@ -44,7 +44,7 @@ public class GSPControllerActionSearchTest extends AbstractGrailsSearchParticipa
 //	     Book List
 //	</g:link>
 //	<g:link controller="book" absolute="true">Book Home</g:link>
-//	<g:link controller="book" base="http://admin.mygreatsite.com">Book Home</g:link>
+//	<g:link controller="book" base="https://admin.mygreatsite.com">Book Home</g:link>
 //  <%= link(action:'list',controller:'book') { 'Book List' }%>
 	
 	

@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -87,7 +87,7 @@ public class PluginInstallerTests extends AbstractPluginInstallerTest {
 // Test removed, the multi-tenant-core plugin hasn't actually worked for a long time now.
 //	public void testInstallPluginwithDependentPlugin() throws Exception {
 //    	//TODO: This test fails in Grails 2.0 because multi-tenant core plugin isn't compatible (yet?) with 2.0.
-//    	// See http://jira.grails.org/browse/GRAILS-8198
+//    	// See https://jira.grails.org/browse/GRAILS-8198
 //    	if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_2_1)) {
 //    		return;
 //    	}
@@ -146,7 +146,7 @@ public class PluginInstallerTests extends AbstractPluginInstallerTest {
     public void testSTS_1530() throws Exception {
     	//Note this test is failing but that appears to be not our problem... it also fails when I do the
     	//same steps as outlined in this test on the commandline.
-    	//See http://jira.codehaus.org/browse/GRAILSPLUGINS-2944
+    	//See https://jira.codehaus.org/browse/GRAILSPLUGINS-2944
         assertPluginsInstalled(GrailsTest.defaultPlugins());
 
         //Install the 'export' plugin

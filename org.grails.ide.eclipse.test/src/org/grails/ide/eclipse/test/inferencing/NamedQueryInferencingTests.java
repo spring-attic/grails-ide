@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -130,7 +130,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("list");
         int end = start + "list".length();
-        // Commented out see http://jira.grails.org/browse/GRAILS-8387
+        // Commented out see https://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, LIST_OF_SEARCH);
         assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
@@ -174,7 +174,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("findWhere");
         int end = start + "findWhere".length();
-        // Commented out see http://jira.grails.org/browse/GRAILS-8387
+        // Commented out see https://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, SEARCH);
       assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);
@@ -190,7 +190,7 @@ public class NamedQueryInferencingTests extends AbstractGrailsInferencingTests {
                 "}";
         int start = contents.lastIndexOf("findAllWhere");
         int end = start + "findAllWhere".length();
-        // Commented out see http://jira.grails.org/browse/GRAILS-8387
+        // Commented out see https://jira.grails.org/browse/GRAILS-8387
 //      assertTypeInDomainClassNoPrefix(contents, start, end, LIST_OF_SEARCH);
         assertTypeInDomainClassNoPrefix(contents, start, end, "java.lang.Object");
         assertDeclarationTypeInDomainClassNoPrefix(contents, start, end, NAMED_QUERY_PROXY_SEARCH);

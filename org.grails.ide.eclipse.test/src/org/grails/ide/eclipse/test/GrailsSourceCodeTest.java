@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -113,7 +113,7 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	//permanently disabled (maybe re-enable if we hear it actually got fixed)
 	public void _testGrails20SourceAttachements() throws Exception {
 		// Disabled for now: not working in Grails 2.2.1 *and* Grails 2.2.2 and 2.2.3 and 2.2.4
-		// See http://jira.grails.org/browse/GRAILS-9940
+		// See https://jira.grails.org/browse/GRAILS-9940
 		if (GrailsVersion.MOST_RECENT.compareTo(GrailsVersion.V_2_2_4)>0) {
 			try {
 				doTestType(GrailsVersion.MOST_RECENT, "org.springframework.uaa.client.UaaService", "@author Ben Alex");
@@ -127,7 +127,7 @@ public class GrailsSourceCodeTest extends AbstractCommandTest {
 	}
 
 	public void testApplicationTagLib137() throws Exception {
-		//clearGrailsState(); //Workaround for http://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
+		//clearGrailsState(); //Workaround for https://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
 	    doTestApplicationTagLib(GrailsVersion.V_1_3_7);
 	}
 	

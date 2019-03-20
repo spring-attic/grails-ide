@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -322,7 +322,7 @@ public class GrailsTest extends TestCase {
 		try {
 			StsTestUtil.assertNoErrors(project);
 		} catch (Throwable e) {
-			//This retry is compensating for http://jira.grails.org/browse/GRAILS-9263
+			//This retry is compensating for https://jira.grails.org/browse/GRAILS-9263
 			GrailsCommandUtils.refreshDependencies(JavaCore.create(project), false);
 			StsTestUtil.assertNoErrors(project);
 		}
@@ -655,7 +655,7 @@ public class GrailsTest extends TestCase {
 		}
 		
 		String releaseType = version.isRelease() ? "release" : "milestone";
-		String downloadUrl = "http://dist.springframework.org.s3.amazonaws.com/"+releaseType+"/GRAILS/grails-"+version+".zip";
+		String downloadUrl = "https://dist.springframework.org.s3.amazonaws.com/"+releaseType+"/GRAILS/grails-"+version+".zip";
 		
 		return new URI(downloadUrl);
 	}

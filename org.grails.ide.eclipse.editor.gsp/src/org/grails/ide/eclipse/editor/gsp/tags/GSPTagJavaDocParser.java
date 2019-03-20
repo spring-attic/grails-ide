@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -43,7 +43,7 @@ import org.grails.ide.eclipse.core.GrailsCoreActivator;
  * 
  * @author Andrew Eisenberg
  * @since 2.5.2
- * @see http://jira.codehaus.org/browse/GRAILS-6593
+ * @see https://jira.codehaus.org/browse/GRAILS-6593
  */
 public class GSPTagJavaDocParser {
     public static class GSPTagDescription {

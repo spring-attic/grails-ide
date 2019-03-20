@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -386,7 +386,6 @@ public class ControllerActionQueryParticipantTest extends AbstractGrailsSearchPa
 	public void doSnippetTest(String contextControllerName, String targetControllerName, String oldActionName, String inSnippet, String expectSnippet)
 			throws CoreException {
 		//This a 'test template' to do tests to see if these kinds of snippets are handled corretctly
-		//		redirect(url:"http://www.blogjava.net/BlueSUN") (NOT supported)
 		//		redirect(action:"show")
 		//		redirect(controller:"book",action:"list")
 		//		redirect(action:"show",id:4, params:[author:"Stephen King"])
