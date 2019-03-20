@@ -917,7 +917,7 @@
 	
     <!-- provide url where to read 'StsProperties' from. Mostly these properties drive the dashboard. -->
     <extension point="org.springsource.ide.commons.core.properties">
-       <fromUrl priority="100" url="http://dist.springsource.com/release/STS/discovery/ggts.properties">
+       <fromUrl priority="100" url="https://dist.springsource.com/release/STS/discovery/ggts.properties">
        </fromUrl>
     </extension>
    
