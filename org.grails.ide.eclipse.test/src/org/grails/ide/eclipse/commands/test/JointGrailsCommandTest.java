@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -41,7 +41,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 		GroovyCompilerVersionCheck.testMode();
 		//Ensure prior test projects don't exist
 		StsTestUtil.deleteAllProjects();
-		//clearGrailsState(); //Workaround for http://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
+		//clearGrailsState(); //Workaround for https://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
 		//Test now permantly disabled doesn't look Grails bug getting fixed.
 		if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
 			//This is known to be broken in Grails 2.0.3:
-			//See http://jira.grails.org/browse/GRAILS-8955
+			//See https://jira.grails.org/browse/GRAILS-8955
 			return; 
 		}
 		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0_RC1)) {
@@ -90,7 +90,7 @@ public class JointGrailsCommandTest extends AbstractCommandTest {
     public void DISABLED_testDownloadSources() throws Exception {
         if (GrailsVersion.V_2_3_.compareTo(GrailsVersion.MOST_RECENT) > 0) {
 			//This is known to be broken in Grails 2.0.3:
-			//See http://jira.grails.org/browse/GRAILS-8955
+			//See https://jira.grails.org/browse/GRAILS-8955
 			return; 
 		}
         if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_3_0_RC1)) {

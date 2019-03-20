@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -397,7 +397,7 @@ public abstract class RunOnServerTestTemplate extends GrailsTest {
 	 */
 	public void testModuleArtifactAdapter() throws Exception {
 		// As describe here:
-		// http://www.eclipse.org/webtools/wst/components/server/runOnServer.html
+		// https://www.eclipse.org/webtools/wst/components/server/runOnServer.html
 		// To have Run On Server menu item appear on a grails project, a grails
 		// project needs to
 
@@ -829,6 +829,6 @@ public abstract class RunOnServerTestTemplate extends GrailsTest {
 	// TODO: Add some test that put stuff into a form to see if basic
 	// functionality of the test app is working
 	// See here on help for submitting form requests:
-	// http://stackoverflow.com/questions/2793150/how-to-use-java-net-urlconnection-to-fire-and-handle-http-requests
+	// https://stackoverflow.com/questions/2793150/how-to-use-java-net-urlconnection-to-fire-and-handle-http-requests
 
 }

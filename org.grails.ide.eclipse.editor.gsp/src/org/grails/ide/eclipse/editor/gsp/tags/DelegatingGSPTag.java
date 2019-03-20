@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -54,7 +54,7 @@ public class DelegatingGSPTag extends AbstractGSPTag {
     // Never qualified since prefix is in node name
     @Override
     public Object getProperty(String propertyName) {
-        if (propertyName.equals("http://org.eclipse.wst/cm/properties/nsPrefixQualification")) {
+        if (propertyName.equals("https://org.eclipse.wst/cm/properties/nsPrefixQualification")) {
             return null;
         }
         return super.getProperty(propertyName);

@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -44,7 +44,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_1_3_7 = new GrailsVersion("1.3.7");
 	public static final GrailsVersion V_1_3_8 = new GrailsVersion("1.3.8");
 	public static final GrailsVersion BUILDSNAPHOT_2_0_2 = new GrailsVersion("2.0.2.BUILD-SNAPSHOT", 
-			"http://hudson.grails.org/view/Grails%202.0.x/job/grails_core_2.0.x/lastStableBuild/artifact/build/distributions/grails-2.0.2.BUILD-SNAPSHOT.zip");
+			"https://hudson.grails.org/view/Grails%202.0.x/job/grails_core_2.0.x/lastStableBuild/artifact/build/distributions/grails-2.0.2.BUILD-SNAPSHOT.zip");
 
 	public static final GrailsVersion V_2_0_ = new GrailsVersion("2.0"); //Any '2.0' version *including* milestones is 'greater' than this one
 	public static final GrailsVersion V_2_0_0 = new GrailsVersion("2.0.0"); //Any 2.0 version *excluding* milestones is greater than this one
@@ -72,7 +72,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 //	public static final GrailsVersion V_2_0_0_RC3 = new GrailsVersion("2.0.0.RC3");
 	
 //	public static final GrailsVersion V_2_2_2_BUILDSNAP = new GrailsVersion("2.2.2.BUILD-SNAPSHOT",
-//			"http://hudson.grails.org/job/grails_core_2.2.x/lastSuccessfulBuild/artifact/build/distributions/grails-2.2.2.BUILD-SNAPSHOT.zip");
+//			"https://hudson.grails.org/job/grails_core_2.2.x/lastSuccessfulBuild/artifact/build/distributions/grails-2.2.2.BUILD-SNAPSHOT.zip");
 
     public static final GrailsVersion V_2_3_ = new GrailsVersion("2.3"); //Any '2.3' version *including* milestones is 'greater' than this one
 	public static final GrailsVersion V_2_3_0 = new GrailsVersion("2.3.0");
@@ -96,7 +96,7 @@ public class GrailsVersion implements Comparable<GrailsVersion> {
 	public static final GrailsVersion V_2_4_0_M2 = new GrailsVersion("2.4.0.M2");
 	
 //	public static final GrailsVersion V_2_3_2_SNAPSHOT = new GrailsVersion("2.3.2.BUILD-SNAPSHOT", 
-//			"http://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
+//			"https://hudson.grails.org/view/Grails%202.3.x/job/grails_core_2.3.x/lastStableBuild/artifact/build/distributions/grails-2.3.0.BUILD-SNAPSHOT.zip");
     
     public static final GrailsVersion MOST_RECENT_1_3 = V_1_3_8;
 	

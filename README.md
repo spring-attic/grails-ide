@@ -10,38 +10,38 @@ It also comes with the SpringSource Dashboard is an optional component, which br
 
 You can install the latest release of the Grails IDE from the Eclipse Marketplace by looking for "grails". You can also install it manually from one of the following update sites.
 
-    http://dist.springsource.com/release/TOOLS/grails-ide
+    https://dist.springsource.com/release/TOOLS/grails-ide
 
 From version 3.1 and onward we will also be publishing 'one-stop' sites which contain all the required
 dependencies for easy installation into a plain Eclipse. These sites are specific to a version of Eclipse
 so make sure to pick the correct link for your version of Eclipse.
 
-    http://dist.springsource.com/release/TOOLS/grails-ide/e3.7
-    http://dist.springsource.com/release/TOOLS/grails-ide/e4.2
+    https://dist.springsource.com/release/TOOLS/grails-ide/e3.7
+    https://dist.springsource.com/release/TOOLS/grails-ide/e4.2
 
 ## Installation (Milestone)
 
 You can install the latest milestone build of the Grails IDE manually from this udpate site:
 
-    http://dist.springsource.com/milestone/TOOLS/grails-ide/
+    https://dist.springsource.com/milestone/TOOLS/grails-ide/
     
 From version 3.1 and onward we will also be publishing 'one-stop' sites which contain all the required
 dependencies for easy installation into a plain Eclipse. These sites are specific to a version of Eclipse
 so make sure to pick the correct link for your version of Eclipse.
     
-    http://dist.springsource.com/milestone/TOOLS/grails-ide/e3.7
-    http://dist.springsource.com/milestone/TOOLS/grails-ide/e4.2
+    https://dist.springsource.com/milestone/TOOLS/grails-ide/e3.7
+    https://dist.springsource.com/milestone/TOOLS/grails-ide/e4.2
 
 ## Installation (CI builds)
 
 If you want to live on the leading egde, you can also install always up-to-date continuous integration buids from this update site:
 
-    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly
+    https://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly
 
 The following sites contain the same content as the above site, but also contain all the required dependencies to install into plain Eclipse. 
 
-    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e3.7
-    http://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e4.2
+    https://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e3.7
+    https://dist.springsource.com/snapshot/TOOLS/grails-ide/nightly/e4.2
 
 But take care, those builds could be broken from time to time and might contain non-ship-ready
 features that might never appear in the milestone or release builds.
@@ -50,7 +50,7 @@ features that might never appear in the milestone or release builds.
 
 If you have a question that Google can't answer, the best way is to go to the forum:
 
-    http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite
+    https://forum.spring.io/
 
 There you can also ask questions and search for other people with related or similar problems (and solutions). New versions of the Grails IDE (and other tooling that is brought to you by SpringSource) are announced there as well.
 
@@ -62,7 +62,7 @@ and choose the GRAILS component when filing new issues.
 
 ## Developing Grails IDE
 
-The remainder of this documents expects a familiarity with Eclipse architecture and how plugin development works.  If you are not already familiar with Eclipse development, then you may want to read some tutorials about the Eclipse plugin architecture and how to develop with it.  A good start is here: <http://www.ibm.com/developerworks/library/os-eclipse-plugindev1/>.
+The remainder of this documents expects a familiarity with Eclipse architecture and how plugin development works.  If you are not already familiar with Eclipse development, then you may want to read some tutorials about the Eclipse plugin architecture and how to develop with it.  A good start is here: <https://www.ibm.com/developerworks/library/os-eclipse-plugindev1/>.
 
 
 Also, using EGit is recommended but not required to provide integration between your workspace and git. EGit is installed into GGTS by default.  EGit docs are found here: <http://wiki.eclipse.org/EGit/User_Guide>.
@@ -92,7 +92,7 @@ By cloning only the `grails-ide` repository, and not `eclipse-integration-common
 * Groovy-Eclipse: git@github.com:groovy/groovy-eclipse.git
 * Eclipse-Integration-Commons: git@github.com:SpringSource/eclipse-integration-commons.git
 
-More information on setting up the Groovy-Eclipse dev environment is available here: http://groovy.codehaus.org/Getting+Started+With+Groovy-Eclipse+Source+Code.  Note that there are projects that will not compile unless you have m2e (Maven-eclipse support) installed in your Eclipse.  These projects can be closed.
+More information on setting up the Groovy-Eclipse dev environment is available here: https://groovy.codehaus.org/Getting+Started+With+Groovy-Eclipse+Source+Code.  Note that there are projects that will not compile unless you have m2e (Maven-eclipse support) installed in your Eclipse.  These projects can be closed.
 
 *Important* also, close the org.codehaus.groovy20 plugin unless you are working on Grails 2.2.x or later, which requires Groovy 2.0.
 
@@ -102,14 +102,14 @@ Since GGTS does not ship with the source code for Eclipse projects (Eclipse Plat
 
 Use this update site after Eclipse Juno is released: 
 
-  * The Eclipse Project Updates - <http://download.eclipse.org/eclipse/updates/4.2>
+  * The Eclipse Project Updates - <http://download.eclipse.org/eclipse/updates/4.2/>
 
 ### Getting the tests to compile inside of Eclipse
 
 There are two test suites in Grails-IDE:
 
 * `org.grails.ide.eclipse.test.AllGrailsTests`: tests the core Grails functionality including creating projects, editor support, launching, debugging, etc.  This suite is of general interest and should be run to ensure correctness.  **Usually takes about one hour to run completely** since it downloads multiple versions of grails, issues many commands, starts and stops servers, etc.
-* `org.grails.ide.eclipse.test.ui.AllGrailsUITests`: tests wizards, window state, and other UI.  This test suite is generally a more fragile and may not pass on Windows.  **This test suite is not necessary to run** unless you know you are working in this area.  Also, if you want these tests to compile you will need to install swt-bot, which is our UI testing framework.  Keep this test suite closed unless you have SWT-Bot installed.  SWT-bot is available form this update site: http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site
+* `org.grails.ide.eclipse.test.ui.AllGrailsUITests`: tests wizards, window state, and other UI.  This test suite is generally a more fragile and may not pass on Windows.  **This test suite is not necessary to run** unless you know you are working in this area.  Also, if you want these tests to compile you will need to install swt-bot, which is our UI testing framework.  Keep this test suite closed unless you have SWT-Bot installed.  SWT-bot is available form this update site: http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site/
 
 ### Running the tests inside of Eclipse
 
@@ -132,7 +132,7 @@ The Groovy debug tests will fail unless you enable JDT weaving in your launch co
 
 ## Building Grails IDE
 
-The Grails IDE project uses [Maven](http://maven.apache.org/) Tycho [Tycho](http://eclipse.org/tycho) to do continuous integration builds and to produce p2 repos and update sites. To build the project yourself, you can execute:
+The Grails IDE project uses [Maven](https://maven.apache.org/) Tycho [Tycho](https://eclipse.org/tycho) to do continuous integration builds and to produce p2 repos and update sites. To build the project yourself, you can execute:
 
     mvn -Pe37 -Dmaven.test.skip=true clean install
 
@@ -145,10 +145,10 @@ If you want to run tests during your build, then remove `-Dmaven.test.skip=true`
 
 Here are some ways for you to get involved in the community:
 
-  * Get involved with the Spring community on the Spring Community Forums.  Please help out on the [forum](http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite) by responding to questions and joining the debate.
+  * Get involved with the Spring community on the Spring Community Forums.  Please help out on the [forum](https://forum.spring.io/) by responding to questions and joining the debate.
   * Create [JIRA](https://issuetracker.springsource.com/browse/STS) tickets for bugs and new features and comment and vote on the ones that you are interested in.  
-  * Github is for social coding: if you want to write code, we encourage contributions through pull requests from [forks of this repository](http://help.github.com/forking/). If you want to contribute code this way, please reference a JIRA ticket as well covering the specific issue you are addressing.
-  * Watch for upcoming articles on Spring by [subscribing](http://www.springsource.org/node/feed) to springframework.org
+  * Github is for social coding: if you want to write code, we encourage contributions through pull requests from [forks of this repository](https://help.github.com/forking/). If you want to contribute code this way, please reference a JIRA ticket as well covering the specific issue you are addressing.
+  * Watch for upcoming articles on Spring by [subscribing](https://www.springsource.org/node/feed) to springframework.org
   * Twitter: @mlippert @andy_clement @werdnagreb The Grails-IDE core team often tweets about new features and updates
 
 Before we accept a pull request we will need you to sign the [contributor's agreement](https://support.springsource.com/spring_eclipsecla_committer_signup). When completing that page, select 'Grails IDE' from the pulldown. Signing the contributor's agreement does not grant anyone commit rights to the main repository, but it does mean that we can accept your contributions, and you will get an author credit if we do. Active contributors might be asked to join the core team, and given the ability to merge pull requests.

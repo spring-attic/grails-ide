@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -159,7 +159,7 @@ public class Grails20JUnitIntegrationTests extends AbstractGrailsJUnitIntegratio
 //		
 //		//What this test is printing on my machine (where the JUnit tests are passing ok)
 //		/*
-//		 Junit 4 library entry = /home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar[CPE_LIBRARY][K_BINARY][sourcePath:/home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit.source_4.8.2.v4_8_2_v20110321-1705.jar][isExported:false][attributes:javadoc_location=http://www.junit.org/junit/javadoc/4.5]
+//		 Junit 4 library entry = /home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar[CPE_LIBRARY][K_BINARY][sourcePath:/home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit.source_4.8.2.v4_8_2_v20110321-1705.jar][isExported:false][attributes:javadoc_location=https://www.junit.org/junit/javadoc/4.5]
 //		 bundleInfo = BundleInfo(org.junit, 4.8.2.v4_8_2_v20110321-1705, location=file:/home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/, startLevel=4, toBeStarted=false, resolved=false, id=-1,no manifest)
 //         /home/kdvolder/Applications/springsource-2.9.0.M1/sts-2.9.0.M1/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/
 //		 */

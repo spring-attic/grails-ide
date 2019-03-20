@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -65,13 +65,13 @@ public class GrailsConsoleLineTrackerTests extends TestCase {
     }
     
     public void testRunApp1() throws Exception {
-        lineTracker.createRunAppHyperlink("ffkjafsdkj " + RUNNING_MARKER + "http://foobar", 0);
-        console.assertLinks("http://foobar");
+        lineTracker.createRunAppHyperlink("ffkjafsdkj " + RUNNING_MARKER + "https://foobar", 0);
+        console.assertLinks("https://foobar");
     }
     
     public void testRunApp2() throws Exception {
-        lineTracker.createRunAppHyperlink("ffkjafsdkj " + RUNNING_MARKER + "http://foobar or https://foobar", 0);
-        console.assertLinks("http://foobar", "https://foobar");
+        lineTracker.createRunAppHyperlink("ffkjafsdkj " + RUNNING_MARKER + "https://foobar or https://foobar", 0);
+        console.assertLinks("https://foobar", "https://foobar");
     }
     
     public void testTestPassed1() throws Exception {

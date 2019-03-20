@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -284,7 +284,7 @@ public class GrailsCommandLaunchConfigurationDelegate extends
 
 	private static String windowsEscape(String argument) {
 		// There appears to be a bug(?)
-		// http://bugs.sun.com/view_bug.do?bug_id=6468220
+		// https://bugs.java.com/view_bug.do?bug_id=6468220
 		// in Windows ProcessBuilder implementation that incorrectly
 		// escapes program arguments that contain both spaces and quotes.
 		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {

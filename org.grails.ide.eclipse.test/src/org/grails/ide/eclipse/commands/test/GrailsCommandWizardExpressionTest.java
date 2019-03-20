@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -277,7 +277,7 @@ public class GrailsCommandWizardExpressionTest extends
 
 	public void test_PLUGININFO_expression() throws Exception {
 //		if (!GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_0_0_RC1)) {
-			//Skip: http://jira.grails.org/browse/GRAILS-8200 (revisit for RC2)
+			//Skip: https://jira.grails.org/browse/GRAILS-8200 (revisit for RC2)
 			IFrameworkCommand instance = createCommandInstance(GrailsCommandFactory.PLUGIN_INFO);
 			assertCommandDefinition(instance, "plugin-info", 1);
 			ICommandParameter parameter = getParameter("name", instance);

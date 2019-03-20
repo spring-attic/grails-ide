@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     VMWare, Inc. - initial API and implementation
@@ -64,7 +64,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 		GroovyCompilerVersionCheck.testMode();
 		//Ensure prior test projects don't exist
 		StsTestUtil.deleteAllProjects();
-		//clearGrailsState(); //Workaround for http://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
+		//clearGrailsState(); //Workaround for https://jira.grails.org/browse/GRAILS-7655 (ivy cache corruption)
 	}
 	
 	/**
@@ -464,7 +464,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 	public void _testSpringSecurityACLClassPathExclusions() throws Exception {
 		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_1_0_revisit)) {
 			//This test is known to fail since Grails 2.0 RC1: still failing in Grails 2.0 final
-			//See: http://jira.grails.org/browse/GRAILS-8198
+			//See: https://jira.grails.org/browse/GRAILS-8198
 			return;
 		}
 		
@@ -513,7 +513,7 @@ public class GrailsCommandUtilTest extends AbstractCommandTest {
 	public void _testSpringSecurityACLClassPathExclusionsLaunch() throws Exception {
 		if (GrailsVersion.MOST_RECENT.equals(GrailsVersion.V_2_1_0_revisit)) {
 			//This test is known to fail in RC1:
-			//See: http://jira.grails.org/browse/GRAILS-8198
+			//See: https://jira.grails.org/browse/GRAILS-8198
 			return;
 		}
 		

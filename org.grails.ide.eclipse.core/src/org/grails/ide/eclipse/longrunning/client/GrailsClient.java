@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -72,7 +72,7 @@ public class GrailsClient {
 	 * Note that if the process is running in 'client' mode but a corresponding debug process isn't
 	 * started in Eclipse, then the GrailsProcess will fail to start.
 	 * <p>
-	 * See also http://www.grails.org/GrailsDevEnvironment for a bit more info on debugging
+	 * See also https://www.grails.org/GrailsDevEnvironment for a bit more info on debugging
 	 * Grails.
 	 */
 	public static String DEBUG_PROCESS = null; //Disabled

@@ -54,7 +54,7 @@ class DomainClass3 {
 	   }
 	}
 	
-	// from http://grails.org/doc/latest/ref/Domain%20Classes/namedQueries.html
+	// from https://grails.org/doc/latest/ref/Domain%20Classes/namedQueries.html
 	def namedQueryTest() {
 		// get all recent publications
 		def recentPubs = DomainClass3.recentPublications.list()
@@ -108,7 +108,7 @@ class DomainClass3 {
 		/*!V:!*/id/*!*/
 	}
 
-	// from http://grails.org/doc/latest/ref/Domain%20Classes/withCriteria.html
+	// from https://grails.org/doc/latest/ref/Domain%20Classes/withCriteria.html
 	def withCriteriaTest() {
 		DomainClass3./*!java.util.List<DomainClass3>:grails.orm.HibernateCriteriaBuilder!*/withCriteria/*!*/
 		
@@ -218,7 +218,7 @@ class DomainClass3 {
 		/*!L:!*/f/*!*/
 	}
 	
-	// From http://grails.org/doc/latest/ref/Domain%20Classes/where.html
+	// From https://grails.org/doc/latest/ref/Domain%20Classes/where.html
 	def whereQueryTest() {
 		def query = DomainClass3.where {
 		   first == "Bart"
