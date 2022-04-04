@@ -1,4 +1,4 @@
-# Grails IDE
+# Grails IDE is no longer actively maintained by VMware, Inc.
 
   The Grails IDE brings you first class developer tooling for Grails into Eclipse.
 
